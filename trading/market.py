@@ -1,12 +1,17 @@
-"""MarketFrame — loads 5m candles from TAOStats + Binance.
+"""MarketFrame — canonical historical data store for Bittensor.
 
-Two data sources:
-- HISTORY: TAOStats 5m OHLCV (historical backtest)
-- LIVE: Bittensor node → alpha prices every 5 min
+Schema per BUILD-PLAN-CP0:
+  subnet_candles: timestamp, block, netuid, open_tao, high_tao, low_tao, close_tao, volume_tao
+  pool_state:     timestamp, block, netuid, tao_reserve, alpha_reserve, alpha_price, liquidity
+  subnet_state:   timestamp, block, netuid, emission, registration_cost, miners, validators, stake, owner
+  macro:          timestamp, btc_usd, eth_usd, tao_usd
 
-BTC/ETH/TAO context features from Binance.
+Data sources:
+  - TAOStats API: historical subnet OHLCV + pool state + subnet state
+  - Binance: BTC/ETH/TAO context candles
+  - Bittensor archive RPC: specific historical chain state (verification)
 
-Stores in market.duckdb (boring analytical store, not Hydra).
+Stores in market.duckdb (analytical store, not Hydra).
 """
 import sqlite3
 import json
@@ -20,63 +25,137 @@ CTX = ssl.create_default_context()
 
 
 def init_db():
-    """Initialize market database."""
+    """Initialize market database with correct schema."""
     conn = sqlite3.connect(str(DB_PATH))
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS subnet_5m (
-            timestamp TEXT,
-            netuid INTEGER,
-            open REAL,
-            high REAL,
-            low REAL,
+    conn.executescript("""
+        CREATE TABLE IF NOT EXISTS subnet_candles (
+            timestamp TEXT NOT NULL,
+            block INTEGER,
+            netuid INTEGER NOT NULL,
+            open_tao REAL,
+            high_tao REAL,
+            low_tao REAL,
             close_tao REAL,
-            volume REAL
-        )
-    """)
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS macro_5m (
-            timestamp TEXT,
+            volume_tao REAL,
+            PRIMARY KEY (timestamp, netuid)
+        );
+
+        CREATE TABLE IF NOT EXISTS pool_state (
+            timestamp TEXT NOT NULL,
+            block INTEGER,
+            netuid INTEGER NOT NULL,
+            tao_reserve REAL,
+            alpha_reserve REAL,
+            alpha_price REAL,
+            liquidity REAL,
+            PRIMARY KEY (timestamp, netuid)
+        );
+
+        CREATE TABLE IF NOT EXISTS subnet_state (
+            timestamp TEXT NOT NULL,
+            block INTEGER,
+            netuid INTEGER NOT NULL,
+            emission REAL,
+            registration_cost REAL,
+            miners INTEGER,
+            validators INTEGER,
+            stake REAL,
+            owner TEXT,
+            PRIMARY KEY (timestamp, netuid)
+        );
+
+        CREATE TABLE IF NOT EXISTS macro (
+            timestamp TEXT NOT NULL PRIMARY KEY,
             btc_usd REAL,
             eth_usd REAL,
             tao_usd REAL
-        )
+        );
+
+        CREATE INDEX IF NOT EXISTS idx_candles_netuid ON subnet_candles(netuid);
+        CREATE INDEX IF NOT EXISTS idx_candles_ts ON subnet_candles(timestamp);
+        CREATE INDEX IF NOT EXISTS idx_pool_netuid ON pool_state(netuid);
+        CREATE INDEX IF NOT EXISTS idx_substate_netuid ON subnet_state(netuid);
     """)
     conn.commit()
     conn.close()
 
 
-def store_subnet_candles(netuid: int, candles: list[dict]):
-    """Store 5m candles for a subnet."""
+def store_subnet_candle(timestamp: str, block: int, netuid: int,
+                         open_tao: float, high_tao: float, low_tao: float,
+                         close_tao: float, volume_tao: float = 0):
+    """Store one subnet candle."""
     conn = sqlite3.connect(str(DB_PATH))
-    for c in candles:
-        conn.execute(
-            "INSERT INTO subnet_5m (timestamp, netuid, open, high, low, close_tao, volume) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (c.get('t'), netuid, c.get('o'), c.get('h'), c.get('l'), c.get('c'), c.get('v', 0))
-        )
+    conn.execute(
+        "INSERT OR REPLACE INTO subnet_candles "
+        "(timestamp, block, netuid, open_tao, high_tao, low_tao, close_tao, volume_tao) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        (timestamp, block, netuid, open_tao, high_tao, low_tao, close_tao, volume_tao)
+    )
     conn.commit()
     conn.close()
 
 
-def store_macro_candles(candles: list[dict]):
-    """Store macro candles (BTC, ETH, TAO)."""
+def store_pool_state(timestamp: str, block: int, netuid: int,
+                      tao_reserve: float, alpha_reserve: float,
+                      alpha_price: float, liquidity: float = 0):
+    """Store pool state snapshot."""
     conn = sqlite3.connect(str(DB_PATH))
-    for c in candles:
-        conn.execute(
-            "INSERT INTO macro_5m (timestamp, btc_usd, eth_usd, tao_usd) "
-            "VALUES (?, ?, ?, ?)",
-            (c.get('t'), c.get('btc'), c.get('eth'), c.get('tao'))
-        )
+    conn.execute(
+        "INSERT OR REPLACE INTO pool_state "
+        "(timestamp, block, netuid, tao_reserve, alpha_reserve, alpha_price, liquidity) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?)",
+        (timestamp, block, netuid, tao_reserve, alpha_reserve, alpha_price, liquidity)
+    )
+    conn.commit()
+    conn.close()
+
+
+def store_subnet_state(timestamp: str, block: int, netuid: int,
+                        emission: float, registration_cost: float,
+                        miners: int, validators: int, stake: float,
+                        owner: str = ""):
+    """Store subnet state snapshot."""
+    conn = sqlite3.connect(str(DB_PATH))
+    conn.execute(
+        "INSERT OR REPLACE INTO subnet_state "
+        "(timestamp, block, netuid, emission, registration_cost, miners, validators, stake, owner) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        (timestamp, block, netuid, emission, registration_cost, miners, validators, stake, owner)
+    )
+    conn.commit()
+    conn.close()
+
+
+def store_macro_candle(timestamp: str, btc_usd: float, eth_usd: float, tao_usd: float):
+    """Store macro candle."""
+    conn = sqlite3.connect(str(DB_PATH))
+    conn.execute(
+        "INSERT OR REPLACE INTO macro (timestamp, btc_usd, eth_usd, tao_usd) "
+        "VALUES (?, ?, ?, ?)",
+        (timestamp, btc_usd, eth_usd, tao_usd)
+    )
     conn.commit()
     conn.close()
 
 
 def get_subnet_candles(netuid: int, limit: int = 1000) -> list[dict]:
-    """Get 5m candles for a subnet."""
+    """Get candles for a subnet, newest first."""
     conn = sqlite3.connect(str(DB_PATH))
     conn.row_factory = sqlite3.Row
     rows = conn.execute(
-        "SELECT * FROM subnet_5m WHERE netuid = ? ORDER BY timestamp DESC LIMIT ?",
+        "SELECT * FROM subnet_candles WHERE netuid = ? ORDER BY timestamp DESC LIMIT ?",
+        (netuid, limit)
+    ).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+def get_pool_states(netuid: int, limit: int = 1000) -> list[dict]:
+    """Get pool states for a subnet, newest first."""
+    conn = sqlite3.connect(str(DB_PATH))
+    conn.row_factory = sqlite3.Row
+    rows = conn.execute(
+        "SELECT * FROM pool_state WHERE netuid = ? ORDER BY timestamp DESC LIMIT ?",
         (netuid, limit)
     ).fetchall()
     conn.close()
@@ -84,16 +163,16 @@ def get_subnet_candles(netuid: int, limit: int = 1000) -> list[dict]:
 
 
 def get_latest_prices() -> dict[int, float]:
-    """Get latest price for each subnet."""
+    """Get latest alpha price for each subnet."""
     conn = sqlite3.connect(str(DB_PATH))
     conn.row_factory = sqlite3.Row
     rows = conn.execute(
-        "SELECT netuid, close_tao FROM subnet_5m "
-        "WHERE timestamp = (SELECT MAX(timestamp) FROM subnet_5m) "
-        "OR timestamp IN (SELECT MAX(timestamp) FROM subnet_5m GROUP BY netuid)"
+        "SELECT netuid, alpha_price FROM pool_state "
+        "WHERE timestamp = (SELECT MAX(timestamp) FROM pool_state) "
+        "OR timestamp IN (SELECT MAX(timestamp) FROM pool_state GROUP BY netuid)"
     ).fetchall()
     conn.close()
-    return {r['netuid']: r['close_tao'] for r in rows}
+    return {r['netuid']: r['alpha_price'] for r in rows if r['alpha_price']}
 
 
 def get_market_frame(timestamp: str) -> dict:
@@ -101,16 +180,27 @@ def get_market_frame(timestamp: str) -> dict:
     conn = sqlite3.connect(str(DB_PATH))
     conn.row_factory = sqlite3.Row
 
-    # Get subnet prices
+    # Get subnet candles at this timestamp
     sub_rows = conn.execute(
-        "SELECT netuid, close_tao FROM subnet_5m WHERE timestamp = ?",
+        "SELECT netuid, close_tao FROM subnet_candles WHERE timestamp = ?",
         (timestamp,)
     ).fetchall()
     subs = {r['netuid']: r['close_tao'] for r in sub_rows}
 
+    # Get pool states at this timestamp
+    pool_rows = conn.execute(
+        "SELECT netuid, alpha_price, tao_reserve, alpha_reserve FROM pool_state WHERE timestamp = ?",
+        (timestamp,)
+    ).fetchall()
+    pools = {r['netuid']: {
+        'alpha_price': r['alpha_price'],
+        'tao_reserve': r['tao_reserve'],
+        'alpha_reserve': r['alpha_reserve'],
+    } for r in pool_rows}
+
     # Get macro
     macro_row = conn.execute(
-        "SELECT * FROM macro_5m WHERE timestamp = ?",
+        "SELECT * FROM macro WHERE timestamp = ?",
         (timestamp,)
     ).fetchone()
     macro = dict(macro_row) if macro_row else {}
@@ -120,71 +210,26 @@ def get_market_frame(timestamp: str) -> dict:
     return {
         "timestamp": timestamp,
         "subnets": subs,
+        "pools": pools,
         "macro": macro,
     }
 
 
-def init_from_oracle():
-    """Initialize market DB from existing oracle.db data."""
-    oracle_db = sqlite3.connect(str(Path("/root/bitt/oracle.db")))
-    oracle_db.row_factory = sqlite3.Row
-
-    # Get all historical scans
-    rows = oracle_db.execute(
-        "SELECT data, scanned_at FROM subnet_snapshots ORDER BY scanned_at"
-    ).fetchall()
-
-    market_db = sqlite3.connect(str(DB_PATH))
-    for row in rows:
-        data = json.loads(row['data'])
-        netuid = data.get('netuid', 0)
-        alpha_price = data.get('alpha_price', 0)
-        tao_day = data.get('tao_equiv_day', 0)
-
-        # Store as a single "candle" (simplified)
-        market_db.execute(
-            "INSERT INTO subnet_5m (timestamp, netuid, open, high, low, close_tao, volume) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (row['scanned_at'], netuid, alpha_price, alpha_price, alpha_price, tao_day, 0)
-        )
-
-    market_db.commit()
-    market_db.close()
-    oracle_db.close()
-    print(f"Initialized market DB from {len(rows)} oracle snapshots")
-
-
-if __name__ == "__main__":
-    init_db()
-    init_from_oracle()
-    print("Market DB initialized")
-
-
 def fetch_binance_context() -> dict:
-    """Fetch BTC/ETH/TAO 5m context from Binance.
-
-    Context features (not investment targets):
-    - BTC return (1h, 4h, 24h)
-    - ETH return (1h, 4h, 24h)
-    - TAO return (1h, 4h, 24h)
-    - Volume changes
-    - Regime detection (bull/bear/sideways)
-    """
+    """Fetch BTC/ETH/TAO 5m context from Binance."""
     pairs = {"BTCUSDT": "btc", "ETHUSDT": "eth", "TAOUSDT": "tao"}
     context = {}
 
     for pair, label in pairs.items():
         try:
             conn = http.client.HTTPSConnection("api.binance.com", ctx=CTX, timeout=10)
-            conn.request("GET", f"/api/v3/klines?symbol={pair}&interval=5m&limit=288")  # 24h of 5m data
+            conn.request("GET", f"/api/v3/klines?symbol={pair}&interval=5m&limit=288")
             resp = conn.getresponse()
             data = json.loads(resp.read().decode())
             conn.close()
 
             if data and len(data) >= 2:
                 closes = [float(k[4]) for k in data]
-
-                # Calculate returns
                 ret_1h = (closes[-1] - closes[-12]) / closes[-12] if len(closes) >= 12 else 0
                 ret_4h = (closes[-1] - closes[-48]) / closes[-48] if len(closes) >= 48 else 0
                 ret_24h = (closes[-1] - closes[0]) / closes[0] if closes[0] > 0 else 0
@@ -201,31 +246,11 @@ def fetch_binance_context() -> dict:
     return context
 
 
-def detect_regime(context: dict) -> str:
-    """Detect market regime from BTC/ETH/TAO context.
-
-    Returns: bull, bear, sideways, mixed
-    """
-    btc_ret = context.get("btc", {}).get("ret_24h", 0)
-    eth_ret = context.get("eth", {}).get("ret_24h", 0)
-    tao_ret = context.get("tao", {}).get("ret_24h", 0)
-
-    # Simple regime detection
-    if btc_ret > 0.03 and eth_ret > 0.03 and tao_ret > 0.03:
-        return "bull"
-    elif btc_ret < -0.03 and eth_ret < -0.03 and tao_ret < -0.03:
-        return "bear"
-    elif abs(btc_ret) < 0.01 and abs(eth_ret) < 0.01:
-        return "sideways"
-    else:
-        return "mixed"
-
-
 def store_context(context: dict, timestamp: str):
-    """Store context in market DB."""
+    """Store macro context in market DB."""
     conn = sqlite3.connect(str(DB_PATH))
     conn.execute(
-        "INSERT INTO macro_5m (timestamp, btc_usd, eth_usd, tao_usd) "
+        "INSERT OR REPLACE INTO macro (timestamp, btc_usd, eth_usd, tao_usd) "
         "VALUES (?, ?, ?, ?)",
         (timestamp,
          context.get("btc", {}).get("price", 0),
@@ -234,3 +259,9 @@ def store_context(context: dict, timestamp: str):
     )
     conn.commit()
     conn.close()
+
+
+if __name__ == "__main__":
+    init_db()
+    print("Market DB initialized with correct schema")
+    print("Tables: subnet_candles, pool_state, subnet_state, macro")
