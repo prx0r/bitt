@@ -1,0 +1,27 @@
+{
+  "netuid": 61,
+  "name": "RedTeam",
+  "priority": 6,
+  "description": "Security challenge platform — adversarial agent evaluation",
+  "url": "https://theredteam.io",
+  "github": "https://github.com/RedTeamSubnet/RedTeam",
+  "miner_repo": "https://github.com/RedTeamSubnet/miner",
+  "docs": "https://docs.theredteam.io/4.5/getting-started/miner/",
+  "category": "security",
+  
+  "chain": {
+    "registration_cost_tao": 0.03,
+    "tempo": 360,
+    "tao_equiv_day_approx": 38
+  },
+  
+  "submission": {
+    "method": "Docker_image",
+    "flow": "develop solution → containerize → push to Docker Hub → SHA256 digest → active_commit.yaml → run miner node",
+    "cooldown": "24 hours",
+    "evaluation": "validators decrypt and score after cooldown",
+    "submission_cost": 0.03
+  },
+  
+  "transferable_capability": "adversarial security techniques → security consulting, penetration testing"
+}

@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "bittensor_gym"
+version = "0.1.0"
+description = "Bridge between Bittensor subnet economies and MWGym evolution"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+dependencies = [
+    # Core (sibling repos, not PyPI)
+    # mwgym — from /root/mwgym
+    # workerkit — from /root/workerkit
+
+    # Optional: for remote subnet queries
+    # bittensor  # pip install bittensor (heavy, optional)
+]
+
+[project.optional-dependencies]
+remote = ["bittensor>=8.0"]
+dev = ["pytest", "ruff"]
+
+[tool.setuptools.packages.find]
+include = ["bittensor_gym*"]

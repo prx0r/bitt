@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bitt — Bitsec SN60 Command Center</title>
+<meta http-equiv="refresh" content="300">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'SF Mono', 'Fira Code', monospace; background: #0a0a0a; color: #e0e0e0; padding: 16px; }
+  h1 { color: #00ff88; font-size: 1.4em; margin-bottom: 2px; }
+  h2 { color: #00ff88; font-size: 1em; margin: 16px 0 8px; border-bottom: 1px solid #222; padding-bottom: 4px; }
+  .subtitle { color: #666; font-size: 0.75em; margin-bottom: 16px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 16px; }
+  .card { background: #111; border: 1px solid #222; border-radius: 6px; padding: 12px; }
+  .card .label { color: #666; font-size: 0.65em; text-transform: uppercase; letter-spacing: 1px; }
+  .card .value { color: #00ff88; font-size: 1.6em; font-weight: bold; margin-top: 4px; }
+  .card .sub { color: #888; font-size: 0.7em; margin-top: 2px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75em; }
+  th { text-align: left; color: #666; font-weight: normal; text-transform: uppercase; font-size: 0.65em; letter-spacing: 1px; padding: 5px 6px; border-bottom: 1px solid #222; }
+  td { padding: 5px 6px; border-bottom: 1px solid #1a1a1a; }
+  tr:hover td { background: #151515; }
+  .tag { display: inline-block; background: #1a1a1a; border: 1px solid #333; border-radius: 3px; padding: 1px 6px; font-size: 0.7em; margin: 1px; }
+  .tag.good { border-color: #00ff88; color: #00ff88; }
+  .tag.warn { border-color: #ffaa00; color: #ffaa00; }
+  .tag.bad { border-color: #ff4444; color: #ff4444; }
+  .bar-bg { height: 6px; background: #1a1a1a; border-radius: 3px; width: 100%; }
+  .bar { height: 6px; background: #00ff88; border-radius: 3px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } }
+  #loading { color: #666; padding: 40px; text-align: center; }
+  .refresh { color: #444; font-size: 0.7em; margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<h1>Bitt — Bitsec SN60</h1>
+<p class="subtitle">AI Vulnerability Detection Agent · Bittensor Subnet 60</p>
+
+<div id="loading">Loading chain data...</div>
+
+<div id="content" style="display:none">
+
+<!-- Key Metrics -->
+<div class="grid">
+  <div class="card">
+    <div class="label">Registration Cost</div>
+    <div class="value" id="burn">--</div>
+    <div class="sub" id="burn-usd">--</div>
+  </div>
+  <div class="card">
+    <div class="label">Contestable Miner Pool</div>
+    <div class="value" id="contestable">--</div>
+    <div class="sub">TAO/day to miners</div>
+  </div>
+  <div class="card">
+    <div class="label">Emitting Miners</div>
+    <div class="value" id="emitting">--</div>
+    <div class="sub" id="emitting-sub">--</div>
+  </div>
+  <div class="card">
+    <div class="label">Alpha Price</div>
+    <div class="value" id="alpha-price">--</div>
+    <div class="sub">TAO/alpha</div>
+  </div>
+  <div class="card">
+    <div class="label">HHI</div>
+    <div class="value" id="hhi">--</div>
+    <div class="sub" id="hhi-sub">--</div>
+  </div>
+  <div class="card">
+    <div class="label">Tempo</div>
+    <div class="value" id="tempo">--</div>
+    <div class="sub">blocks per epoch</div>
+  </div>
+</div>
+
+<!-- Two column layout -->
+<div class="two-col">
+
+<!-- Left: Competition -->
+<div>
+<h2>Competition</h2>
+<div class="card">
+  <table>
+    <tr><th>UID</th><th>Incentive</th><th>TAO/day</th><th>Active</th><th>Validator</th><th>Hotkey</th></tr>
+    <tbody id="leaderboard"></tbody>
+  </table>
+</div>
+
+<h2>Weight Matrix</h2>
+<div class="card" style="max-height:300px; overflow-y:auto;">
+  <pre id="weights" style="font-size:0.7em; color:#888;">Loading...</pre>
+</div>
+</div>
+
+<!-- Right: Tools + Submissions -->
+<div>
+<h2>Tool Status</h2>
+<div class="card">
+  <table>
+    <tr><th>Tool</th><th>Status</th><th>Path</th></tr>
+    <tbody id="tools"></tbody>
+  </table>
+</div>
+
+<h2>Our Submissions</h2>
+<div class="card">
+  <div id="submissions" style="font-size:0.8em; color:#888;">No submissions yet</div>
+</div>
+
+<h2>Emissions Breakdown</h2>
+<div class="card">
+  <table>
+    <tr><th>Component</th><th>TAO/day</th><th>%</th></tr>
+    <tbody id="emissions"></tbody>
+  </table>
+</div>
+
+<h2>Hyperparameters</h2>
+<div class="card" style="max-height:200px; overflow-y:auto;">
+  <pre id="hyperparams" style="font-size:0.7em; color:#888;">Loading...</pre>
+</div>
+</div>
+
+</div><!-- two-col -->
+
+<h2>Chain State</h2>
+<div class="card">
+  <table>
+    <tr><th>Field</th><th>Value</th></tr>
+    <tbody id="chain-state"></tbody>
+  </table>
+</div>
+
+<div class="refresh">Auto-refreshes every 5 minutes. Data from block <span id="block">--</span></div>
+
+</div><!-- content -->
+
+<script>
+const API = 'http://localhost:8402';
+
+async function fetchJSON(path) {
+  const r = await fetch(API + path);
+  return r.json();
+}
+
+function fmt(n, d=4) { return n != null ? Number(n).toFixed(d) : '--'; }
+function fmtTao(n) { return n != null ? Number(n).toFixed(4) + ' τ' : '--'; }
+function fmtUsd(n) { return n != null ? '$' + Number(n).toFixed(2) : '--'; }
+
+async function load() {
+  try {
+    const data = await fetchJSON('/api/bitsec');
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+
+    // Key metrics
+    const burn = data.chain?.burn_tao || 0;
+    document.getElementById('burn').textContent = fmtTao(burn);
+    document.getElementById('burn-usd').textContent = fmtUsd(burn * 230);
+    document.getElementById('contestable').textContent = fmtTao(data.economics?.contestable_miner_tao_day);
+    document.getElementById('emitting').textContent = data.chain?.emitting_count || 0;
+    document.getElementById('emitting-sub').textContent = `${data.chain?.miner_count || 0} registered miners`;
+    document.getElementById('alpha-price').textContent = fmt(data.chain?.alpha_price, 8);
+    document.getElementById('hhi').textContent = fmt(data.competition?.hhi, 4);
+    document.getElementById('hhi-sub').textContent = data.competition?.effective_earners ? `${data.competition.effective_earners.toFixed(1)} effective earners` : '--';
+    document.getElementById('tempo').textContent = data.chain?.tempo || '--';
+    document.getElementById('block').textContent = data.block || '--';
+
+    // Leaderboard
+    const lb = document.getElementById('leaderboard');
+    lb.innerHTML = '';
+    const emitters = data.competition?.top_emitters || [];
+    emitters.forEach(e => {
+      lb.innerHTML += `<tr>
+        <td>${e.uid}</td>
+        <td>${fmt(e.incentive)}</td>
+        <td>${fmtTao(e.emission_tao_day)}</td>
+        <td>${e.active ? '✓' : '✗'}</td>
+        <td>${e.validator_permit ? '🛡' : ''}</td>
+        <td style="color:#666">${(e.hotkey||'').substring(0,12)}...</td>
+      </tr>`;
+    });
+
+    // Tools
+    const tools = document.getElementById('tools');
+    tools.innerHTML = '';
+    const toolData = data.tools || {};
+    Object.entries(toolData).forEach(([name, info]) => {
+      const status = info.installed ? '<span class="tag good">INSTALLED</span>' : '<span class="tag bad">MISSING</span>';
+      tools.innerHTML += `<tr><td>${name}</td><td>${status}</td><td style="color:#666;font-size:0.7em">${info.path || ''}</td></tr>`;
+    });
+
+    // Emissions breakdown
+    const em = document.getElementById('emissions');
+    em.innerHTML = '';
+    const total = data.economics?.total_tao_day || 1;
+    const rows = [
+      ['Total', data.economics?.total_tao_day],
+      ['Miner (contestable)', data.economics?.contestable_miner_tao_day],
+      ['Miner (all)', data.economics?.miner_tao_day],
+      ['Validator', data.economics?.validator_tao_day],
+    ];
+    rows.forEach(([label, val]) => {
+      const pct = total > 0 ? ((val||0)/total*100).toFixed(1) : 0;
+      em.innerHTML += `<tr><td>${label}</td><td>${fmtTao(val)}</td><td>${pct}%</td></tr>`;
+    });
+
+    // Chain state
+    const cs = document.getElementById('chain-state');
+    cs.innerHTML = '';
+    const chainFields = [
+      ['Block', data.block],
+      ['Netuid', '60'],
+      ['Name', 'Bitsec'],
+      ['Burn', fmtTao(burn)],
+      ['Tempo', data.chain?.tempo],
+      ['Epochs/day', data.chain?.epochs_per_day || (7200/(data.chain?.tempo||360)).toFixed(1)],
+      ['Alpha price', fmt(data.chain?.alpha_price, 8)],
+      ['Neurons', data.chain?.neuron_count],
+      ['Active', data.chain?.active_count || data.chain?.neuron_count],
+      ['Validators', data.chain?.validator_count],
+      ['Miners', data.chain?.miner_count],
+    ];
+    chainFields.forEach(([k, v]) => {
+      cs.innerHTML += `<tr><td>${k}</td><td>${v ?? '--'}</td></tr>`;
+    });
+
+    // Hyperparams
+    document.getElementById('hyperparams').textContent = JSON.stringify(data.chain?.hyperparams || {}, null, 2);
+
+    // Submissions
+    const subs = data.our_submissions || [];
+    document.getElementById('submissions').textContent = subs.length > 0
+      ? JSON.stringify(subs, null, 2)
+      : 'No submissions yet. Run bitt miner --netuid 60 to start.';
+
+  } catch(e) {
+    document.getElementById('loading').textContent = 'Error loading data: ' + e.message;
+  }
+}
+
+load();
+</script>
+</body>
+</html>

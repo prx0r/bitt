@@ -1,0 +1,45 @@
+{
+  "netuid": 64,
+  "name": "Chutes",
+  "description": "GPU inference API — miners serve inference, GraVal validates GPUs",
+  "url": "https://chutes.ai",
+  "github": "https://github.com/chutesai/chutes",
+  "miner_code": "https://github.com/rayonlabs/chutes-miner",
+  "api_code": "https://github.com/rayonlabs/chutes-api",
+  "leaderboard": "https://chutes.ai",
+  "discord": "https://discord.gg/chutes",
+  "category": "inference",
+  
+  "chain": {
+    "registration_cost_tao": 0.0005,
+    "tempo": 360,
+    "neuron_count": 256,
+    "emitting": 19,
+    "tao_equiv_day": 441.5,
+    "alpha_price": 0.022,
+    "payout_curve": "proportional to availability + response quality"
+  },
+  
+  "submission": {
+    "method": "gpu_docker_image",
+    "register": "chutes register",
+    "requirements": "CUDA 12.2-12.6, GPU with VRAM, Python 3.10+",
+    "base_image": "parachutes/python:3.12",
+    "auth": "Bittensor hotkey signature",
+    "graval": "GPU validation middleware (VRAM checks, matrix multiplication)",
+    "evaluation": "API availability + response quality + GPU authenticity"
+  },
+  
+  "competition": {
+    "emitting_miners": 19,
+    "high_reward": true,
+    "gpu_required": true,
+    "high_barrier": true
+  },
+  
+  "repo_structure": {
+    "cli_sdk": "chutesai/chutes (this repo)",
+    "miner": "rayonlabs/chutes-miner",
+    "validator_api": "rayonlabs/chutes-api"
+  }
+}

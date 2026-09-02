@@ -1,0 +1,40 @@
+{
+  "model": "mimo-v2.5",
+  "n_projects": 3,
+  "mean_f1": 0.017533333333333335,
+  "mean_jaccard": 0.6666666666666666,
+  "results": [
+    {
+      "project": "code4rena_coded-estate-invitational_2024_12",
+      "f1": 0.0526,
+      "jaccard": 0.0,
+      "detection_rate": 0.0303
+    },
+    {
+      "project": "code4rena_fenix-finance-invitational_2024_10",
+      "f1": 0.0,
+      "jaccard": 1.0,
+      "detection_rate": 0.0
+    },
+    {
+      "project": "code4rena_superposition_2025_01",
+      "f1": 0.0,
+      "jaccard": 1.0,
+      "detection_rate": 0.0
+    }
+  ],
+  "category_stats": {
+    "Logic Error": {
+      "found": 3,
+      "total": 0
+    },
+    "Business Logic": {
+      "found": 1,
+      "total": 0
+    },
+    "": {
+      "found": 1,
+      "total": 59
+    }
+  }
+}

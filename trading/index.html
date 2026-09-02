@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TAO Trading — Subnet Fundamentals</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#fafafa;color:#111;line-height:1.5}
+.wrap{max-width:1100px;margin:0 auto;padding:24px}
+header{border-bottom:1px solid #eee;padding:16px 0;display:flex;justify-content:space-between;align-items:center}
+.brand{font-size:1.2rem;font-weight:700}.brand span{color:#666}
+h2{font-size:1rem;font-weight:600;margin:24px 0 8px}
+.sub{font-size:.75rem;color:#999;margin-bottom:16px}
+table{width:100%;border-collapse:collapse;font-size:.8rem}
+th{text-align:left;padding:8px;border-bottom:2px solid #111;font-weight:600;font-size:.7rem;text-transform:uppercase;letter-spacing:.5px}
+td{padding:8px;border-bottom:1px solid #f0f0f0}
+tr:hover{background:#f8f8f8}
+.buy{color:#16a34a;font-weight:600}
+.sell{color:#dc2626;font-weight:600}
+.hold{color:#999}
+.card{background:#fff;border:1px solid #eee;padding:16px;margin:8px 0;border-radius:4px}
+.btn{font-size:.75rem;padding:8px 16px;border:1px solid #111;background:#111;color:#fff;cursor:pointer;border-radius:4px}
+.btn:hover{background:#333}
+.btn-o{background:#fff;color:#111;border-color:#ddd}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:16px 0}
+.stat{text-align:center;padding:16px;background:#fff;border:1px solid #eee;border-radius:4px}
+.stat .val{font-size:1.5rem;font-weight:700}
+.stat .lbl{font-size:.65rem;color:#999;text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+footer{border-top:1px solid #eee;margin-top:40px;padding:16px 0;text-align:center;font-size:.7rem;color:#bbb}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">TAO<span> Trading</span></div>
+    <nav style="font-size:.8rem">
+      <a href="#signals" style="color:#666;text-decoration:none">Signals</a>
+      <a href="#subnets" style="color:#666;text-decoration:none;margin-left:16px">Subnets</a>
+      <a href="#backtest" style="color:#666;text-decoration:none;margin-left:16px">Backtest</a>
+    </nav>
+  </header>
+
+  <section id="signals">
+    <h2>Trading Signals</h2>
+    <p class="sub">Yield/price ratio: TAO per neuron per day ÷ alpha price. High = undervalued.</p>
+    <div class="grid">
+      <div class="stat"><div class="val buy" id="buy-count">—</div><div class="lbl">Buy Signals</div></div>
+      <div class="stat"><div class="val hold" id="hold-count">—</div><div class="lbl">Hold</div></div>
+      <div class="stat"><div class="val sell" id="sell-count">—</div><div class="lbl">Sell Signals</div></div>
+      <div class="stat"><div class="val" id="total-tao">—</div><div class="lbl">Total TAO/day</div></div>
+    </div>
+    <table>
+      <thead><tr><th>SN</th><th>Name</th><th>Alpha</th><th>TAO/day</th><th>Yield/Price</th><th>Signal</th></tr></thead>
+      <tbody id="signal-table"></tbody>
+    </table>
+  </section>
+
+  <section id="subnets">
+    <h2>All Subnets</h2>
+    <p class="sub">Live data from chain scanner.</p>
+    <table>
+      <thead><tr><th>SN</th><th>Name</th><th>Alpha</th><th>TAO/day</th><th>Neurons</th><th>Active</th><th>HHI</th></tr></thead>
+      <tbody id="subnet-table"></tbody>
+    </table>
+  </section>
+
+  <section id="backtest">
+    <h2>Backtest</h2>
+    <p class="sub">Simple rebalancing: hold TAO baseline, swing into high yield/price subnets.</p>
+    <div class="card">
+      <h4 style="font-size:.85rem;margin-bottom:8px">Strategy</h4>
+      <p style="font-size:.8rem;color:#666">
+        <strong>Baseline:</strong> 100% TAO (root staking)<br>
+        <strong>Entry:</strong> When yield/price > 100 → stake into subnet<br>
+        <strong>Exit:</strong> When yield/price < 50 → unstake back to TAO<br>
+        <strong>Position size:</strong> 20% of portfolio per swing<br>
+        <strong>Rebalance:</strong> Daily check, act on threshold breach
+      </p>
+    </div>
+    <div class="card">
+      <h4 style="font-size:.85rem;margin-bottom:8px">Current Allocation</h4>
+      <div id="allocation"></div>
+    </div>
+  </section>
+
+  <footer>TAO Trading — fundamentals-based subnet rotation</footer>
+</div>
+
+<script>
+// Load data from oracle.db via API
+async function loadData() {
+  try {
+    const resp = await fetch('/api/subnets');
+    const data = await resp.json();
+    renderSignals(data);
+    renderSubnets(data);
+    renderAllocation(data);
+  } catch(e) {
+    // Fallback: use hardcoded data from latest scan
+    console.log('API not available, using static data');
+  }
+}
+
+function renderSignals(subnets) {
+  let buy=0, hold=0, sell=0, totalTao=0;
+  const rows = [];
+  
+  for (const s of subnets) {
+    const taoDay = s.tao_equiv_day || 0;
+    const price = s.alpha_price || 0;
+    const neurons = s.neuron_count || 1;
+    const yieldPerNeuron = neurons > 0 ? taoDay / neurons : 0;
+    const ratio = price > 0 ? yieldPerNeuron / price : 0;
+    
+    let signal = 'hold';
+    if (ratio > 100) signal = 'buy';
+    else if (ratio > 50) signal = 'hold';
+    else signal = 'sell';
+    
+    if (signal === 'buy') buy++;
+    else if (signal === 'hold') hold++;
+    else sell++;
+    totalTao += taoDay;
+    
+    rows.push({sn: s.netuid, name: s.name, alpha: price, taoDay, ratio, signal});
+  }
+  
+  rows.sort((a,b) => b.ratio - a.ratio);
+  
+  document.getElementById('buy-count').textContent = buy;
+  document.getElementById('hold-count').textContent = hold;
+  document.getElementById('sell-count').textContent = sell;
+  document.getElementById('total-tao').textContent = Math.round(totalTao).toLocaleString();
+  
+  document.getElementById('signal-table').innerHTML = rows.map(r => 
+    `<tr><td>${r.sn}</td><td>${r.name}</td><td>${r.alpha.toFixed(4)}</td><td>${r.taoDay.toFixed(1)}</td><td>${r.ratio.toFixed(1)}</td><td class="${r.signal}">${r.signal.toUpperCase()}</td></tr>`
+  ).join('');
+}
+
+function renderSubnets(subnets) {
+  subnets.sort((a,b) => (b.tao_equiv_day||0) - (a.tao_equiv_day||0));
+  document.getElementById('subnet-table').innerHTML = subnets.map(s => 
+    `<tr><td>${s.netuid}</td><td>${s.name}</td><td>${(s.alpha_price||0).toFixed(4)}</td><td>${(s.tao_equiv_day||0).toFixed(1)}</td><td>${s.neuron_count||0}</td><td>${s.active_count||0}</td><td>${(s.hhi||0).toFixed(4)}</td></tr>`
+  ).join('');
+}
+
+function renderAllocation(subnets) {
+  // Simple allocation: 100% TAO baseline
+  document.getElementById('allocation').innerHTML = `
+    <div style="display:flex;gap:8px;align-items:center;margin:8px 0">
+      <div style="width:60%;height:20px;background:#111;border-radius:4px"></div>
+      <span style="font-size:.8rem">100% TAO (root staking)</span>
+    </div>
+    <p style="font-size:.75rem;color:#999">Baseline: hold TAO. Swing into subnets when yield/price > 100.</p>
+  `;
+}
+
+// Load data
+loadData();
+</script>
+</body>
+</html>

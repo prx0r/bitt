@@ -1,0 +1,446 @@
+# Security Primitives — Canonical Registry
+# Auto-imported from email research (2026-09-01)
+# Each primitive is a reusable Lab component, not a bespoke agent.
+
+# ─── WORLD + EVALUATOR ──────────────────────────────────────────────
+
+bountybench:
+  id: bountybench
+  kind: WORLD
+  upstream_repo: https://github.com/EnvCommons/BountyBench
+    upstream_commit: "5aa4bb337f830bdcd0cb96806eda51f492df5189"
+  license: MIT
+  school: code-audit
+  description: >
+    46 real bug bounties across 31 systems. 138 tasks in 3 phases:
+    detect, exploit, patch. Containerized targets with hidden verify
+    scripts. Almost exactly the CP2 near-transfer benchmark we'd build.
+  capability_tags: [vulnerability-detection, exploitation, patching, bug-bounty]
+  supported_languages: [solidity, javascript, typescript, python, go, rust]
+  input_schema: { repo: str, scope: str, budget: float }
+  output_schema: { findings: list[Finding], exploit: str, patch: str }
+  contamination_tier: PUBLIC_DEV
+  lab_role: WORLD + EVALUATOR
+  priority: P0
+  cp2_role: >
+    Primary CP2 near-transfer world. Use public tasks as DEV.
+    Maintain private/new-disclosure holdout for SEALED evaluation.
+  transfer_from_bitsec: 0.85
+
+scabench:
+  id: scabench
+  kind: WORLD
+  upstream_repo: https://github.com/scabench-org/scabench
+    upstream_commit: "local-subnet-sn60"
+  license: MIT
+  school: code-audit
+  description: >
+    Smart-contract audit benchmark. Use official scoring/tooling,
+    not our approximate title/Jaccard scorer.
+  capability_tags: [smart-contract-audit, solidity, vulnerability-detection]
+  supported_languages: [solidity, vyper]
+  input_schema: { contract: str, compiler: str }
+  output_schema: { findings: list[Finding], score: float }
+  contamination_tier: PUBLIC_TRAIN
+  lab_role: WORLD + EVALUATOR
+  priority: P0
+  transfer_from_bitsec: 1.0
+
+# ─── PROCESS ─────────────────────────────────────────────────────────
+
+hound:
+  id: hound
+  kind: PROCESS
+  upstream_repo: https://github.com/scabench-org/hound
+    upstream_commit: "0abbd1b11fdafc972a5ca2c38da292681af93ca9"
+  license: MIT
+  school: code-audit
+  description: >
+    Graph-driven long-horizon auditing. Scout/strategist model separation,
+    persistent hypotheses, sweep vs intuition modes, coverage tracking,
+    exact code retrieval. Reports large recall improvement on ScaBench subset.
+    Our miner_v4 reimplemented parts of this — wrap Hound itself instead.
+  capability_tags: [graph-auditing, hypothesis-tracking, code-retrieval]
+  supported_languages: [solidity, any]
+  input_schema: { repo: str, mode: "sweep" | "intuition" }
+  output_schema: { findings: list[Finding], graph: KnowledgeGraph, coverage: float }
+  contamination_tier: PUBLIC_DEV
+  lab_role: PROCESS
+  priority: P0
+  process_version: "hound@latest"
+  notes: >
+    Don't partially reimplement. Create ProcessVersion: hound@<commit>.
+    CG compares: current-moltwork vs hound vs hybrid.
+
+cloudflare-audit-skill:
+  id: cloudflare-audit-skill
+  kind: PROCESS
+  upstream_repo: https://github.com/cloudflare/security-audit-skill
+    upstream_commit: "8bac42001ddd90a4dcd8d5a5045199283a8eba75"
+  license: Apache-2.0
+  school: code-audit
+  description: >
+    Six-phase workflow: recon, parallel hunting, independent adversarial
+    validation, reporting, structured findings.json, fresh independent
+    verification. Finder cannot validate own finding — maps to CG separation.
+  capability_tags: [multi-phase-audit, adversarial-validation, parallel-hunting]
+  supported_languages: [any]
+  input_schema: { repo: str, scope: str }
+  output_schema: { findings: list[Finding], report: str }
+  contamination_tier: PUBLIC_DEV
+  lab_role: PROCESS
+  priority: P0
+  process_version: "cloudflare-audit@latest"
+  notes: >
+    Test: security-01/v0 vs security-01/v0+cloudflare-audit-process
+    before inventing more prompt architecture.
+
+google-mantis:
+  id: google-mantis
+  kind: PROCESS
+  upstream_repo: https://github.com/google/mantis
+    upstream_commit: "27467b3e293897602585c5180fa5609f579b0011"
+  license: Apache-2.0
+  school: code-audit
+  description: >
+    Portable staged security-review toolkit. Find, reproduce, patch
+    vulnerabilities. Decoupled from any agent runtime — compatible with WorkerKit.
+  capability_tags: [find-reproduce-patch, staged-review]
+  supported_languages: [any]
+  contamination_tier: PUBLIC_DEV
+  lab_role: PROCESS
+  priority: P1
+
+vulnhuntr:
+  id: vulnhuntr
+  kind: PROCESS
+  upstream_repo: https://github.com/protectai/vulnhuntr
+    upstream_commit: "ead88c5adba4279dae5c56d65124c530a9a1c5ae"
+  license: Apache-2.0
+  school: code-audit
+  description: >
+    Python remote attack-surface reasoning. Call-chain-driven analysis
+    from remote input through code. Publicly reported discoveries in
+    Langflow, FastChat, Ragflow, Letta. Don't rewrite — wrap as tool/process.
+  capability_tags: [python-audit, call-chain-analysis, remote-input]
+  supported_languages: [python]
+  contamination_tier: PUBLIC_DEV
+  lab_role: PROCESS
+  priority: P1
+
+# ─── TOOL ────────────────────────────────────────────────────────────
+
+trail-of-bits-skills:
+  id: trail-of-bits-skills
+  kind: TOOL
+  upstream_repo: https://github.com/trailofbits/skills
+    upstream_commit: "14e5a1070020c5d101e8362756f3201fb677b467"
+  license: Apache-2.0
+  school: code-audit
+  description: >
+    Dozens of specialist audit primitives: building-secure-contracts,
+    entry-point-analyzer, audit-context-building, fp-check, c-review,
+    rust-review, static-analysis (CodeQL/Semgrep), property-based-testing
+    (Echidna/Medusa), trailmark, variant-analysis, differential-review,
+    spec-to-code-compliance. CGE mutation space becomes compositional.
+  capability_tags: [entry-point-analysis, fp-check, static-analysis, property-testing, differential-review]
+  supported_languages: [solidity, c, rust, python, javascript]
+  contamination_tier: PUBLIC_DEV
+  lab_role: SKILL/TOOL
+  priority: P0
+  notes: >
+    CGE genome stops being "rewrite prompt slightly" and becomes:
+    ProcessCandidate #183:
+      audit_context_building = true
+      entry_point_analyzer = true
+      hound_graph = authorization+value_flow
+      slither = true
+      semgrep = false
+      property_testing = echidna
+      fp_check = true
+      scout_model = cheap
+      strategist_model = strong
+      verifier_model = independent
+
+semgrep:
+  id: semgrep
+  kind: TOOL
+  upstream_repo: https://github.com/semgrep/semgrep
+    upstream_commit: "pinned-latest"
+  license: LGPL-2.1
+  school: code-audit
+  description: >
+    Deterministic evidence generation. Static analysis for many languages.
+    Also: Defending Code Harness for C/C++ execution-verified findings.
+  capability_tags: [static-analysis, sast, code-scanning]
+  supported_languages: [any]
+  contamination_tier: PUBLIC_TRAIN
+  lab_role: TOOL
+  priority: P0
+
+codeql:
+  id: codeql
+  kind: TOOL
+  upstream_repo: https://github.com/github/codeql
+    upstream_commit: "pinned-latest"
+  license: MIT (CLI)
+  school: code-audit
+  description: >
+    Semantic code analysis engine. Query-based vulnerability detection.
+  capability_tags: [semantic-analysis, query-based-detection]
+  supported_languages: [c, cpp, csharp, go, java, javascript, python, ruby, swift]
+  contamination_tier: PUBLIC_TRAIN
+  lab_role: TOOL
+  priority: P0
+
+slither:
+  id: slither
+  kind: TOOL
+  upstream_repo: https://github.com/crytic/slither
+    upstream_commit: "pinned-latest"
+  license: AGPL-3.0
+  school: code-audit
+  description: >
+    Solidity static analysis framework. Detector suite, printters, utilities.
+  capability_tags: [solidity-static-analysis, detector-suite]
+  supported_languages: [solidity]
+  contamination_tier: PUBLIC_TRAIN
+  lab_role: TOOL
+  priority: P0
+
+# ─── AI-REDTEAM WORLD ───────────────────────────────────────────────
+
+garak:
+  id: garak
+  kind: WORLD
+  upstream_repo: https://github.com/NVIDIA/garak
+    upstream_commit: "8ed1543b985a5722adb659584182faf6f7907d4e"
+  license: Apache-2.0
+  school: ai-redteam
+  description: >
+    LLM vulnerability scanner. Generators, probes, detectors, harnesses,
+    evaluators. Supports REST/LiteLLM. Structured JSONL attempt reports.
+    Maps almost one-for-one to our Security Primitive model.
+  capability_tags: [llm-scanning, prompt-injection, jailbreak, leakage]
+  supported_languages: [python]
+  contamination_tier: PUBLIC_DEV
+  lab_role: AI-REDTEAM WORLD
+  priority: P1
+  garak_mapping:
+    generator: target/model adapter
+    probe: attack/curriculum generator
+    detector: evaluator
+    harness: world runner
+    report_jsonl: Run artifact
+    hit: finding
+
+agentdojo:
+  id: agentdojo
+  kind: WORLD
+  upstream_repo: https://github.com/protectai/agentdojo
+    upstream_commit: "089ed468cf3ed0322acc66b0211f26d9d90dbf60"
+  license: Apache-2.0
+  school: ai-redteam
+  description: >
+    Executable environment for prompt-injection attacks/defenses on
+    tool-using agents. Excellent far-transfer benchmark for agentic security.
+  capability_tags: [prompt-injection, tool-abuse, agent-security]
+  supported_languages: [python]
+  contamination_tier: PUBLIC_DEV
+  lab_role: WORLD
+  priority: P1
+
+wasp:
+  id: wasp
+  kind: WORLD
+  upstream_repo: https://github.com/meta-llama/WASP
+    upstream_commit: "pinned-latest"
+  license: MIT
+  school: ai-redteam
+  description: >
+    Realistic executable web-agent prompt-injection benchmark.
+  capability_tags: [web-agent-security, prompt-injection]
+  supported_languages: [python]
+  contamination_tier: PUBLIC_DEV
+  lab_role: WORLD
+  priority: P1
+
+# ─── AI-REDTEAM PROCESS ─────────────────────────────────────────────
+
+pyrit:
+  id: pyrit
+  kind: PROCESS
+  upstream_repo: https://github.com/microsoft/PyRIT
+    upstream_commit: "48d34a8ab2098e541f7a190065e04c99d81488e6"
+  license: MIT
+  school: ai-redteam
+  description: >
+    Multi-turn adversarial campaigns. Composable datasets, attack techniques,
+    targets, scorers. Crescendo/TAP/PAIR workflows. Benchmark mode varies
+    adversarial helper model — ready-made budget/model-routing experiment.
+  capability_tags: [multi-turn-attack, crescendo, tap, pair]
+  supported_languages: [python]
+  contamination_tier: PUBLIC_DEV
+  lab_role: AI-REDTEAM PROCESS
+  priority: P1
+
+# ─── CORPUS ──────────────────────────────────────────────────────────
+
+arcanum-pit:
+  id: arcanum-pit
+  kind: CORPUS
+  upstream_repo: https://github.com/Arcanum-Sec/arc_pi_taxonomy
+    upstream_commit: "e02cf5b6e022f195c6b6c01484e99519f797acc6"
+  license: MIT
+  school: ai-redteam
+  description: >
+    Prompt Injection Taxonomy v1.6.1: 172 entries (27 intents, 70 techniques,
+    63 evasions, 12 input vectors). Aliases to OWASP/MITRE/NIST/garak.
+    Should become classification language of AI-redteam capability graph.
+  capability_tags: [pi-taxonomy, classification, owasp-mapping]
+  contamination_tier: PUBLIC_TRAIN
+  lab_role: CORPUS
+  priority: P1
+
+arcanum-sec-context:
+  id: arcanum-sec-context
+  kind: CORPUS
+  upstream_repo: https://github.com/Arcanum-Sec/sec-context
+    upstream_commit: "2a98c2b0fe769785afec8a85b56d47fcb5ba3295"
+  license: MIT
+  school: code-audit
+  description: >
+    AI Code Security Anti-Patterns distilled from 150+ sources.
+    ~65K and ~100K token docs. Ingest into Context Compiler, retrieve
+    relevant sections — do not dump into every prompt.
+  capability_tags: [anti-patterns, retrieval-corpus, code-security]
+  contamination_tier: PUBLIC_TRAIN
+  lab_role: CORPUS
+  priority: P1
+
+arcanum-p4rs3lt0ngv3:
+  id: arcanum-p4rs3lt0ngv3
+  kind: ATTACK_GENERATOR
+  upstream_repo: https://github.com/Arcanum-Sec/P4RS3LT0NGV3
+    upstream_commit: "pinned-latest"
+  license: MIT
+  school: ai-redteam
+  description: >
+    Text encodings, Unicode transformations, steganographic transforms.
+    Automated attack mutation primitive for isolated AI-redteam environments.
+  capability_tags: [mutation-transforms, encoding, adversarial-generation]
+  contamination_tier: PUBLIC_TRAIN
+  lab_role: ATTACK_GENERATOR
+  priority: P1
+
+# ─── BENCHMARK (TRAINING DATA) ──────────────────────────────────────
+
+xbow-validation-benchmarks:
+  id: xbow-validation-benchmarks
+  kind: WORLD
+  upstream_repo: https://github.com/xbow-engineering/validation-benchmarks
+    upstream_commit: "a16cb1ba0701b20d63913846536fc7b0672082af"
+  license: proprietary
+  school: code-audit
+  description: >
+    104 web-security fixtures mirroring real pentest/bug-bounty vuln classes.
+    Were held private before release. Now public — use as DEV, not SECRET.
+  capability_tags: [web-security, pentest, vulnerability-classes]
+  supported_languages: [javascript, typescript, python, php, java]
+  contamination_tier: PUBLIC_DEV
+  lab_role: WORLD
+  priority: P1
+  transfer_from_bitsec: 0.70
+
+smartbugs:
+  id: smartbugs
+  kind: WORLD
+  upstream_repo: https://github.com/smartbugs/smartbugs-curated
+    upstream_commit: "pinned-latest"
+  license: MIT
+  school: code-audit
+  description: >
+    Curated vulnerable smart contracts + Consolidated Ground Truth
+    with 20k+ manually checked assessments. Broad analyzer calibration.
+  capability_tags: [smart-contract-vulnerabilities, ground-truth, calibration]
+  supported_languages: [solidity]
+  contamination_tier: PUBLIC_TRAIN
+  lab_role: WORLD
+  priority: P0
+
+cybench:
+  id: cybench
+  kind: WORLD
+  upstream_repo: https://github.com/andyzorigin/cybench
+    upstream_commit: "pinned-latest"
+  license: MIT
+  school: adversarial-systems
+  description: >
+    40 professional CTF tasks from 4 competitions. Intermediate subtasks
+    for granular measurement. Good for broad capability profiling.
+  capability_tags: [ctf, broad-cyber, capability-profiling]
+  contamination_tier: PUBLIC_DEV
+  lab_role: WORLD
+  priority: P2
+
+cybergym:
+  id: cybergym
+  kind: WORLD
+  upstream_repo: https://github.com/sunblaze-ucb/cybergym
+    upstream_commit: "pinned-latest"
+  license: Apache-2.0
+  school: code-audit
+  description: >
+    Real-world vulnerability evaluation. Heavy: ~240GB data, ~10TB full
+    execution. Use 10-task subset. Later VPS/storage-heavy frontier.
+  capability_tags: [real-world-vuln, heavy-compute]
+  contamination_tier: PUBLIC_DEV
+  lab_role: WORLD
+  priority: P2
+
+autopatchbench:
+  id: autopatchbench
+  kind: WORLD
+  upstream_repo: https://github.com/facebookresearch/AutoPatchBench
+    upstream_commit: "pinned-latest"
+  license: MIT
+  school: code-audit
+  description: >
+    Real fuzzing-discovered C/C++ vulnerabilities with verified fixes.
+    142 benchmark cases. Small sample: ~500GB. Defensive transfer lane.
+  capability_tags: [c-cpp, fuzzing, patch-verification, defensive]
+  contamination_tier: PUBLIC_DEV
+  lab_role: WORLD
+  priority: P2
+
+primevul:
+  id: primevul
+  kind: WORLD
+  upstream_repo: https://github.com/DLVulDet/PrimeVul
+    upstream_commit: "pinned-latest"
+  license: MIT
+  school: code-audit
+  description: >
+    ~7k vulnerable + ~229k benign functions across 140+ CWEs.
+    Chronological/deduplicated evaluation. Cheap diagnostics, not
+    system-level proof.
+  capability_tags: [function-classification, c-cpp, cwe-coverage, diagnostics]
+  contamination_tier: PUBLIC_TRAIN
+  lab_role: TRAINING_DATA
+  priority: P2
+
+nist-sard:
+  id: nist-sard
+  kind: WORLD
+  upstream_repo: https://samate.nist.gov/SARD/test-suites
+    upstream_commit: "pinned-latest"
+  license: public-domain
+  school: code-audit
+  description: >
+    Tens of thousands of synthetic known-flaw cases. Juliet C/C++ 1.3
+    has ~64K cases. Cheap regression tests. Should never be our claim
+    of real-world security competence.
+  capability_tags: [synthetic-flaws, regression-tests, c-cpp]
+  contamination_tier: PUBLIC_TRAIN
+  lab_role: TRAINING_DATA
+  priority: P2

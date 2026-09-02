@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0.0",
+  "version_id": "security-01/v0",
+  "worker_id": "security-01",
+  "parent_version_id": "",
+  "frozen_at": "2026-09-02T00:00:00Z",
+  "model_policy": {
+    "scout": "meta/llama-3.3-70b-instruct-fp8-fast",
+    "strategist": "meta/llama-3.3-70b-instruct-fp8-fast",
+    "verifier": "meta/llama-3.3-70b-instruct-fp8-fast"
+  },
+  "process": "moltwork-default",
+  "tools": {
+    "slither": true,
+    "semgrep": true,
+    "codeql": false,
+    "mythril": false
+  },
+  "skills": {
+    "entry_point_analyzer": true,
+    "fp_check": true,
+    "audit_context_building": false,
+    "differential_review": false,
+    "variant_analysis": false,
+    "property_testing": false
+  },
+  "context_policy": {
+    "retrieval": false,
+    "corpus": "",
+    "max_tokens": 8000
+  },
+  "memory_revision": "v0-initial",
+  "evaluator_version": "bitsec/jaccard@v1",
+  "source": {
+    "repository": "https://github.com/prx0r/bitt",
+    "commit_sha": "HEAD",
+    "path": "workers/bitsec/miner_v4.py"
+  },
+  "content_digest": "sha256:v0-frozen-2026-09-02"
+}

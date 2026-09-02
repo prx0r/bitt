@@ -1,0 +1,22 @@
+{
+  "task_id": "holdout-GHSA-test-1234",
+  "ghsa_id": "GHSA-test-1234",
+  "created_at": 1788306202,
+  "split": "SECRET",
+  "content": {
+    "source": "github-advisory",
+    "ghsa_id": "GHSA-test-1234",
+    "summary": "Reentrancy in withdraw function",
+    "severity": "critical",
+    "package": "test-contract",
+    "patched_version": "1.0.1",
+    "references": [],
+    "evaluation_mode": "sealed"
+  },
+  "evaluation_data": {
+    "vulnerability_type": "reentrancy",
+    "severity": "critical",
+    "patched_version": "1.0.1",
+    "expected_findings": "Reentrancy in withdraw function"
+  }
+}

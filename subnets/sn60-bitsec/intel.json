@@ -1,0 +1,50 @@
+{
+  "netuid": 60,
+  "name": "Bitsec",
+  "priority": 1,
+  "description": "AI vulnerability detection — find bugs in codebases and smart contracts",
+  "url": "https://bitsec.ai",
+  "github": "https://github.com/Bitsec-AI/subnet",
+  "sandbox_repo": "https://github.com/Bitsec-AI/sandbox",
+  "docs": "https://docs.bitsec.ai/miner/",
+  "category": "security",
+  
+  "chain": {
+    "registration_cost_tao": 0.0005,
+    "tempo": 360,
+    "neuron_count": 256,
+    "emitting": null,
+    "tao_equiv_day_approx": 18,
+    "contestable_miner_pool_approx": 10,
+    "payout_curve": "proportional to valid findings - false positives"
+  },
+  
+  "submission": {
+    "method": "agent_code + Docker",
+    "cli": "uv run ./bitsec.py miner submit --wallet <wallet>",
+    "local_test": "uv run ./bitsec.py miner execute-agent",
+    "local_scoring": "uv run ./bitsec.py miner run-no-docker",
+    "docker_test": "uv run ./bitsec.py miner run",
+    "agent_entry": "miner/agent.py → agent_main()",
+    "evaluation": "validators run agent in sandbox against vulnerable repos, compare findings to ground truth",
+    "scoring": "TP finds score, FP hurts score",
+    "submission_cost": "free to submit, registration 0.0005 TAO",
+    "submission_cooldown": "24 hours"
+  },
+  
+  "competition": {
+    "slots": 256,
+    "registered": 256,
+    "validators": 9,
+    "competition_level": "competitive"
+  },
+  
+  "transferable_capability": "vulnerability detection → bug bounties, security audits, code reviews",
+  
+  "repo_structure": {
+    "miner_agent": "miner/agent.py",
+    "bitsec_cli": "bitsec.py",
+    "sandbox": "bitsec/sandbox/",
+    "docs": "docs/"
+  }
+}

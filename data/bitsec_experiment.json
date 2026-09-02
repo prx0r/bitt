@@ -1,0 +1,43 @@
+{
+  "hypotheses_tested": 6,
+  "validated_on_dev": 2,
+  "dev_results": [
+    {
+      "id": "H1-style",
+      "improvement": 0.1952,
+      "validated": true
+    },
+    {
+      "id": "H2-chunk",
+      "improvement": -0.025,
+      "validated": false
+    },
+    {
+      "id": "H3-prefilter",
+      "improvement": -0.1992,
+      "validated": false
+    },
+    {
+      "id": "H4-severity",
+      "improvement": 0.0541,
+      "validated": false
+    },
+    {
+      "id": "H5-ensemble",
+      "improvement": 0.0882,
+      "validated": false
+    },
+    {
+      "id": "H6-cot",
+      "improvement": 0.1888,
+      "validated": true
+    }
+  ],
+  "winning_config": {
+    "style": "cot",
+    "model": "mimo-v2.5",
+    "chunk_size": 10,
+    "prefilter": true,
+    "severity_threshold": 0.5
+  }
+}

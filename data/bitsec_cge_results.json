@@ -1,0 +1,26 @@
+{
+  "generations": 3,
+  "best_strategy": {
+    "id": "gen2-3",
+    "style": "ensemble",
+    "model": "llama-3.1-8b-instant",
+    "fitness": 0.7041428571428572
+  },
+  "history": [
+    {
+      "generation": 0,
+      "best_f1": 0.6552928571428571,
+      "population": 8
+    },
+    {
+      "generation": 1,
+      "best_f1": 0.6917642857142857,
+      "population": 8
+    },
+    {
+      "generation": 2,
+      "best_f1": 0.7041428571428572,
+      "population": 8
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "netuid": 11,
+  "name": "TrajectoryRL",
+  "priority": 3,
+  "description": "Agent skill learning — portable SKILL.md files that persist learning across episodes",
+  "url": "https://trajrl.com",
+  "github": "https://github.com/trajectoryRL/trajectoryRL",
+  "docs": "https://trajrl.com/docs/miner-guide",
+  "category": "agent_learning",
+  
+  "chain": {
+    "registration_cost_tao": "dynamic",
+    "submission_cost_alpha": 50,
+    "note": "50 alpha burn per accepted submission — iterations cost real TAO"
+  },
+  
+  "submission": {
+    "method": "SKILL.md_file",
+    "what": "portable skill file that makes agents better at operational/coding tasks",
+    "evaluation": "validators run agent through sandboxed scenarios, /workspace/learned/ persists between episodes",
+    "scoring": "performance across episodes, learning persistence",
+    "submission_cost": "50 alpha per accepted submission"
+  },
+  
+  "why_strategic": "Tests the core Moltwork hypothesis: does the agent improve from experience? SKILL.md is portable across agents.",
+  
+  "transferable_capability": "portable agent skills → improves all workers"
+}

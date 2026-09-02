@@ -1,0 +1,11 @@
+{
+  "tasks": [
+    {
+      "task_id": "holdout-GHSA-test-1234",
+      "ghsa_id": "GHSA-test-1234",
+      "created_at": 1788306202,
+      "status": "pending"
+    }
+  ],
+  "last_updated": 1788306202
+}
