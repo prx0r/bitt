@@ -1,0 +1,107 @@
+{
+  "timestamp": "2026-09-03T04:13:22.780214",
+  "data": "12 subnets",
+  "period": "7 days",
+  "weight_variants": {
+    "low_vol_only": {
+      "initial": 100.00000000000003,
+      "final": 107.74,
+      "return_pct": 7.74,
+      "n_trades": 167
+    },
+    "support_only": {
+      "initial": 100.00000000000003,
+      "final": 97.9,
+      "return_pct": -2.1,
+      "n_trades": 167
+    },
+    "squeeze_only": {
+      "initial": 100.00000000000003,
+      "final": 103.91,
+      "return_pct": 3.91,
+      "n_trades": 167
+    },
+    "balanced": {
+      "initial": 100.00000000000001,
+      "final": 106.52,
+      "return_pct": 6.52,
+      "n_trades": 167
+    },
+    "low_vol_support": {
+      "initial": 100.00000000000003,
+      "final": 102.57,
+      "return_pct": 2.57,
+      "n_trades": 167
+    },
+    "low_vol_squeeze": {
+      "initial": 100.00000000000003,
+      "final": 107.74,
+      "return_pct": 7.74,
+      "n_trades": 167
+    },
+    "all_heavy_low_vol": {
+      "initial": 100.00000000000003,
+      "final": 107.7,
+      "return_pct": 7.7,
+      "n_trades": 167
+    },
+    "anti_momentum": {
+      "initial": 100.00000000000003,
+      "final": 100.15,
+      "return_pct": 0.15,
+      "n_trades": 167
+    }
+  },
+  "best_variant": {
+    "name": "low_vol_only",
+    "return": 7.74
+  },
+  "regime": "SIDEWAYS",
+  "regime_result": {
+    "initial": 100.00000000000003,
+    "final": 102.57,
+    "return_pct": 2.57,
+    "n_trades": 167
+  },
+  "grid_search_top5": [
+    {
+      "lv": 0.5,
+      "sup": 0.0,
+      "sq": 0.0,
+      "ret": 7.74
+    },
+    {
+      "lv": 0.5,
+      "sup": 0.0,
+      "sq": 0.5,
+      "ret": 7.74
+    },
+    {
+      "lv": 0.5,
+      "sup": 0.0,
+      "sq": 1.0,
+      "ret": 7.74
+    },
+    {
+      "lv": 1.0,
+      "sup": 0.0,
+      "sq": 0.0,
+      "ret": 7.74
+    },
+    {
+      "lv": 1.0,
+      "sup": 0.0,
+      "sq": 0.5,
+      "ret": 7.74
+    }
+  ],
+  "grid_search_best": {
+    "weights": {
+      "low_vol": 0.5,
+      "support": 0.0,
+      "squeeze": 0.0,
+      "momentum": 0
+    },
+    "return": 7.74
+  }
+}

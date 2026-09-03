@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-09-03T04:13:47.571920",
+  "subnets": 12,
+  "experiments": {
+    "hold_period": {
+      "3d": 1.29,
+      "5d": 97.49,
+      "7d": 97.73,
+      "14d": 97.4
+    },
+    "n_positions": {
+      "1pos": 312.7,
+      "2pos": 162.48,
+      "3pos": 107.81,
+      "5pos": 63.52,
+      "7pos": 48.32,
+      "10pos": 31.36
+    },
+    "thompson_vs_fixed": {
+      "fixed": 97.73,
+      "thompson": 64.44
+    }
+  },
+  "conclusion": "Low vol alone is best. Simplest strategy wins."
+}

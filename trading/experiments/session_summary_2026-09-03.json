@@ -1,0 +1,48 @@
+{
+  "timestamp": "2026-09-03T04:14:19.269282",
+  "session": "2026-09-03",
+  "total_experiments": 6,
+  "key_findings": [
+    "Low volatility is the strongest predictive factor (IC=-0.17)",
+    "Support bounce works (+3.89% edge)",
+    "Squeeze detection works (+1.83% edge)",
+    "Simple strategies beat complex ones",
+    "Thompson sampling underperformed fixed weights",
+    "Regime detection hurt performance (too coarse)",
+    "1-3 positions outperform 5-10 (concentration helps in small universe)"
+  ],
+  "working_strategy": {
+    "name": "low_vol_concentrated",
+    "rule": "Buy 1-3 lowest-vol subnets, rebalance daily",
+    "hold_period": "5-7 days",
+    "backtest_return": "+7.74% (7d, 12 subnets)",
+    "caveat": "Small sample, needs validation on larger universe"
+  },
+  "strategies_tested": {
+    "hold_period": {
+      "3d": 1.29,
+      "5d": 97.49,
+      "7d": 97.73,
+      "14d": 97.4
+    },
+    "n_positions": {
+      "1pos": 312.7,
+      "2pos": 162.48,
+      "3pos": 107.81,
+      "5pos": 63.52,
+      "7pos": 48.32,
+      "10pos": 31.36
+    },
+    "thompson_vs_fixed": {
+      "fixed": 97.73,
+      "thompson": 64.44
+    }
+  },
+  "files_created": [
+    "trading/engine/signals.py",
+    "trading/engine/strategy_framework.py",
+    "trading/engine/sn88_submitter.py",
+    "trading/strategies/*.json",
+    "trading/experiments/*.json"
+  ]
+}
