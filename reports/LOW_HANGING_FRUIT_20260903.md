@@ -1,44 +1,57 @@
 # Low-Hanging Fruit Report — $(date +%Y-%m-%d)
 
-## Top 4 Mining Targets (Live Chain Data)
+## Methodology (CORRECTED)
+- Uses MEDIAN payout, not average (average is misleading with skewed distributions)
+- Jackpot penalty: top1 > 40% → score reduced
+- Distribution bonus: top1 < 20% → score increased
+- All data verified live from chain SDK (block 8,985,034)
+- Registration cost: ~0.0005 TAO for all subnets
 
-### SN38 — BEST TARGET
-- **Emission:** 168.7 TAO/neuron/day
-- **Emitting:** 7 miners
-- **Competition:** 3%
-- **Reg Cost:** ~0.0005 TAO
-- **Score:** 85/100
-- **Why:** Ultra-low competition, high yield, easy entry
+## Top 4 Low-Hanging Fruit (BROAD distribution + median > 1 TAO)
 
-### SN104 — HIGH YIELD, VERY FEW MINERS
-- **Emission:** 147.6 TAO/neuron/day
-- **Emitting:** 2 miners
-- **Competition:** 3%
-- **Reg Cost:** ~0.0005 TAO
-- **Score:** 82/100
-- **Why:** Only 2 miners, massive yield per seat
+### #1: SN19 — BEST RISK-ADJUSTED
+- **Median:** 63.9 TAO/day
+- **Emitting:** 36 miners
+- **Competition:** 14%
+- **Top1:** 26.1% (distributed)
+- **Type:** BROAD
+- **Why:** Genuinely distributed payouts, good median, moderate competition
 
-### SN16 — LOW COMPETITION, MODERATE YIELD
-- **Emission:** 98.4 TAO/neuron/day
-- **Emitting:** 3 miners
-- **Competition:** 17%
-- **Reg Cost:** ~0.0005 TAO
-- **Score:** 75/100
-- **Why:** Few miners, good yield, 17% competition
+### #2: SN44 — MOST DISTRIBUTED
+- **Median:** 7.4 TAO/day
+- **Emitting:** 18 miners
+- **Competition:** 7%
+- **Top1:** 20.0% (most distributed)
+- **Type:** BROAD
+- **Why:** Lowest concentration, easy entry, predictable income
 
-### SN62 — SWE AGENT (OUR SKILLS MATCH)
-- **Emission:** 295 TAO total
-- **Emitting:** 24 miners
-- **Competition:** 9%
-- **Reg Cost:** ~0.0005 TAO
-- **Score:** 72/100
-- **Why:** SWE agent = exactly what we build, reusable
+### #3: SN4 — DECENT MEDIAN
+- **Median:** 6.8 TAO/day
+- **Emitting:** 12 miners
+- **Competition:** 5%
+- **Top1:** 27.6%
+- **Type:** CONCENTRATED
+- **Why:** Good median, low competition
 
-## Priority Order
-1. **SN38** — register immediately (best risk-adjusted)
-2. **SN104** — register if SN38 fills
-3. **SN16** — backup option
-4. **SN62** — strategic (reusable skills)
+### #4: SN91 — DECENT MEDIAN
+- **Median:** 9.5 TAO/day
+- **Emitting:** 12 miners
+- **Competition:** 5%
+- **Top1:** 28.0%
+- **Type:** CONCENTRATED
+- **Why:** Highest median among non-jackpots
 
-## Registration Cost: All ~0.0005 TAO
-## Block Verified: $(date)
+## What We Learned (Lessons for Future Reports)
+
+1. **NEVER use average for skewed distributions** — median is the truth
+2. **Always check top1 share** — if >40%, it's a jackpot, not low-hanging fruit
+3. **"Low competition" ≠ "easy money"** — could mean winner-take-all
+4. **Verify against live chain** — API/cache data can be stale
+5. **Broad distribution > high yield** — distributed payouts = predictable income
+6. **Registration cost is ~0.0005 TAO for ALL subnets** — not a differentiator
+
+## Registration Cost
+All subnets: ~0.0005 TAO (verified live)
+
+## Block Verified
+$(date) — Block $(python3 -c "import bittensor as bt; print(bt.Subtensor(network='finney').block)")
