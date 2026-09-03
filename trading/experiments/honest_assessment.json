@@ -1,0 +1,11 @@
+{
+  "finding": "Strategy loses on full universe (129 subnets)",
+  "reason": "Only 12 subnets have enough data (100+ points). Others are sparse.",
+  "best_strategy": "calm_squeeze: -13.10% on full universe",
+  "sensitivity": {
+    "more_positions_helps": "7-10 positions better than 1-3",
+    "no_stop_loss_best": "-26% vs -44% with SL",
+    "diversification_reduces_drawdown": "27% dd at 10 pos vs 65% at 1 pos"
+  },
+  "honest_conclusion": "\nThe +102% was overfitting on a 12-subnet subset.\nOn the full 129-subnet universe, the strategy loses money.\nThe edge EXISTS but only works on subnets with enough data (>100 points).\nThe system needs more historical data to be reliable.\nCurrent state: DIRECTION is correct (calm wins), MAGNITUDE is inflated.\nNeed: more time (30+ days of data) on all 129 subnets.\n"
+}
