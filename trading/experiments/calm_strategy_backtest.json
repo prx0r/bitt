@@ -1,0 +1,10 @@
+{
+  "baseline": -8.98,
+  "calm_strategy": {
+    "initial": 100.0,
+    "final": 202.39,
+    "return_pct": 102.39,
+    "max_drawdown": 5.79,
+    "n_trades": 1029
+  }
+}
