@@ -1,0 +1,742 @@
+[
+  {
+    "netuid": 11,
+    "timestamp": "2026-09-03T04:30:43.705342",
+    "raw_metrics": {
+      "neurons": 256,
+      "active": 7,
+      "emission": 45.7545,
+      "price": 0.0077497,
+      "volatility": 0.004169,
+      "trajectory": 0.0246,
+      "total_return": 0.0094,
+      "active_ratio": 0.0273,
+      "emit_per_neuron": 0.1787,
+      "price_data_points": 31
+    },
+    "classification": {
+      "type": "research_utility",
+      "type_description": "Research/utility subnet, organic usage, low velocity",
+      "vol_profile": "ultra_calm",
+      "vol_description": "Almost no price movement"
+    },
+    "edge_scores": {
+      "low_vol": 90,
+      "positive_trajectory": 60,
+      "low_activity": 100,
+      "low_yield": 60,
+      "price_level": 40
+    },
+    "child_score": 81.0,
+    "recommendation": {
+      "action": "BUY",
+      "confidence": 0.9,
+      "hold_days": 7,
+      "reason": "High child score (81) + calm volatility",
+      "composite_edge": 70.0
+    }
+  },
+  {
+    "netuid": 14,
+    "timestamp": "2026-09-03T04:30:43.711805",
+    "raw_metrics": {
+      "neurons": 256,
+      "active": 7,
+      "emission": 56.270062,
+      "price": 0.00953078,
+      "volatility": 0.004335,
+      "trajectory": 0.0116,
+      "total_return": 0.0078,
+      "active_ratio": 0.0273,
+      "emit_per_neuron": 0.2198,
+      "price_data_points": 31
+    },
+    "classification": {
+      "type": "balanced",
+      "type_description": "Neither extreme \u2014 default category",
+      "vol_profile": "ultra_calm",
+      "vol_description": "Almost no price movement"
+    },
+    "edge_scores": {
+      "low_vol": 90,
+      "positive_trajectory": 60,
+      "low_activity": 100,
+      "low_yield": 60,
+      "price_level": 40
+    },
+    "child_score": 81.0,
+    "recommendation": {
+      "action": "BUY",
+      "confidence": 0.9,
+      "hold_days": 7,
+      "reason": "High child score (81) + calm volatility",
+      "composite_edge": 70.0
+    }
+  },
+  {
+    "netuid": 17,
+    "timestamp": "2026-09-03T04:30:43.719514",
+    "raw_metrics": {
+      "neurons": 256,
+      "active": 8,
+      "emission": 55.908701,
+      "price": 0.00946958,
+      "volatility": 0.001606,
+      "trajectory": 0.0011,
+      "total_return": -0.0015,
+      "active_ratio": 0.0312,
+      "emit_per_neuron": 0.2184,
+      "price_data_points": 31
+    },
+    "classification": {
+      "type": "balanced",
+      "type_description": "Neither extreme \u2014 default category",
+      "vol_profile": "ultra_calm",
+      "vol_description": "Almost no price movement"
+    },
+    "edge_scores": {
+      "low_vol": 100,
+      "positive_trajectory": 60,
+      "low_activity": 80,
+      "low_yield": 60,
+      "price_level": 40
+    },
+    "child_score": 80.0,
+    "recommendation": {
+      "action": "BUY",
+      "confidence": 0.9,
+      "hold_days": 7,
+      "reason": "High child score (80) + calm volatility",
+      "composite_edge": 68.0
+    }
+  },
+  {
+    "netuid": 4,
+    "timestamp": "2026-09-03T04:30:43.689675",
+    "raw_metrics": {
+      "neurons": 256,
+      "active": 7,
+      "emission": 332.934356,
+      "price": 0.05639101,
+      "volatility": 0.000733,
+      "trajectory": 0.0013,
+      "total_return": 0.0013,
+      "active_ratio": 0.0273,
+      "emit_per_neuron": 1.3005,
+      "price_data_points": 31
+    },
+    "classification": {
+      "type": "balanced",
+      "type_description": "Neither extreme \u2014 default category",
+      "vol_profile": "ultra_calm",
+      "vol_description": "Almost no price movement"
+    },
+    "edge_scores": {
+      "low_vol": 100,
+      "positive_trajectory": 60,
+      "low_activity": 100,
+      "low_yield": 10,
+      "price_level": 80
+    },
+    "child_score": 76.5,
+    "recommendation": {
+      "action": "BUY",
+      "confidence": 0.88,
+      "hold_days": 7,
+      "reason": "High child score (76) + calm volatility",
+      "composite_edge": 70.0
+    }
+  },
+  {
+    "netuid": 7,
+    "timestamp": "2026-09-03T04:30:43.696655",
+    "raw_metrics": {
+      "neurons": 256,
+      "active": 10,
+      "emission": 18.861356,
+      "price": 0.00319466,
+      "volatility": 0.001532,
+      "trajectory": -0.0047,
+      "total_return": -0.0078,
+      "active_ratio": 0.0391,
+      "emit_per_neuron": 0.0737,
+      "price_data_points": 31
+    },
+    "classification": {
+      "type": "research_utility",
+      "type_description": "Research/utility subnet, organic usage, low velocity",
+      "vol_profile": "ultra_calm",
+      "vol_description": "Almost no price movement"
+    },
+    "edge_scores": {
+      "low_vol": 100,
+      "positive_trajectory": 30,
+      "low_activity": 80,
+      "low_yield": 80,
+      "price_level": 20
+    },
+    "child_score": 75.5,
+    "recommendation": {
+      "action": "BUY",
+      "confidence": 0.88,
+      "hold_days": 7,
+      "reason": "High child score (76) + calm volatility",
+      "composite_edge": 62.0
+    }
+  },
+  {
+    "netuid": 1,
+    "timestamp": "2026-09-03T04:30:43.682528",
+    "raw_metrics": {
+      "neurons": 256,
+      "active": 9,
+      "emission": 43.884476,
+      "price": 0.00743297,
+      "volatility": 0.00042,
+      "trajectory": -0.0037,
+      "total_return": -0.0043,
+      "active_ratio": 0.0352,
+      "emit_per_neuron": 0.1714,
+      "price_data_points": 31
+    },
+    "classification": {
+      "type": "research_utility",
+      "type_description": "Research/utility subnet, organic usage, low velocity",
+      "vol_profile": "ultra_calm",
+      "vol_description": "Almost no price movement"
+    },
+    "edge_scores": {
+      "low_vol": 100,
+      "positive_trajectory": 30,
+      "low_activity": 80,
+      "low_yield": 60,
+      "price_level": 40
+    },
+    "child_score": 72.5,
+    "recommendation": {
+      "action": "BUY",
+      "confidence": 0.86,
+      "hold_days": 7,
+      "reason": "High child score (72) + calm volatility",
+      "composite_edge": 62.0
+    }
+  },
+  {
+    "netuid": 6,
+    "timestamp": "2026-09-03T04:30:43.694718",
+    "raw_metrics": {
+      "neurons": 256,
+      "active": 12,
+      "emission": 17.029894,
+      "price": 0.00288445,
+      "volatility": 0.004179,
+      "trajectory": -0.0169,
+      "total_return": -0.0251,
+      "active_ratio": 0.0469,
+      "emit_per_neuron": 0.0665,
+      "price_data_points": 31
+    },
+    "classification": {
+      "type": "research_utility",
+      "type_description": "Research/utility subnet, organic usage, low velocity",
+      "vol_profile": "ultra_calm",
+      "vol_description": "Almost no price movement"
+    },
+    "edge_scores": {
+      "low_vol": 90,
+      "positive_trajectory": 30,
+      "low_activity": 80,
+      "low_yield": 80,
+      "price_level": 20
+    },
+    "child_score": 72.5,
+    "recommendation": {
+      "action": "BUY",
+      "confidence": 0.86,
+      "hold_days": 7,
+      "reason": "High child score (72) + calm volatility",
+      "composite_edge": 60.0
+    }
+  },
+  {
+    "netuid": 19,
+    "timestamp": "2026-09-03T04:30:43.724033",
+    "raw_metrics": {
+      "neurons": 256,
+      "active": 9,
+      "emission": 60.265951,
+      "price": 0.01020759,
+      "volatility": 0.00462,
+      "trajectory": -0.0325,
+      "total_return": -0.044,
+      "active_ratio": 0.0352,
+      "emit_per_neuron": 0.2354,
+      "price_data_points": 31
+    },
+    "classification": {
+      "type": "balanced",
+      "type_description": "Neither extreme \u2014 default category",
+      "vol_profile": "ultra_calm",
+      "vol_description": "Almost no price movement"
+    },
+    "edge_scores": {
+      "low_vol": 90,
+      "positive_trajectory": 30,
+      "low_activity": 80,
+      "low_yield": 60,
+      "price_level": 60
+    },
+    "child_score": 69.5,
+    "recommendation": {
+      "action": "WATCH",
+      "confidence": 0.5,
+      "hold_days": 14,
+      "reason": "Moderate child score (70), worth monitoring",
+      "composite_edge": 64.0
+    }
+  },
+  {
+    "netuid": 10,
+    "timestamp": "2026-09-03T04:30:43.703534",
+    "raw_metrics": {
+      "neurons": 256,
+      "active": 23,
+      "emission": 40.480447,
+      "price": 0.00685641,
+      "volatility": 0.006369,
+      "trajectory": 0.0175,
+      "total_return": 0.0018,
+      "active_ratio": 0.0898,
+      "emit_per_neuron": 0.1581,
+      "price_data_points": 31
+    },
+    "classification": {
+      "type": "research_utility",
+      "type_description": "Research/utility subnet, organic usage, low velocity",
+      "vol_profile": "calm",
+      "vol_description": "Stable, predictable drift"
+    },
+    "edge_scores": {
+      "low_vol": 75,
+      "positive_trajectory": 60,
+      "low_activity": 60,
+      "low_yield": 60,
+      "price_level": 40
+    },
+    "child_score": 68.5,
+    "recommendation": {
+      "action": "WATCH",
+      "confidence": 0.5,
+      "hold_days": 14,
+      "reason": "Moderate child score (68), worth monitoring",
+      "composite_edge": 59.0
+    }
+  },
+  {
+    "netuid": 13,
+    "timestamp": "2026-09-03T04:30:43.710058",
+    "raw_metrics": {
+      "neurons": 256,
+      "active": 13,
+      "emission": 34.738552,
+      "price": 0.00588387,
+      "volatility": 0.000474,
+      "trajectory": -0.0033,
+      "total_return": -0.0041,
+      "active_ratio": 0.0508,
+      "emit_per_neuron": 0.1357,
+      "price_data_points": 31
+    },
+    "classification": {
+      "type": "research_utility",
+      "type_description": "Research/utility subnet, organic usage, low velocity",
+      "vol_profile": "ultra_calm",
+      "vol_description": "Almost no price movement"
+    },
+    "edge_scores": {
+      "low_vol": 100,
+      "positive_trajectory": 30,
+      "low_activity": 60,
+      "low_yield": 60,
+      "price_level": 40
+    },
+    "child_score": 68.5,
+    "recommendation": {
+      "action": "WATCH",
+      "confidence": 0.5,
+      "hold_days": 14,
+      "reason": "Moderate child score (68), worth monitoring",
+      "composite_edge": 58.0
+    }
+  },
+  {
+    "netuid": 8,
+    "timestamp": "2026-09-03T04:30:43.698488",
+    "raw_metrics": {
+      "neurons": 256,
+      "active": 13,
+      "emission": 166.422433,
+      "price": 0.02818792,
+      "volatility": 0.00107,
+      "trajectory": -0.0003,
+      "total_return": 0.0004,
+      "active_ratio": 0.0508,
+      "emit_per_neuron": 0.6501,
+      "price_data_points": 31
+    },
+    "classification": {
+      "type": "balanced",
+      "type_description": "Neither extreme \u2014 default category",
+      "vol_profile": "ultra_calm",
+      "vol_description": "Almost no price movement"
+    },
+    "edge_scores": {
+      "low_vol": 100,
+      "positive_trajectory": 30,
+      "low_activity": 60,
+      "low_yield": 40,
+      "price_level": 60
+    },
+    "child_score": 65.5,
+    "recommendation": {
+      "action": "WATCH",
+      "confidence": 0.5,
+      "hold_days": 14,
+      "reason": "Moderate child score (66), worth monitoring",
+      "composite_edge": 58.0
+    }
+  },
+  {
+    "netuid": 18,
+    "timestamp": "2026-09-03T04:30:43.722113",
+    "raw_metrics": {
+      "neurons": 257,
+      "active": 10,
+      "emission": 27.063792,
+      "price": 0.00458395,
+      "volatility": 0.005606,
+      "trajectory": -0.0226,
+      "total_return": -0.0178,
+      "active_ratio": 0.0389,
+      "emit_per_neuron": 0.1053,
+      "price_data_points": 31
+    },
+    "classification": {
+      "type": "research_utility",
+      "type_description": "Research/utility subnet, organic usage, low velocity",
+      "vol_profile": "calm",
+      "vol_description": "Stable, predictable drift"
+    },
+    "edge_scores": {
+      "low_vol": 75,
+      "positive_trajectory": 30,
+      "low_activity": 80,
+      "low_yield": 60,
+      "price_level": 20
+    },
+    "child_score": 65.0,
+    "recommendation": {
+      "action": "WATCH",
+      "confidence": 0.5,
+      "hold_days": 14,
+      "reason": "Moderate child score (65), worth monitoring",
+      "composite_edge": 53.0
+    }
+  },
+  {
+    "netuid": 3,
+    "timestamp": "2026-09-03T04:30:43.687745",
+    "raw_metrics": {
+      "neurons": 256,
+      "active": 24,
+      "emission": 164.224724,
+      "price": 0.02781569,
+      "volatility": 0.00212,
+      "trajectory": -0.015,
+      "total_return": -0.0117,
+      "active_ratio": 0.0938,
+      "emit_per_neuron": 0.6415,
+      "price_data_points": 31
+    },
+    "classification": {
+      "type": "balanced",
+      "type_description": "Neither extreme \u2014 default category",
+      "vol_profile": "ultra_calm",
+      "vol_description": "Almost no price movement"
+    },
+    "edge_scores": {
+      "low_vol": 90,
+      "positive_trajectory": 30,
+      "low_activity": 60,
+      "low_yield": 40,
+      "price_level": 60
+    },
+    "child_score": 62.5,
+    "recommendation": {
+      "action": "WATCH",
+      "confidence": 0.5,
+      "hold_days": 14,
+      "reason": "Moderate child score (62), worth monitoring",
+      "composite_edge": 56.0
+    }
+  },
+  {
+    "netuid": 2,
+    "timestamp": "2026-09-03T04:30:43.685475",
+    "raw_metrics": {
+      "neurons": 0,
+      "active": 0,
+      "emission": 0,
+      "price": 0.003364405161134408,
+      "volatility": 0.007375,
+      "trajectory": -0.3446,
+      "total_return": -0.2562,
+      "active_ratio": 0.0,
+      "emit_per_neuron": 0.0,
+      "price_data_points": 1000
+    },
+    "classification": {
+      "type": "quiet_niche",
+      "type_description": "Few miners, low pay, unknown \u2014 potential sleeper",
+      "vol_profile": "calm",
+      "vol_description": "Stable, predictable drift"
+    },
+    "edge_scores": {
+      "low_vol": 75,
+      "positive_trajectory": 0,
+      "low_activity": 100,
+      "low_yield": 100,
+      "price_level": 20
+    },
+    "child_score": 57.5,
+    "recommendation": {
+      "action": "WATCH",
+      "confidence": 0.5,
+      "hold_days": 14,
+      "reason": "Moderate child score (58), worth monitoring",
+      "composite_edge": 59.0
+    }
+  },
+  {
+    "netuid": 15,
+    "timestamp": "2026-09-03T04:30:43.713810",
+    "raw_metrics": {
+      "neurons": 256,
+      "active": 55,
+      "emission": 206.055401,
+      "price": 0.03490079,
+      "volatility": 0.008119,
+      "trajectory": 0.0175,
+      "total_return": 0.0153,
+      "active_ratio": 0.2148,
+      "emit_per_neuron": 0.8049,
+      "price_data_points": 31
+    },
+    "classification": {
+      "type": "balanced",
+      "type_description": "Neither extreme \u2014 default category",
+      "vol_profile": "calm",
+      "vol_description": "Stable, predictable drift"
+    },
+    "edge_scores": {
+      "low_vol": 75,
+      "positive_trajectory": 60,
+      "low_activity": 20,
+      "low_yield": 40,
+      "price_level": 60
+    },
+    "child_score": 57.5,
+    "recommendation": {
+      "action": "WATCH",
+      "confidence": 0.5,
+      "hold_days": 14,
+      "reason": "Moderate child score (58), worth monitoring",
+      "composite_edge": 51.0
+    }
+  },
+  {
+    "netuid": 9,
+    "timestamp": "2026-09-03T04:30:43.701285",
+    "raw_metrics": {
+      "neurons": 256,
+      "active": 10,
+      "emission": 176.366116,
+      "price": 0.02421403857522235,
+      "volatility": 0.048917,
+      "trajectory": -0.107,
+      "total_return": -0.1514,
+      "active_ratio": 0.0391,
+      "emit_per_neuron": 0.6889,
+      "price_data_points": 1031
+    },
+    "classification": {
+      "type": "dying",
+      "type_description": "Low activity, negative trajectory, declining",
+      "vol_profile": "moderate",
+      "vol_description": "Normal volatility"
+    },
+    "edge_scores": {
+      "low_vol": 25,
+      "positive_trajectory": 0,
+      "low_activity": 80,
+      "low_yield": 40,
+      "price_level": 60
+    },
+    "child_score": 29.5,
+    "recommendation": {
+      "action": "AVOID",
+      "confidence": 0.8,
+      "hold_days": 0,
+      "reason": "Type 'dying' has poor historical returns",
+      "composite_edge": 41.0
+    }
+  },
+  {
+    "netuid": 0,
+    "timestamp": "2026-09-03T04:30:43.680420",
+    "raw_metrics": {
+      "neurons": 64,
+      "active": 41,
+      "emission": 2415.885341,
+      "price": 1.0,
+      "volatility": 0.463192,
+      "trajectory": 0.4204,
+      "total_return": 0.0,
+      "active_ratio": 0.6406,
+      "emit_per_neuron": 37.7482,
+      "price_data_points": 1031
+    },
+    "classification": {
+      "type": "long_term_miners",
+      "type_description": "Miners who stake and hold, less selling pressure",
+      "vol_profile": "wild",
+      "vol_description": "Unpredictable, avoid"
+    },
+    "edge_scores": {
+      "low_vol": 0,
+      "positive_trajectory": 100,
+      "low_activity": 0,
+      "low_yield": 0,
+      "price_level": 100
+    },
+    "child_score": 25.0,
+    "recommendation": {
+      "action": "AVOID",
+      "confidence": 0.7,
+      "hold_days": 0,
+      "reason": "Volatility too high (wild)",
+      "composite_edge": 40.0
+    }
+  },
+  {
+    "netuid": 12,
+    "timestamp": "2026-09-03T04:30:43.708179",
+    "raw_metrics": {
+      "neurons": 256,
+      "active": 8,
+      "emission": 28.82755,
+      "price": 0.0036330072816581436,
+      "volatility": 0.069401,
+      "trajectory": -0.0646,
+      "total_return": -0.1128,
+      "active_ratio": 0.0312,
+      "emit_per_neuron": 0.1126,
+      "price_data_points": 1031
+    },
+    "classification": {
+      "type": "research_utility",
+      "type_description": "Research/utility subnet, organic usage, low velocity",
+      "vol_profile": "volatile",
+      "vol_description": "Price swings, harder to predict"
+    },
+    "edge_scores": {
+      "low_vol": 0,
+      "positive_trajectory": 0,
+      "low_activity": 80,
+      "low_yield": 60,
+      "price_level": 20
+    },
+    "child_score": 25.0,
+    "recommendation": {
+      "action": "AVOID",
+      "confidence": 0.7,
+      "hold_days": 0,
+      "reason": "Volatility too high (volatile)",
+      "composite_edge": 32.0
+    }
+  },
+  {
+    "netuid": 16,
+    "timestamp": "2026-09-03T04:30:43.717025",
+    "raw_metrics": {
+      "neurons": 18,
+      "active": 2,
+      "emission": 10.601647,
+      "price": 0.001516351551051091,
+      "volatility": 0.031951,
+      "trajectory": -0.5164,
+      "total_return": -0.6375,
+      "active_ratio": 0.1111,
+      "emit_per_neuron": 0.589,
+      "price_data_points": 1031
+    },
+    "classification": {
+      "type": "balanced",
+      "type_description": "Neither extreme \u2014 default category",
+      "vol_profile": "moderate",
+      "vol_description": "Normal volatility"
+    },
+    "edge_scores": {
+      "low_vol": 25,
+      "positive_trajectory": 0,
+      "low_activity": 40,
+      "low_yield": 40,
+      "price_level": 20
+    },
+    "child_score": 21.5,
+    "recommendation": {
+      "action": "HOLD",
+      "confidence": 0.5,
+      "hold_days": 0,
+      "reason": "No clear edge detected",
+      "composite_edge": 25.0
+    }
+  },
+  {
+    "netuid": 5,
+    "timestamp": "2026-09-03T04:30:43.692663",
+    "raw_metrics": {
+      "neurons": 256,
+      "active": 30,
+      "emission": 75.20362,
+      "price": 0.009472036740760685,
+      "volatility": 0.070647,
+      "trajectory": -0.0725,
+      "total_return": -0.1634,
+      "active_ratio": 0.1172,
+      "emit_per_neuron": 0.2938,
+      "price_data_points": 1031
+    },
+    "classification": {
+      "type": "balanced",
+      "type_description": "Neither extreme \u2014 default category",
+      "vol_profile": "volatile",
+      "vol_description": "Price swings, harder to predict"
+    },
+    "edge_scores": {
+      "low_vol": 0,
+      "positive_trajectory": 0,
+      "low_activity": 40,
+      "low_yield": 60,
+      "price_level": 40
+    },
+    "child_score": 17.0,
+    "recommendation": {
+      "action": "AVOID",
+      "confidence": 0.7,
+      "hold_days": 0,
+      "reason": "Volatility too high (volatile)",
+      "composite_edge": 28.0
+    }
+  }
+]
