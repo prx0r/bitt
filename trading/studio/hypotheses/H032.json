@@ -1,0 +1,12 @@
+{
+  "id": "H032",
+  "claim": "High active ratio outperforms (alive subnets)",
+  "factors": [
+    "active_ratio"
+  ],
+  "direction": "desc",
+  "horizon": "1d",
+  "status": "TESTED",
+  "result": "IC=+0.053",
+  "source": "email: comprehensive factor analysis"
+}

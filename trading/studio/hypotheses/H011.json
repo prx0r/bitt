@@ -1,0 +1,11 @@
+{
+  "id": "H011",
+  "claim": "HAR-RV forecast volatility beats historical volatility",
+  "factors": [
+    "har_rv_forecast"
+  ],
+  "direction": "asc",
+  "horizon": "1d",
+  "status": "UNTESTED",
+  "source": "email: Corsi HAR-RV + Huang regime switching"
+}

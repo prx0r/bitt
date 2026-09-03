@@ -1,0 +1,124 @@
+{
+  "generation": 1,
+  "thompson_history": {
+    "low_vol": {
+      "wins": 1,
+      "losses": 4
+    },
+    "mean_reversion": {
+      "wins": 1,
+      "losses": 4
+    },
+    "squeeze": {
+      "wins": 1,
+      "losses": 4
+    },
+    "support": {
+      "wins": 1,
+      "losses": 4
+    },
+    "child": {
+      "wins": 1,
+      "losses": 4
+    },
+    "momentum": {
+      "wins": 1,
+      "losses": 4
+    },
+    "anti_vol": {
+      "wins": 1,
+      "losses": 4
+    },
+    "baseline": {
+      "wins": 1,
+      "losses": 2
+    }
+  },
+  "cge_graveyard": [],
+  "history": [
+    {
+      "generation": 1,
+      "timestamp": "2026-09-03T05:30:45.703669",
+      "strategies_tested": 22,
+      "results": {
+        "low_vol": {
+          "return": 0,
+          "trades": 0
+        },
+        "mean_reversion": {
+          "return": 0,
+          "trades": 0
+        },
+        "squeeze": {
+          "return": 0,
+          "trades": 0
+        },
+        "support": {
+          "return": 0,
+          "trades": 0
+        },
+        "child": {
+          "return": 0,
+          "trades": 0
+        },
+        "momentum": {
+          "return": 0,
+          "trades": 0
+        },
+        "anti_vol": {
+          "return": 0,
+          "trades": 0
+        },
+        "baseline": {
+          "return": 0,
+          "trades": 0
+        }
+      },
+      "weights": {
+        "low_vol": 0.11443586946444274,
+        "mean_reversion": 0.1165925975942729,
+        "squeeze": 0.11508115919471874,
+        "support": 0.11599407165272266,
+        "child": 0.11402033447402983,
+        "momentum": 0.11099046781911034,
+        "anti_vol": 0.119956576359664,
+        "baseline": 0.19292892344103874
+      },
+      "rankings": [
+        {
+          "strategy": "baseline",
+          "expected_win_rate": 0.3333333333333333,
+          "wins": 1,
+          "losses": 2
+        },
+        {
+          "strategy": "low_vol",
+          "expected_win_rate": 0.2,
+          "wins": 1,
+          "losses": 4
+        },
+        {
+          "strategy": "mean_reversion",
+          "expected_win_rate": 0.2,
+          "wins": 1,
+          "losses": 4
+        },
+        {
+          "strategy": "squeeze",
+          "expected_win_rate": 0.2,
+          "wins": 1,
+          "losses": 4
+        },
+        {
+          "strategy": "support",
+          "expected_win_rate": 0.2,
+          "wins": 1,
+          "losses": 4
+        }
+      ],
+      "proposal": {
+        "type": "unknown"
+      }
+    }
+  ]
+}

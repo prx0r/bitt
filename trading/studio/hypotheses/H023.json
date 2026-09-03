@@ -1,0 +1,11 @@
+{
+  "id": "H023",
+  "claim": "Whale inflow (97th percentile) predicts 48h returns",
+  "factors": [
+    "whale_inflow"
+  ],
+  "direction": "asc",
+  "horizon": "2d",
+  "status": "UNTESTED",
+  "source": "email: OpenTaoTrader WSI"
+}

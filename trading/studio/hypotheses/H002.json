@@ -1,0 +1,12 @@
+{
+  "id": "H002",
+  "claim": "Buying subnets near 20-day support outperforms",
+  "factors": [
+    "support_20d"
+  ],
+  "direction": "asc",
+  "horizon": "1d",
+  "status": "TESTED",
+  "result": "+2.48% support_5pos",
+  "source": "email: comprehensive factor analysis"
+}

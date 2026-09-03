@@ -1,0 +1,12 @@
+{
+  "id": "H033",
+  "claim": "Price level predicts returns (established subnets outperform)",
+  "factors": [
+    "price_level"
+  ],
+  "direction": "desc",
+  "horizon": "1d",
+  "status": "TESTED",
+  "result": "IC=+0.080",
+  "source": "email: comprehensive factor analysis"
+}

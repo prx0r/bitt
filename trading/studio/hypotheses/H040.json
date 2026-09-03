@@ -1,0 +1,11 @@
+{
+  "id": "H040",
+  "claim": "Pair mean reversion: correlated subnets mean-revert spread",
+  "factors": [
+    "pair_spread_zscore"
+  ],
+  "direction": "asc",
+  "horizon": "3d",
+  "status": "UNTESTED",
+  "source": "email: OpenTaoTrader PMR"
+}

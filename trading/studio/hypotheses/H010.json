@@ -1,0 +1,12 @@
+{
+  "id": "H010",
+  "claim": "Upside volatility predicts positive returns, downside volatility predicts negative",
+  "factors": [
+    "vol_7d_upside",
+    "vol_7d_downside"
+  ],
+  "direction": "split",
+  "horizon": "1d",
+  "status": "UNTESTED",
+  "source": "email: Batista & Fernandes 2026"
+}

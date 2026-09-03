@@ -1,0 +1,11 @@
+{
+  "id": "H022",
+  "claim": "Stake velocity predicts price movement (stake leads price)",
+  "factors": [
+    "stake_velocity_24h"
+  ],
+  "direction": "asc",
+  "horizon": "1d",
+  "status": "UNTESTED",
+  "source": "email: OpenTaoTrader stake_velocity"
+}

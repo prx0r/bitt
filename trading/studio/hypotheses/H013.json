@@ -1,0 +1,12 @@
+{
+  "id": "H013",
+  "claim": "Low downside vol + positive trend beats raw low vol",
+  "factors": [
+    "vol_7d_downside",
+    "momentum_7d"
+  ],
+  "direction": "composite",
+  "horizon": "1d",
+  "status": "UNTESTED",
+  "source": "email: Batista + Moreira/Muir"
+}

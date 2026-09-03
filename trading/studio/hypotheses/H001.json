@@ -1,0 +1,12 @@
+{
+  "id": "H001",
+  "claim": "Low 7d volatility subnets outperform high volatility subnets",
+  "factors": [
+    "vol_7d"
+  ],
+  "direction": "asc",
+  "horizon": "1d",
+  "status": "TESTED",
+  "result": "+2.48% support_5pos",
+  "source": "email: comprehensive factor analysis"
+}

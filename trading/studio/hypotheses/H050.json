@@ -1,0 +1,11 @@
+{
+  "id": "H050",
+  "claim": "Regime detection (CALM/WILD) improves allocation timing",
+  "factors": [
+    "regime_state"
+  ],
+  "direction": "conditional",
+  "horizon": "1d",
+  "status": "UNTESTED",
+  "source": "email: Huang regime switching"
+}

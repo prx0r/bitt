@@ -1,0 +1,12 @@
+{
+  "id": "H030",
+  "claim": "Low emission per neuron subnets outperform (anti-yield trap)",
+  "factors": [
+    "emit_per"
+  ],
+  "direction": "asc",
+  "horizon": "1d",
+  "status": "TESTED",
+  "result": "IC=-0.129",
+  "source": "email: comprehensive factor analysis"
+}

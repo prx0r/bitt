@@ -1,0 +1,14 @@
+{
+  "id": "H003",
+  "claim": "Child composite (vol + momentum + support) outperforms single factors",
+  "factors": [
+    "vol_7d",
+    "momentum_7d",
+    "support_20d"
+  ],
+  "direction": "composite",
+  "horizon": "1d",
+  "status": "TESTED",
+  "result": "+1.72% child_5pos",
+  "source": "email: comprehensive factor analysis"
+}

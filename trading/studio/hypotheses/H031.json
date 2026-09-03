@@ -1,0 +1,12 @@
+{
+  "id": "H031",
+  "claim": "Distributed emissions (low HHI) outperform concentrated",
+  "factors": [
+    "hhi_emit"
+  ],
+  "direction": "asc",
+  "horizon": "1d",
+  "status": "TESTED",
+  "result": "IC=-0.101",
+  "source": "email: comprehensive factor analysis"
+}

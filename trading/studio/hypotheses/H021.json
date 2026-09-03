@@ -1,0 +1,11 @@
+{
+  "id": "H021",
+  "claim": "Pool depth predicts forward returns (deeper = more stable)",
+  "factors": [
+    "pool_depth"
+  ],
+  "direction": "desc",
+  "horizon": "1d",
+  "status": "UNTESTED",
+  "source": "email: Maymin CEV process"
+}

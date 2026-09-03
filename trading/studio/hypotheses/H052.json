@@ -1,0 +1,11 @@
+{
+  "id": "H052",
+  "claim": "Volatility-of-volatility predicts regime transitions",
+  "factors": [
+    "vol_of_vol"
+  ],
+  "direction": "asc",
+  "horizon": "3d",
+  "status": "UNTESTED",
+  "source": "email: Corsi HAR-RV"
+}

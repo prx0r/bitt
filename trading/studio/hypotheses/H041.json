@@ -1,0 +1,11 @@
+{
+  "id": "H041",
+  "claim": "Cross-sectional momentum: past winners beat past losers",
+  "factors": [
+    "momentum_7d"
+  ],
+  "direction": "desc",
+  "horizon": "7d",
+  "status": "UNTESTED",
+  "source": "email: Fieberg CTREND"
+}
