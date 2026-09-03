@@ -1,0 +1,22 @@
+[
+  {
+    "netuid": 1,
+    "emitting": 6,
+    "total_neurons": 500,
+    "total_emission": 43869349788.0,
+    "hhi": 0.2255,
+    "gini": -0.0258,
+    "persistence": 1.0,
+    "half_life": 999
+  },
+  {
+    "netuid": 2,
+    "emitting": 2,
+    "total_neurons": 500,
+    "total_emission": 22457877264.0,
+    "hhi": 0.5,
+    "gini": -0.9997,
+    "persistence": 1.0,
+    "half_life": 999
+  }
+]

@@ -16,24 +16,27 @@ DB_PATH = Path("/root/bitt/market.duckdb")
 
 
 def calculate_yield_price(netuid: int, candles: list[dict]) -> float:
-    """Calculate yield/price ratio for a subnet."""
+    """Calculate yield/price ratio for a subnet.
+    
+    FIXED: candles are stored newest-first, so index 0 = most recent.
+    Returns are calculated forward in time (older -> newer).
+    """
     if not candles:
         return 0.0
 
-    # Filter out None values
     valid_candles = [c for c in candles if c.get('close_tao') is not None]
     if not valid_candles:
         return 0.0
 
-    latest = valid_candles[0]  # Most recent candle
+    latest = valid_candles[0]  # Most recent candle (newest-first order)
     price = latest.get('close_tao', 0) or 0
 
-    # Simplified yield calculation
-    if len(valid_candles) >= 288:  # 24 hours of data
+    if len(valid_candles) >= 288:
         returns = []
-        for i in range(1, min(289, len(valid_candles))):
-            prev = valid_candles[i-1].get('close_tao', 0) or 0
+        # candles are newest-first, so walk from oldest to newest
+        for i in range(len(valid_candles) - 1, max(0, len(valid_candles) - 289), -1):
             curr = valid_candles[i].get('close_tao', 0) or 0
+            prev = valid_candles[i + 1].get('close_tao', 0) or 0  # i+1 is older
             if prev > 0:
                 returns.append((curr - prev) / prev)
         avg_return = sum(returns) / len(returns) if returns else 0
@@ -41,7 +44,6 @@ def calculate_yield_price(netuid: int, candles: list[dict]) -> float:
     else:
         annual_yield = 0.0
 
-    # Yield/price ratio (higher = more undervalued)
     return annual_yield / price if price and price > 0 else 0.0
 
 
@@ -71,10 +73,10 @@ def detect_setup(netuid: int, candles: list[dict], macro: dict) -> dict:
     else:
         momentum_24h = 0.0
 
-    # Volume acceleration
+    # Volume acceleration (FIXED: use volume_tao column, not volume)
     if len(valid_candles) >= 10:
-        recent_vol = sum(c.get('volume', 0) or 0 for c in valid_candles[:10]) / 10
-        prev_vol = sum(c.get('volume', 0) or 0 for c in valid_candles[10:20]) / 10 if len(valid_candles) >= 20 else recent_vol
+        recent_vol = sum(c.get('volume_tao', 0) or 0 for c in valid_candles[:10]) / 10
+        prev_vol = sum(c.get('volume_tao', 0) or 0 for c in valid_candles[10:20]) / 10 if len(valid_candles) >= 20 else recent_vol
         vol_accel = recent_vol / max(prev_vol, 1) - 1
     else:
         vol_accel = 0.0

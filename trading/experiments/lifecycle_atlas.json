@@ -1,0 +1,31 @@
+{
+  "cohorts": {},
+  "survival": {
+    "age_10": {
+      "alive": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "age_25": {
+      "alive": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "age_50": {
+      "alive": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "age_100": {
+      "alive": 0,
+      "total": 0,
+      "rate": 0
+    },
+    "age_200": {
+      "alive": 0,
+      "total": 0,
+      "rate": 0
+    }
+  },
+  "total_subnets": 0
+}

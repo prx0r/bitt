@@ -1,0 +1,41 @@
+{
+  "harnyx": {
+    "setup": true,
+    "baseline": {
+      "agent": "/root/bitt/trading/experiments/benchmarks/harnyx/stub_agent.py",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "[local-eval] repository is not at latest origin/HEAD; local eval will continue, but update before comparing final results\nPLATFORM_BASE_URL must be set (for example: https://api.harnyx.ai)\n",
+      "success": false
+    },
+    "baseline_score": {
+      "score": 0,
+      "reason": "execution_failed"
+    }
+  },
+  "ridges": {
+    "setup": true,
+    "baseline": {
+      "agent": "/root/bitt/trading/experiments/benchmarks/ridges/stub_agent.py",
+      "error": "[Errno 2] No such file or directory: 'ridges'",
+      "success": false
+    },
+    "baseline_score": {
+      "score": 0,
+      "reason": "execution_failed"
+    }
+  },
+  "redteam": {
+    "setup": true,
+    "baseline": {
+      "agent": null,
+      "error": "requires_docker_image_and_wallet",
+      "success": false,
+      "note": "RedTeam miners submit Docker images, not Python scripts. Full local testing requires Docker Compose setup with wallet."
+    },
+    "baseline_score": {
+      "score": 0,
+      "reason": "requires_chain_execution"
+    }
+  }
+}

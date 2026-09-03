@@ -123,8 +123,8 @@ def replay(initial_tao: float = 100.0, max_steps: int = 100) -> dict:
         netuids = [r['netuid'] for r in rows]
         conn.close()
 
-        # Make decisions for top subnets
-        for netuid in netuids[:10]:
+        # Make decisions for ALL active subnets (FIXED: removed netuids[:10] limit)
+        for netuid in netuids:
             candles = get_candles(netuid, ts)
             pool = get_pool_at(netuid, ts)
             decision = decide(netuid, candles, pool, portfolio)

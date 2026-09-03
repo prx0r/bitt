@@ -1,0 +1,41 @@
+{
+  "67": {
+    "netuid": 67,
+    "topology": "BROAD_PARTICIPATION",
+    "findings": {
+      "winner_take_all": 2,
+      "broad_participation": 8,
+      "top_k": 11,
+      "decay": 0,
+      "bounty": 3
+    },
+    "files_scanned": 522,
+    "repo": "/root/bitt/subnets/sn67-harnyx"
+  },
+  "62": {
+    "netuid": 62,
+    "topology": "TOP_K",
+    "findings": {
+      "winner_take_all": 0,
+      "broad_participation": 1,
+      "top_k": 8,
+      "decay": 29,
+      "bounty": 0
+    },
+    "files_scanned": 285,
+    "repo": "/root/bitt/subnets/sn62-ridges"
+  },
+  "61": {
+    "netuid": 61,
+    "topology": "DECAYING_PORTFOLIO",
+    "findings": {
+      "winner_take_all": 0,
+      "broad_participation": 1,
+      "top_k": 0,
+      "decay": 50,
+      "bounty": 0
+    },
+    "files_scanned": 154,
+    "repo": "/root/bitt/subnets/sn61-redteam"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "cohorts": {
+    "0-30d": {
+      "count": 1,
+      "avg_return": -0.0186,
+      "median_return": -0.0186,
+      "win_rate": 0.0,
+      "avg_liq_growth": -0.049,
+      "avg_miner_growth": 0.0
+    },
+    "31-90d": {
+      "count": 2,
+      "avg_return": 0.2276,
+      "median_return": 0.4553,
+      "win_rate": 0.5,
+      "avg_liq_growth": 0.0855,
+      "avg_miner_growth": 0.0
+    },
+    "180d+": {
+      "count": 2,
+      "avg_return": 0.0,
+      "median_return": 0,
+      "win_rate": 0.0,
+      "avg_liq_growth": 0.0,
+      "avg_miner_growth": 7.5
+    }
+  },
+  "predictions": [],
+  "predictors": {
+    "positive_avg_miners": 0.0,
+    "negative_avg_miners": 8.0,
+    "positive_avg_liq_growth": 0.1744,
+    "negative_avg_liq_growth": -0.0131,
+    "positive_avg_emission_growth": 0.0,
+    "negative_avg_emission_growth": -0.5
+  },
+  "top_appreciators": [
+    {
+      "netuid": 69,
+      "return": 0.4553,
+      "age": 41,
+      "miners": 0,
+      "liq_growth": 0.1744
+    },
+    {
+      "netuid": 0,
+      "return": 0.0,
+      "age": 41,
+      "miners": 0,
+      "liq_growth": -0.0034
+    },
+    {
+      "netuid": 21,
+      "return": 0,
+      "age": 1032,
+      "miners": 31,
+      "liq_growth": 0
+    },
+    {
+      "netuid": 117,
+      "return": 0,
+      "age": 455,
+      "miners": 1,
+      "liq_growth": 0
+    },
+    {
+      "netuid": 118,
+      "return": -0.0186,
+      "age": 16,
+      "miners": 0,
+      "liq_growth": -0.049
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "cp0_payout_depth": "DONE - 125 subnets scanned",
+  "cp1_epoch_history": "DONE - schema created, rate limited",
+  "cp2_mechanism_classifier": "DONE - SN61=DECAY, SN62=TOP_K, SN67=BROAD",
+  "cp3_benchmark_adapters": "DONE - setup OK, eval needs Docker",
+  "cp4_decision_engine": "PENDING",
+  "instance_registry": "DONE - 10 instances indexed",
+  "lifecycle_atlas": "DONE - schema ready, needs more data"
+}

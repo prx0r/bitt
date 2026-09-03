@@ -1,0 +1,226 @@
+{
+  "timestamp": "2026-09-03T02:39:28.803184",
+  "subnets_scanned": 129,
+  "total_actions": 129,
+  "top_actions": [
+    {
+      "action": "MINE",
+      "netuid": 107,
+      "ev": 1621.2003,
+      "expected_tao_day": 330.887807,
+      "probability_profitable": 0.7,
+      "capital_at_risk": 0,
+      "sunk_cost": 0.5,
+      "confidence": 0.693,
+      "reasons": [
+        "low competition (1.0%)",
+        "high emission/neuron (330.89)",
+        "few emitters (1)"
+      ],
+      "factors": {
+        "competition": 0.01,
+        "emission_per": 330.887807,
+        "emitting": 1
+      }
+    },
+    {
+      "action": "MINE",
+      "netuid": 95,
+      "ev": 1307.5527,
+      "expected_tao_day": 266.878101,
+      "probability_profitable": 0.7,
+      "capital_at_risk": 0,
+      "sunk_cost": 0.5,
+      "confidence": 0.697265625,
+      "reasons": [
+        "low competition (0.4%)",
+        "high emission/neuron (266.88)",
+        "few emitters (1)"
+      ],
+      "factors": {
+        "competition": 0.00390625,
+        "emission_per": 266.878101,
+        "emitting": 1
+      }
+    },
+    {
+      "action": "MINE",
+      "netuid": 44,
+      "ev": 1105.1924,
+      "expected_tao_day": 225.580082,
+      "probability_profitable": 0.7,
+      "capital_at_risk": 0,
+      "sunk_cost": 0.5,
+      "confidence": 0.697265625,
+      "reasons": [
+        "low competition (0.4%)",
+        "high emission/neuron (225.58)",
+        "few emitters (1)"
+      ],
+      "factors": {
+        "competition": 0.00390625,
+        "emission_per": 225.580082,
+        "emitting": 1
+      }
+    },
+    {
+      "action": "MINE",
+      "netuid": 0,
+      "ev": 493.0933,
+      "expected_tao_day": 100.66188920833333,
+      "probability_profitable": 0.7,
+      "capital_at_risk": 0,
+      "sunk_cost": 0.5,
+      "confidence": 0.4375,
+      "reasons": [
+        "high emission/neuron (100.66)",
+        "few emitters (24)"
+      ],
+      "factors": {
+        "competition": 0.375,
+        "emission_per": 100.66188920833333,
+        "emitting": 24
+      }
+    },
+    {
+      "action": "MINE",
+      "netuid": 90,
+      "ev": 454.3859,
+      "expected_tao_day": 92.7624245,
+      "probability_profitable": 0.7,
+      "capital_at_risk": 0,
+      "sunk_cost": 0.5,
+      "confidence": 0.6855670103092782,
+      "reasons": [
+        "low competition (2.1%)",
+        "high emission/neuron (92.76)",
+        "few emitters (2)"
+      ],
+      "factors": {
+        "competition": 0.020618556701030927,
+        "emission_per": 92.7624245,
+        "emitting": 2
+      }
+    },
+    {
+      "action": "MINE",
+      "netuid": 9,
+      "ev": 431.947,
+      "expected_tao_day": 88.183058,
+      "probability_profitable": 0.7,
+      "capital_at_risk": 0,
+      "sunk_cost": 0.5,
+      "confidence": 0.6945312499999999,
+      "reasons": [
+        "low competition (0.8%)",
+        "high emission/neuron (88.18)",
+        "few emitters (2)"
+      ],
+      "factors": {
+        "competition": 0.0078125,
+        "emission_per": 88.183058,
+        "emitting": 2
+      }
+    },
+    {
+      "action": "MINE",
+      "netuid": 110,
+      "ev": 391.4807,
+      "expected_tao_day": 79.924629,
+      "probability_profitable": 0.7,
+      "capital_at_risk": 0,
+      "sunk_cost": 0.5,
+      "confidence": 0.697265625,
+      "reasons": [
+        "low competition (0.4%)",
+        "high emission/neuron (79.92)",
+        "few emitters (1)"
+      ],
+      "factors": {
+        "competition": 0.00390625,
+        "emission_per": 79.924629,
+        "emitting": 1
+      }
+    },
+    {
+      "action": "MINE",
+      "netuid": 120,
+      "ev": 380.3255,
+      "expected_tao_day": 77.64806025,
+      "probability_profitable": 0.7,
+      "capital_at_risk": 0,
+      "sunk_cost": 0.5,
+      "confidence": 0.6890624999999999,
+      "reasons": [
+        "low competition (1.6%)",
+        "high emission/neuron (77.65)",
+        "few emitters (4)"
+      ],
+      "factors": {
+        "competition": 0.015625,
+        "emission_per": 77.64806025,
+        "emitting": 4
+      }
+    },
+    {
+      "action": "MINE",
+      "netuid": 68,
+      "ev": 380.3254,
+      "expected_tao_day": 77.648041,
+      "probability_profitable": 0.7,
+      "capital_at_risk": 0,
+      "sunk_cost": 0.5,
+      "confidence": 0.6890624999999999,
+      "reasons": [
+        "low competition (1.6%)",
+        "high emission/neuron (77.65)",
+        "few emitters (1)"
+      ],
+      "factors": {
+        "competition": 0.015625,
+        "emission_per": 77.648041,
+        "emitting": 1
+      }
+    },
+    {
+      "action": "MINE",
+      "netuid": 70,
+      "ev": 331.1628,
+      "expected_tao_day": 67.614863,
+      "probability_profitable": 0.7,
+      "capital_at_risk": 0,
+      "sunk_cost": 0.5,
+      "confidence": 0.5599999999999999,
+      "reasons": [
+        "low competition (20.0%)",
+        "high emission/neuron (67.61)",
+        "few emitters (1)"
+      ],
+      "factors": {
+        "competition": 0.2,
+        "emission_per": 67.614863,
+        "emitting": 1
+      }
+    }
+  ],
+  "recommended": {
+    "action": "MINE",
+    "netuid": 107,
+    "ev": 1621.2003,
+    "expected_tao_day": 330.887807,
+    "probability_profitable": 0.7,
+    "capital_at_risk": 0,
+    "sunk_cost": 0.5,
+    "confidence": 0.693,
+    "reasons": [
+      "low competition (1.0%)",
+      "high emission/neuron (330.89)",
+      "few emitters (1)"
+    ],
+    "factors": {
+      "competition": 0.01,
+      "emission_per": 330.887807,
+      "emitting": 1
+    }
+  }
+}

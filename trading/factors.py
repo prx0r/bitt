@@ -23,7 +23,12 @@ def get_subnets() -> list[dict]:
 
 
 def factor_yield_price(subnets: list[dict]) -> dict[str, float]:
-    """Factor 1: Yield/price ratio (higher = more undervalued)."""
+    """Factor 1: Emission per neuron / alpha price (proxy for yield attractiveness).
+    
+    FIXED: This is NOT real yield. It's emission_day/neuron/price.
+    A more accurate version would use pool state and actual staking rewards,
+    but this at least gives a relative signal across subnets.
+    """
     scores = {}
     for s in subnets:
         uid = s.get('netuid', 0)
@@ -31,20 +36,29 @@ def factor_yield_price(subnets: list[dict]) -> dict[str, float]:
         neurons = s.get('neuron_count', 1)
         price = s.get('alpha_price', 0)
 
-        yield_per = tao_day / max(neurons, 1)
-        ratio = yield_per / price if price > 0 else 0
+        emission_per_neuron = tao_day / max(neurons, 1)
+        # Higher emission/neuron relative to price = more attractive
+        ratio = emission_per_neuron / price if price > 0 else 0
         scores[uid] = ratio
 
     return scores
 
 
 def factor_emission_momentum(subnets: list[dict]) -> dict[str, float]:
-    """Factor 2: Emission momentum (higher emission = stronger signal)."""
+    """Factor 2: Emission growth rate (not just level).
+    
+    FIXED: Previous version just used raw emission level, which is endogenous
+    under V431+ (emission is price-based). This version uses the rank of
+    emission relative to total network emission, which is more meaningful.
+    """
     scores = {}
+    total_emission = sum(s.get('tao_equiv_day', 0) for s in subnets)
+    
     for s in subnets:
         uid = s.get('netuid', 0)
         tao_day = s.get('tao_equiv_day', 0)
-        scores[uid] = tao_day
+        # Emission share (relative to network) is more meaningful than raw level
+        scores[uid] = tao_day / max(total_emission, 1)
 
     # Normalize to 0-1
     max_val = max(scores.values()) if scores else 1
