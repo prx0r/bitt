@@ -53,33 +53,42 @@ def init_db():
 
 
 def score_mining_opportunity(r):
-    """Score a mining opportunity (0-100). Higher = easier to profit."""
+    """Score a mining opportunity (0-100). Higher = easier to profit.
+    
+    Uses MEDIAN payout, not average. Jackpot subnets score low.
+    """
     score = 0
     
-    # Yield per neuron (higher = better)
-    if r["per_neuron"] > 100: score += 30
-    elif r["per_neuron"] > 50: score += 20
-    elif r["per_neuron"] > 20: score += 10
+    # Median payout (what a TYPICAL miner actually earns)
+    median = r["median"]
+    if median > 50: score += 30
+    elif median > 20: score += 25
+    elif median > 10: score += 20
+    elif median > 5: score += 15
+    elif median > 1: score += 10
+    else: score += 5
     
     # Competition (lower = better)
-    if r["comp"] < 0.05: score += 30
+    if r["comp"] < 0.05: score += 25
     elif r["comp"] < 0.10: score += 20
-    elif r["comp"] < 0.20: score += 10
+    elif r["comp"] < 0.20: score += 15
     elif r["comp"] < 0.50: score += 5
     
-    # Seat availability (fewer emitting = more opportunity)
-    if r["emitting"] <= 5: score += 20
-    elif r["emitting"] <= 10: score += 15
-    elif r["emitting"] <= 20: score += 10
+    # Seat availability
+    if r["emitting"] <= 5: score += 15
+    elif r["emitting"] <= 10: score += 10
+    elif r["emitting"] <= 20: score += 5
     
-    # Payout distribution (lower top1 = more distributed)
-    if r["top1"] < 0.3: score += 10
+    # Distribution (lower top1 = more distributed = better)
+    if r["top1"] < 0.2: score += 15
+    elif r["top1"] < 0.3: score += 10
     elif r["top1"] < 0.5: score += 5
+    else: score -= 10  # Jackpot penalty
     
-    # Registration cost (all ~0.0005 TAO)
+    # Registration cost
     score += 5
     
-    # Tier classification
+    # Tier
     if score >= 70: tier = "TIER_A"
     elif score >= 50: tier = "TIER_B"
     elif score >= 30: tier = "TIER_C"
