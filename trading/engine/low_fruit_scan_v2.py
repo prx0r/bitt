@@ -202,18 +202,37 @@ def score_low_fruit_v2(subnet: dict, economics: dict) -> dict:
     
     reliability = min(reliability, 100)
     
-    # 5. COMPETITION (0-100)
-    competitors_per_slot = neurons / max(open_slots + emitting, 1)
-    if competitors_per_slot < 1:
-        comp = 95
-    elif competitors_per_slot < 2:
-        comp = 80
-    elif competitors_per_slot < 4:
-        comp = 60
-    elif competitors_per_slot < 8:
-        comp = 40
+    # 5. COMPETITION (0-100) — includes open slots
+    # Open slots = opportunity to enter
+    # Competitors per earning slot = difficulty
+    if open_slots > 50:
+        # Lots of openings — easy to get in
+        slot_ease = 90
+    elif open_slots > 20:
+        slot_ease = 75
+    elif open_slots > 5:
+        slot_ease = 55
+    elif open_slots > 0:
+        slot_ease = 30
     else:
-        comp = 20
+        slot_ease = 5  # Full — must wait for someone to leave
+    
+    # How many competitors per earning slot
+    earning_slots = max(emitting, 1)
+    competitors_per_slot = neurons / earning_slots
+    if competitors_per_slot < 1.5:
+        comp_diff = 90
+    elif competitors_per_slot < 3:
+        comp_diff = 70
+    elif competitors_per_slot < 6:
+        comp_diff = 50
+    elif competitors_per_slot < 12:
+        comp_diff = 30
+    else:
+        comp_diff = 10
+    
+    # Blend: slot availability + difficulty
+    comp = slot_ease * 0.5 + comp_diff * 0.5
     
     # 6. INFRASTRUCTURE (0-100) — continuous, not binary
     # Use TAO reserve and liquidity as proxies
