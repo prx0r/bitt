@@ -1,0 +1,18 @@
+{
+  "run_id": "20260903T051906_anti_vol_3pos",
+  "name": "anti_vol_3pos",
+  "strategy": "anti_vol",
+  "params": {
+    "top_n": 3
+  },
+  "start_time": "2026-09-03T05:19:06.418914",
+  "end_time": "2026-09-03T05:19:06.418916",
+  "results": {
+    "ret": -0.74,
+    "mdd": 17.19,
+    "trades": 12,
+    "wr": 16.7
+  },
+  "trades": [],
+  "n_trades": 0
+}

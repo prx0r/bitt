@@ -1,0 +1,18 @@
+{
+  "run_id": "20260903T051906_support_3pos",
+  "name": "support_3pos",
+  "strategy": "support",
+  "params": {
+    "top_n": 3
+  },
+  "start_time": "2026-09-03T05:19:06.409495",
+  "end_time": "2026-09-03T05:19:06.409497",
+  "results": {
+    "ret": 0.18,
+    "mdd": 22.46,
+    "trades": 9,
+    "wr": 33.3
+  },
+  "trades": [],
+  "n_trades": 0
+}

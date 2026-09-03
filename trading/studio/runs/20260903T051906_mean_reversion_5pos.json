@@ -1,0 +1,18 @@
+{
+  "run_id": "20260903T051906_mean_reversion_5pos",
+  "name": "mean_reversion_5pos",
+  "strategy": "mean_reversion",
+  "params": {
+    "top_n": 5
+  },
+  "start_time": "2026-09-03T05:19:06.405850",
+  "end_time": "2026-09-03T05:19:06.405853",
+  "results": {
+    "ret": -2.24,
+    "mdd": 4.06,
+    "trades": 16,
+    "wr": 37.5
+  },
+  "trades": [],
+  "n_trades": 0
+}

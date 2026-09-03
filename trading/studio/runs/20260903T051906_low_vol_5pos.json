@@ -1,0 +1,18 @@
+{
+  "run_id": "20260903T051906_low_vol_5pos",
+  "name": "low_vol_5pos",
+  "strategy": "low_vol",
+  "params": {
+    "top_n": 5
+  },
+  "start_time": "2026-09-03T05:19:06.404121",
+  "end_time": "2026-09-03T05:19:06.404123",
+  "results": {
+    "ret": 1.11,
+    "mdd": 0,
+    "trades": 20,
+    "wr": 30.0
+  },
+  "trades": [],
+  "n_trades": 0
+}

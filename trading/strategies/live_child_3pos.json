@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-09-03T05:19:31.199967",
+  "strategy": "composite",
+  "allocation": {
+    "0": 0.05,
+    "1": 0.3167,
+    "3": 0.3167,
+    "4": 0.3167
+  },
+  "meta": {
+    "total_tao": 100.0,
+    "positions": 3,
+    "cash_pct": 0.05
+  }
+}

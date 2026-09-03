@@ -1,0 +1,18 @@
+{
+  "run_id": "20260903T051906_child_10pos",
+  "name": "child_10pos",
+  "strategy": "child",
+  "params": {
+    "top_n": 10
+  },
+  "start_time": "2026-09-03T05:19:06.414230",
+  "end_time": "2026-09-03T05:19:06.414232",
+  "results": {
+    "ret": -1.56,
+    "mdd": 1.57,
+    "trades": 30,
+    "wr": 40.0
+  },
+  "trades": [],
+  "n_trades": 0
+}

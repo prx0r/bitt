@@ -1,0 +1,18 @@
+{
+  "run_id": "20260903T051906_baseline_10pos",
+  "name": "baseline_10pos",
+  "strategy": "baseline",
+  "params": {
+    "top_n": 10
+  },
+  "start_time": "2026-09-03T05:19:06.422633",
+  "end_time": "2026-09-03T05:19:06.422635",
+  "results": {
+    "ret": -0.18,
+    "mdd": 6.67,
+    "trades": 30,
+    "wr": 46.7
+  },
+  "trades": [],
+  "n_trades": 0
+}

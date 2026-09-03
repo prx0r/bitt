@@ -1,0 +1,466 @@
+{
+  "strategies": {
+    "low_vol_{\"top_n\": 3}": {
+      "name": "low_vol_3pos",
+      "strategy": "low_vol",
+      "params": {
+        "top_n": 3
+      },
+      "runs": [
+        {
+          "run_id": "20260903T051906_low_vol_3pos",
+          "return_pct": -0.74,
+          "max_dd": 17.19,
+          "trades": 12,
+          "win_rate": 16.7,
+          "manifest_hash": "e3b133a0298c232eeb54b1ed7263d5aafe641ae2fdea7eac8dc392ea3cd844cb",
+          "timestamp": "2026-09-03T05:19:06.403934"
+        }
+      ],
+      "best_return": -0.74,
+      "avg_return": -0.74,
+      "total_runs": 1
+    },
+    "low_vol_{\"top_n\": 5}": {
+      "name": "low_vol_5pos",
+      "strategy": "low_vol",
+      "params": {
+        "top_n": 5
+      },
+      "runs": [
+        {
+          "run_id": "20260903T051906_low_vol_5pos",
+          "return_pct": 1.11,
+          "max_dd": 0,
+          "trades": 20,
+          "win_rate": 30.0,
+          "manifest_hash": "9617464e6358e13021f6600d11b53e29f61153a384964e2384a986545abd636f",
+          "timestamp": "2026-09-03T05:19:06.404428"
+        }
+      ],
+      "best_return": 1.11,
+      "avg_return": 1.11,
+      "total_runs": 1
+    },
+    "low_vol_{\"top_n\": 10}": {
+      "name": "low_vol_10pos",
+      "strategy": "low_vol",
+      "params": {
+        "top_n": 10
+      },
+      "runs": [
+        {
+          "run_id": "20260903T051906_low_vol_10pos",
+          "return_pct": -1.59,
+          "max_dd": 1.59,
+          "trades": 29,
+          "win_rate": 31.0,
+          "manifest_hash": "cc95be5516c8fa59d952553c8c57f58db9c5de9b53fb5f2e8bfe9808b8baf8e8",
+          "timestamp": "2026-09-03T05:19:06.404993"
+        }
+      ],
+      "best_return": -1.59,
+      "avg_return": -1.59,
+      "total_runs": 1
+    },
+    "mean_reversion_{\"top_n\": 3}": {
+      "name": "mean_reversion_3pos",
+      "strategy": "mean_reversion",
+      "params": {
+        "top_n": 3
+      },
+      "runs": [
+        {
+          "run_id": "20260903T051906_mean_reversion_3pos",
+          "return_pct": -4.27,
+          "max_dd": 6.81,
+          "trades": 10,
+          "win_rate": 30.0,
+          "manifest_hash": "4fbc8942f0c51fb43de835deb83b62508d3ab7c9a9294d714e85fa30b038671b",
+          "timestamp": "2026-09-03T05:19:06.405551"
+        }
+      ],
+      "best_return": -4.27,
+      "avg_return": -4.27,
+      "total_runs": 1
+    },
+    "mean_reversion_{\"top_n\": 5}": {
+      "name": "mean_reversion_5pos",
+      "strategy": "mean_reversion",
+      "params": {
+        "top_n": 5
+      },
+      "runs": [
+        {
+          "run_id": "20260903T051906_mean_reversion_5pos",
+          "return_pct": -2.24,
+          "max_dd": 4.06,
+          "trades": 16,
+          "win_rate": 37.5,
+          "manifest_hash": "de3ede9be53a3295daedd2bbe1c32aefb15b6e645ba58850fb31dea53d613b25",
+          "timestamp": "2026-09-03T05:19:06.406177"
+        }
+      ],
+      "best_return": -2.24,
+      "avg_return": -2.24,
+      "total_runs": 1
+    },
+    "mean_reversion_{\"top_n\": 10}": {
+      "name": "mean_reversion_10pos",
+      "strategy": "mean_reversion",
+      "params": {
+        "top_n": 10
+      },
+      "runs": [
+        {
+          "run_id": "20260903T051906_mean_reversion_10pos",
+          "return_pct": -0.49,
+          "max_dd": 2.13,
+          "trades": 18,
+          "win_rate": 44.4,
+          "manifest_hash": "c9873b75354cd4c833ad9ba1616587c8daf678f5e96b01b2fc12b4516f251417",
+          "timestamp": "2026-09-03T05:19:06.406785"
+        }
+      ],
+      "best_return": -0.49,
+      "avg_return": -0.49,
+      "total_runs": 1
+    },
+    "squeeze_{\"top_n\": 3}": {
+      "name": "squeeze_3pos",
+      "strategy": "squeeze",
+      "params": {
+        "top_n": 3
+      },
+      "runs": [
+        {
+          "run_id": "20260903T051906_squeeze_3pos",
+          "return_pct": 0.0,
+          "max_dd": 0,
+          "trades": 0,
+          "win_rate": 0.0,
+          "manifest_hash": "7b4ba1b9151fd35f62f5d1cb5232ef13b4ae994a68993adbfb1ce7064e506dab",
+          "timestamp": "2026-09-03T05:19:06.407540"
+        }
+      ],
+      "best_return": 0.0,
+      "avg_return": 0.0,
+      "total_runs": 1
+    },
+    "squeeze_{\"top_n\": 5}": {
+      "name": "squeeze_5pos",
+      "strategy": "squeeze",
+      "params": {
+        "top_n": 5
+      },
+      "runs": [
+        {
+          "run_id": "20260903T051906_squeeze_5pos",
+          "return_pct": 0.0,
+          "max_dd": 0,
+          "trades": 0,
+          "win_rate": 0.0,
+          "manifest_hash": "e184342d75219056f755b6072ef13f97285c9167208df085b8b8362ae87fed48",
+          "timestamp": "2026-09-03T05:19:06.408263"
+        }
+      ],
+      "best_return": 0.0,
+      "avg_return": 0.0,
+      "total_runs": 1
+    },
+    "squeeze_{\"top_n\": 10}": {
+      "name": "squeeze_10pos",
+      "strategy": "squeeze",
+      "params": {
+        "top_n": 10
+      },
+      "runs": [
+        {
+          "run_id": "20260903T051906_squeeze_10pos",
+          "return_pct": 0.0,
+          "max_dd": 0,
+          "trades": 0,
+          "win_rate": 0.0,
+          "manifest_hash": "8db3ee87f23d3a2552b0b82c9531ad12865fabde1325c15ba53a51167c276e7f",
+          "timestamp": "2026-09-03T05:19:06.409010"
+        }
+      ],
+      "best_return": 0.0,
+      "avg_return": 0.0,
+      "total_runs": 1
+    },
+    "support_{\"top_n\": 3}": {
+      "name": "support_3pos",
+      "strategy": "support",
+      "params": {
+        "top_n": 3
+      },
+      "runs": [
+        {
+          "run_id": "20260903T051906_support_3pos",
+          "return_pct": 0.18,
+          "max_dd": 22.46,
+          "trades": 9,
+          "win_rate": 33.3,
+          "manifest_hash": "092ea94bf14157bf37a7b89306a4864a7c053bfb4ff831da1276000a3bfa76de",
+          "timestamp": "2026-09-03T05:19:06.409799"
+        }
+      ],
+      "best_return": 0.18,
+      "avg_return": 0.18,
+      "total_runs": 1
+    },
+    "support_{\"top_n\": 5}": {
+      "name": "support_5pos",
+      "strategy": "support",
+      "params": {
+        "top_n": 5
+      },
+      "runs": [
+        {
+          "run_id": "20260903T051906_support_5pos",
+          "return_pct": 2.48,
+          "max_dd": 8.46,
+          "trades": 18,
+          "win_rate": 38.9,
+          "manifest_hash": "75b2e0006de005f88e0e61099c80b6420dd12f333e4a8c83d3d4df79d80a59f3",
+          "timestamp": "2026-09-03T05:19:06.410665"
+        }
+      ],
+      "best_return": 2.48,
+      "avg_return": 2.48,
+      "total_runs": 1
+    },
+    "support_{\"top_n\": 10}": {
+      "name": "support_10pos",
+      "strategy": "support",
+      "params": {
+        "top_n": 10
+      },
+      "runs": [
+        {
+          "run_id": "20260903T051906_support_10pos",
+          "return_pct": -0.18,
+          "max_dd": 6.67,
+          "trades": 30,
+          "win_rate": 46.7,
+          "manifest_hash": "01a9d828dec00173a50cbcfbc89b2b15bc610f26046ffc85380e1cbd2f24c7e2",
+          "timestamp": "2026-09-03T05:19:06.411535"
+        }
+      ],
+      "best_return": -0.18,
+      "avg_return": -0.18,
+      "total_runs": 1
+    },
+    "child_{\"top_n\": 3}": {
+      "name": "child_3pos",
+      "strategy": "child",
+      "params": {
+        "top_n": 3
+      },
+      "runs": [
+        {
+          "run_id": "20260903T051906_child_3pos",
+          "return_pct": 0.6,
+          "max_dd": 0,
+          "trades": 12,
+          "win_rate": 16.7,
+          "manifest_hash": "7ee8a60c559ad6602746105093acd9d631e6bcb519d7220a734ffa0c0e32b041",
+          "timestamp": "2026-09-03T05:19:06.412514"
+        }
+      ],
+      "best_return": 0.6,
+      "avg_return": 0.6,
+      "total_runs": 1
+    },
+    "child_{\"top_n\": 5}": {
+      "name": "child_5pos",
+      "strategy": "child",
+      "params": {
+        "top_n": 5
+      },
+      "runs": [
+        {
+          "run_id": "20260903T051906_child_5pos",
+          "return_pct": 1.72,
+          "max_dd": 0,
+          "trades": 20,
+          "win_rate": 35.0,
+          "manifest_hash": "5639063545c9ee98cc585aefca644853ef85c8c017f8bb2b13da588b82efbf3d",
+          "timestamp": "2026-09-03T05:19:06.413473"
+        }
+      ],
+      "best_return": 1.72,
+      "avg_return": 1.72,
+      "total_runs": 1
+    },
+    "child_{\"top_n\": 10}": {
+      "name": "child_10pos",
+      "strategy": "child",
+      "params": {
+        "top_n": 10
+      },
+      "runs": [
+        {
+          "run_id": "20260903T051906_child_10pos",
+          "return_pct": -1.56,
+          "max_dd": 1.57,
+          "trades": 30,
+          "win_rate": 40.0,
+          "manifest_hash": "bc0e6a578f2d42e6a7ba84c04d966964748b781f827e3b000fb88c8a7f1e8be9",
+          "timestamp": "2026-09-03T05:19:06.414563"
+        }
+      ],
+      "best_return": -1.56,
+      "avg_return": -1.56,
+      "total_runs": 1
+    },
+    "momentum_{\"top_n\": 3}": {
+      "name": "momentum_3pos",
+      "strategy": "momentum",
+      "params": {
+        "top_n": 3
+      },
+      "runs": [
+        {
+          "run_id": "20260903T051906_momentum_3pos",
+          "return_pct": -5.86,
+          "max_dd": 5.86,
+          "trades": 13,
+          "win_rate": 38.5,
+          "manifest_hash": "d04f97b4c204a928ea2916c6cbf869fc14a8a6d2df4de09647929e24a454e54e",
+          "timestamp": "2026-09-03T05:19:06.415691"
+        }
+      ],
+      "best_return": -5.86,
+      "avg_return": -5.86,
+      "total_runs": 1
+    },
+    "momentum_{\"top_n\": 5}": {
+      "name": "momentum_5pos",
+      "strategy": "momentum",
+      "params": {
+        "top_n": 5
+      },
+      "runs": [
+        {
+          "run_id": "20260903T051906_momentum_5pos",
+          "return_pct": -2.72,
+          "max_dd": 2.72,
+          "trades": 21,
+          "win_rate": 42.9,
+          "manifest_hash": "e77bb494c8d732cf20415a0e2f0380582eda51ecfd7dbb1be11c567315427cc5",
+          "timestamp": "2026-09-03T05:19:06.416908"
+        }
+      ],
+      "best_return": -2.72,
+      "avg_return": -2.72,
+      "total_runs": 1
+    },
+    "momentum_{\"top_n\": 10}": {
+      "name": "momentum_10pos",
+      "strategy": "momentum",
+      "params": {
+        "top_n": 10
+      },
+      "runs": [
+        {
+          "run_id": "20260903T051906_momentum_10pos",
+          "return_pct": -0.54,
+          "max_dd": 1.64,
+          "trades": 32,
+          "win_rate": 46.9,
+          "manifest_hash": "c07f4a2c39fba38fb5a6383a2409dcf69e3d1dbc6c2058b1705b7653d06b8dfe",
+          "timestamp": "2026-09-03T05:19:06.418103"
+        }
+      ],
+      "best_return": -0.54,
+      "avg_return": -0.54,
+      "total_runs": 1
+    },
+    "anti_vol_{\"top_n\": 3}": {
+      "name": "anti_vol_3pos",
+      "strategy": "anti_vol",
+      "params": {
+        "top_n": 3
+      },
+      "runs": [
+        {
+          "run_id": "20260903T051906_anti_vol_3pos",
+          "return_pct": -0.74,
+          "max_dd": 17.19,
+          "trades": 12,
+          "win_rate": 16.7,
+          "manifest_hash": "3921a73009d13df9898fa812a4f7b82844cc657aa3972fb718422c5a3c74cee1",
+          "timestamp": "2026-09-03T05:19:06.419291"
+        }
+      ],
+      "best_return": -0.74,
+      "avg_return": -0.74,
+      "total_runs": 1
+    },
+    "anti_vol_{\"top_n\": 5}": {
+      "name": "anti_vol_5pos",
+      "strategy": "anti_vol",
+      "params": {
+        "top_n": 5
+      },
+      "runs": [
+        {
+          "run_id": "20260903T051906_anti_vol_5pos",
+          "return_pct": 1.11,
+          "max_dd": 0,
+          "trades": 20,
+          "win_rate": 30.0,
+          "manifest_hash": "f2e65caba4b05ca3a4f61901b9d99a3836e1534b5cb98f14b1b89a8e83db97d5",
+          "timestamp": "2026-09-03T05:19:06.420503"
+        }
+      ],
+      "best_return": 1.11,
+      "avg_return": 1.11,
+      "total_runs": 1
+    },
+    "anti_vol_{\"top_n\": 10}": {
+      "name": "anti_vol_10pos",
+      "strategy": "anti_vol",
+      "params": {
+        "top_n": 10
+      },
+      "runs": [
+        {
+          "run_id": "20260903T051906_anti_vol_10pos",
+          "return_pct": 0.8,
+          "max_dd": 0,
+          "trades": 30,
+          "win_rate": 36.7,
+          "manifest_hash": "7abb729fc3cf2ef1fe5c99ed2876fc9f624337ef4a9175b229cc77481514a013",
+          "timestamp": "2026-09-03T05:19:06.421724"
+        }
+      ],
+      "best_return": 0.8,
+      "avg_return": 0.8,
+      "total_runs": 1
+    },
+    "baseline_{\"top_n\": 10}": {
+      "name": "baseline_10pos",
+      "strategy": "baseline",
+      "params": {
+        "top_n": 10
+      },
+      "runs": [
+        {
+          "run_id": "20260903T051906_baseline_10pos",
+          "return_pct": -0.18,
+          "max_dd": 6.67,
+          "trades": 30,
+          "win_rate": 46.7,
+          "manifest_hash": "abe4192f4f41224140a1b9c381be9ba80322af427e16a9f5f4b2d752b44df4fe",
+          "timestamp": "2026-09-03T05:19:06.422992"
+        }
+      ],
+      "best_return": -0.18,
+      "avg_return": -0.18,
+      "total_runs": 1
+    }
+  }
+}

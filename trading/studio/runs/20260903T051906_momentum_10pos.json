@@ -1,0 +1,18 @@
+{
+  "run_id": "20260903T051906_momentum_10pos",
+  "name": "momentum_10pos",
+  "strategy": "momentum",
+  "params": {
+    "top_n": 10
+  },
+  "start_time": "2026-09-03T05:19:06.417703",
+  "end_time": "2026-09-03T05:19:06.417705",
+  "results": {
+    "ret": -0.54,
+    "mdd": 1.64,
+    "trades": 32,
+    "wr": 46.9
+  },
+  "trades": [],
+  "n_trades": 0
+}
