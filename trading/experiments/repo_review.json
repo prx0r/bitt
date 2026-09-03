@@ -1,0 +1,180 @@
+{
+  "opentao-trader": {
+    "exists": true,
+    "files": 66,
+    "size_kb": 806,
+    "patterns": {
+      "has_backtest": true,
+      "has_execution": true,
+      "has_rebalance": false,
+      "has_pricing": false,
+      "has_slippage": false,
+      "has_pool": false,
+      "has_metagraph": false,
+      "has_validator": false,
+      "has_miner": false,
+      "has_staking": true,
+      "has_config": true,
+      "has_tests": true,
+      "has_docker": false
+    },
+    "readme_preview": "# OpenTaoTrader\n\nPaper and live trading runner for Bittensor subnet alpha tokens. Reads\nchain data from a running [OpenTaoAPI](https://github.com/ryanmercier/OpenTaoAPI)\ninstance, runs the same signal pipeline whether you're paper or live,\nand writes its own SQLite of portfolios, positions, trades, and\nvalue-history for the dashboard.\n\n> Built solo by Ryan Mercier. Sister repo to OpenTaoAPI.\n\n## What it does\n\n- **Paper trading** against the upstream API's live snapshot feed.\n  AMM-aware: constan",
+    "key_files": [
+      "trading/paper_trader.py",
+      "trading/live_trader.py",
+      "trading/config.py",
+      "server/main.py",
+      "server/config.py"
+    ]
+  },
+  "taoplicate": {
+    "exists": true,
+    "files": 4,
+    "size_kb": 34,
+    "patterns": {
+      "has_backtest": false,
+      "has_execution": false,
+      "has_rebalance": false,
+      "has_pricing": false,
+      "has_slippage": false,
+      "has_pool": false,
+      "has_metagraph": false,
+      "has_validator": false,
+      "has_miner": false,
+      "has_staking": false,
+      "has_config": false,
+      "has_tests": false,
+      "has_docker": false
+    },
+    "readme_preview": "<p align=\"center\">\n  <img width=\"482\" height=\"482\" alt=\"taoplicate-top-left\" src=\"https://github.com/user-attachments/assets/b5a6e44a-8079-4246-a383-29849c3f5044\" />\n</p>\n\n# TAOplicate: A Real-Time BitTensor Copy-Trading Bot \n\nReal-time, PM2-managed bot that mirrors **stake/unstake** actions from chosen BitTensor **hotkeys** across **all subnets** using your wallet \u2014 with Discord alerts, daily summaries (00:00 UTC), automatic low-balance pause/resume, **SQLite analytics**, **weighted proportiona",
+    "key_files": [
+      "ecosystem.config.js"
+    ]
+  },
+  "dtao-trader": {
+    "exists": false
+  },
+  "miner-spy": {
+    "exists": true,
+    "files": 41,
+    "size_kb": 1766,
+    "patterns": {
+      "has_backtest": false,
+      "has_execution": true,
+      "has_rebalance": false,
+      "has_pricing": false,
+      "has_slippage": false,
+      "has_pool": false,
+      "has_metagraph": false,
+      "has_validator": false,
+      "has_miner": true,
+      "has_staking": false,
+      "has_config": true,
+      "has_tests": true,
+      "has_docker": false
+    },
+    "readme_preview": "# \ud83d\udd0d Miner Spy - Bittensor Network Analysis Tool\n\n<div align=\"center\">\n  <img src=\"ez_trades.png\" alt=\"Miner Spy Logo\" width=\"120\" height=\"120\">\n  \n  **Comprehensive decentralization analysis and geographic visualization for Bittensor subnets**\n  \n  [![React](https://img.shields.io/badge/React-18.2-blue.svg)](https://reactjs.org/)\n  [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)\n  [![Express](https://img.shields.io/badge/Express-4.18-yellow.svg)](https://exp",
+    "key_files": [
+      "ez_trades.png",
+      "client/src/App.css",
+      "client/src/App.js",
+      "client/src/App.test.js"
+    ]
+  },
+  "sn62-ridges": {
+    "exists": true,
+    "files": 303,
+    "size_kb": 2333,
+    "patterns": {
+      "has_backtest": false,
+      "has_execution": true,
+      "has_rebalance": false,
+      "has_pricing": false,
+      "has_slippage": false,
+      "has_pool": false,
+      "has_metagraph": false,
+      "has_validator": true,
+      "has_miner": true,
+      "has_staking": false,
+      "has_config": true,
+      "has_tests": true,
+      "has_docker": true
+    },
+    "readme_preview": "# Ridges\n\n\nRidges is an Bittensor subnet that acts as an open source agent competition platform, where miners both compete and collaborate on a software engineering agent. Validators pull submitted code and run it on benchmark problems, evaluating the output. The highest-scoring agent earns emissions.\n\n**Docs:** [docs.ridges.ai](https://docs.ridges.ai)\n\n```\n                           \u00b7        \u00b7        \u00b7\n                 .   . \u00b7 \u00b4  ` \u00b7 .         . \u00b7 \u00b4 ` \u00b7 .   .\n                  . \u00b7              ",
+    "key_files": [
+      ".pre-commit-config.yaml",
+      "alembic/versions/2026_05_15_auto_approval_pipeline.py",
+      "validator/main.py",
+      "validator/config.py",
+      "tests/validator/test_config.py",
+      "tests/validator/test_main_status_flow.py",
+      "tests/miners/test_cli_config.py",
+      "tests/queries/test_incentive_approval.py",
+      "tests/queries/test_approval_projector.py",
+      "tests/queries/test_approval_policy_binding.py"
+    ]
+  },
+  "sn67-harnyx": {
+    "exists": true,
+    "files": 565,
+    "size_kb": 9431,
+    "patterns": {
+      "has_backtest": false,
+      "has_execution": true,
+      "has_rebalance": false,
+      "has_pricing": true,
+      "has_slippage": false,
+      "has_pool": false,
+      "has_metagraph": false,
+      "has_validator": true,
+      "has_miner": true,
+      "has_staking": false,
+      "has_config": true,
+      "has_tests": true,
+      "has_docker": true
+    },
+    "readme_preview": "# Harnyx Subnet\n\n**A Deep Research harness under continuous competitive pressure \u2014 always adapting, never static.**\n\nHarnyx (SN 67) is a Bittensor subnet for deep research. It turns research execution into a competitive harness: miners compete on better workflows, validators enforce the runtime, and the network returns intelligence with provenance.\n\nThe core thesis is simple: better models matter, but better harnesses compound faster. Deep research is not one reasoning step. It is decomposition,",
+    "key_files": [
+      "validator/tests/application/test_similarity_judge.py",
+      "validator/tests/application/test_submit_weights.py",
+      "validator/tests/application/test_monitor_heartbeat.py",
+      "validator/tests/application/test_invoke_entrypoint.py",
+      "validator/tests/application/test_application_orchestration.py",
+      "validator/tests/application/test_execute_tool.py",
+      "validator/tests/application/test_evaluation_runner.py",
+      "validator/tests/application/test_platform_tool_proxy.py",
+      "validator/tests/application/__init__.py",
+      "validator/tests/application/test_miner_task_dto.py"
+    ]
+  },
+  "sn61-redteam": {
+    "exists": true,
+    "files": 206,
+    "size_kb": 10674,
+    "patterns": {
+      "has_backtest": false,
+      "has_execution": false,
+      "has_rebalance": false,
+      "has_pricing": false,
+      "has_slippage": false,
+      "has_pool": true,
+      "has_metagraph": false,
+      "has_validator": true,
+      "has_miner": true,
+      "has_staking": false,
+      "has_config": true,
+      "has_tests": true,
+      "has_docker": false
+    },
+    "readme_preview": "",
+    "key_files": [
+      "repo/.pre-commit-config.yaml",
+      "repo/.editorconfig",
+      "repo/src/redteam_core/config/base.py",
+      "repo/src/redteam_core/config/bittensor.py",
+      "repo/src/redteam_core/config/internal_services.py",
+      "repo/src/redteam_core/config/main.py",
+      "repo/src/redteam_core/config/__init__.py"
+    ]
+  }
+}

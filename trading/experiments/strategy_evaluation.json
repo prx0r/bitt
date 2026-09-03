@@ -1,0 +1,88 @@
+{
+  "low_vol_alpha": {
+    "strategy": "low_vol_alpha",
+    "n_observations": 7672,
+    "long_return": 0.0333,
+    "short_return": -0.0274,
+    "spread": 0.0607,
+    "long_win_rate": 0.1643,
+    "short_win_rate": 0.3527,
+    "sharpe": 0.1189,
+    "max_drawdown": 0.6548,
+    "annualized": 156012.865,
+    "factor_ics": {
+      "vol_7d": -0.16965625007827512
+    },
+    "hold_period_hours": 24
+  },
+  "low_vol_active": {
+    "strategy": "low_vol_active",
+    "n_observations": 7672,
+    "long_return": 0.0289,
+    "short_return": -0.0215,
+    "spread": 0.0503,
+    "long_win_rate": 0.1995,
+    "short_win_rate": 0.3638,
+    "sharpe": 0.1039,
+    "max_drawdown": 0.7585,
+    "annualized": 32425.6242,
+    "factor_ics": {
+      "vol_7d": -0.16965625007827512,
+      "active_ratio": 0.026202638203971135
+    },
+    "hold_period_hours": 24
+  },
+  "anti_yield_trap": {
+    "strategy": "anti_yield_trap",
+    "n_observations": 7672,
+    "long_return": 0.0243,
+    "short_return": -0.0167,
+    "spread": 0.041,
+    "long_win_rate": 0.1923,
+    "short_win_rate": 0.3181,
+    "sharpe": 0.0856,
+    "max_drawdown": 1.0,
+    "annualized": 6385.4304,
+    "factor_ics": {
+      "vol_7d": -0.16965625007827512,
+      "emit_per_neuron": -0.15196576569462822
+    },
+    "hold_period_hours": 24
+  },
+  "distributed_value": {
+    "strategy": "distributed_value",
+    "n_observations": 7672,
+    "long_return": 0.0289,
+    "short_return": -0.0142,
+    "spread": 0.0431,
+    "long_win_rate": 0.1995,
+    "short_win_rate": 0.3566,
+    "sharpe": 0.1039,
+    "max_drawdown": 0.7585,
+    "annualized": 32425.6242,
+    "factor_ics": {
+      "vol_7d": -0.16965625007827512,
+      "hhi_emit": -0.12518928270383234,
+      "active_ratio": 0.030649403106153703
+    },
+    "hold_period_hours": 24
+  },
+  "established_quality": {
+    "strategy": "established_quality",
+    "n_observations": 7672,
+    "long_return": 0.0243,
+    "short_return": -0.0154,
+    "spread": 0.0397,
+    "long_win_rate": 0.1949,
+    "short_win_rate": 0.3462,
+    "sharpe": 0.0856,
+    "max_drawdown": 1.0,
+    "annualized": 6384.8266,
+    "factor_ics": {
+      "price": 0.08012082304589244,
+      "vol_7d": -0.1695526999457075,
+      "active_ratio": 0.03233389521559081
+    },
+    "hold_period_hours": 24
+  }
+}

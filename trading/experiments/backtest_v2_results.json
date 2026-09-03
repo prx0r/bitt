@@ -1,0 +1,1829 @@
+[
+  {
+    "initial_tao": 100.0,
+    "final_value": 100.0,
+    "total_return_pct": 0.0,
+    "history": [
+      {
+        "timestamp": "2026-08-31T06:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T07:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T08:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T09:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T10:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T11:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T12:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T13:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T14:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T15:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T16:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T17:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T18:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T19:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T20:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T21:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T22:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T23:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T00:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T01:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T02:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T03:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T04:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T05:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T06:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T07:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T08:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T08:37:29.624286",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T08:49:25.124764",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T08:52:41.254759",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T09:00:02.476589",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T09:00:28.585512",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T09:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T10:00:02.534208",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T10:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T11:00:02.845308",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T11:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T12:00:02.260693",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T12:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T13:00:02.365333",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T13:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T14:00:01.808019",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T14:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T15:00:02.451811",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T15:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T16:00:02.647534",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T16:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T17:00:01.909030",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T17:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T18:00:02.339386",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T18:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T19:00:02.451536",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T19:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T20:00:01.775159",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T20:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T21:00:01.865333",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T21:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T22:00:02.393636",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T22:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T23:00:02.211635",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T23:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T00:00:03.689593",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T00:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T01:00:02.284833",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T01:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T02:00:02.145062",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T02:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T03:00:02.395960",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T03:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T04:00:02.449629",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T04:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T05:00:02.168644",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T05:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T06:00:02.716963",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T06:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T07:00:02.416174",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T07:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T08:00:02.390922",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T08:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T09:00:02.720207",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T09:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T10:00:01.818897",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T10:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T11:00:02.292510",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T11:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T12:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T13:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T14:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T15:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T16:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T17:26:48Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T18:27:00Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T19:27:00Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T20:27:00Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T21:27:00Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T22:27:00Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-02T23:27:00Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-03T00:27:00Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-03T01:27:00Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-03T02:27:00Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      }
+    ],
+    "n_timestamps": 100,
+    "name": "hold_tao"
+  },
+  {
+    "initial_tao": 100.0,
+    "final_value": 92.5619,
+    "total_return_pct": -7.44,
+    "history": [
+      {
+        "timestamp": "2026-08-31T06:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T07:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T08:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T09:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T10:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T11:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T12:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T13:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T14:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T15:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T16:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T17:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T18:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T19:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T20:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T21:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T22:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-08-31T23:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T00:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T01:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T02:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T03:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T04:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T05:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T06:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T07:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T08:26:36Z",
+        "total_value": 100.0,
+        "tao": 100.0,
+        "positions": 0
+      },
+      {
+        "timestamp": "2026-09-01T08:37:29.624286",
+        "total_value": 99.99999999999999,
+        "tao": 34.86784401,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T08:49:25.124764",
+        "total_value": 99.99659684704943,
+        "tao": 34.86784401,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T08:52:41.254759",
+        "total_value": 99.99518005588381,
+        "tao": 34.86784401,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T09:00:02.476589",
+        "total_value": 99.99774642230419,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T09:00:28.585512",
+        "total_value": 99.99781284837547,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T09:26:36Z",
+        "total_value": 93.24637142123245,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T10:00:02.534208",
+        "total_value": 100.02602033616539,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T10:26:36Z",
+        "total_value": 93.27008900762982,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T11:00:02.845308",
+        "total_value": 100.02702281992731,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T11:26:36Z",
+        "total_value": 93.26221150016934,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T12:00:02.260693",
+        "total_value": 100.02151384921022,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T12:26:36Z",
+        "total_value": 93.25700342567495,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T13:00:02.365333",
+        "total_value": 100.05306032179448,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T13:26:36Z",
+        "total_value": 93.28703264558288,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T14:00:01.808019",
+        "total_value": 99.38783130198749,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T14:26:36Z",
+        "total_value": 93.30506258794844,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T15:00:02.451811",
+        "total_value": 99.48624079898256,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T15:26:48Z",
+        "total_value": 93.40258655244179,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T16:00:02.647534",
+        "total_value": 99.4596617565254,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T16:26:48Z",
+        "total_value": 93.37962100784472,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T17:00:01.909030",
+        "total_value": 99.48191691540192,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T17:26:48Z",
+        "total_value": 93.4044147396955,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T18:00:02.339386",
+        "total_value": 99.63891458535433,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T18:26:48Z",
+        "total_value": 93.56257486920676,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T19:00:02.451536",
+        "total_value": 99.5956294421181,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T19:26:48Z",
+        "total_value": 93.52169851468257,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T20:00:01.775159",
+        "total_value": 99.57675325503695,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T20:26:48Z",
+        "total_value": 93.50486271968269,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T21:00:01.865333",
+        "total_value": 99.67407418840878,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T21:26:48Z",
+        "total_value": 93.60078307580036,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T22:00:02.393636",
+        "total_value": 99.6464149958922,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T22:26:48Z",
+        "total_value": 93.56209096182477,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T23:00:02.211635",
+        "total_value": 99.51553921893402,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-01T23:26:48Z",
+        "total_value": 93.43080467355755,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T00:00:03.689593",
+        "total_value": 99.60919917441711,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T00:26:48Z",
+        "total_value": 93.52479282223048,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T01:00:02.284833",
+        "total_value": 99.49908776397372,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T01:26:48Z",
+        "total_value": 93.41005902791476,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T02:00:02.145062",
+        "total_value": 99.25639031058407,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T02:26:48Z",
+        "total_value": 93.16513532022765,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T03:00:02.395960",
+        "total_value": 99.16480565316938,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T03:26:48Z",
+        "total_value": 93.07339823600877,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T04:00:02.449629",
+        "total_value": 99.08133145495611,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T04:26:48Z",
+        "total_value": 92.98884074843542,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T05:00:02.168644",
+        "total_value": 99.01408634630067,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T05:26:48Z",
+        "total_value": 92.92156069786323,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T06:00:02.716963",
+        "total_value": 99.10817344867664,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T06:26:48Z",
+        "total_value": 93.01586948129281,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T07:00:02.416174",
+        "total_value": 99.1891324407455,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T07:26:48Z",
+        "total_value": 93.0996239616132,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T08:00:02.390922",
+        "total_value": 99.1499850221255,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T08:26:48Z",
+        "total_value": 93.06373097555813,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T09:00:02.720207",
+        "total_value": 99.06352273287568,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T09:26:48Z",
+        "total_value": 92.96977110434214,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T10:00:01.818897",
+        "total_value": 98.59444142695565,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T10:26:48Z",
+        "total_value": 92.498333849803,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T11:00:02.292510",
+        "total_value": 98.69152698778035,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T11:26:48Z",
+        "total_value": 92.56189695864612,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T12:26:48Z",
+        "total_value": 92.56189695864612,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T13:26:48Z",
+        "total_value": 92.56189695864612,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T14:26:48Z",
+        "total_value": 92.56189695864612,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T15:26:48Z",
+        "total_value": 92.56189695864612,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T16:26:48Z",
+        "total_value": 92.56189695864612,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T17:26:48Z",
+        "total_value": 92.56189695864612,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T18:27:00Z",
+        "total_value": 92.56189695864612,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T19:27:00Z",
+        "total_value": 92.56189695864612,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T20:27:00Z",
+        "total_value": 92.56189695864612,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T21:27:00Z",
+        "total_value": 92.56189695864612,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T22:27:00Z",
+        "total_value": 92.56189695864612,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-02T23:27:00Z",
+        "total_value": 92.56189695864612,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-03T00:27:00Z",
+        "total_value": 92.56189695864612,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-03T01:27:00Z",
+        "total_value": 92.56189695864612,
+        "tao": 40.38284651569406,
+        "positions": 10
+      },
+      {
+        "timestamp": "2026-09-03T02:27:00Z",
+        "total_value": 92.56189695864612,
+        "tao": 40.38284651569406,
+        "positions": 10
+      }
+    ],
+    "n_timestamps": 100,
+    "name": "equal_weight_10"
+  },
+  {
+    "initial_tao": 100.0,
+    "final_value": 14.283,
+    "total_return_pct": -85.72,
+    "history": [
+      {
+        "timestamp": "2026-08-31T06:26:36Z",
+        "total_value": 100.0,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-08-31T07:26:36Z",
+        "total_value": 100.02614255320066,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-08-31T08:26:36Z",
+        "total_value": 100.19454366647632,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-08-31T09:26:36Z",
+        "total_value": 100.24903627394298,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-08-31T10:26:36Z",
+        "total_value": 99.512515401927,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-08-31T11:26:36Z",
+        "total_value": 99.54246130265905,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-08-31T12:26:36Z",
+        "total_value": 99.53403318869334,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-08-31T13:26:36Z",
+        "total_value": 99.5378467662199,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-08-31T14:26:36Z",
+        "total_value": 99.50724288451482,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-08-31T15:26:36Z",
+        "total_value": 99.61088178343041,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-08-31T16:26:36Z",
+        "total_value": 99.93468530033336,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-08-31T17:26:36Z",
+        "total_value": 99.93112006713719,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-08-31T18:26:36Z",
+        "total_value": 99.50885880630136,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-08-31T19:26:36Z",
+        "total_value": 99.50915967957472,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-08-31T20:26:36Z",
+        "total_value": 99.62425979202133,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-08-31T21:26:36Z",
+        "total_value": 99.8034557433203,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-08-31T22:26:36Z",
+        "total_value": 99.89015275580788,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-08-31T23:26:36Z",
+        "total_value": 100.29803391474428,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T00:26:36Z",
+        "total_value": 99.96421793723192,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T01:26:36Z",
+        "total_value": 99.86130187803577,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T02:26:36Z",
+        "total_value": 99.78609128470322,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T03:26:36Z",
+        "total_value": 100.55052671662955,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T04:26:36Z",
+        "total_value": 100.70639783286484,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T05:26:36Z",
+        "total_value": 101.12921578284835,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T06:26:36Z",
+        "total_value": 101.04813464398416,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T07:26:36Z",
+        "total_value": 100.38978054740595,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T08:26:36Z",
+        "total_value": 100.59673745072263,
+        "tao": 32.768,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T08:37:29.624286",
+        "total_value": 143.41197772871456,
+        "tao": 42.081763673101364,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T08:49:25.124764",
+        "total_value": 143.30857221320474,
+        "tao": 42.081763673101364,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T08:52:41.254759",
+        "total_value": 143.30832126171893,
+        "tao": 42.081763673101364,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T09:00:02.476589",
+        "total_value": 143.31479596480324,
+        "tao": 42.081763673101364,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T09:00:28.585512",
+        "total_value": 143.31480471151673,
+        "tao": 42.081763673101364,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T09:26:36Z",
+        "total_value": 97.73142327258864,
+        "tao": 34.53328407257592,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T10:00:02.534208",
+        "total_value": 108.85933066689438,
+        "tao": 35.75991641295244,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T10:26:36Z",
+        "total_value": 83.62741630265839,
+        "tao": 27.290768809245414,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T11:00:02.845308",
+        "total_value": 94.23553072943648,
+        "tao": 28.277784915562716,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T11:26:36Z",
+        "total_value": 72.47051410317053,
+        "tao": 21.57885451019559,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T12:00:02.260693",
+        "total_value": 82.7692404229836,
+        "tao": 22.344975743390144,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T12:26:36Z",
+        "total_value": 63.72592759316824,
+        "tao": 17.05166950232792,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T13:00:02.365333",
+        "total_value": 73.68832290174919,
+        "tao": 17.694371036366107,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T13:26:36Z",
+        "total_value": 56.64673874433691,
+        "tao": 13.502890281333208,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T14:00:01.808019",
+        "total_value": 66.08038447468546,
+        "tao": 13.969335543227084,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T14:26:36Z",
+        "total_value": 51.13620432087353,
+        "tao": 10.717443410141284,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T15:00:02.451811",
+        "total_value": 60.57321417979114,
+        "tao": 11.093842452008701,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T15:26:48Z",
+        "total_value": 46.85548034432586,
+        "tao": 8.51111957334312,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T16:00:02.647534",
+        "total_value": 56.23325975033376,
+        "tao": 8.808376331039387,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T16:26:48Z",
+        "total_value": 43.581562520805655,
+        "tao": 6.757959348421449,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T17:00:01.909030",
+        "total_value": 52.961161071279555,
+        "tao": 6.993356607037315,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T17:26:48Z",
+        "total_value": 41.00841769020897,
+        "tao": 5.361679762105642,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T18:00:02.339386",
+        "total_value": 50.209907795496505,
+        "tao": 5.552141181036697,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T18:26:48Z",
+        "total_value": 38.99063827932298,
+        "tao": 12.557085991008517,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T19:00:02.451536",
+        "total_value": 44.45554155373658,
+        "tao": 13.00082489505468,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T19:26:48Z",
+        "total_value": 33.96383742855153,
+        "tao": 9.98330510744593,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T20:00:01.775159",
+        "total_value": 39.25974161939989,
+        "tao": 10.340494007605965,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T20:26:48Z",
+        "total_value": 29.949068910839287,
+        "tao": 6.763438053237134,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T21:00:01.865333",
+        "total_value": 35.244709305232305,
+        "tao": 7.196589290381036,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T21:26:48Z",
+        "total_value": 26.45673625087645,
+        "tao": 5.333170968718869,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T22:00:02.393636",
+        "total_value": 31.49818275605852,
+        "tao": 5.662112692641154,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T22:26:48Z",
+        "total_value": 23.679193996943567,
+        "tao": 4.195632275015049,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T23:00:02.211635",
+        "total_value": 28.56901295947563,
+        "tao": 4.459304439909805,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-01T23:26:48Z",
+        "total_value": 21.508344312623453,
+        "tao": 3.3042740279683507,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T00:00:03.689593",
+        "total_value": 26.242382718591507,
+        "tao": 3.5063922008449424,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T00:26:48Z",
+        "total_value": 19.783983547855353,
+        "tao": 2.598143413553507,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T01:00:02.284833",
+        "total_value": 24.42596507133205,
+        "tao": 2.7624630401287447,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T01:26:48Z",
+        "total_value": 18.45726706699648,
+        "tao": 2.0546326479257186,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T02:00:02.145062",
+        "total_value": 22.89921214484074,
+        "tao": 2.1834667086207253,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T02:26:48Z",
+        "total_value": 17.27433484048217,
+        "tao": 1.6179876367896697,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T03:00:02.395960",
+        "total_value": 21.78067018421999,
+        "tao": 1.733626310271611,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T03:26:48Z",
+        "total_value": 16.817261505971665,
+        "tao": 1.3299520178127309,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T04:00:02.449629",
+        "total_value": 21.223277056542976,
+        "tao": 1.42961828551001,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T04:26:48Z",
+        "total_value": 16.330747460535047,
+        "tao": 1.0883207238368928,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T05:00:02.168644",
+        "total_value": 20.71611361714892,
+        "tao": 1.166218320875497,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T05:26:48Z",
+        "total_value": 15.675121638239782,
+        "tao": 0.8941464055628734,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T06:00:02.716963",
+        "total_value": 19.93895700686259,
+        "tao": 0.9573550104224081,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T06:26:48Z",
+        "total_value": 15.351235957231719,
+        "tao": 0.7322380949727985,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T07:00:02.416174",
+        "total_value": 19.333922183927147,
+        "tao": 0.7846410854851908,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T07:26:48Z",
+        "total_value": 14.900704348838874,
+        "tao": 0.6018181926817301,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T08:00:02.390922",
+        "total_value": 19.166667126193786,
+        "tao": 0.6444511418928894,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T08:26:48Z",
+        "total_value": 14.872704743173308,
+        "tao": 0.4957851348353797,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T09:00:02.720207",
+        "total_value": 18.981767445669853,
+        "tao": 0.5302138479422884,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T09:26:48Z",
+        "total_value": 14.626641452723463,
+        "tao": 0.4078179187079976,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T10:00:01.818897",
+        "total_value": 18.796540378897316,
+        "tao": 0.4366513783691236,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T10:26:48Z",
+        "total_value": 14.492687440412695,
+        "tao": 0.3553301564989101,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T11:00:02.292510",
+        "total_value": 18.656056830523596,
+        "tao": 0.3685210963866793,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T11:26:48Z",
+        "total_value": 14.45412432471073,
+        "tao": 0.29483926780153036,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T12:26:48Z",
+        "total_value": 14.45622287996946,
+        "tao": 0.29483926780153036,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T13:26:48Z",
+        "total_value": 14.405084679757039,
+        "tao": 0.29483926780153036,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T14:26:48Z",
+        "total_value": 14.302946220140806,
+        "tao": 0.29483926780153036,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T15:26:48Z",
+        "total_value": 14.384961196151847,
+        "tao": 0.29483926780153036,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T16:26:48Z",
+        "total_value": 14.376612574851595,
+        "tao": 0.29483926780153036,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T17:26:48Z",
+        "total_value": 14.376532197127029,
+        "tao": 0.29483926780153036,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T18:27:00Z",
+        "total_value": 14.40867101885932,
+        "tao": 0.29483926780153036,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T19:27:00Z",
+        "total_value": 14.40575792535504,
+        "tao": 0.29483926780153036,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T20:27:00Z",
+        "total_value": 14.294474071653072,
+        "tao": 0.29483926780153036,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T21:27:00Z",
+        "total_value": 14.294158886683432,
+        "tao": 0.29483926780153036,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T22:27:00Z",
+        "total_value": 14.289068517394117,
+        "tao": 0.29483926780153036,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-02T23:27:00Z",
+        "total_value": 14.296781317906179,
+        "tao": 0.29483926780153036,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-03T00:27:00Z",
+        "total_value": 14.296023614837816,
+        "tao": 0.29483926780153036,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-03T01:27:00Z",
+        "total_value": 14.283342144846168,
+        "tao": 0.29483926780153036,
+        "positions": 5
+      },
+      {
+        "timestamp": "2026-09-03T02:27:00Z",
+        "total_value": 14.283013006044177,
+        "tao": 0.29483926780153036,
+        "positions": 5
+      }
+    ],
+    "n_timestamps": 100,
+    "name": "momentum_7d_5"
+  }
+]
