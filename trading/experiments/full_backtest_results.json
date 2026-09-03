@@ -1,0 +1,134 @@
+{
+  "low_vol_3pos": {
+    "ret": -0.74,
+    "mdd": 17.19,
+    "trades": 12,
+    "wr": 16.7
+  },
+  "low_vol_5pos": {
+    "ret": 1.11,
+    "mdd": 0,
+    "trades": 20,
+    "wr": 30.0
+  },
+  "low_vol_10pos": {
+    "ret": -1.59,
+    "mdd": 1.59,
+    "trades": 29,
+    "wr": 31.0
+  },
+  "mean_reversion_3pos": {
+    "ret": -4.27,
+    "mdd": 6.81,
+    "trades": 10,
+    "wr": 30.0
+  },
+  "mean_reversion_5pos": {
+    "ret": -2.24,
+    "mdd": 4.06,
+    "trades": 16,
+    "wr": 37.5
+  },
+  "mean_reversion_10pos": {
+    "ret": -0.49,
+    "mdd": 2.13,
+    "trades": 18,
+    "wr": 44.4
+  },
+  "squeeze_3pos": {
+    "ret": 0.0,
+    "mdd": 0,
+    "trades": 0,
+    "wr": 0.0
+  },
+  "squeeze_5pos": {
+    "ret": 0.0,
+    "mdd": 0,
+    "trades": 0,
+    "wr": 0.0
+  },
+  "squeeze_10pos": {
+    "ret": 0.0,
+    "mdd": 0,
+    "trades": 0,
+    "wr": 0.0
+  },
+  "support_3pos": {
+    "ret": 0.18,
+    "mdd": 22.46,
+    "trades": 9,
+    "wr": 33.3
+  },
+  "support_5pos": {
+    "ret": 2.48,
+    "mdd": 8.46,
+    "trades": 18,
+    "wr": 38.9
+  },
+  "support_10pos": {
+    "ret": -0.18,
+    "mdd": 6.67,
+    "trades": 30,
+    "wr": 46.7
+  },
+  "child_3pos": {
+    "ret": 0.6,
+    "mdd": 0,
+    "trades": 12,
+    "wr": 16.7
+  },
+  "child_5pos": {
+    "ret": 1.72,
+    "mdd": 0,
+    "trades": 20,
+    "wr": 35.0
+  },
+  "child_10pos": {
+    "ret": -1.56,
+    "mdd": 1.57,
+    "trades": 30,
+    "wr": 40.0
+  },
+  "momentum_3pos": {
+    "ret": -5.86,
+    "mdd": 5.86,
+    "trades": 13,
+    "wr": 38.5
+  },
+  "momentum_5pos": {
+    "ret": -2.72,
+    "mdd": 2.72,
+    "trades": 21,
+    "wr": 42.9
+  },
+  "momentum_10pos": {
+    "ret": -0.54,
+    "mdd": 1.64,
+    "trades": 32,
+    "wr": 46.9
+  },
+  "anti_vol_3pos": {
+    "ret": -0.74,
+    "mdd": 17.19,
+    "trades": 12,
+    "wr": 16.7
+  },
+  "anti_vol_5pos": {
+    "ret": 1.11,
+    "mdd": 0,
+    "trades": 20,
+    "wr": 30.0
+  },
+  "anti_vol_10pos": {
+    "ret": 0.8,
+    "mdd": 0,
+    "trades": 30,
+    "wr": 36.7
+  },
+  "baseline_10pos": {
+    "ret": -0.18,
+    "mdd": 6.67,
+    "trades": 30,
+    "wr": 46.7
+  }
+}
