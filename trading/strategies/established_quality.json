@@ -1,0 +1,39 @@
+{
+  "name": "established_quality",
+  "description": "Higher price + low vol + high active ratio. Bluechip quality.",
+  "factors": [
+    {
+      "name": "price",
+      "column": "price",
+      "direction": "desc",
+      "weight": 1.0,
+      "lookback": 0,
+      "normalize": true
+    },
+    {
+      "name": "vol_7d",
+      "column": "vol_7d",
+      "direction": "asc",
+      "weight": 2.0,
+      "lookback": 168,
+      "normalize": true
+    },
+    {
+      "name": "active_ratio",
+      "column": "active_ratio",
+      "direction": "desc",
+      "weight": 1.0,
+      "lookback": 0,
+      "normalize": true
+    }
+  ],
+  "top_quintile_pct": 0.2,
+  "bottom_quintile_pct": 0.2,
+  "hold_period_hours": 24,
+  "min_observations": 100,
+  "universe": "all",
+  "author": "system",
+  "created": "",
+  "hypothesis": "Established subnets with quality fundamentals outperform.",
+  "status": "backtested"
+}

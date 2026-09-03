@@ -1,0 +1,31 @@
+{
+  "name": "low_vol_active",
+  "description": "Low vol + high active ratio. Calm subnets with miners actually showing up.",
+  "factors": [
+    {
+      "name": "vol_7d",
+      "column": "vol_7d",
+      "direction": "asc",
+      "weight": 3.0,
+      "lookback": 168,
+      "normalize": true
+    },
+    {
+      "name": "active_ratio",
+      "column": "active_ratio",
+      "direction": "desc",
+      "weight": 1.0,
+      "lookback": 0,
+      "normalize": true
+    }
+  ],
+  "top_quintile_pct": 0.2,
+  "bottom_quintile_pct": 0.2,
+  "hold_period_hours": 24,
+  "min_observations": 100,
+  "universe": "all",
+  "author": "system",
+  "created": "",
+  "hypothesis": "Alive subnets with low volatility outperform.",
+  "status": "backtested"
+}

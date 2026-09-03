@@ -1,0 +1,31 @@
+{
+  "name": "anti_yield_trap",
+  "description": "AVOID high yield per neuron. The market exploits yield chasers.",
+  "factors": [
+    {
+      "name": "vol_7d",
+      "column": "vol_7d",
+      "direction": "asc",
+      "weight": 3.0,
+      "lookback": 168,
+      "normalize": true
+    },
+    {
+      "name": "emit_per_neuron",
+      "column": "emit_per_neuron",
+      "direction": "asc",
+      "weight": 2.0,
+      "lookback": 0,
+      "normalize": true
+    }
+  ],
+  "top_quintile_pct": 0.2,
+  "bottom_quintile_pct": 0.2,
+  "hold_period_hours": 24,
+  "min_observations": 100,
+  "universe": "all",
+  "author": "system",
+  "created": "",
+  "hypothesis": "High yield attracts miners \u2192 dilution \u2192 negative returns. Short high-yield.",
+  "status": "backtested"
+}

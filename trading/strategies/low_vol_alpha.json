@@ -1,0 +1,23 @@
+{
+  "name": "low_vol_alpha",
+  "description": "Buy lowest-volatility subnets. Volatility is the strongest predictor (IC=-0.17).",
+  "factors": [
+    {
+      "name": "vol_7d",
+      "column": "vol_7d",
+      "direction": "asc",
+      "weight": 3.0,
+      "lookback": 168,
+      "normalize": true
+    }
+  ],
+  "top_quintile_pct": 0.2,
+  "bottom_quintile_pct": 0.2,
+  "hold_period_hours": 24,
+  "min_observations": 100,
+  "universe": "all",
+  "author": "system",
+  "created": "",
+  "hypothesis": "Low volatility subnets are stable, paying regularly. High vol = instability/dying.",
+  "status": "backtested"
+}

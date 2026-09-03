@@ -1,0 +1,39 @@
+{
+  "name": "distributed_value",
+  "description": "Low HHI (distributed emissions) + low vol + high active ratio.",
+  "factors": [
+    {
+      "name": "vol_7d",
+      "column": "vol_7d",
+      "direction": "asc",
+      "weight": 3.0,
+      "lookback": 168,
+      "normalize": true
+    },
+    {
+      "name": "hhi_emit",
+      "column": "hhi_emit",
+      "direction": "asc",
+      "weight": 2.0,
+      "lookback": 0,
+      "normalize": true
+    },
+    {
+      "name": "active_ratio",
+      "column": "active_ratio",
+      "direction": "desc",
+      "weight": 1.0,
+      "lookback": 0,
+      "normalize": true
+    }
+  ],
+  "top_quintile_pct": 0.2,
+  "bottom_quintile_pct": 0.2,
+  "hold_period_hours": 24,
+  "min_observations": 100,
+  "universe": "all",
+  "author": "system",
+  "created": "",
+  "hypothesis": "Distributed, calm, alive subnets are the real value.",
+  "status": "backtested"
+}
