@@ -38,8 +38,8 @@ MAX_TOOL_RUNTIME_SECONDS = 5 * 60
 DEFAULT_CONTRACT_FILE_PATTERNS = ['**/*.sol', '**/*.vy', '**/*.cairo', '**/*.rs', '**/*.move']
 EXCLUDE_DIRS = {"testing", "mocks", "examples", "interfaces", "script", "broadcast", "libraries"}
 
-# Use a strong model for the investigator role
-INVESTIGATOR_MODEL = "deepseek-ai/DeepSeek-V3.1-Terminus"
+# Use a model available on OpenCode Go
+INVESTIGATOR_MODEL = "mimo-v2.5"
 
 TOOL_DEFINITIONS = [
     {
@@ -158,6 +158,10 @@ class MWAgent:
         2. Investigate each high-risk area systematically
         3. For each finding, establish: file, function, mechanism, impact
         4. Only report HIGH/CRITICAL findings you can demonstrate
+
+        CRITICAL: After analyzing the code, you MUST call report_vulnerabilities 
+        with your findings. Do NOT report empty arrays. If you found vulnerabilities,
+        report them. The report_vulnerabilities tool is how you submit your findings.
 
         Focus on REAL security issues:
         - Reentrancy / callback attacks
