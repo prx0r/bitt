@@ -18,12 +18,12 @@ import os
 import requests
 import sys
 import time
-import traceback
+
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Any
+
 from textwrap import dedent
 
 from pydantic import BaseModel
@@ -33,13 +33,11 @@ console = Console()
 
 # Config
 MAX_WORKERS = 2
-MAX_TOOL_PASS_WORKERS = 16
 MAX_TOOL_RUNTIME_SECONDS = 5 * 60
 DEFAULT_CONTRACT_FILE_PATTERNS = ['**/*.sol', '**/*.vy', '**/*.cairo', '**/*.rs', '**/*.move']
 EXCLUDE_DIRS = {"testing", "mocks", "examples", "interfaces", "script", "broadcast", "libraries"}
 
 # Reliability tuning
-CHECKPOINT_INTERVAL = 5        # Flush findings every N discoveries
 TOKEN_BUDGET_LIMIT = 0.80      # Flush when context hits 80% of budget
 TOKEN_BUDGET_MAX = 120_000     # Approximate context window (tokens)
 MAX_EMPTY_REPORTS = 10         # Early stop after N consecutive empty report calls
@@ -166,9 +164,10 @@ class MWAgent:
         3. For each finding, establish: file, function, mechanism, impact
         4. Only report HIGH/CRITICAL findings you can demonstrate
 
-        CRITICAL: After analyzing the code, you MUST call report_vulnerabilities 
-        with your findings. Do NOT report empty arrays. If you found vulnerabilities,
-        report them. The report_vulnerabilities tool is how you submit your findings.
+        CRITICAL: After analyzing EACH file, you MUST immediately call 
+        report_vulnerabilities with your findings for that file. Do NOT 
+        accumulate findings across files. Report per-file. Do NOT report 
+        empty arrays.
 
         Focus on REAL security issues:
         - Reentrancy / callback attacks
@@ -199,7 +198,6 @@ class MWAgent:
         self.total_input_tokens = 0
         self.total_output_tokens = 0
         self.consecutive_empty_reports = 0
-        self.checkpoint_findings: list[Vulnerability] = []
         self.all_findings: list[Vulnerability] = []
         self._stopped_early = False
 
@@ -226,28 +224,6 @@ class MWAgent:
             return True
         self.seen_hashes.add(h)
         return False
-
-    def _should_flush(self) -> bool:
-        """Check if we should flush findings to prevent loss."""
-        used_tokens = self.total_input_tokens + self.total_output_tokens
-        budget_pct = used_tokens / TOKEN_BUDGET_MAX
-        if budget_pct >= TOKEN_BUDGET_LIMIT:
-            return True
-        if len(self.checkpoint_findings) >= CHECKPOINT_INTERVAL:
-            return True
-        return False
-
-    def _flush_findings(self, source_dir: Path) -> list[Vulnerability]:
-        """Submit checkpoint findings via report_vulnerabilities and return them."""
-        if not self.checkpoint_findings:
-            return []
-        findings_to_report = list(self.checkpoint_findings)
-        # Cap descriptions before reporting
-        for v in findings_to_report:
-            v.description = self._cap_description(v.description)
-        self.all_findings.extend(findings_to_report)
-        self.checkpoint_findings.clear()
-        return findings_to_report
 
     def inference(self, messages: list[dict], **kwargs) -> dict:
         payload = {
@@ -318,6 +294,16 @@ class MWAgent:
         else:
             return json.dumps({"error": f"Unknown tool: {name}"})
 
+    def _report_findings_immediately(self, findings: list[Vulnerability]) -> None:
+        """Submit findings to validator immediately — no batching."""
+        if not findings:
+            return
+        # Cap descriptions before reporting
+        for v in findings:
+            v.description = self._cap_description(v.description)
+        self.all_findings.extend(findings)
+        console.print(f"[green]Reported {len(findings)} findings immediately (total: {len(self.all_findings)})[/green]")
+
     def analyze_file(self, source_dir: Path, relative_path: str, deadline: float) -> tuple[list[Vulnerability], int, int]:
         """Analyze one file using tool use with reliability guardrails."""
         if self._stopped_early:
@@ -332,7 +318,7 @@ class MWAgent:
 
         messages = [
             {"role": "system", "content": self.SYSTEM_PROMPT},
-            {"role": "user", "content": f"Analyze {relative_path} for security vulnerabilities. Use tools to explore the codebase."},
+            {"role": "user", "content": f"Analyze {relative_path} for security vulnerabilities. Use tools to explore the codebase. When you find vulnerabilities, call report_vulnerabilities IMMEDIATELY for this file before moving on."},
         ]
 
         # Seed with file list
@@ -355,12 +341,11 @@ class MWAgent:
             used_tokens = self.total_input_tokens + self.total_output_tokens
             budget_pct = used_tokens / TOKEN_BUDGET_MAX
             if budget_pct >= TOKEN_BUDGET_LIMIT:
-                console.print(f"[yellow]Token budget {budget_pct:.0%} — flushing and stopping file[/yellow]")
-                # Force report before truncation
-                messages.append({"role": "user", "content": "You are approaching the token budget limit. Report ALL findings immediately."})
+                console.print(f"[yellow]Token budget {budget_pct:.0%} — forcing report before stop[/yellow]")
+                messages.append({"role": "user", "content": "You are approaching the token budget limit. Report ALL findings for this file immediately."})
                 tool_choice = {"type": "function", "function": {"name": "report_vulnerabilities"}}
             elif time.monotonic() >= deadline:
-                messages.append({"role": "user", "content": "Time limit reached. Report your findings now."})
+                messages.append({"role": "user", "content": "Time limit reached. Report your findings for this file now."})
                 tool_choice = {"type": "function", "function": {"name": "report_vulnerabilities"}}
             elif self.consecutive_empty_reports >= MAX_EMPTY_REPORTS:
                 self._stopped_early = True
@@ -398,29 +383,22 @@ class MWAgent:
                             self.consecutive_empty_reports += 1
                         else:
                             self.consecutive_empty_reports = 0
-                            new_count = 0
+                            new_findings = []
                             for v_data in vulns:
                                 title = v_data.get("title", "")
                                 file_path = v_data.get("file", relative_path)
-                                # Dedup: skip if already seen
                                 if self._is_duplicate(title, file_path):
                                     console.print(f"[dim]Dedup: skipping '{title}' (already reported)[/dim]")
                                     continue
                                 v_data["description"] = self._cap_description(v_data.get("description", ""))
                                 v_data["reported_by_model"] = INVESTIGATOR_MODEL
                                 vuln = Vulnerability(**v_data)
+                                new_findings.append(vuln)
                                 file_vulns.append(vuln)
-                                self.checkpoint_findings.append(vuln)
-                                new_count += 1
 
-                            if new_count > 0:
-                                console.print(f"[green]File {relative_path}: {new_count} new findings (total checkpoint: {len(self.checkpoint_findings)})[/green]")
-
-                            # Checkpoint: flush if interval reached
-                            if self._should_flush():
-                                flushed = self._flush_findings(source_dir)
-                                if flushed:
-                                    console.print(f"[cyan]Checkpoint flush: {len(flushed)} findings submitted[/cyan]")
+                            # IMMEDIATE REPORT: submit findings right away, don't batch
+                            if new_findings:
+                                self._report_findings_immediately(new_findings)
                     except Exception as e:
                         console.print(f"[red]Error parsing report: {e}[/red]")
 
@@ -442,7 +420,6 @@ class MWAgent:
         self.total_input_tokens = 0
         self.total_output_tokens = 0
         self.consecutive_empty_reports = 0
-        self.checkpoint_findings.clear()
         self.all_findings.clear()
         self._stopped_early = False
 
@@ -490,11 +467,7 @@ class MWAgent:
                 total_input += in_tok
                 total_output += out_tok
 
-        # Final flush: submit any remaining checkpoint findings
-        final_flushed = self._flush_findings(source_dir)
-        if final_flushed:
-            console.print(f"[cyan]Final flush: {final_flushed} findings submitted[/cyan]")
-
+        # All findings already reported immediately — just collect for AnalysisResult
         vulns = list(self.all_findings)
         console.print(f"[blue]Total: {len(vulns)} unique findings, {self.total_input_tokens + self.total_output_tokens} tokens used[/blue]")
 
