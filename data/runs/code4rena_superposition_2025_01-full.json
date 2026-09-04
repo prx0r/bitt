@@ -1,0 +1,14 @@
+{
+  "run_id": "code4rena_superposition_2025_01-full",
+  "timestamp": "2026-09-04T22:29:54.394230",
+  "subnet": "SN60",
+  "method": "full-eval",
+  "model": "mimo-v2.5",
+  "results": {
+    "project": "code4rena_superposition_2025_01",
+    "found": 0,
+    "runtime": 86.90254402160645,
+    "findings": []
+  },
+  "notes": "Full simulated evaluation"
+}
