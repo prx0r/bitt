@@ -5,7 +5,7 @@ Key differences from mw-audit-v1:
 2. Direct tool calls (no token budget, no empty report tracking)
 3. Reports findings immediately after each file
 4. Only 3 turns per file (like official baseline)
-5. Uses response_format={"type": "text"} for tool calls
+5. No response_format override — proxy defaults to json_object
 6. Simple deduplication by hash at the end
 """
 import hashlib
@@ -165,11 +165,11 @@ class SimpleAgent:
                 f"{self.inference_api}/inference",
                 headers=headers,
                 json=payload,
-                timeout=30,
+                timeout=120,
             )
             resp.raise_for_status()
             return resp.json()
-        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout, requests.exceptions.HTTPError):
             return self._inference_direct(messages, **kwargs)
 
     def _inference_direct(self, messages: list[dict[str, Any]], **kwargs) -> dict[str, Any]:
@@ -289,7 +289,7 @@ class SimpleAgent:
             else:
                 tool_choice = "auto"
 
-            response = self.inference(messages=messages, tools=TOOL_DEFINITIONS, tool_choice=tool_choice, response_format={"type": "text"})
+            response = self.inference(messages=messages, tools=TOOL_DEFINITIONS, tool_choice=tool_choice)
 
             usage = response.get("usage", {})
             total_input += usage.get("prompt_tokens", 0)
