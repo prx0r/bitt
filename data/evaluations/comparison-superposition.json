@@ -1,0 +1,28 @@
+{
+  "project": "code4rena_superposition_2025_01",
+  "comparison": {
+    "official_baseline": {
+      "files_analyzed": 57,
+      "total_vulnerabilities": 87,
+      "high_critical": 14,
+      "inference_calls": 690,
+      "report_calls": 75,
+      "findings_submitted": 87
+    },
+    "mw_audit_v1": {
+      "files_analyzed": 57,
+      "total_vulnerabilities": 3,
+      "high_critical": 3,
+      "inference_calls": 477,
+      "report_calls": 6,
+      "findings_submitted": 1
+    }
+  },
+  "analysis": {
+    "official_baseline_wins": true,
+    "key_difference": "Official baseline submits findings, mw-audit-v1 loses them in pipeline",
+    "official_baseline_found_inverted_check": true,
+    "mw_audit_v1_found_inverted_check": true,
+    "conclusion": "Both find real vulnerabilities. Official baseline submits more findings."
+  }
+}
