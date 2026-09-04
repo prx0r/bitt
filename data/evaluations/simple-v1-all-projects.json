@@ -1,0 +1,65 @@
+{
+  "agent": "simple-v1",
+  "model": "mimo-v2.5",
+  "results": {
+    "code4rena_superposition_2025_01": {
+      "project": "code4rena_superposition_2025_01",
+      "total_vulnerabilities": 78,
+      "files_analyzed": 57,
+      "severity_breakdown": {
+        "low": 33,
+        "medium": 27,
+        "high": 16,
+        "critical": 2
+      },
+      "high_plus_critical": 18,
+      "model": "mimo-v2.5",
+      "timestamp": "2026-09-04T10:44:43.998878"
+    },
+    "code4rena_lambowin_2025_02": {
+      "project": "code4rena_lambowin_2025_02",
+      "total_vulnerabilities": 4,
+      "files_analyzed": 7,
+      "severity_breakdown": {
+        "critical": 1,
+        "medium": 1,
+        "low": 2
+      },
+      "high_plus_critical": 1,
+      "model": "mimo-v2.5",
+      "timestamp": "2026-09-04T15:42:17.532419"
+    },
+    "code4rena_loopfi_2025_02": {
+      "project": "code4rena_loopfi_2025_02",
+      "total_vulnerabilities": 231,
+      "files_analyzed": 78,
+      "severity_breakdown": {
+        "high": 32,
+        "medium": 87,
+        "low": 109,
+        "critical": 3
+      },
+      "high_plus_critical": 35,
+      "model": "mimo-v2.5",
+      "timestamp": "2026-09-04T14:06:36.007356"
+    },
+    "code4rena_secondswap_2025_02": {
+      "project": "code4rena_secondswap_2025_02",
+      "total_vulnerabilities": 5,
+      "files_analyzed": 13,
+      "severity_breakdown": {
+        "medium": 2,
+        "high": 1,
+        "low": 2
+      },
+      "high_plus_critical": 1,
+      "model": "mimo-v2.5",
+      "timestamp": "2026-09-04T15:59:09.854469"
+    }
+  },
+  "totals": {
+    "projects": 4,
+    "total_findings": 318,
+    "total_high_critical": 55
+  }
+}

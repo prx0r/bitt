@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-09-04T16:00:00Z",
+  "agent": "simple-v1",
+  "model": "mimo-v2.5",
+  "results": {
+    "superposition": {"findings": 78, "files": 57},
+    "lambowin": {"findings": 4, "files": 7},
+    "loopfi": {"findings": 231, "files": 78},
+    "secondswap": {"findings": 5, "files": 13}
+  },
+  "totals": {
+    "findings": 318,
+    "files_analyzed": 155
+  }
+}

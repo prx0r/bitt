@@ -1,0 +1,14 @@
+{
+  "project": "code4rena_loopfi_2025_02",
+  "total_vulnerabilities": 231,
+  "files_analyzed": 78,
+  "severity_breakdown": {
+    "high": 32,
+    "medium": 87,
+    "low": 109,
+    "critical": 3
+  },
+  "high_plus_critical": 35,
+  "model": "mimo-v2.5",
+  "timestamp": "2026-09-04T14:06:36.007356"
+}

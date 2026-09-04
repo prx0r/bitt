@@ -1,0 +1,13 @@
+{
+  "project": "code4rena_secondswap_2025_02",
+  "total_vulnerabilities": 5,
+  "files_analyzed": 13,
+  "severity_breakdown": {
+    "medium": 2,
+    "high": 1,
+    "low": 2
+  },
+  "high_plus_critical": 1,
+  "model": "mimo-v2.5",
+  "timestamp": "2026-09-04T15:59:09.854469"
+}

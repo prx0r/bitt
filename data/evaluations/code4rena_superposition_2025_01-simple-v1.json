@@ -1,0 +1,14 @@
+{
+  "project": "code4rena_superposition_2025_01",
+  "total_vulnerabilities": 78,
+  "files_analyzed": 57,
+  "severity_breakdown": {
+    "low": 33,
+    "medium": 27,
+    "high": 16,
+    "critical": 2
+  },
+  "high_plus_critical": 18,
+  "model": "mimo-v2.5",
+  "timestamp": "2026-09-04T10:44:43.998878"
+}
