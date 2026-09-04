@@ -150,6 +150,7 @@ class SimpleAgent:
         payload = {
             "model": self.config['model'],
             "messages": messages,
+            "max_tokens": 8192,
         }
         payload.update(kwargs)
 
@@ -190,7 +191,7 @@ class SimpleAgent:
                 prompt_parts.append(f"Tool result: {content}")
 
         prompt = "\n\n".join(prompt_parts)
-        result = call_model("mimo-v2.5", prompt, max_tokens=2000)
+        result = call_model("mimo-v2.5", prompt, max_tokens=8192)
 
         content = result.get("content", "")
         try:
@@ -259,7 +260,7 @@ class SimpleAgent:
                 You are a senior smart contract security auditor.
                 Analyze code for security vulnerabilities.
                 Use tools to explore the project and read files.
-                Report findings using report_vulnerabilities tool.""")},
+                IMPORTANT: Keep your reasoning under 1500 tokens. After analyzing the file, immediately call report_vulnerabilities.""")},
             {"role": "user", "content": f"Analyze {relative_path} for vulnerabilities"},
         ]
 
@@ -282,6 +283,8 @@ class SimpleAgent:
         for turn in range(3):
             if time.monotonic() >= deadline and not reported:
                 messages.append({"role": "user", "content": "Report NOW"})
+                tool_choice = {"type": "function", "function": {"name": "report_vulnerabilities"}}
+            elif turn == 2 and not reported:
                 tool_choice = {"type": "function", "function": {"name": "report_vulnerabilities"}}
             else:
                 tool_choice = "auto"
