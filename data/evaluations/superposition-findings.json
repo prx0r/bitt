@@ -1,0 +1,37 @@
+{
+  "project": "code4rena_superposition_2025_01",
+  "agent": "mw-audit-v1",
+  "model": "mimo-v2.5",
+  "run_timestamp": "2026-09-04T08:16:00Z",
+  "total_report_vulnerabilities_calls": 7,
+  "non_empty_reports": 2,
+  "findings": [
+    {
+      "title": "Inverted ERC721 onERC721Received selector check in OwnershipNFTs",
+      "severity": "high",
+      "confidence": 0.95,
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "location": "OwnershipNFTs._onTransferReceived()",
+      "vulnerability_type": "Logic Error",
+      "description": "In OwnershipNFTs._onTransferReceived(), the require statement checks `data != IERC721TokenReceiver.onERC721Received.selector` and reverts when the correct selector IS returned. The ERC721 standard requires the receiver to return the selector to indicate acceptance of the token.\n\nPrecondition: The OwnershipNFTs contract is deployed and has NFT positions that can be transferred via safeTransferFrom.\n\nAttacker action: Any user calling safeTransferFrom to a legitimate contract that properly implements IERC721TokenReceiver will have their transaction revert because the correct selector IS returned, triggering the inverted check.\n\nAlternatively, a malicious contract that returns an incorrect bytes4 value (e.g., 0x00000000) will pass the check, meaning safeTransferFrom succeeds to unvalidated receivers.\n\nVulnerable code path: OwnershipNFTs._onTransferReceived() -> require(data != IERC721TokenReceiver.onERC721Received.selector, \"bad nft transfer received data\")\n\nThe logic should be: require(data == IERC721TokenReceiver.onERC721Received.selector, ...) to match the ERC721 standard.\n\nViolated assumption: The ERC721 standard assumes safeTransferFrom will succeed when the receiver returns the correct magic value and revert otherwise. This code inverts that behavior.\n\nImpact: (1) All safeTransferFrom calls to legitimate ERC721 receiver contracts will permanently revert, making safe transfers to contracts impossible. (2) safeTransferFrom calls to contracts returning invalid data will succeed, completely defeating the safety mechanism designed to prevent tokens from being locked in incompatible contracts."
+    },
+    {
+      "title": "Inverted ERC721 Receiver Check Allows NFTs to be Permanently Locked",
+      "severity": "critical",
+      "confidence": 1.0,
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "location": "OwnershipNFTs._onTransferReceived()",
+      "vulnerability_type": "Logic Error",
+      "description": "Precondition: A user calls safeTransferFrom on OwnershipNFTs to transfer an NFT to a contract address.\n\nAttacker action: The user or any contract calls safeTransferFrom(from, to, tokenId) where to is a contract.\n\nVulnerable code path: In OwnershipNFTs._onTransferReceived(), the return value from IERC721TokenReceiver.onERC721Received() is checked with require(data != IERC721TokenReceiver.onERC721Received.selector, 'bad nft transfer received data'). This uses != (not-equal) instead of == (equal).\n\nViolated assumption: The ERC721 standard requires that safeTransferFrom reverts if the receiver does NOT return the correct magic value (onERC721Received selector). This code does the exact opposite — it reverts when the receiver returns the CORRECT selector, and succeeds when it returns an INCORRECT one.\n\nImpact: (1) Any contract that correctly implements IERC721TokenReceiver will cause safeTransferFrom to REVERT, making it impossible to safely transfer NFTs to legitimate receiver contracts. (2) NFTs can be successfully sent to contracts that do NOT properly implement the callback (returning any non-selector value), which is exactly the scenario ERC721 safe transfers are designed to prevent. This means NFTs (representing liquidity positions in the Seawater AMM) can be permanently locked in incompatible contracts, causing irreversible fund loss. The position NFT represents a liquidity position, and if locked in an incompatible contract, the underlying liquidity and any accrued fees become irrecoverable."
+    }
+  ],
+  "truncated_findings_not_submitted": [
+    {
+      "title": "calc_base_rewards formula inversion causes reward inflation",
+      "severity": "critical (estimated)",
+      "file": "pkg/leo/src/seawater.rs",
+      "status": "NOT_SUBMITTED - response truncated at token limit (finish_reason: length)",
+      "description": "calc_base_rewards(pool_lp, our_lp, per_second) = pool_lp * per_second / our_lp. This is inverted — should be our_lp * per_second / pool_lp. When multiple positions exist, users with LESS liquidity get MORE rewards, inflating payouts far beyond campaign rate."
+    }
+  ]
+}

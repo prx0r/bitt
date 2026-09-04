@@ -1,0 +1,44 @@
+{
+  "project": "code4rena_superposition_2025_01",
+  "agent": "mw-audit-v1",
+  "model": "mimo-v2.5",
+  "timestamp": "2026-09-04T08:30:00Z",
+  "stats": {
+    "inference_calls": 477,
+    "report_calls": 6,
+    "findings_submitted": 2,
+    "findings_in_reasoning": 3
+  },
+  "findings": [
+    {
+      "title": "Inverted ERC721 onERC721Received selector check",
+      "severity": "critical",
+      "confidence": 0.95,
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "location": "OwnershipNFTs._onTransferReceived()",
+      "description": "require(data != selector) should be require(data == selector). Bricks safeTransferFrom for all legitimate contract recipients.",
+      "submitted": true
+    },
+    {
+      "title": "Stale Approval Persistence After Position Transfer",
+      "severity": "critical",
+      "confidence": 0.95,
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "location": "OwnershipNFTs._transfer()",
+      "description": "getApproved[_tokenId] never cleared after transfer. Previously approved address can steal positions from new owners.",
+      "submitted": false,
+      "reason": "Identified in reasoning but not reported in tool call"
+    },
+    {
+      "title": "calc_base_rewards formula inversion",
+      "severity": "critical",
+      "confidence": 0.9,
+      "file": "pkg/leo/src/seawater.rs",
+      "location": "calc_base_rewards()",
+      "description": "Uses pool_lp * per_second / user_lp instead of user_lp * per_second / pool_lp. Inverts reward calculation.",
+      "submitted": false,
+      "reason": "Truncated before report_vulnerabilities call"
+    }
+  ],
+  "notes": "Agent found 3 real vulnerabilities but only submitted 1. Needs better dedup and token budget management."
+}

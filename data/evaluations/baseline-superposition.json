@@ -1,0 +1,15 @@
+{
+  "project": "code4rena_superposition_2025_01",
+  "timestamp": "2026-09-04T09:13:54",
+  "model": "mimo-v2.5",
+  "files_analyzed": 5,
+  "files_total": 57,
+  "files_with_errors": 0,
+  "elapsed_seconds": 175.3,
+  "total_vulnerabilities": 0,
+  "vulnerabilities": [],
+  "token_usage": {
+    "total_input": 46294,
+    "total_output": 2141
+  }
+}
