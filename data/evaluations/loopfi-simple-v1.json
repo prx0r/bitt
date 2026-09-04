@@ -1,0 +1,23 @@
+{
+  "project": "code4rena_loopfi_2025_02",
+  "candidate": "simple-v1",
+  "model": "mimo-v2.5",
+  "timestamp": "2026-09-04T14:06:36.007356",
+  "results": {
+    "total_findings": 231,
+    "files_analyzed": 78,
+    "files_skipped": 0,
+    "severity_breakdown": {
+      "critical": 3,
+      "high": 32,
+      "medium": 87,
+      "low": 109
+    },
+    "high_critical_count": 35,
+    "token_usage": {
+      "total_input": 411790,
+      "total_output": 87724
+    }
+  },
+  "report_path": "/root/bitt/data/scabench-repos/code4rena_loopfi_2025_02/agent_report.json"
+}
