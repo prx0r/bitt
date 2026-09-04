@@ -38,6 +38,13 @@ MAX_TOOL_RUNTIME_SECONDS = 5 * 60
 DEFAULT_CONTRACT_FILE_PATTERNS = ['**/*.sol', '**/*.vy', '**/*.cairo', '**/*.rs', '**/*.move']
 EXCLUDE_DIRS = {"testing", "mocks", "examples", "interfaces", "script", "broadcast", "libraries"}
 
+# Reliability tuning
+CHECKPOINT_INTERVAL = 5        # Flush findings every N discoveries
+TOKEN_BUDGET_LIMIT = 0.80      # Flush when context hits 80% of budget
+TOKEN_BUDGET_MAX = 120_000     # Approximate context window (tokens)
+MAX_EMPTY_REPORTS = 10         # Early stop after N consecutive empty report calls
+MAX_DESCRIPTION_TOKENS = 150   # Cap per-finding description length
+
 # Use a model available on OpenCode Go
 INVESTIGATOR_MODEL = "mimo-v2.5"
 
@@ -187,6 +194,60 @@ class MWAgent:
     def __init__(self, inference_api: str = None):
         self.inference_api = inference_api or os.getenv('INFERENCE_API', "http://bitsec_proxy:8000")
         self.inference_api_key = os.getenv('INFERENCE_API_KEY')
+        # Reliability state
+        self.seen_hashes: set[str] = set()
+        self.total_input_tokens = 0
+        self.total_output_tokens = 0
+        self.consecutive_empty_reports = 0
+        self.checkpoint_findings: list[Vulnerability] = []
+        self.all_findings: list[Vulnerability] = []
+        self._stopped_early = False
+
+    def _estimate_tokens(self, text: str) -> int:
+        """Rough token estimate: words * 1.3 (covers punctuation/splitting)."""
+        return int(len(text.split()) * 1.3)
+
+    def _cap_description(self, description: str) -> str:
+        """Truncate description to MAX_DESCRIPTION_TOKENS worth of text."""
+        max_chars = MAX_DESCRIPTION_TOKENS * 6  # ~6 chars per token avg
+        if len(description) <= max_chars:
+            return description
+        truncated = description[:max_chars - 3].rsplit(" ", 1)[0]
+        return truncated + "..."
+
+    def _finding_hash(self, title: str, file_path: str) -> str:
+        """Deterministic hash for deduplication."""
+        return hashlib.md5(f"{file_path}:{title}".encode()).hexdigest()[:16]
+
+    def _is_duplicate(self, title: str, file_path: str) -> bool:
+        """Check if finding already reported."""
+        h = self._finding_hash(title, file_path)
+        if h in self.seen_hashes:
+            return True
+        self.seen_hashes.add(h)
+        return False
+
+    def _should_flush(self) -> bool:
+        """Check if we should flush findings to prevent loss."""
+        used_tokens = self.total_input_tokens + self.total_output_tokens
+        budget_pct = used_tokens / TOKEN_BUDGET_MAX
+        if budget_pct >= TOKEN_BUDGET_LIMIT:
+            return True
+        if len(self.checkpoint_findings) >= CHECKPOINT_INTERVAL:
+            return True
+        return False
+
+    def _flush_findings(self, source_dir: Path) -> list[Vulnerability]:
+        """Submit checkpoint findings via report_vulnerabilities and return them."""
+        if not self.checkpoint_findings:
+            return []
+        findings_to_report = list(self.checkpoint_findings)
+        # Cap descriptions before reporting
+        for v in findings_to_report:
+            v.description = self._cap_description(v.description)
+        self.all_findings.extend(findings_to_report)
+        self.checkpoint_findings.clear()
+        return findings_to_report
 
     def inference(self, messages: list[dict], **kwargs) -> dict:
         payload = {
@@ -207,7 +268,13 @@ class MWAgent:
             json=payload,
         )
         resp.raise_for_status()
-        return resp.json()
+        result = resp.json()
+
+        # Track token usage globally
+        usage = result.get("usage", {})
+        self.total_input_tokens += usage.get("prompt_tokens", 0)
+        self.total_output_tokens += usage.get("completion_tokens", 0)
+        return result
 
     def _tool_list_files(self, source_dir: Path, directory: str) -> str:
         root = source_dir.resolve()
@@ -252,7 +319,17 @@ class MWAgent:
             return json.dumps({"error": f"Unknown tool: {name}"})
 
     def analyze_file(self, source_dir: Path, relative_path: str, deadline: float) -> tuple[list[Vulnerability], int, int]:
-        """Analyze one file using tool use."""
+        """Analyze one file using tool use with reliability guardrails."""
+        if self._stopped_early:
+            return [], 0, 0
+
+        # Check budget before starting
+        used_tokens = self.total_input_tokens + self.total_output_tokens
+        if used_tokens / TOKEN_BUDGET_MAX >= TOKEN_BUDGET_LIMIT:
+            self._stopped_early = True
+            console.print("[yellow]Early stop: token budget exhausted before starting file[/yellow]")
+            return [], 0, 0
+
         messages = [
             {"role": "system", "content": self.SYSTEM_PROMPT},
             {"role": "user", "content": f"Analyze {relative_path} for security vulnerabilities. Use tools to explore the codebase."},
@@ -268,16 +345,27 @@ class MWAgent:
         messages.append({"role": "assistant", "tool_calls": [{"id": read_id, "type": "function", "function": {"name": "read_file", "arguments": json.dumps({"file_path": relative_path})}}]})
         messages.append({"role": "tool", "tool_call_id": read_id, "content": self._tool_read_file(source_dir, relative_path)})
 
-        # Run tool loop
-        reported = False
-        all_vulns = []
+        # Run tool loop with reliability guardrails
+        file_vulns = []
         total_input = 0
         total_output = 0
 
-        for turn in range(5):  # Allow more turns for thorough investigation
-            if time.monotonic() >= deadline and not reported:
-                messages.append({"role": "user", "content": "Report your findings now."})
+        for turn in range(5):
+            # Check token budget
+            used_tokens = self.total_input_tokens + self.total_output_tokens
+            budget_pct = used_tokens / TOKEN_BUDGET_MAX
+            if budget_pct >= TOKEN_BUDGET_LIMIT:
+                console.print(f"[yellow]Token budget {budget_pct:.0%} — flushing and stopping file[/yellow]")
+                # Force report before truncation
+                messages.append({"role": "user", "content": "You are approaching the token budget limit. Report ALL findings immediately."})
                 tool_choice = {"type": "function", "function": {"name": "report_vulnerabilities"}}
+            elif time.monotonic() >= deadline:
+                messages.append({"role": "user", "content": "Time limit reached. Report your findings now."})
+                tool_choice = {"type": "function", "function": {"name": "report_vulnerabilities"}}
+            elif self.consecutive_empty_reports >= MAX_EMPTY_REPORTS:
+                self._stopped_early = True
+                console.print(f"[yellow]Early stop: {self.consecutive_empty_reports} consecutive empty reports[/yellow]")
+                break
             else:
                 tool_choice = "auto"
 
@@ -303,24 +391,61 @@ class MWAgent:
                 result_str = self._execute_tool_call(tc, source_dir)
 
                 if tc["function"]["name"] == "report_vulnerabilities":
-                    reported = True
                     try:
                         args = json.loads(tc["function"]["arguments"])
-                        for v_data in args.get("vulnerabilities", []):
-                            v_data["reported_by_model"] = INVESTIGATOR_MODEL
-                            all_vulns.append(Vulnerability(**v_data))
+                        vulns = args.get("vulnerabilities", [])
+                        if not vulns:
+                            self.consecutive_empty_reports += 1
+                        else:
+                            self.consecutive_empty_reports = 0
+                            new_count = 0
+                            for v_data in vulns:
+                                title = v_data.get("title", "")
+                                file_path = v_data.get("file", relative_path)
+                                # Dedup: skip if already seen
+                                if self._is_duplicate(title, file_path):
+                                    console.print(f"[dim]Dedup: skipping '{title}' (already reported)[/dim]")
+                                    continue
+                                v_data["description"] = self._cap_description(v_data.get("description", ""))
+                                v_data["reported_by_model"] = INVESTIGATOR_MODEL
+                                vuln = Vulnerability(**v_data)
+                                file_vulns.append(vuln)
+                                self.checkpoint_findings.append(vuln)
+                                new_count += 1
+
+                            if new_count > 0:
+                                console.print(f"[green]File {relative_path}: {new_count} new findings (total checkpoint: {len(self.checkpoint_findings)})[/green]")
+
+                            # Checkpoint: flush if interval reached
+                            if self._should_flush():
+                                flushed = self._flush_findings(source_dir)
+                                if flushed:
+                                    console.print(f"[cyan]Checkpoint flush: {len(flushed)} findings submitted[/cyan]")
                     except Exception as e:
                         console.print(f"[red]Error parsing report: {e}[/red]")
 
                 messages.append({"role": "tool", "tool_call_id": tc["id"], "content": result_str})
 
-            if reported:
+            # Check if budget is critical after this turn
+            used_tokens = self.total_input_tokens + self.total_output_tokens
+            if used_tokens / TOKEN_BUDGET_MAX >= TOKEN_BUDGET_LIMIT:
+                self._stopped_early = True
+                console.print("[yellow]Token budget exhausted — stopping file analysis[/yellow]")
                 break
 
-        return all_vulns, total_input, total_output
+        return file_vulns, total_input, total_output
 
     def analyze_project(self, source_dir: Path, project_name: str) -> AnalysisResult:
-        """Analyze a project using methodology-based audit."""
+        """Analyze a project with reliability guardrails."""
+        # Reset state for new project
+        self.seen_hashes.clear()
+        self.total_input_tokens = 0
+        self.total_output_tokens = 0
+        self.consecutive_empty_reports = 0
+        self.checkpoint_findings.clear()
+        self.all_findings.clear()
+        self._stopped_early = False
+
         # Discover contract files
         files = []
         for pattern in DEFAULT_CONTRACT_FILE_PATTERNS:
@@ -343,7 +468,6 @@ class MWAgent:
                 token_usage={"total_input": 0, "total_output": 0},
             )
 
-        all_vulnerabilities = []
         total_input = 0
         total_output = 0
         deadline = time.monotonic() + MAX_TOOL_RUNTIME_SECONDS
@@ -360,23 +484,28 @@ class MWAgent:
             }
 
             for future in as_completed(futures):
+                if self._stopped_early:
+                    break
                 vulns, in_tok, out_tok = future.result()
-                all_vulnerabilities.extend(vulns)
                 total_input += in_tok
                 total_output += out_tok
 
-        # Deduplicate
-        unique = {v.id: v for v in all_vulnerabilities}
-        vulns = list(unique.values())
+        # Final flush: submit any remaining checkpoint findings
+        final_flushed = self._flush_findings(source_dir)
+        if final_flushed:
+            console.print(f"[cyan]Final flush: {final_flushed} findings submitted[/cyan]")
+
+        vulns = list(self.all_findings)
+        console.print(f"[blue]Total: {len(vulns)} unique findings, {self.total_input_tokens + self.total_output_tokens} tokens used[/blue]")
 
         return AnalysisResult(
             project=project_name,
             timestamp=datetime.now().isoformat(),
-            files_analyzed=len(files),
+            files_analyzed=min(len(files), len(futures)),
             files_skipped=0,
             total_vulnerabilities=len(vulns),
             vulnerabilities=vulns,
-            token_usage={"total_input": total_input, "total_output": total_output},
+            token_usage={"total_input": self.total_input_tokens, "total_output": self.total_output_tokens},
         )
 
 
