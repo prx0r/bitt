@@ -1,0 +1,17 @@
+{
+  "simple_v1_results": {
+    "superposition": {"findings": 78, "high_critical": 18},
+    "lambowin": {"findings": 0, "high_critical": 0},
+    "loopfi": {"findings": 231, "high_critical": 35},
+    "secondswap": {"findings": 10, "high_critical": 1}
+  },
+  "totals": {
+    "findings": 319,
+    "high_critical": 54
+  },
+  "comparison": {
+    "official_baseline_superposition": {"findings": 87, "high_critical": 14},
+    "simple_v1_superposition": {"findings": 78, "high_critical": 18},
+    "simple_v1_all_projects": {"findings": 319, "high_critical": 54}
+  }
+}
