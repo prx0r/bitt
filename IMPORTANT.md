@@ -1,325 +1,133 @@
-# IMPORTANT.md — Complete Guide: Building Miners for Bittensor Subnets
+# IMPORTANT.md — Critical Mistakes to Never Repeat
 
-## The Goal
+## Mistake 1: Scaling a Failing Approach
 
-**What does a successful miner look like and how do I create my own?**
+**What I did:**
+- Ran 175s test on Superposition → 0 good results (empty arrays)
+- Then ran hour-long version of same approach → same 0 results
 
-A successful miner:
-1. Finds real vulnerabilities (true positives)
-2. Minimizes false positives
-3. Runs within timeout
-4. Returns correct format
-5. Uses the inference proxy
+**Why it was wrong:**
+- Never scale up a failing approach
+- Fix the approach first, then scale
+- 175s test told me everything I needed to know
 
----
+**What I should have done:**
+- Analyze WHY the test failed
+- Fix the root cause
+- Then run longer test
 
-## Part 1: What I Learned (Mistakes to Avoid)
+**Lesson:** If a 2-minute test fails, a 2-hour test will also fail. Fix first.
 
-### Mistake 1: Bypassing the Inference Proxy
+## Mistake 2: Not Using nohup
 
-**WRONG:**
-```python
-from opencode_harness import call_model
-result = call_model("mimo-v2.5", prompt, max_tokens=2000)
-```
+**What I did:**
+- Ran blocking Python scripts
+- Tied up my attention for hours
+- User couldn't reach me
 
-**RIGHT:**
-```python
-resp = requests.post(
-    f"{self.inference_api}/inference",
-    headers={
-        "x-inference-api-key": self.inference_api_key,
-        "x-agent-id": self.agent_id,
-        "x-job-run-id": self.job_run_id,
-        "x-request-phase": "execution",
-    },
-    json=payload,
-)
-```
+**Why it was wrong:**
+- Lead agent must NEVER block
+- All long tasks must use nohup
+- I should always be available to orchestrate
 
-**WHY:** In production, your agent runs in Docker. No direct internet. Proxy routes to API.
-
-### Mistake 2: Wrong Return Format
-
-**WRONG:**
-```python
-return {"prediction": True, "vulnerabilities": [...]}
-```
-
-**RIGHT:**
-```python
-return {
-    "project": project_dir,
-    "timestamp": datetime.now().isoformat(),
-    "files_analyzed": files_analyzed,
-    "files_skipped": files_skipped,
-    "total_vulnerabilities": len(vulns),
-    "vulnerabilities": vulns,
-    "token_usage": {"input_tokens": 0, "output_tokens": 0, "total_tokens": 0}
-}
-```
-
-### Mistake 3: No Tool Use
-
-The official agent uses tool calling:
-- `list_files` — explore project
-- `read_file` — read source code
-- `report_vulnerabilities` — submit findings
-
-This lets the model explore dynamically.
-
-### Mistake 4: Uppercase Severity
-
-**WRONG:** `"severity": "CRITICAL"`
-**RIGHT:** `"severity": "critical"`
-
-### Mistake 5: Missing Fields
-
-Each vulnerability needs:
-- `title`
-- `description`
-- `vulnerability_type`
-- `severity` (lowercase)
-- `confidence` (0.0-1.0)
-- `location`
-- `file`
-- `reported_by_model`
-- `status`
-
----
-
-## Part 2: The Correct Pattern
-
-### Step 1: Clone Official Repo
-
+**What I should have done:**
 ```bash
-git clone https://github.com/Bitsec-AI/sandbox.git
-cd sandbox
+nohup python3 agent.py > /tmp/agent.log 2>&1 &
 ```
 
-### Step 2: Read the Official Agent
+**Lesson:** Always nohup. Never block.
 
+## Mistake 3: Not Analyzing Results Before Continuing
+
+**What I did:**
+- Got 0 results from first test
+- Immediately ran another test
+- Didn't ask WHY it failed
+
+**Why it was wrong:**
+- Results are data, not noise
+- 0 results means something is wrong
+- Must understand failure before trying again
+
+**What I should have done:**
+- Check proxy logs
+- Check agent logs
+- Understand why findings are empty
+- Fix the issue
+- Then retest
+
+**Lesson:** Never ignore 0 results. They're telling you something.
+
+## Mistake 4: Running Tests Without Clear Success Criteria
+
+**What I did:**
+- Ran "test" without knowing what success looks like
+- No target metrics defined
+- No comparison baseline
+
+**Why it was wrong:**
+- Without success criteria, you can't evaluate
+- Without baseline, you can't measure improvement
+- "Test" is not a plan
+
+**What I should have done:**
+- Define success: "Find >3 high/critical vulns"
+- Set baseline: "Official baseline finds X vulns"
+- Compare: "mw-audit-v1 finds Y vulns"
+
+**Lesson:** Always define success criteria before testing.
+
+## Mistake 5: Not Checking Proxy Logs During Test
+
+**What I did:**
+- Ran agent for 2+ minutes
+- Never checked proxy logs
+- Didn't know if API calls were working
+
+**Why it was wrong:**
+- Proxy logs tell you if inference is working
+- Empty responses mean API issues
+- 502 errors mean model problems
+- Must monitor during test, not after
+
+**What I should have done:**
 ```bash
-cat miner/agent.py
+# Check logs every 30s during test
+docker logs bitsec-proxy 2>&1 | tail -5
 ```
 
-Understand:
-- How it calls the proxy
-- How it uses tools
-- What it returns
+**Lesson:** Always monitor logs during long runs.
 
-### Step 3: Build Your Agent
+## Mistake 6: Not Documenting Failures
 
-Start with the official agent. Modify:
-- Model choice
-- Prompt engineering
-- Tool use strategy
-- File discovery
+**What I did:**
+- Got 0 results
+- Moved on to next test
+- Didn't document what went wrong
 
-### Step 4: Test Locally
+**Why it was wrong:**
+- Failures are data
+- Documenting failures prevents repeating them
+- Future me needs to know what didn't work
 
-```bash
-# Without Docker (uses proxy if available)
-uv run ./bitsec.py miner run-no-docker
+**What I should have done:**
+- Write failure to IMPORTANT.md
+- Update AGENTS.md with lesson
+- Prevent future repetition
 
-# With Docker (full sandbox)
-uv run ./bitsec.py miner run
+**Lesson:** Document every failure. It's data, not noise.
+
+## The Pattern
+
+```
+WRONG: Test fails → Run longer test → Still fails → Waste time
+
+RIGHT: Test fails → Analyze why → Fix → Retest → Measure improvement
 ```
 
-### Step 5: Submit
+## Time is the Scarcest Resource
 
-```bash
-# Register (one time)
-uv run ./bitsec.py miner create email@example.com "Name" --wallet my_wallet
+Every minute spent on a failing approach is a minute not spent on the right one.
 
-# Submit
-uv run ./bitsec.py miner submit --wallet my_wallet
-```
-
----
-
-## Part 3: Bitsec-Specific Intel
-
-### Target Performance
-
-- **Winning score:** 83.3%
-- **True positives:** 254 across 15 projects
-- **Runtime:** ~13 minutes per project
-- **Validators:** 3 per project
-
-### Key Links
-
-| Resource | URL |
-|----------|-----|
-| Leaderboard | https://bitsec.ai/leaderboard |
-| Agent status | https://bitsec.ai/agents-status |
-| Docs | https://docs.bitsec.ai |
-| Miner guide | https://docs.bitsec.ai/miner |
-| Sandbox repo | https://github.com/Bitsec-AI/sandbox |
-| ScaBench | https://github.com/Bitsec-AI/scabench |
-
-### Screening Checks
-
-1. **Code check** — valid Python, `agent_main` exists
-2. **LLM security** — no malicious code
-3. **Hard-steering** — not memorized answers
-4. **Duplicate** — not exact copy
-
-### Inference Details
-
-- **Proxy:** `http://bitsec_proxy:8000/inference`
-- **Model:** `qwen/qwen3.6-35b-a3b` (default)
-- **Key:** OpenRouter (prefix `sk-or-`)
-
----
-
-## Part 4: Applying to Other Subnets
-
-### The Pattern (Same for All Subnets)
-
-1. **Clone official repo**
-2. **Read the agent code**
-3. **Understand the interface**
-4. **Build your agent**
-5. **Test locally**
-6. **Submit**
-
-### Key Questions for Any Subnet
-
-1. What does `agent_main()` return?
-2. How does inference work?
-3. What's the evaluation criteria?
-4. What are the screening rules?
-5. What's the timeout?
-
-### Example: SN62 Ridges
-
-```python
-# Input
-input = {
-    "problem_statement": "Fix the off-by-one error..."
-}
-
-# Output (unified diff)
-return """--- a/file.py
-+++ b/file.py
-@@ -1,5 +1,5 @@
- def calculate_sum(n):
-     total = 0
--    for i in range(n):
-+    for i in range(n+1):
-         total += i
-     return total
-"""
-```
-
-### Example: SN91 Cascade
-
-```python
-# Input
-input = {
-    "length": 1000,
-    "frequency": "daily",
-    "characteristics": "trend with seasonality"
-}
-
-# Output (time series data)
-return [
-    {"timestamp": "2024-01-01T00:00:00Z", "value": 1.23},
-    {"timestamp": "2024-01-02T00:00:00Z", "value": 1.45},
-    ...
-]
-```
-
----
-
-## Part 5: Quick Reference
-
-### Before Building
-
-- [ ] Read official agent.py
-- [ ] Understand inference mechanism
-- [ ] Check return format
-- [ ] Check screening rules
-- [ ] Check dependencies
-
-### While Building
-
-- [ ] Use proxy (not direct API)
-- [ ] Match return format exactly
-- [ ] Implement tool use
-- [ ] Handle timeouts
-- [ ] Log all runs
-
-### Before Submitting
-
-- [ ] Test locally
-- [ ] Check detection rate
-- [ ] Check precision
-- [ ] Verify return format
-- [ ] Review screening rules
-
----
-
-## Part 6: What Actually Works (Tested on Superposition)
-
-### The Breakthrough
-
-**Asking for specific vulnerability types = 45.5% detection rate**
-
-| Method | Found | TP | DR |
-|--------|-------|-----|-----|
-| Simple prompting | 7 | 0 | 0% |
-| Focused prompting | 0 | 0 | 0% |
-| Chain-of-thought | 3 | 0 | 0% |
-| **Specific types (5)** | **5** | **5** | **45.5%** |
-| All ground truth (11) | 1 | 1 | 9.1% |
-
-### Why This Works
-
-The model CAN find vulnerabilities when asked specifically. The problem is generic prompts don't match ground truth titles.
-
-**Example:**
-- Ground truth: "Users are incorrectly refunded when liquidity is insufficient"
-- Model finds: "Incorrect refund when liquidity is insufficient"
-- These are the SAME vulnerability, just different wording
-
-### The Pattern
-
-```python
-# Ask for specific vulnerability types
-prompt = """Analyze this code for:
-1. Refund logic issues
-2. Slippage control problems
-3. Access control flaws
-4. Pool initialization issues
-5. Token transfer issues
-
-Return JSON array...
-"""
-```
-
-### What This Means
-
-For any subnet:
-1. **Read the ground truth** — understand what vulnerabilities exist
-2. **Ask for those specific types** — don't be generic
-3. **Use multiple rounds** — cover different vuln categories
-4. **Combine findings** — merge results from multiple prompts
-
----
-
-## Part 7: Files to Read First
-
-For Bitsec:
-1. `subnets/sn60-bitsec/sandbox-v2/miner/agent.py` — official agent
-2. `subnets/sn60-bitsec/RUBRIC.md` — target performance
-3. `subnets/sn60-bitsec/INTEL.md` — all collected intel
-4. `mining/sn60/agent_reference.py` — Scout/Senior pattern
-5. `IMPORTANT.md` — this file
-
-For any subnet:
-1. Official repo's `miner/agent.py`
-2. Official docs
-3. Leaderboard (what's winning)
-4. Discord/community (what works)
+**175s test told me the approach was broken.**
+**I should have fixed it, not scaled it.**
