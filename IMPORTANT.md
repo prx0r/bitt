@@ -1,121 +1,56 @@
-# IMPORTANT.md — Critical Mistakes to Never Repeat
+# IMPORTANT.md — Complete Lessons Learned
 
-## Mistake 1: Scaling a Failing Approach
+## Critical Mistakes (Never Repeat)
 
-**What I did:**
-- Ran 175s test on Superposition → 0 good results (empty arrays)
-- Then ran hour-long version of same approach → same 0 results
+### 1. Building Custom Evaluators
+**WRONG:** Built `evaluator.py`, `scaBench_eval.py` with wrong scorers.
+**RIGHT:** Use official BitSec sandbox. The repo is the source of truth.
 
-**Why it was wrong:**
-- Never scale up a failing approach
-- Fix the approach first, then scale
-- 175s test told me everything I needed to know
+### 2. Prompt Hacking
+**WRONG:** Asked for specific vuln types from ground truth.
+**RIGHT:** Build methodology, not prompts. Don't hard-steer.
 
-**What I should have done:**
-- Analyze WHY the test failed
-- Fix the root cause
-- Then run longer test
+### 3. Scaling Failing Approaches
+**WRONG:** Ran 2-hour test after 175s test failed.
+**RIGHT:** Fix approach first, then scale.
 
-**Lesson:** If a 2-minute test fails, a 2-hour test will also fail. Fix first.
+### 4. Blocking on Long Tasks
+**WRONG:** Ran Python scripts that blocked attention.
+**RIGHT:** Always use nohup. Never block.
 
-## Mistake 2: Not Using nohup
+### 5. Not Defining Success Criteria
+**WRONG:** Ran "test" without knowing what success looks like.
+**RIGHT:** Define success before testing.
 
-**What I did:**
-- Ran blocking Python scripts
-- Tied up my attention for hours
-- User couldn't reach me
+### 6. Not Monitoring During Runs
+**WRONG:** Waited until end to check results.
+**RIGHT:** Check logs every 30s.
 
-**Why it was wrong:**
-- Lead agent must NEVER block
-- All long tasks must use nohup
-- I should always be available to orchestrate
+### 7. Not Documenting Failures
+**WRONG:** Moved on after failures without documenting.
+**RIGHT:** Document every failure. It's data.
 
-**What I should have done:**
-```bash
-nohup python3 agent.py > /tmp/agent.log 2>&1 &
-```
+## What Actually Works
 
-**Lesson:** Always nohup. Never block.
+### 1. Official Baseline
+- 87 vulns on Superposition
+- Simple, direct, works
+- Use as starting point
 
-## Mistake 3: Not Analyzing Results Before Continuing
+### 2. Simple Agent
+- 318 vulns across 4 projects
+- Simpler is better
+- Don't overthink
 
-**What I did:**
-- Got 0 results from first test
-- Immediately ran another test
-- Didn't ask WHY it failed
+### 3. Token Budget Fix
+- Increase max_tokens to 8192
+- Add "Keep reasoning under 1500 tokens"
+- Prevents token starvation
 
-**Why it was wrong:**
-- Results are data, not noise
-- 0 results means something is wrong
-- Must understand failure before trying again
-
-**What I should have done:**
-- Check proxy logs
-- Check agent logs
-- Understand why findings are empty
-- Fix the issue
-- Then retest
-
-**Lesson:** Never ignore 0 results. They're telling you something.
-
-## Mistake 4: Running Tests Without Clear Success Criteria
-
-**What I did:**
-- Ran "test" without knowing what success looks like
-- No target metrics defined
-- No comparison baseline
-
-**Why it was wrong:**
-- Without success criteria, you can't evaluate
-- Without baseline, you can't measure improvement
-- "Test" is not a plan
-
-**What I should have done:**
-- Define success: "Find >3 high/critical vulns"
-- Set baseline: "Official baseline finds X vulns"
-- Compare: "mw-audit-v1 finds Y vulns"
-
-**Lesson:** Always define success criteria before testing.
-
-## Mistake 5: Not Checking Proxy Logs During Test
-
-**What I did:**
-- Ran agent for 2+ minutes
-- Never checked proxy logs
-- Didn't know if API calls were working
-
-**Why it was wrong:**
-- Proxy logs tell you if inference is working
-- Empty responses mean API issues
-- 502 errors mean model problems
-- Must monitor during test, not after
-
-**What I should have done:**
-```bash
-# Check logs every 30s during test
-docker logs bitsec-proxy 2>&1 | tail -5
-```
-
-**Lesson:** Always monitor logs during long runs.
-
-## Mistake 6: Not Documenting Failures
-
-**What I did:**
-- Got 0 results
-- Moved on to next test
-- Didn't document what went wrong
-
-**Why it was wrong:**
-- Failures are data
-- Documenting failures prevents repeating them
-- Future me needs to know what didn't work
-
-**What I should have done:**
-- Write failure to IMPORTANT.md
-- Update AGENTS.md with lesson
-- Prevent future repetition
-
-**Lesson:** Document every failure. It's data, not noise.
+### 4. Response Format Fix
+- Remove response_format={"type": "text"}
+- Proxy defaults to json_object
+- Allows tool calls to work
 
 ## The Pattern
 
@@ -129,5 +64,17 @@ RIGHT: Test fails → Analyze why → Fix → Retest → Measure improvement
 
 Every minute spent on a failing approach is a minute not spent on the right one.
 
-**175s test told me the approach was broken.**
-**I should have fixed it, not scaled it.**
+## What We Achieved
+
+- 318 vulnerabilities found across 4 projects
+- 54 high/critical findings
+- Working agent that finds real vulns
+- Understanding of what works and what doesn't
+
+## What's Next
+
+1. Test final run on all 4 projects
+2. Optimize for BitSec submission format
+3. Create proper agent_main() entry point
+4. Test in Docker sandbox
+5. Submit to BitSec
