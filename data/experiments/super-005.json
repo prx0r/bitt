@@ -1,0 +1,20 @@
+{
+  "exp_id": "super-005",
+  "timestamp": "2026-09-04T05:54:54.767348",
+  "project": "superposition",
+  "method": "focused-categories",
+  "model": "mimo-v2.5",
+  "prompt": "You are a senior smart contract security auditor.\n\nAnalyze this Rust/Stylus smart contract for security vulnerabilities.\n\nFocus on these categories:\n- Refund logic issues\n- Slippage control problems\n- Access control flaws\n- Pool initialization issues\n- Token transfer issues\n- Integer overflow/underflow\n- Reentrancy risks\n\nFile: lib.rs\n```\n#![feature(split_array)]\n#![allow(unused_variables)]\n\nuse stylus_sdk::{\n    alloy_primitives::{aliases::*, *},\n    block, evm, msg,\n    prelude::*,\n    storage",
+  "results": {
+    "expected": 11,
+    "found": 0,
+    "tp": 0,
+    "fp": 0,
+    "fn": 11,
+    "dr": 0.0,
+    "precision": 0.0,
+    "f1": 0.0
+  },
+  "findings": [],
+  "notes": "Focused on specific categories"
+}

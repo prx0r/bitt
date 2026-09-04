@@ -1,0 +1,19 @@
+{
+  "run_id": "code4rena_loopfi_2025_02-scaling",
+  "timestamp": "2026-09-04T06:17:32.402390",
+  "subnet": "SN60",
+  "method": "two-round-generic",
+  "model": "mimo-v2.5",
+  "results": {
+    "project": "code4rena_loopfi_2025_02",
+    "expected": 7,
+    "found": 0,
+    "tp": 0,
+    "fp": 0,
+    "fn": 7,
+    "dr": 0.0,
+    "precision": 0.0,
+    "f1": 0.0
+  },
+  "notes": "Two-round generic prompting"
+}

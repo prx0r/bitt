@@ -1,0 +1,19 @@
+{
+  "run_id": "code4rena_fenix-finance-invitational_2024_10-scaling",
+  "timestamp": "2026-09-04T06:18:33.539633",
+  "subnet": "SN60",
+  "method": "two-round-generic",
+  "model": "mimo-v2.5",
+  "results": {
+    "project": "code4rena_fenix-finance-invitational_2024_10",
+    "expected": 15,
+    "found": 7,
+    "tp": 0,
+    "fp": 7,
+    "fn": 15,
+    "dr": 0.0,
+    "precision": 0.0,
+    "f1": 0.0
+  },
+  "notes": "Two-round generic prompting"
+}

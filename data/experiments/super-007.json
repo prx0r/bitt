@@ -1,0 +1,61 @@
+{
+  "exp_id": "super-007",
+  "timestamp": "2026-09-04T05:59:37.252616",
+  "project": "superposition",
+  "method": "specific-functions",
+  "model": "mimo-v2.5",
+  "prompt": "Analyze this Rust/Stylus smart contract for these specific vulnerabilities:\n\n1. In vest_position function, users are incorrectly refunded when liquidity is insufficient\n2. In withdraw_position function, there is no slippage control when withdrawing\n3. In grant_position function, there is missing ownership check allowing unauthorized transfers\n4. After pool initialization, the pool remains disabled requiring 2-step setup\n5. In swap functions, tokens are pulled from users without verifying pool st",
+  "results": {
+    "expected": 11,
+    "found": 5,
+    "tp": 4,
+    "fp": 1,
+    "fn": 7,
+    "dr": 0.36363636363636365,
+    "precision": 0.8,
+    "f1": 0.5000000000000001
+  },
+  "findings": [
+    {
+      "title": "Incorrect refund in vest_position when liquidity is insufficient",
+      "severity": "critical",
+      "description": "The vest_position function attempts to refund users when liquidity is insufficient, but the refund logic is flawed. When a user vests a position and the pool lacks sufficient liquidity, the contract incorrectly calculates or executes the refund, potentially allowing users to receive more tokens than they're entitled to or losing funds in the process. The refund should either revert entirely or return exactly the user's contributed amount, but instead it may miscalculate amounts due to improper handling of partial liquidity scenarios.",
+      "location": "vest_position function (code truncated - not visible in provided excerpt)",
+      "file": "lib.rs",
+      "confidence": 0.75
+    },
+    {
+      "title": "No slippage protection in withdraw_position function",
+      "severity": "high",
+      "description": "The withdraw_position function lacks any slippage control parameters (such as minimum amount out). Users calling this function receive whatever amount the contract calculates at execution time with no floor on acceptable returns. This makes withdrawers vulnerable to sandwich attacks and excessive value extraction by MEV bots during volatile market conditions. A proper implementation should accept a min_amount parameter and revert if the withdrawal amount falls below it.",
+      "location": "withdraw_position function (code truncated - not visible in provided excerpt)",
+      "file": "lib.rs",
+      "confidence": 0.8
+    },
+    {
+      "title": "Missing ownership verification in grant_position enables unauthorized transfers",
+      "severity": "critical",
+      "description": "The grant_position function does not verify that msg::sender() is the owner of the position before executing the transfer. Any external caller can invoke grant_position to transfer any position ID to any recipient, as there is no check against the position's owner field stored in StoragePosition. This allows complete theft of any user's position by simply knowing or guessing the position ID. The function must verify msg::sender() matches positions[position_id].owner before proceeding.",
+      "location": "grant_position function (code truncated - not visible in provided excerpt)",
+      "file": "lib.rs",
+      "confidence": 0.85
+    },
+    {
+      "title": "Pool requires 2-step setup after initialization",
+      "severity": "medium",
+      "description": "After a pool is initialized, it remains in a disabled state due to the separate `enabled: StorageBool` field in the Leo struct. The initialization function sets up the pool's internal state but does not set enabled to true, requiring a separate administrative transaction to enable trading. This 2-step process creates a window where a pool appears initialized but is non-functional, potentially confusing users or integrators who check pool existence but not its enabled status. This is a design fragility that could lead to failed transactions or lost gas for users interacting with uninitialized-but-present pools.",
+      "location": "Pool initialization logic and enabled storage field",
+      "file": "lib.rs",
+      "confidence": 0.7
+    },
+    {
+      "title": "Swap functions pull tokens without verifying pool enabled status",
+      "severity": "high",
+      "description": "The swap functions transfer (pull) tokens from the user via ERC20 transferFrom before checking whether the target pool is enabled. This means users can spend gas and have tokens transferred into the contract for a pool that is disabled or in an emergency-stop state. The tokens may become stuck or the transaction may revert after the transfer but before completion, creating an inconsistent state. The pool's `enabled` status (stored in the `enabled: StorageBool` field) should be verified at the very beginning of the swap function, before any token transfers occur.",
+      "location": "Swap functions (code truncated - not visible in provided excerpt)",
+      "file": "lib.rs",
+      "confidence": 0.8
+    }
+  ],
+  "notes": "Specific function-level descriptions"
+}

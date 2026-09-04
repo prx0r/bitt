@@ -1,0 +1,20 @@
+{
+  "exp_id": "super-006",
+  "timestamp": "2026-09-04T05:58:24.387536",
+  "project": "superposition",
+  "method": "other-5",
+  "model": "mimo-v2.5",
+  "prompt": "Analyze this Rust/Stylus smart contract for these specific vulnerabilities:\n\n1. Users are incorrectly refunded when liquidity is insufficient\n2. No slippage control when withdrawing a position leads to loss of funds\n3. Missing ownership check in grant_position function\n4. Pool still remains disabled after initialization\n5. Tokens are pulled from users without verifying pool status\n\nFile: lib.rs\n```\n#![feature(split_array)]\n#![allow(unused_variables)]\n\nuse stylus_sdk::{\n    alloy_primitives::{ali",
+  "results": {
+    "expected": 11,
+    "found": 0,
+    "tp": 0,
+    "fp": 0,
+    "fn": 11,
+    "dr": 0.0,
+    "precision": 0.0,
+    "f1": 0.0
+  },
+  "findings": [],
+  "notes": "Try the other 5 vulns"
+}

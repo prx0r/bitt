@@ -1,0 +1,14 @@
+{
+  "run_id": "baseline-1788495902",
+  "timestamp": "2026-09-04T04:26:15.210822",
+  "subnet": "SN60",
+  "method": "baseline-relaxed",
+  "model": "mimo-v2.5",
+  "results": {
+    "expected": 15,
+    "found": 10,
+    "tp": 2,
+    "dr": 0.13333333333333333
+  },
+  "notes": "Baseline with relaxed matching"
+}

@@ -1,0 +1,13 @@
+{
+  "run_id": "ridges-test-1788492388",
+  "timestamp": "2026-09-04T03:26:54.236002",
+  "subnet": "SN62",
+  "method": "problem-solving",
+  "model": "mimo-v2.5",
+  "results": {
+    "problem": "Fix this Python function that has an off-by-one error:\n\ndef calculate_sum(n):\n    total = 0\n    for ",
+    "diff_length": 211,
+    "has_diff": true
+  },
+  "notes": "Simple off-by-one fix"
+}

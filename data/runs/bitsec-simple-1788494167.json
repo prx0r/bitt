@@ -1,0 +1,14 @@
+{
+  "run_id": "bitsec-simple-1788494167",
+  "timestamp": "2026-09-04T03:57:52.394085",
+  "subnet": "SN60",
+  "method": "simple-prompting",
+  "model": "mimo-v2.5",
+  "results": {
+    "files_tested": 3,
+    "total_vulns": 0,
+    "by_severity": {},
+    "vulns": []
+  },
+  "notes": "Simple prompting - shorter content"
+}

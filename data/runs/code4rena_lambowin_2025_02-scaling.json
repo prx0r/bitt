@@ -1,0 +1,19 @@
+{
+  "run_id": "code4rena_lambowin_2025_02-scaling",
+  "timestamp": "2026-09-04T06:16:15.706275",
+  "subnet": "SN60",
+  "method": "two-round-generic",
+  "model": "mimo-v2.5",
+  "results": {
+    "project": "code4rena_lambowin_2025_02",
+    "expected": 14,
+    "found": 1,
+    "tp": 0,
+    "fp": 1,
+    "fn": 14,
+    "dr": 0.0,
+    "precision": 0.0,
+    "f1": 0.0
+  },
+  "notes": "Two-round generic prompting"
+}

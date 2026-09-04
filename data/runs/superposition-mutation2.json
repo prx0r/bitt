@@ -1,0 +1,25 @@
+{
+  "run_id": "superposition-mutation2",
+  "timestamp": "2026-09-04T04:38:36.808202",
+  "subnet": "SN60",
+  "method": "function-analysis",
+  "model": "mimo-v2.5",
+  "results": {
+    "project": "code4rena_superposition_2025_01",
+    "expected": 11,
+    "found": 8,
+    "tp": 3,
+    "dr": 0.27,
+    "findings": [
+      "Constructor has no access control",
+      "No enabled state check",
+      "Missing pool address validation",
+      "Reentrancy risk via external calls",
+      "No liquidity snapshot or time-based validation",
+      "Integer overflow in liquidity addition",
+      "Incomplete campaign creation function",
+      "No zero address validation for token parameter"
+    ]
+  },
+  "notes": "Mutation 2: Function-by-function analysis. Found 3 closer matches."
+}

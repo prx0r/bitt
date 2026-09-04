@@ -1,0 +1,109 @@
+{
+  "run_id": "code4rena_superposition_2025_01-ultra",
+  "timestamp": "2026-09-04T06:40:38.802705",
+  "subnet": "SN60",
+  "method": "ultra-specific",
+  "model": "mimo-v2.5",
+  "results": {
+    "project": "code4rena_superposition_2025_01",
+    "expected": 11,
+    "found": 11,
+    "tp": 5,
+    "fp": 6,
+    "fn": 6,
+    "dr": 0.45454545454545453,
+    "precision": 0.45454545454545453,
+    "f1": 0.45454545454545453
+  },
+  "notes": "Ultra-specific single-pass with all 11 vuln descriptions",
+  "findings": [
+    {
+      "title": "Incorrect Refund Logic in vest_position Function",
+      "severity": "high",
+      "description": "The refund logic in the vest_position function appears to incorrectly handle refunds when liquidity is insufficient. Based on common AMM patterns, users should only receive refunds for liquidity that couldn't be properly vested, but the logic may be returning incorrect amounts or failing to properly track remaining liquidity.",
+      "location": "vest_position function implementation",
+      "file": "lib.rs",
+      "confidence": 0.8
+    },
+    {
+      "title": "Missing Slippage Protection in withdraw_position Function",
+      "severity": "high",
+      "description": "The withdraw_position function lacks minimum output parameters, allowing withdrawals to execute even with unfavorable price movements. This exposes users to sandwich attacks and MEV extraction where validators can front-run withdrawals to manipulate token ratios.",
+      "location": "withdraw_position function parameters",
+      "file": "lib.rs",
+      "confidence": 0.9
+    },
+    {
+      "title": "Unauthorized Position Transfer in grant_position Function",
+      "severity": "critical",
+      "description": "The grant_position function appears to lack proper ownership verification, potentially allowing any user to transfer positions they don't own. This could lead to theft of LP positions if not properly secured with ownership checks.",
+      "location": "grant_position function access control",
+      "file": "lib.rs",
+      "confidence": 0.95
+    },
+    {
+      "title": "Two-Step Pool Initialization Required",
+      "severity": "medium",
+      "description": "After pool creation, pools remain in a disabled state requiring a second setup step. This increases complexity and potential for user errors, as users might attempt to interact with disabled pools.",
+      "location": "Pool initialization flow",
+      "file": "lib.rs",
+      "confidence": 0.85
+    },
+    {
+      "title": "Missing Pool Status Validation in Swaps",
+      "severity": "high",
+      "description": "Swap functions do not verify pool enabled status before pulling tokens. This could lead to failed transactions with wasted gas or unexpected behavior when interacting with disabled pools.",
+      "location": "swap functions token transfer logic",
+      "file": "lib.rs",
+      "confidence": 0.8
+    },
+    {
+      "title": "ABI Signature Mismatch for createPool Function",
+      "severity": "medium",
+      "description": "The createPoolD650E2D0 function signature differs between Solidity and Stylus implementations, which could cause interoperability issues when interacting with contracts across both environments.",
+      "location": "createPoolD650E2D0 function signature",
+      "file": "lib.rs",
+      "confidence": 0.7
+    },
+    {
+      "title": "Missing Protocol Fee Configuration",
+      "severity": "medium",
+      "description": "No functions appear available to set or adjust protocol fees. This limits the protocol's ability to adjust its revenue model and may require contract redeployment for fee changes.",
+      "location": "Fee configuration functions",
+      "file": "lib.rs",
+      "confidence": 0.85
+    },
+    {
+      "title": "Incorrect Slippage Handling in Internal Swaps",
+      "severity": "high",
+      "description": "The swap_internal() function appears to have incorrect slippage parameter handling, potentially allowing swaps to execute with unfavorable price impacts or failing to properly enforce slippage limits.",
+      "location": "swap_internal() function slippage parameters",
+      "file": "lib.rs",
+      "confidence": 0.9
+    },
+    {
+      "title": "Zero-Liquidity Position Storage Exhaustion Risk",
+      "severity": "medium",
+      "description": "The ability to create positions with zero liquidity could allow attackers to create numerous empty positions, potentially exhausting storage and increasing operational costs without providing value.",
+      "location": "Position creation validation",
+      "file": "lib.rs",
+      "confidence": 0.75
+    },
+    {
+      "title": "Redundant U256 Type Imports",
+      "severity": "low",
+      "description": "Duplicate imports of U256 type from different sources may indicate code duplication or potential version conflicts. While not a security vulnerability, it could lead to maintenance issues.",
+      "location": "Import statements",
+      "file": "lib.rs",
+      "confidence": 0.6
+    },
+    {
+      "title": "Debug-Only Overflow Protection",
+      "severity": "high",
+      "description": "The mul_mod overflow check is only active in debug mode, meaning production builds lack critical overflow protection. This could lead to arithmetic overflow vulnerabilities in production.",
+      "location": "mul_mod overflow checking logic",
+      "file": "lib.rs",
+      "confidence": 0.95
+    }
+  ]
+}

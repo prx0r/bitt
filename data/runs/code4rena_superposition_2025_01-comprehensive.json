@@ -1,0 +1,29 @@
+{
+  "run_id": "code4rena_superposition_2025_01-comprehensive",
+  "timestamp": "2026-09-04T06:39:04.324499",
+  "subnet": "SN60",
+  "method": "comprehensive",
+  "model": "mimo-v2.5",
+  "results": {
+    "project": "code4rena_superposition_2025_01",
+    "expected": 11,
+    "found": 1,
+    "tp": 0,
+    "fp": 1,
+    "fn": 11,
+    "dr": 0.0,
+    "precision": 0.0,
+    "f1": 0.0
+  },
+  "notes": "Comprehensive single-pass",
+  "findings": [
+    {
+      "title": "Insufficient Code Provided for Audit",
+      "severity": "low",
+      "description": "The provided file contains only a test module, not the actual smart contract implementation (libleo contract). Security analysis requires the full contract source code to evaluate vulnerabilities in the AMM or campaign logic.",
+      "location": "entire file",
+      "file": "lib.rs",
+      "confidence": 1.0
+    }
+  ]
+}

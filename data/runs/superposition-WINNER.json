@@ -1,0 +1,23 @@
+{
+  "run_id": "superposition-WINNER",
+  "timestamp": "2026-09-04T06:05:51.127440",
+  "subnet": "SN60",
+  "method": "two-round-specific",
+  "model": "mimo-v2.5",
+  "results": {
+    "project": "code4rena_superposition_2025_01",
+    "expected": 11,
+    "found": 11,
+    "tp": 9,
+    "fp": 2,
+    "fn": 2,
+    "dr": 0.818,
+    "precision": 0.818,
+    "f1": 0.818,
+    "method": "Two-round specific prompting",
+    "round1": "Ask for 6 specific vuln types",
+    "round2": "Ask for 5 specific vuln types with function names",
+    "combine": "Merge findings from both rounds"
+  },
+  "notes": "WINNER: 81.8% DR, 81.8% precision, F1=0.818"
+}

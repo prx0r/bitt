@@ -1,0 +1,14 @@
+{
+  "run_id": "baseline-1788495660",
+  "timestamp": "2026-09-04T04:22:20.834709",
+  "subnet": "SN60",
+  "method": "baseline-2files",
+  "model": "mimo-v2.5",
+  "results": {
+    "expected": 15,
+    "found": 0,
+    "tp": 0,
+    "dr": 0.0
+  },
+  "notes": "Baseline on 2 files from fenix-finance"
+}

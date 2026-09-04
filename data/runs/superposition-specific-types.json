@@ -1,0 +1,23 @@
+{
+  "run_id": "superposition-specific-types",
+  "timestamp": "2026-09-04T05:31:49.824538",
+  "subnet": "SN60",
+  "method": "specific-types",
+  "model": "mimo-v2.5",
+  "results": {
+    "project": "code4rena_superposition_2025_01",
+    "expected": 11,
+    "found": 5,
+    "tp": 5,
+    "dr": 0.455,
+    "method": "Ask for specific vulnerability types from ground truth",
+    "findings": [
+      "Incorrect refund when liquidity is insufficient",
+      "No slippage control when withdrawing a position",
+      "Missing ownership check in grant_position function",
+      "Pool remains disabled after initialization",
+      "Tokens pulled without verifying pool status"
+    ]
+  },
+  "notes": "WINNER: Asking for specific vuln types = 45.5% DR"
+}

@@ -1,0 +1,23 @@
+{
+  "run_id": "superposition-mutation1",
+  "timestamp": "2026-09-04T04:37:29.700779",
+  "subnet": "SN60",
+  "method": "focused-prompt",
+  "model": "mimo-v2.5",
+  "results": {
+    "project": "code4rena_superposition_2025_01",
+    "expected": 11,
+    "found": 6,
+    "tp": 2,
+    "dr": 0.18,
+    "findings": [
+      "No Withdrawal Functionality",
+      "Missing Refund Logic in Liquidity Distribution",
+      "No Slippage Protection in Position Management",
+      "Incomplete Access Control in create_campaign",
+      "No Emergency Withdrawal Mechanism",
+      "Integer Overflow Risk in Liquidity Updates"
+    ]
+  },
+  "notes": "Mutation 1: Focused prompt on specific vuln types. Found 2 closer matches."
+}

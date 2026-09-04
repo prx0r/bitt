@@ -1,0 +1,37 @@
+{
+  "run_id": "superposition-baseline",
+  "timestamp": "2026-09-04T04:36:34.988237",
+  "subnet": "SN60",
+  "method": "baseline",
+  "model": "mimo-v2.5",
+  "results": {
+    "project": "code4rena_superposition_2025_01",
+    "expected": 11,
+    "found": 7,
+    "tp": 0,
+    "dr": 0.0,
+    "ground_truth": [
+      "createPoolD650E2D0will not work due to mismatch in solidity and stylus function definitions",
+      "Users are incorrectly refunded when liquidity is insufficient",
+      "No slippage control when withdrawing a position leads to loss of funds",
+      "It is still not possible to set pool protocol fees",
+      "Tokens are pulled from users without verifying pool status contrary to requirement",
+      "Incorrect slippage handling in swap_internal()",
+      "Pool still remains disabled after initialization requiring 2-step setup process",
+      "Missing ownership check in grant_position function allows unauthorized position transfers",
+      "Zero-liquidity position creation allows for storage exhaustion attack",
+      "Duplicate U256 type imports",
+      "mul_mod overflow check only active in debug mode"
+    ],
+    "model_findings": [
+      "Missing Constructor Access Control",
+      "Potential Position ID Collision in vest_position",
+      "No Validation of Pool/Token Addresses",
+      "Incomplete create_campaign Implementation",
+      "Unchecked Arithmetic in Liquidity Update",
+      "Potential State Inconsistency in vest_position",
+      "Lack of Event Emission"
+    ]
+  },
+  "notes": "Superposition baseline - 0% DR, model finds different vulns than ground truth"
+}

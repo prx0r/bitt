@@ -1,0 +1,88 @@
+{
+  "run_id": "baseline-1788495783",
+  "timestamp": "2026-09-04T04:24:32.024060",
+  "subnet": "SN60",
+  "method": "baseline-2files",
+  "model": "mimo-v2.5",
+  "results": {
+    "expected": 15,
+    "found": 9,
+    "tp": 0,
+    "dr": 0.0,
+    "findings": [
+      {
+        "title": "Missing Zero Address Validation in Constructor",
+        "severity": "medium",
+        "description": "The constructor does not validate that `_token0`, `_token1`, `_factory`, or blast-related addresses are not zero addresses. This could lead to locked funds or unexpected behavior if zero addresses are passed.",
+        "location": "constructor(address, address, address, address, address, address)",
+        "file": "contracts/dexV2/PairFees.sol",
+        "confidence": 0.9
+      },
+      {
+        "title": "No Duplicate Token Validation",
+        "severity": "medium",
+        "description": "The constructor does not check if `token0 == token1`. Deploying with identical token addresses would cause incorrect fee distribution and potential loss of funds.",
+        "location": "constructor(address, address, address, address, address, address)",
+        "file": "contracts/dexV2/PairFees.sol",
+        "confidence": 0.95
+      },
+      {
+        "title": "Potential Reentrancy in claimFeesFor",
+        "severity": "medium",
+        "description": "The `claimFeesFor` function performs two external token transfers without a reentrancy guard. If the recipient or token contracts are malicious (e.g., ERC777 with callbacks), state could be manipulated between transfers. While limited by the `msg.sender == pair` check, compromised pair contracts could exploit this.",
+        "location": "claimFeesFor(address, uint256, uint256)",
+        "file": "contracts/dexV2/PairFees.sol",
+        "confidence": 0.6
+      },
+      {
+        "title": "Incomplete Access Control Implementation",
+        "severity": "high",
+        "description": "The `_checkAccessForManageBlastERC20Rebasing` function is truncated/incomplete. The implementation is cut off mid-function, making it impossible to verify proper access control for Blast rebasing operations.",
+        "location": "_checkAccessForManageBlastERC20Rebasing()",
+        "file": "contracts/dexV2/PairFees.sol",
+        "confidence": 1.0
+      },
+      {
+        "title": "Unchecked Return Data in _safeTransfer",
+        "severity": "low",
+        "description": "While the implementation checks for empty data or boolean return, some non-compliant ERC20 tokens may behave unexpectedly. The pattern is generally acceptable but should be documented.",
+        "location": "_safeTransfer(address, address, uint256)",
+        "file": "contracts/dexV2/PairFees.sol",
+        "confidence": 0.7
+      },
+      {
+        "title": "Centralized Fee Claiming via Pair Contract",
+        "severity": "low",
+        "description": "All fee claims must go through the pair contract (`msg.sender == pair`). If the pair contract is upgradeable or has vulnerabilities, the entire fee distribution mechanism could be compromised.",
+        "location": "claimFeesFor(address, uint256, uint256)",
+        "file": "contracts/dexV2/PairFees.sol",
+        "confidence": 0.65
+      },
+      {
+        "title": "Missing Function Implementations",
+        "severity": "medium",
+        "description": "The provided code snippet only shows interface definitions and partial library implementations. The actual RouterV2 contract logic is missing, preventing a complete security analysis.",
+        "location": "contracts/dexV2/RouterV2.sol",
+        "confidence": 0.8,
+        "file": "contracts/dexV2/RouterV2.sol"
+      },
+      {
+        "title": "Incomplete Math.sqrt() Implementation",
+        "severity": "low",
+        "description": "The Math.sqrt() function appears to be cut off mid-implementation. If this function is incomplete or incorrectly implemented, it could lead to inaccurate calculations for liquidity operations.",
+        "location": "contracts/dexV2/RouterV2.sol: Math.sqrt()",
+        "confidence": 0.9,
+        "file": "contracts/dexV2/RouterV2.sol"
+      },
+      {
+        "title": "Potential Interface Inconsistencies",
+        "severity": "low",
+        "description": "The IBaseV1Pair interface includes a non-standard function signature: getAmountOut(uint, address) that differs from typical Uniswap/Solidly implementations. This could indicate customization but also potential compatibility issues.",
+        "location": "contracts/dexV2/RouterV2.sol: IBaseV1Pair interface",
+        "confidence": 0.7,
+        "file": "contracts/dexV2/RouterV2.sol"
+      }
+    ]
+  },
+  "notes": "Baseline on 2 files from fenix-finance"
+}

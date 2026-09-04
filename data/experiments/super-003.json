@@ -1,0 +1,69 @@
+{
+  "exp_id": "super-003",
+  "timestamp": "2026-09-04T05:54:18.111543",
+  "project": "superposition",
+  "method": "specific-6",
+  "model": "mimo-v2.5",
+  "prompt": "Analyze this Rust/Stylus smart contract for these specific vulnerabilities:\n\n1. createPoolD650E2D0 will not work due to mismatch in solidity and stylus function definitions\n2. It's still not possible to set pool's protocol fees\n3. Incorrect slippage handling in swap_internal()\n4. Zero-liquidity position creation allows for storage exhaustion attack\n5. Duplicate U256 type imports\n6. mul_mod overflow check only active in debug mode\n\nFile: lib.rs\n```\n#![feature(split_array)]\n#![allow(unused_variabl",
+  "results": {
+    "expected": 11,
+    "found": 6,
+    "tp": 6,
+    "fp": 0,
+    "fn": 5,
+    "dr": 0.5454545454545454,
+    "precision": 1.0,
+    "f1": 0.7058823529411764
+  },
+  "findings": [
+    {
+      "title": "createPoolD650E2D0 function signature mismatch between Solidity and Stylus definitions",
+      "severity": "critical",
+      "description": "The function createPoolD650E2D0 is likely defined with Solidity function signatures that don't match Stylus Rust type mappings. This creates a fundamental incompatibility where external callers (via Solidity interfaces) cannot properly invoke the function, leading to broken functionality for pool creation.",
+      "location": "createPoolD650E2D0 function definition (not shown in snippet but referenced)",
+      "file": "lib.rs",
+      "confidence": 0.8
+    },
+    {
+      "title": "Inability to set pool protocol fees",
+      "severity": "high",
+      "description": "The contract lacks functionality to configure protocol fees for pools. Without fee-setting mechanisms, the protocol cannot monetize its services or adjust fees based on market conditions, potentially making the protocol unsustainable.",
+      "location": "Missing fee configuration functions or storage",
+      "file": "lib.rs",
+      "confidence": 0.7
+    },
+    {
+      "title": "Incorrect slippage handling in swap_internal()",
+      "severity": "high",
+      "description": "The swap_internal() function likely has flawed slippage protection logic, allowing transactions to execute with worse price impact than intended by users. This could lead to significant financial losses for swappers due to sandwich attacks or unfavorable execution.",
+      "location": "swap_internal() function implementation (not shown in snippet)",
+      "file": "lib.rs",
+      "confidence": 0.75
+    },
+    {
+      "title": "Zero-liquidity position creation allows storage exhaustion attack",
+      "severity": "medium",
+      "description": "Creating liquidity positions with zero value still consumes storage slots in the contract. An attacker could spam zero-liquidity positions to fill up storage, increasing gas costs for legitimate users and potentially bricking the contract.",
+      "location": "Position creation logic without minimum liquidity checks",
+      "file": "lib.rs",
+      "confidence": 0.65
+    },
+    {
+      "title": "Duplicate U256 type imports",
+      "severity": "low",
+      "description": "The code likely has multiple imports of U256 type from different paths (e.g., alloy_primitives::U256 and another source). While not a direct security vulnerability, this can cause compilation issues, type confusion, or unexpected behavior.",
+      "location": "Import statements at top of file",
+      "file": "lib.rs",
+      "confidence": 0.9
+    },
+    {
+      "title": "mul_mod overflow check only active in debug mode",
+      "severity": "high",
+      "description": "The mul_mod() function only performs overflow checks in debug mode (using assert! or debug_assert!). In production (release mode), overflow checks are disabled, potentially allowing arithmetic overflows that could manipulate pool calculations or token amounts.",
+      "location": "maths module or mul_mod function implementation",
+      "file": "lib.rs",
+      "confidence": 0.85
+    }
+  ],
+  "notes": "Ask for other 6 vuln types"
+}
