@@ -1,0 +1,38 @@
+{
+  "run_id": "final-20260904",
+  "timestamp": "2026-09-04T18:05:00Z",
+  "agent": "simple-v1",
+  "model": "mimo-v2.5",
+  "results": {
+    "superposition": {
+      "found": 78,
+      "tp": 44,
+      "dr": 400.0,
+      "high_critical": 18
+    },
+    "loopfi": {
+      "found": 231,
+      "tp": 76,
+      "dr": 1085.7,
+      "high_critical": 35
+    },
+    "secondswap": {
+      "found": 5,
+      "tp": 4,
+      "dr": 13.3,
+      "high_critical": 1
+    },
+    "lambowin": {
+      "found": 4,
+      "tp": 4,
+      "dr": 28.6,
+      "high_critical": 1
+    }
+  },
+  "totals": {
+    "found": 318,
+    "tp": 128,
+    "dr": 206.5,
+    "high_critical": 55
+  }
+}
