@@ -1,0 +1,34 @@
+{
+  "project": "code4rena_superposition_2025_01",
+  "agent": "mw-audit-v1-v2",
+  "model": "mimo-v2.5",
+  "timestamp": "2026-09-04T10:20:00Z",
+  "stats": {
+    "inference_calls": 702,
+    "report_calls": 84,
+    "findings_in_reasoning": 3,
+    "findings_submitted": 0
+  },
+  "findings_in_reasoning": [
+    {
+      "title": "Inverted ERC721 onERC721Received selector check",
+      "severity": "critical",
+      "confidence": 0.95,
+      "file": "pkg/sol/OwnershipNFTs.sol"
+    },
+    {
+      "title": "Stale Approval Persistence After Position Transfer",
+      "severity": "critical",
+      "confidence": 0.95,
+      "file": "pkg/sol/OwnershipNFTs.sol"
+    },
+    {
+      "title": "calc_base_rewards formula inversion",
+      "severity": "critical",
+      "confidence": 0.9,
+      "file": "pkg/leo/src/seawater.rs"
+    }
+  ],
+  "root_cause": "Model finds vulnerabilities in reasoning but reports empty arrays in tool call",
+  "next_steps": "Need to fix the model's ability to convert reasoning findings to structured output"
+}
