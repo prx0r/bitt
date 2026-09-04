@@ -90,14 +90,14 @@ docker logs bitsec-proxy 2>&1 | tail -5
 | Component | Status | Notes |
 |-----------|--------|-------|
 | Proxy | Running | Docker, port 8087 |
-| mw-audit-v1 | Built | Found 1 real vulnerability |
-| Official baseline | Not tested | Need to run |
-| Benchmark | Not measured | Need to compare |
+| simple-v1 | Working | Found 319 vulns across 3 projects |
+| Official baseline | Working | Found 87 vulns on Superposition |
+| Lambowin | Broken | Model doesn't report findings |
 
 ## Next Actions (all delegated)
 
-1. Subagent: Fix mw-audit-v1 to report more findings
-2. Subagent: Run official baseline for comparison
-3. Subagent: Score both against ground truth
+1. Subagent: Fix lambowin reporting issue
+2. Subagent: Test on more projects
+3. Subagent: Optimize for BitSec submission
 4. Me: Monitor all results
 5. Me: Decide which approach is better
