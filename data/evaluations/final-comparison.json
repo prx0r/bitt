@@ -1,0 +1,23 @@
+{
+  "superposition": {
+    "official_baseline": {"findings": 87, "high_critical": 14},
+    "simple_v1": {"findings": 78, "high_critical": 18},
+    "mw_audit_v1": {"findings": 3, "high_critical": 1, "submitted": 1}
+  },
+  "lambowin": {
+    "official_baseline": {"findings": 0, "high_critical": 0},
+    "simple_v1": {"findings": 0, "high_critical": 0},
+    "mw_audit_v1": {"findings": 0, "high_critical": 0}
+  },
+  "key_findings": {
+    "simple_v1_finds_real_vulns": true,
+    "simple_v1_finds_more_high_critical_than_official": true,
+    "model_finds_in_reasoning_but_doesnt_report": true,
+    "token_budget_was_not_the_issue": true
+  },
+  "next_steps": [
+    "Test on more projects",
+    "Understand why lambowin returns 0",
+    "Optimize for BitSec submission format"
+  ]
+}
