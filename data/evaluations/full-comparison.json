@@ -1,0 +1,14 @@
+{
+  "superposition": {
+    "official_baseline": {"findings": 87, "high_critical": 14},
+    "simple_v1": {"findings": 78, "high_critical": 18},
+    "mw_audit_v1": {"findings": 3, "high_critical": 1, "submitted": 1}
+  },
+  "lambowin": {
+    "official_baseline": {"findings": 0, "high_critical": 0},
+    "simple_v1": {"findings": 0, "high_critical": 0},
+    "mw_audit_v1": {"findings": 0, "high_critical": 0}
+  },
+  "key_insight": "Model finds vulnerabilities in reasoning but doesn't report them in tool call",
+  "root_cause": "Model analyzes code but doesn't convert findings to structured output"
+}
