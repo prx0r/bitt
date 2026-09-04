@@ -1,4 +1,4 @@
-# SN44 — TurboVision
+# SN44 — TurboVision (Computer Vision)
 
 ## Live Chain Data
 - **Median payout:** 7.4 TAO/day
@@ -14,10 +14,20 @@
 - Easy entry (low reg cost)
 
 ## Dev Plan
-1. Research: Understand mechanism
-2. Benchmark locally
-3. Register + submit
-4. Iterate
+1. ✅ Research: Read subnet docs, understand mechanism
+2. ✅ Clone: Cloned miner repo from score-technologies/turbovision
+3. ✅ Build: Created vision analyzer using bitsec pattern
+4. ⬜ Test: Run local evaluation
+5. ⬜ Register: 0.0005 TAO
+6. ⬜ Deploy: Submit model to Chutes
+7. ⬜ Iterate: Improve based on validator feedback
+
+## Current Status
+- Miner built: `mining/sn44/miner.py`
+- Pattern: Image/video analysis using free inference APIs
+- Next: Test against real subnet challenges
 
 ## Resources
 - [Imported email](../../imports/SN44 TurboVision — Autonomous Winning Miner Agent Guide.md)
+- Repo: https://github.com/score-technologies/turbovision
+- Docs: https://wearescore.com

@@ -1,0 +1,61 @@
+{
+  "run_id": "code4rena_lambowin_2025_02-v3",
+  "timestamp": "2026-09-04T07:03:18.100568",
+  "subnet": "SN60",
+  "method": "multi-contract-3k",
+  "model": "mimo-v2.5",
+  "results": {
+    "project": "code4rena_lambowin_2025_02",
+    "expected": 14,
+    "found": 5,
+    "tp": 0,
+    "fp": 5,
+    "fn": 14,
+    "dr": 0.0,
+    "precision": 0.0,
+    "f1": 0.0
+  },
+  "notes": "Multi-contract with 3k chars",
+  "findings": [
+    {
+      "title": "Uninitialized Minimal Proxy Implementation",
+      "severity": "medium",
+      "description": "The LamboToken implementation (`lamboTokenImplementation`) is cloned via `Clones.clone()`, but there is no explicit initialization of the implementation contract itself during deployment. This could allow an attacker to initialize the implementation contract before clones are created, potentially affecting the factory's operation if the implementation has storage that shouldn't be set.",
+      "location": "constructor(address _lamboTokenImplementation)",
+      "file": "src/LamboFactory.sol",
+      "confidence": 0.85
+    },
+    {
+      "title": "Centralized Whitelist Control",
+      "severity": "low",
+      "description": "The `whiteList` mapping is controlled solely by the `onlyOwner` modifier. While common, this introduces centralization risk. A compromised owner could list malicious tokens or delist legitimate ones, disrupting the launchpad's operation.",
+      "location": "addVTokenWhiteList, removeVTokenWhiteList",
+      "file": "src/LamboFactory.sol",
+      "confidence": 0.95
+    },
+    {
+      "title": "Potential Front-Running in `createLaunchPad`",
+      "severity": "high",
+      "description": "The `createLaunchPad` function (based on its signature and common launchpad patterns) likely creates a liquidity pool and adds initial liquidity. Without seeing the full implementation, if it does not use a commit-reveal scheme or other anti-frontrunning measures, a malicious actor could front-run the transaction to manipulate the initial price of the virtual token.",
+      "location": "createLaunchPad (incomplete in provided snippet)",
+      "file": "src/LamboFactory.sol",
+      "confidence": 0.8
+    },
+    {
+      "title": "Lack of Emergency Functions or Pause Mechanism",
+      "severity": "medium",
+      "description": "The contract inherits `ReentrancyGuard` but lacks a pause mechanism or emergency withdrawal function for tokens sent to the contract. If the contract is expected to hold tokens (e.g., during pool creation), a bug could lead to permanent fund loss without admin recovery options.",
+      "location": "Contract-level",
+      "file": "src/LamboFactory.sol",
+      "confidence": 0.7
+    },
+    {
+      "title": "Potential Integer Overflow in `virtualLiquidityAmount`",
+      "severity": "low",
+      "description": "While Solidity 0.8.20 has built-in overflow checks, if `virtualLiquidityAmount` is used in arithmetic without validation (e.g., passed to external contracts that do not check bounds), it could lead to unexpected behavior. This is contingent on the full implementation.",
+      "location": "createLaunchPad parameters",
+      "file": "src/LamboFactory.sol",
+      "confidence": 0.65
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "run_id": "code4rena_lambowin_2025_02-v2",
+  "timestamp": "2026-09-04T06:59:39.438743",
+  "subnet": "SN60",
+  "method": "multi-contract",
+  "model": "mimo-v2.5",
+  "results": {
+    "project": "code4rena_lambowin_2025_02",
+    "expected": 14,
+    "found": 0,
+    "tp": 0,
+    "fp": 0,
+    "fn": 14,
+    "dr": 0.0,
+    "precision": 0.0,
+    "f1": 0.0
+  },
+  "notes": "Multi-contract analysis"
+}

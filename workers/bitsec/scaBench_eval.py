@@ -17,15 +17,9 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path("/root/bitt")))
-sys.path.insert(0, str(Path("/root/mwgym")))
-sys.path.insert(0, str(Path("/root/cg")))
+sys.path.insert(0, str(Path("/root/bitt/workers/bitsec")))
 
-from vault import Vault
-v = Vault()
-os.environ['OPENCODE_API_KEY'] = v.get('opencode_go_api_key') or ''
-os.environ['GROQ_API_KEY'] = v.get('groq_api_key') or ''
-
-from workers.bitsec.cloudflare_harness import call_model
+from opencode_harness import call_model
 
 
 def load_scaBench_dataset() -> list[dict]:
@@ -61,19 +55,36 @@ def load_project_code(project_id: str) -> str:
 
 
 def miner_analyze(code: str, project_name: str = "") -> list[dict]:
-    """Run miner on code. Returns list of findings."""
-    prompt = f"""Thoroughly scan the code line by line for potentially flawed logic or problematic code that could cause security vulnerabilities.
+    """Run miner on code. Returns list of findings.
+    
+    Chunks code into smaller pieces if too long.
+    """
+    # If code is short enough, analyze directly
+    if len(code) <= 20000:
+        return _analyze_chunk(code)
+    
+    # Otherwise, chunk and analyze each chunk
+    all_findings = []
+    chunk_size = 15000  # ~3750 tokens
+    chunks = [code[i:i+chunk_size] for i in range(0, len(code), chunk_size)]
+    
+    for i, chunk in enumerate(chunks):
+        findings = _analyze_chunk(chunk)
+        all_findings.extend(findings)
+    
+    return all_findings
 
-Ignore privacy concerns since the code is deployed on a public blockchain.
 
-### Code:
+def _analyze_chunk(code: str) -> list[dict]:
+    """Analyze a single chunk of code."""
+    prompt = f"""Scan this Solidity code for security vulnerabilities:
+
 {code}
 
-List vulnerabilities and possible ways for potential financial loss.
-Return a JSON array:
+Return JSON array of vulnerabilities:
 [{{"title": "...", "severity": "critical|high|medium|low", "category": "...", "description": "..."}}]"""
 
-    result = call_model("mimo", prompt, max_tokens=3000)
+    result = call_model("mimo-v2.5", prompt, max_tokens=3000)
     content = result.get('content', '')
 
     findings = []

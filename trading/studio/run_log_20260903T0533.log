@@ -1,0 +1,4 @@
+  File "<stdin>", line 74
+    ]
+    ^
+SyntaxError: closing parenthesis ']' does not match opening parenthesis '(' on line 60
