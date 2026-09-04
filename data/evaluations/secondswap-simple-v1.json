@@ -1,0 +1,14 @@
+{
+  "project": "code4rena_secondswap_2025_02",
+  "candidate": "simple-v1",
+  "model": "mimo-v2.5",
+  "timestamp": "2026-09-04T14:15:00Z",
+  "results": {
+    "total_findings": 10,
+    "high_critical_count": 1,
+    "critical": 0,
+    "high": 1,
+    "medium": 5,
+    "low": 4
+  }
+}
