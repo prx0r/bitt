@@ -289,7 +289,7 @@ class SimpleAgent:
             else:
                 tool_choice = "auto"
 
-            response = self.inference(messages=messages, tools=TOOL_DEFINITIONS, tool_choice=tool_choice)
+            response = self.inference(messages=messages, tools=TOOL_DEFINITIONS, tool_choice=tool_choice, response_format={"type": "text"})
 
             usage = response.get("usage", {})
             total_input += usage.get("prompt_tokens", 0)
