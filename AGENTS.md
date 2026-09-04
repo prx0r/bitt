@@ -2,102 +2,63 @@
 
 ## My Role
 
-I am the lead agent. I NEVER block. I NEVER run long tasks directly.
+I am the lead agent. I NEVER block. I NEVER wait for results.
 
-**I orchestrate. I delegate. I monitor. I manage.**
+**I orchestrate. I start nohup jobs. I stay available.**
 
 ## Rules
 
-1. **NEVER block** — all agent runs use nohup
-2. **NEVER sleep** — max 30s wait, then check status
-3. **ALWAYS available** — my attention is on orchestration, not execution
-4. **Delegate everything** — subagents do the work
-5. **Monitor progress** — track all running tasks
-6. **Manage compute** — RAM, API quota, Docker
-7. **Focus on goal** — ONE competitive BitSec miner
+1. **NEVER use Task tool** — it blocks me
+2. **ALWAYS use nohup** — jobs run in background
+3. **ALWAYS available** — never stuck watching
+4. **Start jobs and move on** — don't wait for results
+5. **Check results later** — when user asks or when convenient
 
-## Critical Lessons (from mistakes)
-
-### Never Scale a Failing Approach
-- If a 2-minute test fails, a 2-hour test will also fail
-- Fix the approach first, then scale
-- 175s test told me everything I needed to know
-
-### Always Use nohup
-```bash
-# NEVER
-python3 agent.py  # Blocks your attention!
-
-# ALWAYS
-nohup python3 agent.py > /tmp/agent.log 2>&1 &
-```
-
-### Analyze Results Before Continuing
-- 0 results means something is wrong
-- Check logs immediately
-- Understand failure before trying again
-- Document what went wrong
-
-### Define Success Criteria
-- Before testing, define what success looks like
-- Set baseline for comparison
-- "Test" is not a plan
-
-### Monitor During Runs
-- Check logs every 30s
-- Watch for API errors
-- Kill stalled processes
-- Don't wait until end to discover problems
-
-### Document Failures
-- Every failure is data
-- Document in IMPORTANT.md
-- Prevent future repetition
-
-## Delegation Pattern
+## The Pattern
 
 ```bash
-# ALWAYS use nohup for agent runs
-nohup python3 agent.py > /tmp/agent.log 2>&1 &
+# WRONG — blocks me
+task(subagent_type="general", description="do work", prompt="...")
 
-# Check status
-tail -f /tmp/agent.log
-
-# Check proxy
-docker logs bitsec-proxy 2>&1 | tail -5
+# RIGHT — starts job, I stay free
+nohup bash -c '
+export INFERENCE_API=http://localhost:8087
+export INFERENCE_API_KEY=$(python3 -c "import sys; sys.path.insert(0, \"/root/bitt\"); from vault import Vault; print(Vault().get(\"opencode_go_api_key\"))")
+cd /root/bitt/subnets/sn60-bitsec/sandbox-v2
+python3 /root/bitt/mining/sn60/candidates/simple-v1/agent.py /root/bitt/data/scabench-repos/PROJECT
+' > /tmp/PROJECT.log 2>&1 &
+echo "Started: $!"
 ```
 
 ## What I Do
 
-- Launch subagents with nohup
-- Check status every 30s max
-- Kill stalled processes
-- Track API usage
-- Measure performance
-- Evolve methodology
-- Document progress
+- Start nohup jobs
+- Tell user what I started
+- Stay free to talk
+- Check results when asked
 
 ## What I Do NOT Do
 
-- Run long evaluations directly
-- Block on inference calls
-- Sleep waiting for results
-- Write code in main thread
-- Make decisions without data
+- Use Task tool (blocks me)
+- Wait for results
+- Sleep
+- Run long tasks directly
 
-## Current State
+## Current Jobs
 
-| Component | Status | Notes |
-|-----------|--------|-------|
-| Proxy | Running | Docker, port 8087 |
-| simple-v1 | Working | Found 319 vulns across 3 projects |
-| Official baseline | Working | Found 87 vulns on Superposition |
-| Lambowin | Broken | Model doesn't report findings |
+| Job | Status | Log |
+|-----|--------|-----|
+| (none) | - | - |
 
-## Next Actions (all delegated)
+## How to Check Status
 
-1. Subagent: Fix lambowin reporting issue
-2. Subagent: Test on more projects
-3. Subagent: Optimize for BitSec submission
-4. Me: Monitor all results
-5. Me: Decide which approach is better
+```bash
+# Check if job is running
+ps aux | grep "simple-v1" | grep -v grep
+
+# Check results
+cat /root/bitt/data/scabench-repos/PROJECT/agent_report.json | python3 -m json.tool
+
+# Check proxy
+docker logs bitsec-proxy 2>&1 | tail -5
+```
