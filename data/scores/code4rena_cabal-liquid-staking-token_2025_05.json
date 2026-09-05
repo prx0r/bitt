@@ -1,0 +1,65 @@
+{
+  "project": "code4rena_cabal-liquid-staking-token_2025_05",
+  "expected": 8,
+  "found": 4,
+  "matched": 0,
+  "detection_rate": 0.0,
+  "details": [
+    {
+      "expected": "LP unstaking only burns the shares but leaves the underlying tokens in the syste",
+      "severity": "high",
+      "matched": false,
+      "confidence": 1.0,
+      "reason": "None of the candidate findings match the expected vulnerability. The expected vulnerability is about"
+    },
+    {
+      "expected": "Reentrancy Check inlock_staking::reentry_checkCauses Concurrent INIT Deposit Fai",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 1.0,
+      "reason": "The expected vulnerability is about reentrancy causing DOS in deposit_init_for_xinit due to concurre"
+    },
+    {
+      "expected": "Unstaking calculates user share at request time, ignoring slashing \u2014 leading to ",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "Candidate findings focus on unrelated issues: hardcoded mock data, truncated file content, missing i"
+    },
+    {
+      "expected": "Attacker Can Desynchronize Supply Snapshot During Same-Block Unstake, Reducing E",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability describes a specific attack vector involving desynchronization of supply "
+    },
+    {
+      "expected": "Unstaking from LP pools will cause underflow and lock user funds",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability describes an underflow issue in LP pool unstaking that could lock user fu"
+    },
+    {
+      "expected": "Last Holder Can\u2019t Exit, Zero\u2011Supply Unstake Reverts",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability describes a divide-by-zero error when the last holder burns the entire re"
+    },
+    {
+      "expected": "LP Redelegation Uses Inaccurate Internal Tracker Amount, Leading to Potential Fa",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 1.0,
+      "reason": "The expected vulnerability is about the `redelegate_lp` function in `pool_router.move` using an inac"
+    },
+    {
+      "expected": "Desynchronization of Cabal\u2019s internal accounting with actual staked INIT amounts",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 1.0,
+      "reason": "The expected vulnerability involves desynchronization of internal accounting with actual staked INIT"
+    }
+  ]
+}

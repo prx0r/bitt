@@ -1,0 +1,107 @@
+{
+  "project": "code4rena_lambowin_2025_02",
+  "expected": 14,
+  "found": 3,
+  "matched": 0,
+  "detection_rate": 0.0,
+  "details": [
+    {
+      "expected_title": "Loss of User Funds in VirtualToken\u2019scashInFunction Due to Incorrect Amount Minti",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "LamboFactory can be permanently DoS-ed due tocreatePaircall reversal",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Calculation fordirectionMaskis incorrect",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Anyone can callLamboRebalanceOnUniwap.sol::rebalance()function with any arbitrar",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Since the cost of launching a new pool is minimal, an attacker can maliciously c",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "LamboRebalanceOnUniswap::_getTokenInOutformula used to compute rebalancing amoun",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "sellQuoteandbuyQuoteare missing deadline check inLamboVEthRouter",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Accumulated ETH in the LamboVEthRouter will be irretrievable",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Incorrect Struct Field and HardcodedsqrtPriceLimitX96in_getQuoteAndDirection",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Attacker can captureVETH-WETHdepeg profits through a malicious pool, rendering r",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Rebalance profit requirement prevents maintaining VETH/WETH peg",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Users can prevent protocol from rebalancing for his gain and cause loss of funds",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Rebalance will be completely dossed if OKX commision rate goes beyond the fee li",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "LP for v3 pool of underlying tokens with decimals!= 18would have incorrect NFT m",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    }
+  ]
+}

@@ -48,7 +48,8 @@ echo "Started: $!"
 
 | Job | Status | Log |
 |-----|--------|-----|
-| (none) | - | - |
+| Batch: 8 projects (simple-v1-patched) | RUNNING | /tmp/bitsec_batch_run.log |
+| Superposition (patched, single) | DONE | 29 vulns (4 high, 11 medium) |
 
 ## How to Check Status
 

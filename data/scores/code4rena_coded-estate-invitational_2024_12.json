@@ -1,0 +1,240 @@
+{
+  "project": "code4rena_coded-estate-invitational_2024_12",
+  "expected": 33,
+  "found": 1,
+  "matched": 0,
+  "detection_rate": 0.0,
+  "details": [
+    {
+      "expected": "Attakers can steal the funds from long-term reservation",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The candidate finding describes interface definitions with no implementation vulnerabilities, while "
+    },
+    {
+      "expected": "setbidtobuyallows token purchase even when sale is no longer listed",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0.95,
+      "reason": "The candidate finding describes a different issue about missing implementations in Rust trait defini"
+    },
+    {
+      "expected": "Insufficient price validation intransfer_nftfunction enables theft of listed tok",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The candidate finding is about interface definitions for CW721 NFT standard with no implementation v"
+    },
+    {
+      "expected": "Lack of differentiation between rental types leads to loss of funds",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "Candidate finding describes a low-severity interface-only file with no implementation vulnerabilitie"
+    },
+    {
+      "expected": "Cancelling bid doesn\u2019t clear token approval of bidder allows malicious bidder to",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "Candidate [0] discusses interface definitions for CW721 NFT standard with no implementation vulnerab"
+    },
+    {
+      "expected": "Lack of validation insetlistforsellallows changing denom while there is active b",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0.95,
+      "reason": "Candidate finding describes interface definitions for CW721 NFT standard with no implementation vuln"
+    },
+    {
+      "expected": "Logic flaw incheck_can_edit_shortallows editing short-term rental before finaliz",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0.9,
+      "reason": "The candidate finding describes interface definitions for CW721 NFT standard traits, which is unrela"
+    },
+    {
+      "expected": "Adversary can usesend_nftto bypass the payment and steal seller\u2019s token in auto-",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0.2,
+      "reason": "Candidate finding is about interface definitions only, not about the specific bypass vulnerability i"
+    },
+    {
+      "expected": "Token owner can burn their token with active rental leading to renters\u2019 funds be",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "Candidate finding [0] discusses interface definitions for a CW721 NFT standard in Rust, with no ment"
+    },
+    {
+      "expected": "Malicious NFT owners can rug the reservation of the long-term",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The candidate finding discusses interface definitions for CW721 NFT standard without implementation,"
+    },
+    {
+      "expected": "Users can\u2019t cancel reservation due to out-of-gas",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "Candidate [0] describes interface definitions for a CW721 NFT standard with no implementation vulner"
+    },
+    {
+      "expected": "Use ofu64forprice_per_dayandprice_per_monthlimits handling tokens with 18 decima",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "Candidate finding is about Rust trait definitions for CW721 NFT operations, not about integer overfl"
+    },
+    {
+      "expected": "Incorrect use ofu64for argamountinwithdrawtolandlordcan cause withdrawal failure",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 1.0,
+      "reason": "Candidate finding is about interface definitions in a CW721 NFT trait file, unrelated to the expecte"
+    },
+    {
+      "expected": "Incorrect refund amount is sent  to the tenant if long term reservation is cance",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 1.0,
+      "reason": "The candidate finding discusses interface definitions for CW721 NFTs with no implementation vulnerab"
+    },
+    {
+      "expected": "Lack of upfront cost for long-term reservations allows fake reservations, blocki",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The candidate finding discusses interface definitions for an NFT contract (CW721) with no implementa"
+    },
+    {
+      "expected": "Reservations can be made outside of rental property\u2019savailable_period",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 1.0,
+      "reason": "Candidate finding describes a trait definition file for NFT operations, which is unrelated to reserv"
+    },
+    {
+      "expected": "Can impersonate another high value rental becausetoken_uriis arbitrary and suppl",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "Candidate [0] discusses interface definitions with no implementation vulnerabilities, which is unrel"
+    },
+    {
+      "expected": "User supplied owner address which is meant to be token owner is never the token ",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 1.0,
+      "reason": "Candidate finding [0] describes missing implementation vulnerabilities in a CW721 NFT standard inter"
+    },
+    {
+      "expected": "The current logic can\u2019t handle CW20 tokens",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "Candidate finding [0] discusses CW721 NFT interface definitions and implementation vulnerabilities, "
+    },
+    {
+      "expected": "Malicious owners can set the fee to 100%",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The candidate finding describes interface definitions for CW721 NFT standard operations, while the e"
+    },
+    {
+      "expected": "auto_approveis not used in long-term rent",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The candidate finding discusses Rust trait definitions for CW721 NFT standard interfaces, which is u"
+    },
+    {
+      "expected": "minteris not used in this contract delete it",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "Candidate finding [0] describes a low-severity issue about interface definitions lacking implementat"
+    },
+    {
+      "expected": "Useto_json_binaryandfrom_json_binary",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The candidate finding discusses interface definitions and lack of implementation vulnerabilities, wh"
+    },
+    {
+      "expected": "cosmwasm-std1.4.0v is vulnerable",
+      "severity": "low",
+      "matched": false,
+      "confidence": 1.0,
+      "reason": "The expected vulnerability is about using a specific vulnerable version of the cosmwasm-std library "
+    },
+    {
+      "expected": "The first buyer could get front-runed afterautoApproveget updated",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The candidate finding describes interface definitions only, with no implementation vulnerabilities, "
+    },
+    {
+      "expected": "available_periodis not used",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The candidate finding describes missing implementation of interface definitions in Rust traits for C"
+    },
+    {
+      "expected": "The logic doesn\u2019t return the excited funds to the users",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The candidate finding discusses interface definitions for a CW721 NFT standard, which is unrelated t"
+    },
+    {
+      "expected": "Risk of out-of-gas",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "Candidate finding [0] discusses interface definitions in a CW721 NFT standard file, while the expect"
+    },
+    {
+      "expected": "Risk of 100% cancellation penalty for users",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "Candidate [0] discusses trait definitions in a CW721 NFT interface, which is unrelated to the expect"
+    },
+    {
+      "expected": "check_can_edit_long()andcheck_can_edit_short()have the same logic",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "Candidate finding [0] discusses interface definitions in Rust trait files for CW721 NFT standard, un"
+    },
+    {
+      "expected": "DoS attack",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The candidate finding discusses interface definitions for CW721 NFTs, which is unrelated to the expe"
+    },
+    {
+      "expected": "Use a daily or monthly basis",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "Candidate finding 0 is about missing implementation in trait definitions (low severity), which does "
+    },
+    {
+      "expected": "The functionexecute.rs#depositforlongtermrental()doesn\u2019t check if the deposit am",
+      "severity": "low",
+      "matched": false,
+      "confidence": 1.0,
+      "reason": "Candidate finding is about missing implementation in interface definitions, not about insufficient d"
+    }
+  ]
+}

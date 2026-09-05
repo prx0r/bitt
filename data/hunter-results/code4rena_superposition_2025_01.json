@@ -1,0 +1,286 @@
+{
+  "project": "code4rena_superposition_2025_01",
+  "total_findings": 28,
+  "findings": [
+    {
+      "title": "Unchecked Delegatecall Return Value in Constructor",
+      "description": "In the SeawaterAMM constructor, a delegatecall is made to the executor admin to initialize the contract (line: `(bool success, bytes memory data) = _getExecutorAdmin().delegatecall(...)`), but the return value `success` is not checked. If the delegatecall fails, the initialization will be silently ignored, and the contract will be deployed without proper setup, leading to an unusable or insecure contract.",
+      "vulnerability_type": "Unchecked Return Values",
+      "severity": "high",
+      "confidence": 0.9,
+      "location": "SeawaterAMM/constructor",
+      "file": "pkg/sol/SeawaterAMM.sol",
+      "high_risk_area": "Proxy Upgrade Pattern in SeawaterAMM"
+    },
+    {
+      "title": "Potential Storage Collision in Proxy Pattern Implementation",
+      "description": "The contract uses a custom proxy pattern with arbitrary storage slots for executor implementations and the proxy admin. While the slots are computed via keccak256 hashes minus one to avoid collisions, the risk of storage collision remains if the storage layout of the logic contracts (executors) does not respect these reserved slots. If any executor uses the same storage slots (e.g., via similar hash calculations or variable naming), it could lead to data corruption or unexpected behavior.",
+      "vulnerability_type": "Storage Layout Collision",
+      "severity": "high",
+      "confidence": 0.7,
+      "location": "SeawaterAMM (contract-level)",
+      "file": "pkg/sol/SeawaterAMM.sol",
+      "high_risk_area": "Proxy Upgrade Pattern in SeawaterAMM"
+    },
+    {
+      "title": "Lack of Access Control on Proxy Update Functions",
+      "description": "The contract defines storage slots for executor implementations (e.g., `EXECUTOR_SWAP_SLOT`) and a `PROXY_ADMIN_SLOT` with an `onlyProxyAdmin` modifier. However, the provided code does not show any functions to update these executor slots (e.g., `setExecutorSwap`). If such functions exist elsewhere without proper access control, an unauthorized user could change the executor implementation addresses, leading to a complete compromise of the contract's logic.",
+      "vulnerability_type": "Access Control Bypass",
+      "severity": "critical",
+      "confidence": 0.8,
+      "location": "SeawaterAMM (missing functions)",
+      "file": "pkg/sol/SeawaterAMM.sol",
+      "high_risk_area": "Proxy Upgrade Pattern in SeawaterAMM"
+    },
+    {
+      "title": "Delegatecall to Arbitrary Executor Without Validation",
+      "description": "The constructor performs a delegatecall to `_getExecutorAdmin()` (which retrieves the address from storage slot `EXECUTOR_ADMIN_SLOT`) without validating that the address is a legitimate executor contract. If the executor admin slot is corrupted or set to an attacker-controlled address during deployment (e.g., due to a storage collision or misconfiguration), the delegatecall could execute malicious code.",
+      "vulnerability_type": "Unchecked Delegatecall Target",
+      "severity": "high",
+      "confidence": 0.6,
+      "location": "SeawaterAMM/constructor",
+      "file": "pkg/sol/SeawaterAMM.sol",
+      "high_risk_area": "Proxy Upgrade Pattern in SeawaterAMM"
+    },
+    {
+      "title": "Reentrancy in OwnershipNFTs._onTransferReceived via external callback",
+      "description": "The function `_onTransferReceived` in `OwnershipNFTs.sol` calls `onERC721Received` on an external contract `_to`. This callback can execute arbitrary code before the transfer is completed, potentially allowing a reentrant call that manipulates the state of the AMM or NFTs. The external contract could call back into the AMM or other functions during the transfer, leading to inconsistent state or fund extraction.",
+      "vulnerability_type": "Reentrancy",
+      "severity": "High",
+      "confidence": 0.9,
+      "location": "OwnershipNFTs/_onTransferReceived",
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "high_risk_area": "Cross-Contract Interactions (SeawaterAMM \u2194 OwnershipNFTs)"
+    },
+    {
+      "title": "Incorrect return value check in _onTransferReceived",
+      "description": "In `OwnershipNFTs._onTransferReceived`, the code checks `require(data != IERC721TokenReceiver.onERC721Received.selector, \"bad nft transfer received data\")`. This is backwards: it should require that the return data equals the selector, not that it is not equal. The current logic will revert if the callback returns the correct selector, and will succeed if it returns anything else, which is a logic error that could block valid transfers or allow invalid ones.",
+      "vulnerability_type": "Logic Error",
+      "severity": "Critical",
+      "confidence": 1.0,
+      "location": "OwnershipNFTs/_onTransferReceived",
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "high_risk_area": "Cross-Contract Interactions (SeawaterAMM \u2194 OwnershipNFTs)"
+    },
+    {
+      "title": "Missing return value check for staticcall in ownerOf",
+      "description": "In `OwnershipNFTs.ownerOf`, the staticcall to `SEAWATER.positionOwnerD7878480` uses `require(ok, \"position owner revert\")` to check for success, but the return data `rc` is not validated for length before decoding. If the staticcall fails but `ok` is true (e.g., due to a revert in the called function that does not revert the call itself), the decode could fail or return unexpected data, leading to incorrect owner information.",
+      "vulnerability_type": "Unchecked Return Value",
+      "severity": "Medium",
+      "confidence": 0.8,
+      "location": "OwnershipNFTs/ownerOf",
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "high_risk_area": "Cross-Contract Interactions (SeawaterAMM \u2194 OwnershipNFTs)"
+    },
+    {
+      "title": "Access control bypass in transferFrom via arbitrary call to SEAWATER.transferPosition",
+      "description": "The `transferFrom` function in `OwnershipNFTs.sol` calls `_transfer`, which internally calls `SEAWATER.transferPositionEEC7A3CD`. The AMM's `transferPosition` function is assumed to have its own access control, but if the AMM does not properly validate the caller (e.g., if it allows any address to call transfer), then the NFT contract's `_requireAuthorised` check could be bypassed. The NFT contract relies on the AMM to enforce ownership, but the AMM may not be synchronized with NFT approvals, leading to unauthorized transfers.",
+      "vulnerability_type": "Access Control Bypass",
+      "severity": "High",
+      "confidence": 0.7,
+      "location": "OwnershipNFTs/_transfer",
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "high_risk_area": "Cross-Contract Interactions (SeawaterAMM \u2194 OwnershipNFTs)"
+    },
+    {
+      "title": "Potential front-running in cross-contract state synchronization",
+      "description": "The `OwnershipNFTs` contract relies on the AMM for owner information via `ownerOf` and for transfers via `transferPosition`. There is no atomic synchronization between the NFT contract's approvals and the AMM's state. An attacker could front-run a transfer by manipulating the AMM state (e.g., by calling a function that changes position ownership) between the authorization check and the transfer execution, leading to inconsistent state or unauthorized transfers.",
+      "vulnerability_type": "Cross-Contract State Inconsistency",
+      "severity": "Medium",
+      "confidence": 0.6,
+      "location": "OwnershipNFTs/_transfer",
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "high_risk_area": "Cross-Contract Interactions (SeawaterAMM \u2194 OwnershipNFTs)"
+    },
+    {
+      "title": "Unchecked ERC20 transfer return value",
+      "description": "The IERC20 interface only declares transfer without return type, but ERC20 standard returns a boolean. The contract calls transfer without checking the return value, which could lead to silent failures if the token returns false instead of reverting. Some non-standard tokens may return false on failure.",
+      "vulnerability_type": "unchecked-return-value",
+      "severity": "medium",
+      "confidence": 0.85,
+      "location": "Faucet/sendTo",
+      "file": "pkg/sol/Faucet.sol",
+      "high_risk_area": "Token Transfers in Faucet"
+    },
+    {
+      "title": "Gas token transfer may fail silently",
+      "description": "The low-level send call for gas token transfer (payable(recipient).send(gas)) returns a boolean that is assigned to _rc but never checked. If the recipient is a contract without receive/fallback or with insufficient gas, the transfer fails silently.",
+      "vulnerability_type": "unchecked-return-value",
+      "severity": "medium",
+      "confidence": 0.9,
+      "location": "Faucet/sendTo",
+      "file": "pkg/sol/Faucet.sol",
+      "high_risk_area": "Token Transfers in Faucet"
+    },
+    {
+      "title": "No validation of recipient address in requests",
+      "description": "The sendTo function processes requests without validating if the recipient address is valid (non-zero). Transfers to address(0) would burn tokens unintentionally if the faucet has a large balance.",
+      "vulnerability_type": "logic-error",
+      "severity": "medium",
+      "confidence": 0.75,
+      "location": "Faucet/sendTo",
+      "file": "pkg/sol/Faucet.sol",
+      "high_risk_area": "Token Transfers in Faucet"
+    },
+    {
+      "title": "Operator change only requires old operator, not new",
+      "description": "The changeOperator function requires msg.sender == EMERGENCY_COUNCIL and operator_ == _oldOperator, but does not validate _newOperator != address(0). The emergency council could set the operator to the zero address, permanently disabling the faucet.",
+      "vulnerability_type": "access-control-bypass",
+      "severity": "high",
+      "confidence": 0.8,
+      "location": "Faucet/changeOperator",
+      "file": "pkg/sol/Faucet.sol",
+      "high_risk_area": "Token Transfers in Faucet"
+    },
+    {
+      "title": "Potential reentrancy in sendTo function",
+      "description": "The sendTo function makes external calls (token.transfer and payable.send) before completing all state changes. While the function doesn't modify state after calls, it could be reentered to process the same request multiple times if the recipient is a malicious contract.",
+      "vulnerability_type": "reentrancy",
+      "severity": "high",
+      "confidence": 0.7,
+      "location": "Faucet/sendTo",
+      "file": "pkg/sol/Faucet.sol",
+      "high_risk_area": "Token Transfers in Faucet"
+    },
+    {
+      "title": "RawCall return data not decoded, causing function to panic",
+      "description": "The function collect_yield_single_to makes a raw call to SEAWATER_ADDR but does not decode the return data. Instead, it immediately panics with 'todo'. This will cause a revert on every execution, making yield collection impossible and potentially locking funds if this function is part of a critical path. The function signature suggests it should return (u128, u128) but the return data is ignored.",
+      "vulnerability_type": "Unchecked return values / Logic error",
+      "severity": "high",
+      "confidence": 0.95,
+      "location": "libleo/seawater.rs/collect_yield_single_to",
+      "file": "pkg/leo/src/seawater.rs",
+      "high_risk_area": "External Calls in libleo (Rust)"
+    },
+    {
+      "title": "RawCall return data not decoded, causing function to return zero",
+      "description": "The function tick_upper makes a raw call to SEAWATER_ADDR but discards the return data and returns I32::ZERO. This will return an incorrect tick value (always zero) to any caller, leading to incorrect business logic decisions (e.g., position calculations). The function should decode the returned I32 value.",
+      "vulnerability_type": "Unchecked return values / Logic error",
+      "severity": "high",
+      "confidence": 0.95,
+      "location": "libleo/seawater.rs/tick_upper",
+      "file": "pkg/leo/src/seawater.rs",
+      "high_risk_area": "External Calls in libleo (Rust)"
+    },
+    {
+      "title": "RawCall return data not decoded, causing function to panic",
+      "description": "The function position_liquidity makes a raw call to SEAWATER_ADDR but does not decode the return data and immediately panics with 'TODO'. This will revert on every call, breaking any contract logic that depends on position liquidity queries. The function should decode and return a U256 value.",
+      "vulnerability_type": "Unchecked return values / Logic error",
+      "severity": "high",
+      "confidence": 0.95,
+      "location": "libleo/seawater.rs/position_liquidity",
+      "file": "pkg/leo/src/seawater.rs",
+      "high_risk_area": "External Calls in libleo (Rust)"
+    },
+    {
+      "title": "RawCall error handling via unwrap() can revert entire transaction on external call failure",
+      "description": "In tick_lower, the raw call to SEAWATER_ADDR uses .unwrap() on the result. If the external call fails (e.g., out of gas, reentrant call failure, or target contract revert), this will cause the entire transaction to revert. While reverts are safe from a state perspective, they can be exploited for denial-of-service if the external contract is adversarial or unreliable. This pattern is also present in the other functions (collect_yield_single_to and position_liquidity) but those functions already panic, so the unwrap is less critical.",
+      "vulnerability_type": "Error handling / Potential DoS",
+      "severity": "medium",
+      "confidence": 0.8,
+      "location": "libleo/seawater.rs/tick_lower",
+      "file": "pkg/leo/src/seawater.rs",
+      "high_risk_area": "External Calls in libleo (Rust)"
+    },
+    {
+      "title": "Potential reentrancy in raw call without validation of external contract",
+      "description": "The raw calls to SEAWATER_ADDR are made without any checks on the callee address being a trusted contract. The SEAWATER_ADDR is loaded from environment variables (via addr! macro) in wasm32 builds, but there is no validation that it points to a legitimate SeawaterAMM contract. A malicious or compromised external contract could be called, leading to reentrancy or unexpected state changes if the external call is part of a state-modifying flow. However, the current functions appear to be read-only (they query data), so direct reentrancy risk is low, but the lack of validation is a systemic weakness.",
+      "vulnerability_type": "Unvalidated external call / Potential reentrancy",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "libleo/seawater.rs (multiple functions)",
+      "file": "pkg/leo/src/seawater.rs",
+      "high_risk_area": "External Calls in libleo (Rust)"
+    },
+    {
+      "title": "Potential truncation in `_mul_div` due to unsafe division and assertion",
+      "description": "The function `_mul_div` performs a 512-bit multiplication (`widening_mul`) and then divides by a denominator. However, the `unsafe` block uses `ruint::algorithms::div`, which modifies the `denom_and_rem` variable in place (as it becomes the remainder). The subsequent assertion `assert!(limbs[4..] == [0_u64; 4])` checks that the result fits into 256 bits, but the division operation itself does not check for a remainder. If the multiplication result is not evenly divisible, the remainder is discarded (stored in `denom_and_rem`), and the function returns only the quotient. This can lead to truncated results (rounding down) without any indication, which may cause loss of precision in reward calculations. Additionally, the `has_carry` variable is computed but never used, indicating incomplete logic or a leftover from removed code.",
+      "vulnerability_type": "Logic error / Unchecked truncation",
+      "severity": "medium",
+      "confidence": 0.9,
+      "location": "libleo (main)/_mul_div",
+      "file": "pkg/leo/src/maths.rs",
+      "high_risk_area": "Mathematical Libraries (libleo maths)"
+    },
+    {
+      "title": "Division by zero not fully guarded in `calc_base_rewards`",
+      "description": "The function `calc_base_rewards` calls `_mul_div` with parameters `pool_lp`, `rewards_per_sec`, and `our_lp`. While `_mul_div` asserts that `denom_and_rem` is non-zero, the parameter `our_lp` is passed as the denominator. If `our_lp` is zero (e.g., due to a misconfiguration or edge case in pool logic), the assertion in `_mul_div` will fail, causing a panic and potentially reverting the transaction. However, the error message is not informative, and the vulnerability lies in the business logic: a zero `our_lp` should be handled gracefully (e.g., returning zero rewards) rather than causing a revert.",
+      "vulnerability_type": "Unhandled division by zero / Logic error",
+      "severity": "medium",
+      "confidence": 0.85,
+      "location": "libleo (main)/calc_base_rewards",
+      "file": "pkg/leo/src/maths.rs",
+      "high_risk_area": "Mathematical Libraries (libleo maths)"
+    },
+    {
+      "title": "Potential overflow in 512-bit multiplication not fully mitigated",
+      "description": "The `_mul_div` function uses `widening_mul` to compute a 512-bit product, which should prevent overflow in the multiplication step. However, the subsequent division and assertion (`limbs[4..] == [0_u64; 4]`) assume that the result fits into 256 bits. If the product exceeds 256 bits (which is possible for large inputs), the assertion will fail, causing a revert. While this prevents silent overflow, it does not handle the case gracefully (e.g., by returning a maximum value or reverting with a descriptive error). This could lead to denial-of-service if an attacker can manipulate inputs to trigger the assertion.",
+      "vulnerability_type": "Potential overflow / Unchecked assertion",
+      "severity": "high",
+      "confidence": 0.8,
+      "location": "libleo (main)/_mul_div",
+      "file": "pkg/leo/src/maths.rs",
+      "high_risk_area": "Mathematical Libraries (libleo maths)"
+    },
+    {
+      "title": "Unused variable `has_carry` indicates incomplete implementation",
+      "description": "In `_mul_div`, the variable `has_carry` is computed (`denom_and_rem != U256::ZERO`) but never returned or used. This suggests that the function was intended to return a tuple (result, has_carry) but was modified to only return the result. The unused code could be a sign of incomplete logic, and the missing carry information might be important for higher-precision calculations or overflow detection in reward distribution.",
+      "vulnerability_type": "Incomplete logic / Unused code",
+      "severity": "low",
+      "confidence": 0.95,
+      "location": "libleo (main)/_mul_div",
+      "file": "pkg/leo/src/maths.rs",
+      "high_risk_area": "Mathematical Libraries (libleo maths)"
+    },
+    {
+      "title": "Incorrect return value check in _onTransferReceived",
+      "description": "The function _onTransferReceived in OwnershipNFTs.sol checks the return value of onERC721Received incorrectly. It requires the data to NOT equal the selector, but the correct check should be that it DOES equal the selector. This is a logic error that will cause all valid ERC721 transfers to tokens that are contracts (like multisigs or smart wallets) to revert, breaking NFT transfers to contract recipients.",
+      "vulnerability_type": "Logic error in business rules",
+      "severity": "high",
+      "confidence": 1.0,
+      "location": "OwnershipNFTs/_onTransferReceived",
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "high_risk_area": "ERC721 NFT Handling"
+    },
+    {
+      "title": "Missing ERC721 standard compliance functions",
+      "description": "The OwnershipNFTs contract does not implement the required ERC721 functions: balanceOf, transferFrom with correct signature, safeTransferFrom (both with and without data). While it inherits from IERC721Metadata, it only implements ownerOf and the approval mapping functions. The contract cannot be used as a standard ERC721 token because it's missing fundamental functions that wallets and exchanges expect.",
+      "vulnerability_type": "Logic error in business rules",
+      "severity": "medium",
+      "confidence": 0.9,
+      "location": "OwnershipNFTs contract",
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "high_risk_area": "ERC721 NFT Handling"
+    },
+    {
+      "title": "Lack of state synchronization validation",
+      "description": "The OwnershipNFTs contract delegates all ownership tracking to the SEAWATER AMM contract via static calls, but there's no validation that the AMM's position state is consistent with the NFT's expected state. If the AMM contract is upgraded or has different behavior, the NFT contract could return incorrect ownership information without any detection mechanism.",
+      "vulnerability_type": "Cross-contract state inconsistency",
+      "severity": "medium",
+      "confidence": 0.8,
+      "location": "OwnershipNFTs/ownerOf",
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "high_risk_area": "ERC721 NFT Handling"
+    },
+    {
+      "title": "Potential reentrancy in transferPosition",
+      "description": "The _transfer function calls SEAWATER.transferPositionEEC7A3CD which could potentially make external calls before updating state. Since the OwnershipNFTs contract doesn't maintain its own state but relies on SEAWATER's state, there could be reentrancy risks if the SEAWATER contract or callbacks manipulate state during the transfer.",
+      "vulnerability_type": "Reentrancy",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "OwnershipNFTs/_transfer",
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "high_risk_area": "ERC721 NFT Handling"
+    },
+    {
+      "title": "Static call to SEAWATER could fail silently",
+      "description": "The ownerOf function uses a staticcall to SEAWATER.positionOwnerD7878480 and only checks if ok is true. If the SEAWATER contract is destroyed or self-destructed, the staticcall will fail but the error message 'position owner revert' doesn't provide enough information about the actual failure. More importantly, if the SEAWATER contract is replaced or upgraded, the selector hash might change.",
+      "vulnerability_type": "Unchecked return values",
+      "severity": "low",
+      "confidence": 0.9,
+      "location": "OwnershipNFTs/ownerOf",
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "high_risk_area": "ERC721 NFT Handling"
+    }
+  ]
+}

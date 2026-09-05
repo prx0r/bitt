@@ -1,0 +1,25 @@
+{
+  "project": "/root/bitt/data/scabench-repos/code4rena_coded-estate-invitational_2024_12",
+  "timestamp": "2026-09-05T18:55:51.132674",
+  "files_analyzed": 12,
+  "files_skipped": 0,
+  "total_vulnerabilities": 1,
+  "vulnerabilities": [
+    {
+      "title": "Interface Definitions Only - No Implementation Vulnerabilities",
+      "description": "This file contains only Rust trait definitions for the CW721 NFT standard. It defines function signatures for execute operations (transfer, send, approve, revoke, approve_all, revoke_all, burn) and query operations (nft_info, owner_of, approvals, tokens, etc.) but contains no implementation logic. The traits themselves are correctly defined with appropriate type constraints (Serialize + DeserializeOwned + Clone for token type T, CustomMsg for C). No vulnerabilities can be identified in pure interface definitions.",
+      "vulnerability_type": "informational",
+      "severity": "low",
+      "confidence": 1.0,
+      "location": "packages/cw721/src/traits.rs",
+      "file": "packages/cw721/src/traits.rs",
+      "id": "47b5fcd3679fdae1",
+      "reported_by_model": "mimo-v2.5",
+      "status": "proposed"
+    }
+  ],
+  "token_usage": {
+    "total_input": 17874,
+    "total_output": 4007
+  }
+}

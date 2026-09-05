@@ -1,0 +1,61 @@
+{
+  "project": "/root/bitt/data/scabench-repos/code4rena_cabal-liquid-staking-token_2025_05",
+  "timestamp": "2026-09-05T18:55:17.005918",
+  "files_analyzed": 19,
+  "files_skipped": 0,
+  "total_vulnerabilities": 4,
+  "vulnerabilities": [
+    {
+      "title": "Hardcoded Mock Data in Production Function",
+      "description": "The `update_snapshot` function, which is declared as `public (friend)` and intended for production use, contains a critical TODO comment indicating that real logic is commented out. Specifically, the line `let voting_power_weight = pool_router::get_voting_power_weight();` is commented out and replaced with `let voting_power_weight = mock_voting_power_weight();`. This means that if `update_snapshot` is called in a production environment, it will use hardcoded/mock data instead of actual voting power weights, completely breaking the intended functionality and integrity of the snapshots.",
+      "vulnerability_type": "Incorrect Implementation",
+      "severity": "high",
+      "confidence": 0.95,
+      "location": "Line 65",
+      "file": "sources/snapshots.move",
+      "id": "9a2c53a581749bfa",
+      "reported_by_model": "mimo-v2.5",
+      "status": "proposed"
+    },
+    {
+      "title": "Incomplete File Content",
+      "description": "The file content appears to be truncated mid-function. Unable to perform a complete security analysis without the full source code. This limits the audit to partial review only.",
+      "vulnerability_type": "informational",
+      "severity": "low",
+      "confidence": 0.3,
+      "location": "File read - truncated at calculate_bribe_weights_for_cycle function",
+      "file": "sources/bribe.move",
+      "id": "32ad5387086c561d",
+      "reported_by_model": "mimo-v2.5",
+      "status": "proposed"
+    },
+    {
+      "title": "Missing Input Validation in init_module",
+      "description": "The init_module function only checks the caller address but does not validate input parameters. If the module is ever re-initialized (after migration), there could be state corruption risks.",
+      "vulnerability_type": "access-control",
+      "severity": "low",
+      "confidence": 0.4,
+      "location": "fun init_module(account: &signer)",
+      "file": "sources/bribe.move",
+      "id": "4e2a23105b1bd518",
+      "reported_by_model": "mimo-v2.5",
+      "status": "proposed"
+    },
+    {
+      "title": "Potential Integer Overflow in test_with_slack Function",
+      "description": "The function test_with_slack performs multiplication operations that could overflow if large values are provided. Specifically, value * 1000 and target * (1000 + slack_bps) could overflow u64. While the function is marked #[test_only] and likely used in testing scenarios, the overflow could cause unexpected behavior or test failures. The function also assumes slack_bps is less than 1000 (100%), but there's no validation for this.",
+      "vulnerability_type": "integer_overflow",
+      "severity": "low",
+      "confidence": 0.8,
+      "location": "sources/utils.move:46-49",
+      "file": "sources/utils.move",
+      "id": "dbc2c169fef9afa4",
+      "reported_by_model": "mimo-v2.5",
+      "status": "proposed"
+    }
+  ],
+  "token_usage": {
+    "total_input": 33372,
+    "total_output": 4009
+  }
+}

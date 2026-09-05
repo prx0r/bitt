@@ -1,0 +1,107 @@
+{
+  "project": "code4rena_lambowin_2025_02",
+  "expected": 14,
+  "found": 3,
+  "matched": 0,
+  "detection_rate": 0.0,
+  "details": [
+    {
+      "expected": "Loss of User Funds in VirtualToken\u2019scashInFunction Due to Incorrect Amount Minti",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about incorrect amount minting in VirtualToken's cashInFunction causin"
+    },
+    {
+      "expected": "LamboFactory can be permanently DoS-ed due tocreatePaircall reversal",
+      "severity": "high",
+      "matched": false,
+      "confidence": 1.0,
+      "reason": "The expected vulnerability is about LamboFactory.createLaunchPad and createPair call front-running l"
+    },
+    {
+      "expected": "Calculation fordirectionMaskis incorrect",
+      "severity": "high",
+      "matched": false,
+      "confidence": 1.0,
+      "reason": "The expected vulnerability is about incorrect direction calculation in _getQuoteAndDirection for Uni"
+    },
+    {
+      "expected": "Anyone can callLamboRebalanceOnUniwap.sol::rebalance()function with any arbitrar",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about the `rebalance()` function in `LamboRebalanceOnUniwap.sol` allow"
+    },
+    {
+      "expected": "Since the cost of launching a new pool is minimal, an attacker can maliciously c",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability involves maliciously consuming virtual tokens due to low cost of launchin"
+    },
+    {
+      "expected": "LamboRebalanceOnUniswap::_getTokenInOutformula used to compute rebalancing amoun",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 1.0,
+      "reason": "The expected vulnerability describes a formula error in a rebalancing function for a Uniswap V3 pool"
+    },
+    {
+      "expected": "sellQuoteandbuyQuoteare missing deadline check inLamboVEthRouter",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 1.0,
+      "reason": "All candidate findings discuss issues with the `initialize` function in a token contract (e.g., arbi"
+    },
+    {
+      "expected": "Accumulated ETH in the LamboVEthRouter will be irretrievable",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 1.0,
+      "reason": "The expected vulnerability is about accumulated ETH in LamboVEthRouter being irretrievable due to a "
+    },
+    {
+      "expected": "Incorrect Struct Field and HardcodedsqrtPriceLimitX96in_getQuoteAndDirection",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 1.0,
+      "reason": "Expected vulnerability concerns incorrect struct field usage and missing sqrtPriceLimitX96 in _getQu"
+    },
+    {
+      "expected": "Attacker can captureVETH-WETHdepeg profits through a malicious pool, rendering r",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability involves the LamboRebalanceOnUniwap contract and its rebalance function, "
+    },
+    {
+      "expected": "Rebalance profit requirement prevents maintaining VETH/WETH peg",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about a profit requirement in a rebalance function preventing peg main"
+    },
+    {
+      "expected": "Users can prevent protocol from rebalancing for his gain and cause loss of funds",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about manipulating the rebalancing mechanism to prevent protocol rebal"
+    },
+    {
+      "expected": "Rebalance will be completely dossed if OKX commision rate goes beyond the fee li",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "Expected vulnerability concerns OKX commission rates affecting rebalance profitability via OKXRouter"
+    },
+    {
+      "expected": "LP for v3 pool of underlying tokens with decimals!= 18would have incorrect NFT m",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 1.0,
+      "reason": "The expected vulnerability is about hardcoded decimals (18) causing incorrect NFT metadata for LP po"
+    }
+  ]
+}

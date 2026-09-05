@@ -1,0 +1,219 @@
+{
+  "project": "code4rena_secondswap_2025_02",
+  "expected": 30,
+  "found": 3,
+  "matched": 0,
+  "detection_rate": 0.0,
+  "details": [
+    {
+      "expected_title": "SecondSwap_Marketplacevesting listing order affects how much the vesting buyers ",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "transferVestingcreates an incorrect vesting for new users when they purchase a v",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "IntransferVesting, thegrantorVesting.releaseRateis calculated incorrectly, which",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Incorrect listing type validation bypasses enforcement of minimum purchase amoun",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Listing potential can not be purchased with discounted price",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Missing option to remove tokens from theisTokenSupportmapping can result in huge",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Creator of one vesting plan can affect vesting plans created by other users.",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Price Granularity Limited by Payment Token Decimals: Cannot List Tokens Cheaper ",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Underflow inclaimableDOSingclaimFunction",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "buyFeeAndsellFeeShould Be Known Before Purchase",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Outdated penalty fee gets charged if the penalty fee has changed since listing",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Users can prevent being reallocated by listing to marketplace",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Tokens that have already been vested can be transferred from a user.",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "maxSellPercentcan be buypassed by selling previously bought vestings at a later ",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Unauthorized increase ofmaxSellPercent",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "MarketPlace Change In Vesting Manager, Leads To Loss Of Previous MarketPlace Lis",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Incorrect referral fee calculations",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Missing sellable check in completePurchase will cause a user to buy a token mark",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Possible DoS scenario when transferring vests to another address",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Rounding error in stepDuration calculations.",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Unlisting a vesting after seller has claimed additional steps locks tokens which",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Large number of steps in a vesting may lead to loss of beneficiary funds or unev",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "maxSellPercent will be broken when a vesting is delisted after a seller has clai",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "There is no way to unsupport a token",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "There is no check if the_discountPct <= 10000",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Inability to claim tokens iftotalAmount < numOfSteps",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Fake Vesting events generation using inexistentstepVestingaddresses",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Eachmsg.sendercan only have one token",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Missing check formaxSellPercent <= 10000",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "There is no check if the vesting is actually sellable or not",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    }
+  ]
+}

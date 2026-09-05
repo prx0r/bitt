@@ -1,0 +1,86 @@
+{
+  "project": "code4rena_superposition_2025_01",
+  "expected": 11,
+  "found": 34,
+  "matched": 0,
+  "detection_rate": 0.0,
+  "details": [
+    {
+      "expected": "createPoolD650E2D0will not work due to mismatch in solidity and stylus function ",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability describes a mismatch between Solidity and Stylus function definitions for"
+    },
+    {
+      "expected": "Users are incorrectly refunded when liquidity is insufficient",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "None of the candidate findings describe the same issue as the expected vulnerability. The expected v"
+    },
+    {
+      "expected": "No slippage control when withdrawing a position leads to loss of funds",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "No candidate finding matches the expected vulnerability. The expected vulnerability is about missing"
+    },
+    {
+      "expected": "It\u2019s still not possible to set pool\u2019s protocol fees",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability describes a missing function `setFeeProtocolCBD3EC35` in `SeaWaterAMM.sol"
+    },
+    {
+      "expected": "Tokens are pulled from  users without verifying pool status contrary to requirem",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "Expected vulnerability describes inconsistency in pool status verification before token transfers in"
+    },
+    {
+      "expected": "Incorrect slippage handling inswap_internal()",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "None of the candidate findings describe the same issue as the expected vulnerability. The expected v"
+    },
+    {
+      "expected": "Pool still remains disabled after initialization requiring 2-step setup process",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about the pool remaining disabled after initialization due to the enab"
+    },
+    {
+      "expected": "Missing ownership check ingrant_positionfunction allows unauthorized position tr",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "No candidate finding matches the expected vulnerability. The expected vulnerability is about a missi"
+    },
+    {
+      "expected": "Zero-liquidity position creation allows for storage exhaustion attack",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability describes a storage exhaustion attack due to missing liquidity requiremen"
+    },
+    {
+      "expected": "DuplicateU256type imports",
+      "severity": "low",
+      "matched": false,
+      "confidence": 1.0,
+      "reason": "None of the candidate findings match the expected vulnerability. The expected vulnerability is about"
+    },
+    {
+      "expected": "mul_modoverflow check only active in debug mode",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability describes a Rust function `mul_mod` that uses `debug_assert!` for overflo"
+    }
+  ]
+}

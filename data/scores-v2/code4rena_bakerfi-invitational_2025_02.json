@@ -1,0 +1,233 @@
+{
+  "project": "code4rena_bakerfi-invitational_2025_02",
+  "expected": 32,
+  "found": 25,
+  "matched": 1,
+  "detection_rate": 0.031,
+  "details": [
+    {
+      "expected_title": "Users may encounter losses on assets deposited throughStrategySupplyERC4626",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Anyone can callStrategySupplyBase.harvest, allowing users to avoid paying perfor",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "_deployedAmountnot updated onStrategySupplyBase.undeploy, preventing performance",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "There are multiple issues with the decimal conversions between the vault and the",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "The implementation ofpullTokensWithPermitposes a risk, allowing malicious actors",
+      "severity": "high",
+      "matched": true,
+      "confidence": 0.85,
+      "reason": "The tool finding [1] directly addresses the same function `pullTokensWithPermit` and identifies the "
+    },
+    {
+      "expected_title": "Malicious actors can exploit user-approved allowances onVaultRouterto drain thei",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Malicious actors can exploit user-approved allowances onVaultRouterto drain thei",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Unmitigated",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "New strategy can not work due to insufficient allowance",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "MultiStrategy#removeStrategy()cannot remove leverage strategies that still have ",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Sending tokens to a Strategy whentotalSupplyis 0 can permanently make the Vault ",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Permitdoesn\u2019t work with DAI",
+      "severity": "medium",
+      "matched": true,
+      "confidence": 0.9,
+      "reason": "Tool finding [1] addresses the same function (pullTokensWithPermit) and the same core issue: the per"
+    },
+    {
+      "expected_title": "Even when the Vault contract is paused, therebalancefunction is not paused",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Unmitigated",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Thedispatchfunction of theVaultRouter, does not work as intended, withPULL_TOKEN",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Non-whitelisted recipient can receive shares",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "The withdrawal of Multi strategies vault could be DoSed while asset deposits rem",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "The calculation ofassetsMaxis incorrect.",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Cannot withdraw tokens from all strategies in MultiStrategyVault when one third ",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "The Vault Manager is unable to delete the last strategy fromMultiStrategyVault",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "TheStrategySupplyMorphoallow to use wrong token in_asset",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "VaultRoutercannot be used for deposits when it reaches the maximum deposit limit",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Unmitigated",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Allowance not set to maximum value inenableRoute",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "UseIERC4626.withdrawVaultdoes not check if vault isaddress(0)",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Wrong event emitted inremoveStrategy",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Strategy with different asset token can be registered toMultiStrategyVault",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Allowance remains when removingStrategyfrom MultiStrategyVault",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "MultiStrategyVault does not check for duplicate when registering new strategies",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Not using the parsed valueactionToExecuteinVaultRouter.dispatch",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Unused storage variable_approvedSwapTokensexists",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "depositNative,withdrawNative,redeemNativefunctions cannot be called from Router",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "project": "code4rena_superposition_2025_01",
+  "expected": 11,
+  "found": 34,
+  "matched": 1,
+  "detection_rate": 0.091,
+  "details": [
+    {
+      "expected_title": "createPoolD650E2D0will not work due to mismatch in solidity and stylus function ",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Users are incorrectly refunded when liquidity is insufficient",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "No slippage control when withdrawing a position leads to loss of funds",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "It\u2019s still not possible to set pool\u2019s protocol fees",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Tokens are pulled from  users without verifying pool status contrary to requirem",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Incorrect slippage handling inswap_internal()",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Pool still remains disabled after initialization requiring 2-step setup process",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Missing ownership check ingrant_positionfunction allows unauthorized position tr",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Zero-liquidity position creation allows for storage exhaustion attack",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "DuplicateU256type imports",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "mul_modoverflow check only active in debug mode",
+      "severity": "low",
+      "matched": true,
+      "confidence": 0.95,
+      "reason": "Tool finding #8 directly addresses the same vulnerability: `mul_mod` uses `debug_assert!(!overflow)`"
+    }
+  ]
+}

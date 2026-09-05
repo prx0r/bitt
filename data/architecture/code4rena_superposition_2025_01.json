@@ -1,0 +1,412 @@
+{
+  "project_name": "code4rena_superposition_2025_01",
+  "description": "This project appears to be a decentralized finance (DeFi) protocol centered around a custom automated market maker (AMM) called 'Seawater', integrated with a loyalty/rewards system (Leo) and a faucet for token distribution. It implements liquidity pools, token swaps, position management via NFTs, and campaign-based reward mechanisms, with a test suite and a Rust-based Stylus smart contract component for on-chain execution.",
+  "contracts": [
+    {
+      "name": "SeawaterAMM",
+      "file": "pkg/sol/SeawaterAMM.sol",
+      "type": "contract",
+      "purpose": "Core AMM contract implementing liquidity pool management, token swaps, and position operations. Likely an upgradeable proxy pattern given storage slot constants.",
+      "external_calls": [
+        "ISeawaterExecutors",
+        "ISeawaterAMM",
+        "IERC20",
+        "IERC721TokenReceiver"
+      ],
+      "state_variables": [
+        "Storage slots defined via keccak (e.g., E, etc.)",
+        "Pool configurations",
+        "Position data",
+        "Fees",
+        "Oracle integrations"
+      ],
+      "entry_points": [
+        "swap",
+        "mintPosition",
+        "burnPosition",
+        "collectFees",
+        "initialize",
+        "other AMM functions"
+      ]
+    },
+    {
+      "name": "OwnershipNFTs",
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "type": "contract",
+      "purpose": "ERC721 NFT contract for tracking ownership of positions in the Seawater AMM, enabling liquidity providers to manage and transfer their positions.",
+      "external_calls": [
+        "IERC721Metadata",
+        "ISeawaterAMM",
+        "IERC721TokenReceiver"
+      ],
+      "state_variables": [
+        "NFT ownership mappings",
+        "Token IDs",
+        "Position to owner mappings"
+      ],
+      "entry_points": [
+        "mint",
+        "burn",
+        "transferFrom",
+        "ownerOf",
+        "tokenURI",
+        "other ERC721 functions"
+      ]
+    },
+    {
+      "name": "Faucet",
+      "file": "pkg/sol/Faucet.sol",
+      "type": "contract",
+      "purpose": "Distributes ERC20 tokens to specified recipients, possibly for testing or rewards, with operator controls and random amount selection.",
+      "external_calls": [
+        "IERC20",
+        "IFaucet"
+      ],
+      "state_variables": [
+        "operator address",
+        "token list",
+        "distribution parameters"
+      ],
+      "entry_points": [
+        "sendTo",
+        "configure",
+        "setOperator"
+      ]
+    },
+    {
+      "name": "ISeawaterAMM",
+      "file": "pkg/sol/ISeawaterAMM.sol",
+      "type": "interface",
+      "purpose": "Public-facing interface for the Seawater AMM, combining event definitions and executor swap interfaces for comprehensive interaction.",
+      "external_calls": [
+        "ISeawaterEvents",
+        "ISeawaterExecutorSwap",
+        "ISeawaterExecutorSwapPermit2"
+      ],
+      "state_variables": [],
+      "entry_points": [
+        "Swap",
+        "Mint",
+        "Burn",
+        "Collect",
+        "Initialize",
+        "other AMM functions"
+      ]
+    },
+    {
+      "name": "ISeawaterExecutorSwap",
+      "file": "pkg/sol/ISeawaterExecutors.sol",
+      "type": "interface",
+      "purpose": "Defines the interface for swap operations within a pool, specifying parameters for token swaps and fee handling.",
+      "external_calls": [],
+      "state_variables": [],
+      "entry_points": [
+        "swap"
+      ]
+    },
+    {
+      "name": "ISeawaterEvents",
+      "file": "pkg/sol/ISeawaterEvents.sol",
+      "type": "interface",
+      "purpose": "Defines event emissions for the Seawater AMM, such as position minting, burning, fee collection, and swaps.",
+      "external_calls": [],
+      "state_variables": [],
+      "entry_points": []
+    },
+    {
+      "name": "ILeoEvents",
+      "file": "pkg/sol/ILeoEvents.sol",
+      "type": "interface",
+      "purpose": "Defines events for the Leo rewards system, including campaign balance updates, creation, and transfers.",
+      "external_calls": [],
+      "state_variables": [],
+      "entry_points": []
+    },
+    {
+      "name": "ISeawaterMigrations",
+      "file": "pkg/sol/ISeawaterMigrations.sol",
+      "type": "interface",
+      "purpose": "Empty interface for potential future migration functions in the Seawater protocol.",
+      "external_calls": [],
+      "state_variables": [],
+      "entry_points": []
+    },
+    {
+      "name": "IERC721TokenReceiver",
+      "file": "pkg/sol/IERC721TokenReceiver.sol",
+      "type": "interface",
+      "purpose": "Standard interface for receiving ERC721 tokens, used by contracts that need to accept NFT transfers.",
+      "external_calls": [],
+      "state_variables": [],
+      "entry_points": [
+        "onERC721Received"
+      ]
+    },
+    {
+      "name": "IERC721Metadata",
+      "file": "pkg/sol/IERC721Metadata.sol",
+      "type": "interface",
+      "purpose": "Standard interface for ERC721 metadata (name, symbol, tokenURI), used by OwnershipNFTs.",
+      "external_calls": [],
+      "state_variables": [],
+      "entry_points": [
+        "name",
+        "symbol",
+        "tokenURI"
+      ]
+    },
+    {
+      "name": "IERC20",
+      "file": "pkg/sol/IERC20.sol",
+      "type": "interface",
+      "purpose": "Standard ERC20 interface for token interactions, used across the project.",
+      "external_calls": [],
+      "state_variables": [],
+      "entry_points": [
+        "totalSupply",
+        "balanceOf",
+        "transfer",
+        "approve",
+        "transferFrom",
+        "allowance"
+      ]
+    },
+    {
+      "name": "IFaucet",
+      "file": "pkg/sol/IFaucet.sol",
+      "type": "interface",
+      "purpose": "Interface for the Faucet contract, defining struct for distribution requests and external functions.",
+      "external_calls": [],
+      "state_variables": [],
+      "entry_points": [
+        "sendTo"
+      ]
+    },
+    {
+      "name": "LightweightERC20",
+      "file": "pkg/test/LightweightERC20.sol",
+      "type": "contract",
+      "purpose": "A gas-efficient ERC20 implementation with EIP-2612 permit support, likely used for testing or as a base token in the protocol.",
+      "external_calls": [],
+      "state_variables": [
+        "balances",
+        "allowances",
+        "totalSupply",
+        "nonces"
+      ],
+      "entry_points": [
+        "transfer",
+        "approve",
+        "transferFrom",
+        "permit",
+        "balanceOf",
+        "other ERC20 functions"
+      ]
+    },
+    {
+      "name": "Permit2",
+      "file": "pkg/test/permit2.sol",
+      "type": "contract",
+      "purpose": "Uniswap's Permit2 contract for signature-based token transfers, integrated for gasless approvals.",
+      "external_calls": [
+        "IEIP712"
+      ],
+      "state_variables": [
+        "SignatureTransfer state",
+        "AllowanceTransfer state"
+      ],
+      "entry_points": [
+        "permitTransferFrom",
+        "permitBatchTransferFrom",
+        "allowance",
+        "approve"
+      ]
+    },
+    {
+      "name": "libleo (Rust)",
+      "file": "pkg/leo/src/seawater.rs",
+      "type": "library",
+      "purpose": "Rust library implementing interactions with the Seawater AMM, likely for campaign rewards or calculations, compiled to WASM for Stylus.",
+      "external_calls": [
+        "Seawater AMM contract (via SEAWATER_ADDR)",
+        "RawCall"
+      ],
+      "state_variables": [
+        "Immutables like SEAWATER_ADDR"
+      ],
+      "entry_points": [
+        "collectSingleTo720C50FF",
+        "other helper functions"
+      ]
+    },
+    {
+      "name": "libleo (main)",
+      "file": "pkg/leo/src/main.rs",
+      "type": "contract",
+      "purpose": "Entry point for the Leo Stylus contract, handling user entrypoint and compiling to WASM.",
+      "external_calls": [
+        "libleo"
+      ],
+      "state_variables": [],
+      "entry_points": [
+        "user_entrypoint"
+      ]
+    },
+    {
+      "name": "libleo (maths)",
+      "file": "pkg/leo/src/maths.rs",
+      "type": "library",
+      "purpose": "Mathematical utilities (e.g., mul-div) used in Leo contract calculations.",
+      "external_calls": [],
+      "state_variables": [],
+      "entry_points": [
+        "_mul_div"
+      ]
+    },
+    {
+      "name": "libleo (immutables)",
+      "file": "pkg/leo/src/immutables.rs",
+      "type": "library",
+      "purpose": "Defines immutable values like contract addresses for the Leo system, with test-only dummy values.",
+      "external_calls": [],
+      "state_variables": [
+        "SEAWATER_ADDR and other constants"
+      ],
+      "entry_points": []
+    }
+  ],
+  "relationships": [
+    {
+      "from": "SeawaterAMM",
+      "to": "ISeawaterAMM",
+      "type": "implements",
+      "description": "SeawaterAMM implements the ISeawaterAMM interface for public functions and events."
+    },
+    {
+      "from": "SeawaterAMM",
+      "to": "ISeawaterExecutors",
+      "type": "implements",
+      "description": "SeawaterAMM imports and uses executor swap interfaces for internal swap logic."
+    },
+    {
+      "from": "SeawaterAMM",
+      "to": "OwnershipNFTs",
+      "type": "calls",
+      "description": "SeawaterAMM interacts with OwnershipNFTs to mint/burn NFTs representing positions."
+    },
+    {
+      "from": "OwnershipNFTs",
+      "to": "ISeawaterAMM",
+      "type": "calls",
+      "description": "OwnershipNFTs calls back into SeawaterAMM for position validation or updates."
+    },
+    {
+      "from": "Faucet",
+      "to": "IERC20",
+      "type": "calls",
+      "description": "Faucet transfers ERC20 tokens using the IERC20 interface."
+    },
+    {
+      "from": "Faucet",
+      "to": "IFaucet",
+      "type": "implements",
+      "description": "Faucet implements the IFaucet interface for distribution functions."
+    },
+    {
+      "from": "ISeawaterAMM",
+      "to": "ISeawaterEvents",
+      "type": "imports",
+      "description": "ISeawaterAMM imports event definitions from ISeawaterEvents."
+    },
+    {
+      "from": "ISeawaterAMM",
+      "to": "ISeawaterExecutorSwap",
+      "type": "imports",
+      "description": "ISeawaterAMM imports swap executor interfaces."
+    },
+    {
+      "from": "libleo (seawater)",
+      "to": "SeawaterAMM",
+      "type": "calls",
+      "description": "libleo interacts with SeawaterAMM via raw calls for reward collection or calculations."
+    },
+    {
+      "from": "libleo (main)",
+      "to": "libleo (seawater)",
+      "type": "imports",
+      "description": "libleo main uses the seawater module for core logic."
+    },
+    {
+      "from": "OwnershipNFTs",
+      "to": "IERC721TokenReceiver",
+      "type": "implements",
+      "description": "OwnershipNFTs implements the receiver interface to handle NFT transfers."
+    },
+    {
+      "from": "OwnershipNFTs",
+      "to": "IERC721Metadata",
+      "type": "implements",
+      "description": "OwnershipNFTs implements metadata functions for NFTs."
+    },
+    {
+      "from": "LightweightERC20",
+      "to": "IERC20",
+      "type": "implements",
+      "description": "LightweightERC20 implements the IERC20 interface for token operations."
+    },
+    {
+      "from": "Permit2",
+      "to": "IEIP712",
+      "type": "implements",
+      "description": "Permit2 uses EIP-712 for domain separation in signatures."
+    }
+  ],
+  "high_risk_areas": [
+    {
+      "area": "Proxy Upgrade Pattern in SeawaterAMM",
+      "reason": "Storage slot constants suggest a proxy pattern; incorrect storage layout or upgrades could lead to data corruption or vulnerabilities.",
+      "files": [
+        "pkg/sol/SeawaterAMM.sol"
+      ]
+    },
+    {
+      "area": "Cross-Contract Interactions (SeawaterAMM \u2194 OwnershipNFTs)",
+      "reason": "Complex callbacks and state synchronization between AMM and NFT contracts may introduce reentrancy or inconsistency risks.",
+      "files": [
+        "pkg/sol/SeawaterAMM.sol",
+        "pkg/sol/OwnershipNFTs.sol"
+      ]
+    },
+    {
+      "area": "Token Transfers in Faucet",
+      "reason": "Direct ERC20 transfers without checks for balance or approval could lead to failed transactions or exploitation if not carefully controlled.",
+      "files": [
+        "pkg/sol/Faucet.sol",
+        "pkg/sol/IFaucet.sol"
+      ]
+    },
+    {
+      "area": "External Calls in libleo (Rust)",
+      "reason": "Raw calls to external contracts (e.g., SeawaterAMM) from Rust/WASM may lack proper validation or error handling, risking reentrancy or unexpected behavior.",
+      "files": [
+        "pkg/leo/src/seawater.rs",
+        "pkg/leo/src/immutables.rs"
+      ]
+    },
+    {
+      "area": "Mathematical Libraries (libleo maths)",
+      "reason": "Custom math functions like mul-div must be secure against overflow/underflow; errors could affect reward calculations or pool balances.",
+      "files": [
+        "pkg/leo/src/maths.rs"
+      ]
+    },
+    {
+      "area": "ERC721 NFT Handling",
+      "reason": "NFT minting/burning in OwnershipNFTs must align with AMM state; mismatches could lead to orphaned positions or theft.",
+      "files": [
+        "pkg/sol/OwnershipNFTs.sol",
+        "pkg/sol/ISeawaterAMM.sol"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "project": "code4rena_loopfi_2025_02",
+  "expected": 7,
+  "found": 34,
+  "matched": 0,
+  "detection_rate": 0.0,
+  "details": [
+    {
+      "expected_title": "Rewards might be lost due to the error that_updateRewardIndex()might advancelast",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "CDPVault.sol#liquidatePositionBadDebt()doesn\u2019t correctly handle profit and loss",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Invalid handling of flash loan fees inPositionAction::onCreditFlashLoan, forcing",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Invalid handling of risdual amount inPositionAction::onCreditFlashLoan, forcing ",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "PositionAction4626.sol#_onWithdrawshould withdraw from position CDPVault positio",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "PositionActionPendle.sol#_onWithdrawdoes not have slippage parameterminOutset",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "PositionAction.sol#onCreditFlashLoanmay end up with stuck funds forEXACT_INprima",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "project": "code4rena_cabal-liquid-staking-token_2025_05",
+  "expected": 8,
+  "found": 4,
+  "matched": 0,
+  "detection_rate": 0.0,
+  "details": [
+    {
+      "expected_title": "LP unstaking only burns the shares but leaves the underlying tokens in the syste",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Reentrancy Check inlock_staking::reentry_checkCauses Concurrent INIT Deposit Fai",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Unstaking calculates user share at request time, ignoring slashing \u2014 leading to ",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Attacker Can Desynchronize Supply Snapshot During Same-Block Unstake, Reducing E",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Unstaking from LP pools will cause underflow and lock user funds",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Last Holder Can\u2019t Exit, Zero\u2011Supply Unstake Reverts",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "LP Redelegation Uses Inaccurate Internal Tracker Amount, Leading to Potential Fa",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Desynchronization of Cabal\u2019s internal accounting with actual staked INIT amounts",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    }
+  ]
+}

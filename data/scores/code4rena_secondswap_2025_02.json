@@ -1,0 +1,219 @@
+{
+  "project": "code4rena_secondswap_2025_02",
+  "expected": 30,
+  "found": 3,
+  "matched": 0,
+  "detection_rate": 0.0,
+  "details": [
+    {
+      "expected": "SecondSwap_Marketplacevesting listing order affects how much the vesting buyers ",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "Candidate findings focus on whitelist contract analysis, missing access control on mint function, an"
+    },
+    {
+      "expected": "transferVestingcreates an incorrect vesting for new users when they purchase a v",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about a flawed vesting mechanism (transferVesting) where stepsClaimed "
+    },
+    {
+      "expected": "IntransferVesting, thegrantorVesting.releaseRateis calculated incorrectly, which",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about an incorrect release rate calculation in the IntransferVesting c"
+    },
+    {
+      "expected": "Incorrect listing type validation bypasses enforcement of minimum purchase amoun",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about incorrect listing type validation bypassing minimum purchase amo"
+    },
+    {
+      "expected": "Listing potential can not be purchased with discounted price",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about listing potential not being purchasable with a discounted price "
+    },
+    {
+      "expected": "Missing option to remove tokens from theisTokenSupportmapping can result in huge",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "Expected vulnerability concerns missing admin ability to remove tokens from isTokenSupport mapping i"
+    },
+    {
+      "expected": "Creator of one vesting plan can affect vesting plans created by other users.",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about cross-user interference in vesting plans (Creator of one vesting"
+    },
+    {
+      "expected": "Price Granularity Limited by Payment Token Decimals: Cannot List Tokens Cheaper ",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about price granularity limitations due to payment token decimals in t"
+    },
+    {
+      "expected": "Underflow inclaimableDOSingclaimFunction",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about an underflow in the claimableDOSingclaimFunction in SecondSwap_S"
+    },
+    {
+      "expected": "buyFeeAndsellFeeShould Be Known Before Purchase",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability concerns modification of buyFee/sellFee after listing in SecondSwap_Marke"
+    },
+    {
+      "expected": "Outdated penalty fee gets charged if the penalty fee has changed since listing",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "None of the candidate findings address the specific vulnerability described in the expected vulnerab"
+    },
+    {
+      "expected": "Users can prevent being reallocated by listing to marketplace",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability concerns users preventing reallocation in vesting by listing to the marke"
+    },
+    {
+      "expected": "Tokens that have already been vested can be transferred from a user.",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about vested tokens being transferable in the SecondSwap_StepVesting c"
+    },
+    {
+      "expected": "maxSellPercentcan be buypassed by selling previously bought vestings at a later ",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability describes a bypass of maxSellPercent in the VestingManager contract by se"
+    },
+    {
+      "expected": "Unauthorized increase ofmaxSellPercent",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about unauthorized increase of maxSellPercent in SecondSwap_VestingMan"
+    },
+    {
+      "expected": "MarketPlace Change In Vesting Manager, Leads To Loss Of Previous MarketPlace Lis",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 1.0,
+      "reason": "The expected vulnerability is about a specific issue in SecondSwap_VestingManager.sol where changing"
+    },
+    {
+      "expected": "Incorrect referral fee calculations",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.9,
+      "reason": "The expected vulnerability concerns incorrect referral fee calculations, likely in a referral or fee"
+    },
+    {
+      "expected": "Missing sellable check in completePurchase will cause a user to buy a token mark",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "None of the candidate findings address the specific issue described in the expected vulnerability. T"
+    },
+    {
+      "expected": "Possible DoS scenario when transferring vests to another address",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is a specific DoS issue related to frontrunning during vesting transfers "
+    },
+    {
+      "expected": "Rounding error in stepDuration calculations.",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 1.0,
+      "reason": "The expected vulnerability is a rounding error in stepDuration calculations within SecondSwap_StepVe"
+    },
+    {
+      "expected": "Unlisting a vesting after seller has claimed additional steps locks tokens which",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 1.0,
+      "reason": "The expected vulnerability is about vesting unlisting causing locked tokens in SecondSwap_VestingMan"
+    },
+    {
+      "expected": "Large number of steps in a vesting may lead to loss of beneficiary funds or unev",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.9,
+      "reason": "The expected vulnerability is about step vesting logic flaws leading to zero releaseRate or uneven d"
+    },
+    {
+      "expected": "maxSellPercent will be broken when a vesting is delisted after a seller has clai",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.95,
+      "reason": "Candidate findings focus on whitelist contract, mint function access control, and supply cap issues."
+    },
+    {
+      "expected": "There is no way to unsupport a token",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.95,
+      "reason": "The expected vulnerability is about a missing function to remove token support from a hardcoded list"
+    },
+    {
+      "expected": "There is no check if the_discountPct <= 10000",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about a missing validation check on `_discountPct` in the `listVesting"
+    },
+    {
+      "expected": "Inability to claim tokens iftotalAmount < numOfSteps",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability concerns a specific logic flaw in a transferVesting function that can res"
+    },
+    {
+      "expected": "Fake Vesting events generation using inexistentstepVestingaddresses",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about generating fake vesting events by using non-existent stepVesting"
+    },
+    {
+      "expected": "Eachmsg.sendercan only have one token",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about a design limitation where each msg.sender can only have one toke"
+    },
+    {
+      "expected": "Missing check formaxSellPercent <= 10000",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about missing validation on maxSellPercent in the SecondSwap_VestingMa"
+    },
+    {
+      "expected": "There is no check if the vesting is actually sellable or not",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.9,
+      "reason": "The expected vulnerability focuses on a specific issue in the `setMaxSellPercent` function of the Ve"
+    }
+  ]
+}

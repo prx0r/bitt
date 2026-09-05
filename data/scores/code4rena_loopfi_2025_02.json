@@ -1,0 +1,58 @@
+{
+  "project": "code4rena_loopfi_2025_02",
+  "expected": 7,
+  "found": 34,
+  "matched": 0,
+  "detection_rate": 0.0,
+  "details": [
+    {
+      "expected": "Rewards might be lost due to the error that_updateRewardIndex()might advancelast",
+      "severity": "high",
+      "matched": false,
+      "confidence": 1.0,
+      "reason": "The expected vulnerability is about a specific issue in _updateRewardIndex() where index may not adv"
+    },
+    {
+      "expected": "CDPVault.sol#liquidatePositionBadDebt()doesn\u2019t correctly handle profit and loss",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about incorrect profit and loss handling in the liquidatePositionBadDe"
+    },
+    {
+      "expected": "Invalid handling of flash loan fees inPositionAction::onCreditFlashLoan, forcing",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "None of the candidate findings match the expected vulnerability. The expected vulnerability is speci"
+    },
+    {
+      "expected": "Invalid handling of risdual amount inPositionAction::onCreditFlashLoan, forcing ",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability describes a specific issue in PositionAction::onCreditFlashLoan related t"
+    },
+    {
+      "expected": "PositionAction4626.sol#_onWithdrawshould withdraw from position CDPVault positio",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about a specific bug in PositionAction4626.sol where _onWithdraw incor"
+    },
+    {
+      "expected": "PositionActionPendle.sol#_onWithdrawdoes not have slippage parameterminOutset",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about missing slippage protection in Pendle pool exit during withdrawa"
+    },
+    {
+      "expected": "PositionAction.sol#onCreditFlashLoanmay end up with stuck funds forEXACT_INprima",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is specifically about stuck funds in PositionAction.sol#onCreditFlashLoan"
+    }
+  ]
+}

@@ -1,0 +1,240 @@
+{
+  "project": "code4rena_coded-estate-invitational_2024_12",
+  "expected": 33,
+  "found": 1,
+  "matched": 0,
+  "detection_rate": 0.0,
+  "details": [
+    {
+      "expected_title": "Attakers can steal the funds from long-term reservation",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "setbidtobuyallows token purchase even when sale is no longer listed",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Insufficient price validation intransfer_nftfunction enables theft of listed tok",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Lack of differentiation between rental types leads to loss of funds",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Cancelling bid doesn\u2019t clear token approval of bidder allows malicious bidder to",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Lack of validation insetlistforsellallows changing denom while there is active b",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Logic flaw incheck_can_edit_shortallows editing short-term rental before finaliz",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Adversary can usesend_nftto bypass the payment and steal seller\u2019s token in auto-",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Token owner can burn their token with active rental leading to renters\u2019 funds be",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Malicious NFT owners can rug the reservation of the long-term",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Users can\u2019t cancel reservation due to out-of-gas",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Use ofu64forprice_per_dayandprice_per_monthlimits handling tokens with 18 decima",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Incorrect use ofu64for argamountinwithdrawtolandlordcan cause withdrawal failure",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Incorrect refund amount is sent  to the tenant if long term reservation is cance",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Lack of upfront cost for long-term reservations allows fake reservations, blocki",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Reservations can be made outside of rental property\u2019savailable_period",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Can impersonate another high value rental becausetoken_uriis arbitrary and suppl",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "User supplied owner address which is meant to be token owner is never the token ",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "The current logic can\u2019t handle CW20 tokens",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Malicious owners can set the fee to 100%",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "auto_approveis not used in long-term rent",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "minteris not used in this contract delete it",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Useto_json_binaryandfrom_json_binary",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "cosmwasm-std1.4.0v is vulnerable",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "The first buyer could get front-runed afterautoApproveget updated",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "available_periodis not used",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "The logic doesn\u2019t return the excited funds to the users",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Risk of out-of-gas",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Risk of 100% cancellation penalty for users",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "check_can_edit_long()andcheck_can_edit_short()have the same logic",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "DoS attack",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "Use a daily or monthly basis",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    },
+    {
+      "expected_title": "The functionexecute.rs#depositforlongtermrental()doesn\u2019t check if the deposit am",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0,
+      "reason": ""
+    }
+  ]
+}

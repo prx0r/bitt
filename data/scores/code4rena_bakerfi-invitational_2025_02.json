@@ -1,0 +1,233 @@
+{
+  "project": "code4rena_bakerfi-invitational_2025_02",
+  "expected": 32,
+  "found": 25,
+  "matched": 1,
+  "detection_rate": 0.031,
+  "details": [
+    {
+      "expected": "Users may encounter losses on assets deposited throughStrategySupplyERC4626",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The EXPECTED VULNERABILITY specifically refers to the `_deploy()`, `_undeploy()`, and `_getBalance()"
+    },
+    {
+      "expected": "Anyone can callStrategySupplyBase.harvest, allowing users to avoid paying perfor",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "None of the candidate findings describe the core issue of missing access control on the harvest func"
+    },
+    {
+      "expected": "_deployedAmountnot updated onStrategySupplyBase.undeploy, preventing performance",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about `_deployedAmount` not being updated in `StrategySupplyBase.undep"
+    },
+    {
+      "expected": "There are multiple issues with the decimal conversions between the vault and the",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability describes multiple issues with decimal conversions between vault and stra"
+    },
+    {
+      "expected": "The implementation ofpullTokensWithPermitposes a risk, allowing malicious actors",
+      "severity": "high",
+      "matched": true,
+      "confidence": 0.9,
+      "reason": "Both findings focus on the `pullTokensWithPermit` function and its handling of permit calls. The exp"
+    },
+    {
+      "expected": "Malicious actors can exploit user-approved allowances onVaultRouterto drain thei",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability describes a critical issue where malicious actors can exploit user-approv"
+    },
+    {
+      "expected": "Malicious actors can exploit user-approved allowances onVaultRouterto drain thei",
+      "severity": "high",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about malicious actors exploiting user-approved allowances on VaultRou"
+    },
+    {
+      "expected": "Unmitigated",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability describes an ineffective final statement in the maxMint function due to u"
+    },
+    {
+      "expected": "New strategy can not work due to insufficient allowance",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "None of the candidate findings describe the issue of a new strategy not being approved to spend asse"
+    },
+    {
+      "expected": "MultiStrategy#removeStrategy()cannot remove leverage strategies that still have ",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about a logic flaw in MultiStrategy#removeStrategy() preventing remova"
+    },
+    {
+      "expected": "Sending tokens to a Strategy whentotalSupplyis 0 can permanently make the Vault ",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.9,
+      "reason": "The expected vulnerability describes a specific issue where an attacker can manipulate totalAssets b"
+    },
+    {
+      "expected": "Permitdoesn\u2019t work with DAI",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.9,
+      "reason": "The expected vulnerability is about the `permit` function not working with DAI in VaultRouter.sol, s"
+    },
+    {
+      "expected": "Even when the Vault contract is paused, therebalancefunction is not paused",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about the rebalance function not being paused when the Vault is paused"
+    },
+    {
+      "expected": "Unmitigated",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability (M-07) describes a mitigation failure related to share transfer and conti"
+    },
+    {
+      "expected": "Thedispatchfunction of theVaultRouter, does not work as intended, withPULL_TOKEN",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability specifically concerns the `dispatch` function's handling of the `PULL_TOK"
+    },
+    {
+      "expected": "Non-whitelisted recipient can receive shares",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "None of the candidate findings address the core issue described in the expected vulnerability: the r"
+    },
+    {
+      "expected": "The withdrawal of Multi strategies vault could be DoSed while asset deposits rem",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability describes a DoS in withdrawal due to IStrategy#undeploy(0) affecting the "
+    },
+    {
+      "expected": "The calculation ofassetsMaxis incorrect.",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about incorrect calculation of assetsMax in _undeploy due to missing a"
+    },
+    {
+      "expected": "Cannot withdraw tokens from all strategies in MultiStrategyVault when one third ",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability describes a functional issue where users cannot withdraw tokens from all "
+    },
+    {
+      "expected": "The Vault Manager is unable to delete the last strategy fromMultiStrategyVault",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about the inability to delete the last strategy from MultiStrategyVaul"
+    },
+    {
+      "expected": "TheStrategySupplyMorphoallow to use wrong token in_asset",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability describes a mismatch between _asset and loanToken in StrategySupplyMorpho"
+    },
+    {
+      "expected": "VaultRoutercannot be used for deposits when it reaches the maximum deposit limit",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "None of the candidate findings address the specific issue described in the expected vulnerability: V"
+    },
+    {
+      "expected": "Unmitigated",
+      "severity": "medium",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about an incorrect balance value calculation in StrategySupplyBase.sol"
+    },
+    {
+      "expected": "Allowance not set to maximum value inenableRoute",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "None of the candidate findings describe the same issue as the expected vulnerability. The expected v"
+    },
+    {
+      "expected": "UseIERC4626.withdrawVaultdoes not check if vault isaddress(0)",
+      "severity": "low",
+      "matched": false,
+      "confidence": 1.0,
+      "reason": "The expected vulnerability is about a missing zero-address check for the 'vault' parameter in the 'w"
+    },
+    {
+      "expected": "Wrong event emitted inremoveStrategy",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about a wrong event emitted in the removeStrategy function of MultiStr"
+    },
+    {
+      "expected": "Strategy with different asset token can be registered toMultiStrategyVault",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "None of the candidate findings describe the vulnerability where a strategy with a different asset to"
+    },
+    {
+      "expected": "Allowance remains when removingStrategyfrom MultiStrategyVault",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about an allowance not being reset when removing a strategy in MultiSt"
+    },
+    {
+      "expected": "MultiStrategyVault does not check for duplicate when registering new strategies",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "None of the candidate findings address the specific vulnerability of duplicate strategy registration"
+    },
+    {
+      "expected": "Not using the parsed valueactionToExecuteinVaultRouter.dispatch",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about using the wrong variable (`action` instead of `actionToExecute`)"
+    },
+    {
+      "expected": "Unused storage variable_approvedSwapTokensexists",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about an unused storage variable `_approvedSwapTokens` in VaultRouter."
+    },
+    {
+      "expected": "depositNative,withdrawNative,redeemNativefunctions cannot be called from Router",
+      "severity": "low",
+      "matched": false,
+      "confidence": 0.0,
+      "reason": "The expected vulnerability is about missing Router commands for native deposit/withdraw/redeem funct"
+    }
+  ]
+}

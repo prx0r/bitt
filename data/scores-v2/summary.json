@@ -1,0 +1,1015 @@
+{
+  "overall_dr": 0.014814814814814815,
+  "total_expected": 135,
+  "total_matched": 2,
+  "projects": [
+    {
+      "project": "code4rena_bakerfi-invitational_2025_02",
+      "expected": 32,
+      "found": 25,
+      "matched": 1,
+      "detection_rate": 0.031,
+      "details": [
+        {
+          "expected_title": "Users may encounter losses on assets deposited throughStrategySupplyERC4626",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Anyone can callStrategySupplyBase.harvest, allowing users to avoid paying perfor",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "_deployedAmountnot updated onStrategySupplyBase.undeploy, preventing performance",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "There are multiple issues with the decimal conversions between the vault and the",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "The implementation ofpullTokensWithPermitposes a risk, allowing malicious actors",
+          "severity": "high",
+          "matched": true,
+          "confidence": 0.85,
+          "reason": "The tool finding [1] directly addresses the same function `pullTokensWithPermit` and identifies the "
+        },
+        {
+          "expected_title": "Malicious actors can exploit user-approved allowances onVaultRouterto drain thei",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Malicious actors can exploit user-approved allowances onVaultRouterto drain thei",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Unmitigated",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "New strategy can not work due to insufficient allowance",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "MultiStrategy#removeStrategy()cannot remove leverage strategies that still have ",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Sending tokens to a Strategy whentotalSupplyis 0 can permanently make the Vault ",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Permitdoesn\u2019t work with DAI",
+          "severity": "medium",
+          "matched": true,
+          "confidence": 0.9,
+          "reason": "Tool finding [1] addresses the same function (pullTokensWithPermit) and the same core issue: the per"
+        },
+        {
+          "expected_title": "Even when the Vault contract is paused, therebalancefunction is not paused",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Unmitigated",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Thedispatchfunction of theVaultRouter, does not work as intended, withPULL_TOKEN",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Non-whitelisted recipient can receive shares",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "The withdrawal of Multi strategies vault could be DoSed while asset deposits rem",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "The calculation ofassetsMaxis incorrect.",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Cannot withdraw tokens from all strategies in MultiStrategyVault when one third ",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "The Vault Manager is unable to delete the last strategy fromMultiStrategyVault",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "TheStrategySupplyMorphoallow to use wrong token in_asset",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "VaultRoutercannot be used for deposits when it reaches the maximum deposit limit",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Unmitigated",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Allowance not set to maximum value inenableRoute",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "UseIERC4626.withdrawVaultdoes not check if vault isaddress(0)",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Wrong event emitted inremoveStrategy",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Strategy with different asset token can be registered toMultiStrategyVault",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Allowance remains when removingStrategyfrom MultiStrategyVault",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "MultiStrategyVault does not check for duplicate when registering new strategies",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Not using the parsed valueactionToExecuteinVaultRouter.dispatch",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Unused storage variable_approvedSwapTokensexists",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "depositNative,withdrawNative,redeemNativefunctions cannot be called from Router",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        }
+      ]
+    },
+    {
+      "project": "code4rena_cabal-liquid-staking-token_2025_05",
+      "expected": 8,
+      "found": 4,
+      "matched": 0,
+      "detection_rate": 0.0,
+      "details": [
+        {
+          "expected_title": "LP unstaking only burns the shares but leaves the underlying tokens in the syste",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Reentrancy Check inlock_staking::reentry_checkCauses Concurrent INIT Deposit Fai",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Unstaking calculates user share at request time, ignoring slashing \u2014 leading to ",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Attacker Can Desynchronize Supply Snapshot During Same-Block Unstake, Reducing E",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Unstaking from LP pools will cause underflow and lock user funds",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Last Holder Can\u2019t Exit, Zero\u2011Supply Unstake Reverts",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "LP Redelegation Uses Inaccurate Internal Tracker Amount, Leading to Potential Fa",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Desynchronization of Cabal\u2019s internal accounting with actual staked INIT amounts",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        }
+      ]
+    },
+    {
+      "project": "code4rena_coded-estate-invitational_2024_12",
+      "expected": 33,
+      "found": 1,
+      "matched": 0,
+      "detection_rate": 0.0,
+      "details": [
+        {
+          "expected_title": "Attakers can steal the funds from long-term reservation",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "setbidtobuyallows token purchase even when sale is no longer listed",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Insufficient price validation intransfer_nftfunction enables theft of listed tok",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Lack of differentiation between rental types leads to loss of funds",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Cancelling bid doesn\u2019t clear token approval of bidder allows malicious bidder to",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Lack of validation insetlistforsellallows changing denom while there is active b",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Logic flaw incheck_can_edit_shortallows editing short-term rental before finaliz",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Adversary can usesend_nftto bypass the payment and steal seller\u2019s token in auto-",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Token owner can burn their token with active rental leading to renters\u2019 funds be",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Malicious NFT owners can rug the reservation of the long-term",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Users can\u2019t cancel reservation due to out-of-gas",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Use ofu64forprice_per_dayandprice_per_monthlimits handling tokens with 18 decima",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Incorrect use ofu64for argamountinwithdrawtolandlordcan cause withdrawal failure",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Incorrect refund amount is sent  to the tenant if long term reservation is cance",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Lack of upfront cost for long-term reservations allows fake reservations, blocki",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Reservations can be made outside of rental property\u2019savailable_period",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Can impersonate another high value rental becausetoken_uriis arbitrary and suppl",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "User supplied owner address which is meant to be token owner is never the token ",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "The current logic can\u2019t handle CW20 tokens",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Malicious owners can set the fee to 100%",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "auto_approveis not used in long-term rent",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "minteris not used in this contract delete it",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Useto_json_binaryandfrom_json_binary",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "cosmwasm-std1.4.0v is vulnerable",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "The first buyer could get front-runed afterautoApproveget updated",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "available_periodis not used",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "The logic doesn\u2019t return the excited funds to the users",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Risk of out-of-gas",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Risk of 100% cancellation penalty for users",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "check_can_edit_long()andcheck_can_edit_short()have the same logic",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "DoS attack",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Use a daily or monthly basis",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "The functionexecute.rs#depositforlongtermrental()doesn\u2019t check if the deposit am",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        }
+      ]
+    },
+    {
+      "project": "code4rena_lambowin_2025_02",
+      "expected": 14,
+      "found": 3,
+      "matched": 0,
+      "detection_rate": 0.0,
+      "details": [
+        {
+          "expected_title": "Loss of User Funds in VirtualToken\u2019scashInFunction Due to Incorrect Amount Minti",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "LamboFactory can be permanently DoS-ed due tocreatePaircall reversal",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Calculation fordirectionMaskis incorrect",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Anyone can callLamboRebalanceOnUniwap.sol::rebalance()function with any arbitrar",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Since the cost of launching a new pool is minimal, an attacker can maliciously c",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "LamboRebalanceOnUniswap::_getTokenInOutformula used to compute rebalancing amoun",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "sellQuoteandbuyQuoteare missing deadline check inLamboVEthRouter",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Accumulated ETH in the LamboVEthRouter will be irretrievable",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Incorrect Struct Field and HardcodedsqrtPriceLimitX96in_getQuoteAndDirection",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Attacker can captureVETH-WETHdepeg profits through a malicious pool, rendering r",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Rebalance profit requirement prevents maintaining VETH/WETH peg",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Users can prevent protocol from rebalancing for his gain and cause loss of funds",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Rebalance will be completely dossed if OKX commision rate goes beyond the fee li",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "LP for v3 pool of underlying tokens with decimals!= 18would have incorrect NFT m",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        }
+      ]
+    },
+    {
+      "project": "code4rena_loopfi_2025_02",
+      "expected": 7,
+      "found": 34,
+      "matched": 0,
+      "detection_rate": 0.0,
+      "details": [
+        {
+          "expected_title": "Rewards might be lost due to the error that_updateRewardIndex()might advancelast",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "CDPVault.sol#liquidatePositionBadDebt()doesn\u2019t correctly handle profit and loss",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Invalid handling of flash loan fees inPositionAction::onCreditFlashLoan, forcing",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Invalid handling of risdual amount inPositionAction::onCreditFlashLoan, forcing ",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "PositionAction4626.sol#_onWithdrawshould withdraw from position CDPVault positio",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "PositionActionPendle.sol#_onWithdrawdoes not have slippage parameterminOutset",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "PositionAction.sol#onCreditFlashLoanmay end up with stuck funds forEXACT_INprima",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        }
+      ]
+    },
+    {
+      "project": "code4rena_secondswap_2025_02",
+      "expected": 30,
+      "found": 3,
+      "matched": 0,
+      "detection_rate": 0.0,
+      "details": [
+        {
+          "expected_title": "SecondSwap_Marketplacevesting listing order affects how much the vesting buyers ",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "transferVestingcreates an incorrect vesting for new users when they purchase a v",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "IntransferVesting, thegrantorVesting.releaseRateis calculated incorrectly, which",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Incorrect listing type validation bypasses enforcement of minimum purchase amoun",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Listing potential can not be purchased with discounted price",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Missing option to remove tokens from theisTokenSupportmapping can result in huge",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Creator of one vesting plan can affect vesting plans created by other users.",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Price Granularity Limited by Payment Token Decimals: Cannot List Tokens Cheaper ",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Underflow inclaimableDOSingclaimFunction",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "buyFeeAndsellFeeShould Be Known Before Purchase",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Outdated penalty fee gets charged if the penalty fee has changed since listing",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Users can prevent being reallocated by listing to marketplace",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Tokens that have already been vested can be transferred from a user.",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "maxSellPercentcan be buypassed by selling previously bought vestings at a later ",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Unauthorized increase ofmaxSellPercent",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "MarketPlace Change In Vesting Manager, Leads To Loss Of Previous MarketPlace Lis",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Incorrect referral fee calculations",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Missing sellable check in completePurchase will cause a user to buy a token mark",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Possible DoS scenario when transferring vests to another address",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Rounding error in stepDuration calculations.",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Unlisting a vesting after seller has claimed additional steps locks tokens which",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Large number of steps in a vesting may lead to loss of beneficiary funds or unev",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "maxSellPercent will be broken when a vesting is delisted after a seller has clai",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "There is no way to unsupport a token",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "There is no check if the_discountPct <= 10000",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Inability to claim tokens iftotalAmount < numOfSteps",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Fake Vesting events generation using inexistentstepVestingaddresses",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Eachmsg.sendercan only have one token",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Missing check formaxSellPercent <= 10000",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "There is no check if the vesting is actually sellable or not",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        }
+      ]
+    },
+    {
+      "project": "code4rena_superposition_2025_01",
+      "expected": 11,
+      "found": 34,
+      "matched": 1,
+      "detection_rate": 0.091,
+      "details": [
+        {
+          "expected_title": "createPoolD650E2D0will not work due to mismatch in solidity and stylus function ",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Users are incorrectly refunded when liquidity is insufficient",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "No slippage control when withdrawing a position leads to loss of funds",
+          "severity": "high",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "It\u2019s still not possible to set pool\u2019s protocol fees",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Tokens are pulled from  users without verifying pool status contrary to requirem",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Incorrect slippage handling inswap_internal()",
+          "severity": "medium",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Pool still remains disabled after initialization requiring 2-step setup process",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Missing ownership check ingrant_positionfunction allows unauthorized position tr",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "Zero-liquidity position creation allows for storage exhaustion attack",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "DuplicateU256type imports",
+          "severity": "low",
+          "matched": false,
+          "confidence": 0,
+          "reason": ""
+        },
+        {
+          "expected_title": "mul_modoverflow check only active in debug mode",
+          "severity": "low",
+          "matched": true,
+          "confidence": 0.95,
+          "reason": "Tool finding #8 directly addresses the same vulnerability: `mul_mod` uses `debug_assert!(!overflow)`"
+        }
+      ]
+    }
+  ]
+}

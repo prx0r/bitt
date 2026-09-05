@@ -120,6 +120,14 @@ class SimpleAgent:
 
             message = response["choices"][0]["message"]
             tool_calls = message.get("tool_calls")
+            content = message.get("content", "")
+
+            # If no tool calls, try parsing content as vulnerability JSON
+            if not tool_calls and content:
+                parsed = self._parse_vulns_from_content(content, relative_path)
+                if parsed:
+                    all_vulns.extend(parsed)
+                    break
 
             if not tool_calls:
                 break
@@ -143,6 +151,57 @@ class SimpleAgent:
                 messages.append({"role": "tool", "tool_call_id": tc["id"], "content": result_str})
 
         return all_vulns, total_input, total_output
+
+    def _parse_vulns_from_content(self, content: str, relative_path: str) -> list[Vulnerability]:
+        """Fallback: parse vulnerabilities from text content when model doesn't use tool calls."""
+        vulns = []
+        # Try to find JSON in content
+        try:
+            # Try direct parse
+            data = json.loads(content)
+            if isinstance(data, dict) and "vulnerabilities" in data:
+                for v_data in data["vulnerabilities"]:
+                    v_data["reported_by_model"] = self.model
+                    if "file" not in v_data:
+                        v_data["file"] = relative_path
+                    vulns.append(Vulnerability(**v_data))
+                return vulns
+        except (json.JSONDecodeError, TypeError):
+            pass
+
+        # Try to extract JSON block from markdown/text
+        import re
+        json_match = re.search(r'\{[\s\S]*"vulnerabilities"[\s\S]*\}', content)
+        if json_match:
+            try:
+                data = json.loads(json_match.group())
+                if isinstance(data, dict) and "vulnerabilities" in data:
+                    for v_data in data["vulnerabilities"]:
+                        v_data["reported_by_model"] = self.model
+                        if "file" not in v_data:
+                            v_data["file"] = relative_path
+                        vulns.append(Vulnerability(**v_data))
+                    return vulns
+            except (json.JSONDecodeError, TypeError):
+                pass
+
+        # Try to find individual vulnerability objects
+        vuln_pattern = re.findall(r'\{[^{}]*"title"\s*:\s*"[^"]*"[^{}]*\}', content)
+        for v_str in vuln_pattern:
+            try:
+                v_data = json.loads(v_str)
+                v_data["reported_by_model"] = self.model
+                if "file" not in v_data:
+                    v_data["file"] = relative_path
+                # Ensure required fields
+                for field in ["title", "description", "vulnerability_type", "severity", "confidence", "location"]:
+                    if field not in v_data:
+                        v_data[field] = "unknown" if field != "confidence" else 0.5
+                vulns.append(Vulnerability(**v_data))
+            except (json.JSONDecodeError, TypeError):
+                continue
+
+        return vulns
 
     def _execute_tool_call(self, tool_call: dict, source_dir: Path) -> str:
         try:
