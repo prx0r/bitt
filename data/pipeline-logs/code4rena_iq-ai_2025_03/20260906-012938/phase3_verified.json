@@ -1,0 +1,192 @@
+[
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The public buy function with a _recipient parameter lacks access control, allowing anyone to specify an arbitrary recipient for purchased tokens. While the external wrapper buy function uses msg.sender as recipient, the public version can be called directly. An attacker could front-run a legitimate buy transaction by calling the public buy with the same parameters but redirecting the tokens to themselves, effectively stealing the tokens intended for the original buyer. This requires careful timing and knowledge of the victim's pending transaction details.",
+    "file": "src/AgentRouter.sol",
+    "lines": "56-90",
+    "candidate_original": {
+      "file": "src/AgentRouter.sol",
+      "lines": "56-90",
+      "category": "Missing Access Control on Buy",
+      "attack_sequence": "1. The public `buy` function at line 56 accepts a `_recipient` parameter and has no access control.\n2. Anyone can call `buy(_agentToken, _amountIn, _minAmountOut, arbitraryRecipient)`.\n3. This is intentional by design (the external function at line 46 delegates to it with msg.sender as recipient). No vulnerability here\u2014it's a standard pattern.",
+      "confidence": 0.1,
+      "reasoning": "The public function is meant to be called by the external wrapper or directly. No access control issue.",
+      "trace_region": "src/AgentRouter.sol"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The `initializeToken` function lacks a check that `_token != address(0)`. While the owner (AgentFactory) is trusted, if the factory's initialization logic ever passes a zero address, or if ownership is transferred to a malicious actor, calling `initializeToken(AIToken(address(0)))` would set the token variable to the zero address. This permanently prevents any legitimate token initialization because the guard `token == AIToken(address(0))` will never be true again, effectively bricking the agent's token functionality. The impact is a permanent denial of service for token-related operations, which is a medium-severity issue as it disables core functionality but does not directly lead to asset theft or privilege escalation.",
+    "file": "src/Agent.sol",
+    "lines": "70-72",
+    "candidate_original": {
+      "file": "src/Agent.sol",
+      "lines": "70-72",
+      "category": "Business logic flaw - token initialization allows setting token to address(0) indirectly",
+      "attack_sequence": "1. Wait until Agent.sol is deployed and owner is set to AgentFactory.\n2. The `initializeToken` function only checks `if (token == AIToken(address(0)))` \u2014 it sets token to the provided `_token` if current token is zero. However, there is no check that `_token` itself is not `address(0)`. If the owner calls `initializeToken(AIToken(address(0)))`, the token variable gets set to the zero address, effectively permanently locking out any future legitimate token initialization since the guard `token == address(0)` will never be true again.\n3. This would brick the agent's token functionality permanently.",
+      "confidence": 0.75,
+      "reasoning": "The initializeToken function has no check that _token != address(0). While the owner is AgentFactory (which should be trusted), if the factory's initialization logic ever passes a zero address or if ownership is transferred, this could permanently brick the token association. However, since ownership is with the factory, exploitability depends on factory behavior.",
+      "trace_region": "src/Agent.sol"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The initializeToken function lacks any validation on the _token parameter beyond the one-time set protection. After ownership transfer (if ever occurs), the new owner can call initializeToken with any arbitrary contract address, including address(0) or a malicious AIToken contract. Once set, the token cannot be changed, permanently associating the agent with the malicious token. This could lead to downstream issues if other contracts or interfaces rely on the token being a legitimate AIToken.",
+    "file": "src/Agent.sol",
+    "lines": "70-72",
+    "candidate_original": {
+      "file": "src/Agent.sol",
+      "lines": "70-72",
+      "category": "Missing access control - initializeToken callable by any owner after ownership transfer",
+      "attack_sequence": "1. Agent is deployed with Ownable(factory).\n2. If factory ever transfers ownership of the Agent to another address (e.g., through a governance mechanism), that new owner can call initializeToken.\n3. Combined with the zero-address check missing, the new owner could set token to address(0) or could set it to a malicious AIToken contract.\n4. Once set, the token cannot be changed (one-time set), so the malicious token is permanently associated with the agent.",
+      "confidence": 0.65,
+      "reasoning": "initializeToken has no validation on the _token parameter \u2014 it could be any arbitrary contract masquerading as AIToken. Since the token is set once and never changeable, a compromised or malicious owner could permanently associate a malicious token contract.",
+      "trace_region": "src/Agent.sol"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The owner of an Agent contract can call `setProxyImplementation(address(0))` to set the proxy implementation to address(0). This bypasses the allowedProxyImplementation validation because the condition explicitly skips address(0). When proxyImplementation is address(0), the `_implementation()` function returns `factory.defaultProxyImplementation()` instead. If the factory default is later changed to a malicious contract or address(0), all delegatecall-based proxy calls to the agent will fail or execute malicious logic, potentially causing denial of service or unexpected behavior. The owner can force the agent to revert to the factory default at any time, which could be exploited if the factory default is compromised.",
+    "file": "src/Agent.sol",
+    "lines": "92-98",
+    "candidate_original": {
+      "file": "src/Agent.sol",
+      "lines": "92-98",
+      "category": "Proxy implementation can be set to address(0) to disable delegation",
+      "attack_sequence": "1. Owner calls setProxyImplementation(address(0)) on a live agent (stage > 0).\n2. The function allows setting proxyImplementation to address(0) (the if-check explicitly skips the zero address from the allowedProxyImplementation validation).\n3. Now proxyImplementation is address(0), but _implementation() still works because it falls back to factory.defaultProxyImplementation() when proxyImplementation == address(0).\n4. However, the storage slot for proxyImplementation is now zero, meaning the intended implementation is effectively removed. If factory.defaultProxyImplementation() returns address(0) or is changed, all calls through the proxy would fail.",
+      "confidence": 0.55,
+      "reasoning": "Setting proxyImplementation to address(0) reverts to factory default, which may or may not be desirable. The owner can essentially force the agent back to factory default implementation at any time, which could be exploited if the factory default is compromised.",
+      "trace_region": "src/Agent.sol"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "low",
+    "exploit_description": "The vulnerability consists of two issues: 1) The setStage function emits an event with the requested stage even when it wasn't updated (if _stage <= current stage), which can create misleading off-chain data. 2) The stage can only increase, not decrease, which could be problematic if the factory needs to correct a mistake (e.g., setting a higher stage accidentally). While this doesn't directly lead to loss of funds or code execution, it can cause incorrect off-chain state tracking and potential logic errors if the contract expects reversible stage changes.",
+    "file": "src/Agent.sol",
+    "lines": "100-103",
+    "candidate_original": {
+      "file": "src/Agent.sol",
+      "lines": "100-103",
+      "category": "Stage can only increase, never decrease - potential logic issue",
+      "attack_sequence": "1. The setStage function has `if (_stage > stage) stage = _stage;` \u2014 it only allows stage to increase.\n2. If the factory accidentally calls setStage with an incorrect higher value, it can never be rolled back.\n3. More importantly, the emit emits the requested _stage, not the actual set stage. If _stage <= current stage, the event StageSet(_stage) is still emitted, creating misleading off-chain data that suggests the stage was changed when it wasn't.",
+      "confidence": 0.6,
+      "reasoning": "The event emission is unconditional \u2014 StageSet(_stage) fires even when the stage wasn't actually updated. This creates incorrect off-chain state. The monotonic-only stage increase is also concerning if stages represent states that should be reversible.",
+      "trace_region": "src/Agent.sol"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The event emission in setStage is outside the conditional block that actually updates the state. When a caller attempts to set the stage to a value less than or equal to the current stage (e.g., setStage(3) when stage=5), the stage remains unchanged but the event StageSet(3) is emitted. This misleads off-chain indexers, monitoring systems, and any event-based logic that tracks the agent's stage, potentially causing incorrect state synchronization, broken automation, or erroneous decisions based on false data.",
+    "file": "src/Agent.sol",
+    "lines": "100-103",
+    "candidate_original": {
+      "file": "src/Agent.sol",
+      "lines": "100-103",
+      "category": "Event emitted regardless of actual state change in setStage",
+      "attack_sequence": "1. Agent is at stage 5.\n2. Factory (or any caller via factory) calls setStage(3).\n3. Since 3 <= 5, the stage is NOT changed (remains 5).\n4. However, the event StageSet(3) is emitted, falsely indicating the stage was set to 3.\n5. Off-chain indexers and monitoring systems that rely on events will record incorrect agent state.",
+      "confidence": 0.7,
+      "reasoning": "The event emission is outside the conditional block and always fires with the requested value, not the actual value. This is a clear bug that will cause incorrect off-chain state tracking.",
+      "trace_region": "src/Agent.sol"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "high",
+    "exploit_description": "The `setProposalThresholdPercentage` function checks `if (proposalThresholdPercentage > 1000)` using the OLD stored value instead of the new parameter `_proposalThresholdPercentage`. Since the contract is initialized with `proposalThresholdPercentage = 1` (line 48), the condition `1 > 1000` is always false. This allows governance proposals to set the threshold to any arbitrary value (0, 5000, 10000, etc.), bypassing the intended maximum limit of 10% (1000). An attacker controlling governance could set the threshold to 0% (allowing anyone to propose) or to a prohibitively high value (e.g., 50%), effectively bricking governance. The check is logically inverted and fails to validate the new value.",
+    "file": "src/TokenGovernor.sol",
+    "lines": "64-69",
+    "candidate_original": {
+      "file": "src/TokenGovernor.sol",
+      "lines": "64-69",
+      "category": "access_control",
+      "confidence": "high",
+      "attack_sequence": "1. The `setProposalThresholdPercentage` function requires `msg.sender == address(this)`, meaning it can only be called via governance proposal. However, the check for the upper bound (`proposalThresholdPercentage > 1000`) uses the OLD value of `proposalThresholdPercentage` instead of the new value `_proposalThresholdPercentage`. 2. Deploy the contract with the initial value of `proposalThresholdPercentage = 1` (line 48). 3. Create and pass a governance proposal that calls `setProposalThresholdPercentage` with `_proposalThresholdPercentage` set to any value, e.g., `5000` (50% of supply). 4. The guard `if (proposalThresholdPercentage > 1000)` checks the state variable which is currently `1`, so `1 > 1000` is false, and the function does NOT revert. 5. The new value `5000` is written, meaning the proposal threshold is now 50% of supply. 6. This effectively makes it impossible for anyone to create proposals (since obtaining 50% is near-impossible), or if set to `0`, anyone with any tokens can propose. The check is against the OLD value, not the incoming value `_proposalThresholdPercentage`.",
+      "reasoning": "Line 66 reads `if (proposalThresholdPercentage > 1000)` which checks the storage variable (the current value) rather than the parameter `_proposalThresholdPercentage`. This is a classic copy-paste or logic error where the validation should be on the new value being set, not the existing one. The check only prevents setting a NEW value if the OLD value is already > 1000, which is backwards. An attacker controlling governance (or even the legitimate DAO) can set the threshold to any arbitrary value (0, 5000, 10000) without being caught by this guard.",
+      "trace_region": "src/TokenGovernor.sol"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "high",
+    "exploit_description": "The contract has test-time governance parameters hardcoded (lines 39-41) instead of the production values (lines 34-38). If deployed to mainnet as-is: 1) The proposal threshold is 0.01% of supply (1/10000), allowing any entity with minimal token holdings to create proposals. 2) Voting delay is only 2 minutes, giving the community almost no time to react or organize against malicious proposals. 3) Voting period is only 5 minutes, making it trivial to pass proposals before opposition can mobilize. This creates a governance attack vector where an attacker with minimal token holdings can rapidly propose and pass malicious governance actions before the community can respond. While the setProposalThresholdPercentage function exists, it can only be called via governance itself, so the attacker could potentially lower it further (though there is a 10% max check). The combination of low threshold, minimal delay, and short voting window dramatically increases the risk of governance capture.",
+    "file": "src/TokenGovernor.sol",
+    "lines": "39-41",
+    "candidate_original": {
+      "file": "src/TokenGovernor.sol",
+      "lines": "39-48",
+      "category": "business_logic",
+      "confidence": "medium",
+      "attack_sequence": "1. Note that the contract has test-time configuration values hardcoded: `votingDelayInSeconds = 2 minutes`, `votingPeriodInSeconds = 5 minutes`, and `proposalThresholdPercentage = 1`. 2. If these values are deployed to production without being changed to the commented-out production values (1 day, 7 days, 100), then: a. Proposals only need 0.01% of supply to create (threshold = 1/10000). b. Voting delay is only 2 minutes \u2014 giving minimal reaction time. c. Voting period is only 5 minutes \u2014 making it easy to ram through proposals. 3. Combined with the validator bug from the previous candidate, an attacker can then set the threshold to 0 via governance, meaning any single token holder can propose. 4. With a 2-minute delay and 5-minute window, this creates an extremely short-notice attack window where malicious proposals can be passed before the community reacts.",
+      "reasoning": "The contract has test values active (lines 39-41) with production values commented out (lines 34-38). If deployed as-is, the governance parameters are dangerously permissive. While this may be intentional for testing, if deployed to mainnet it creates a severe governance attack surface.",
+      "trace_region": "src/TokenGovernor.sol"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The vulnerability requires chaining multiple conditions: (1) the agent stage must be \u22651 (otherwise proposals are impossible), (2) the proposalThresholdPercentage must be set low (\u22641000, i.e., \u226410%), and (3) the attacker must influence the token supply snapshot used in the threshold calculation. If an attacker can manipulate the total supply at the exact block timestamp-1 (e.g., via a minting attack in the prior block), they could temporarily lower the required voting power to pass governance proposals. The threshold depends on getPastTotalSupply(Time.timestamp()-1), which uses the previous block's total supply. An attacker with control over minting in block N-1 could cause the threshold to be based on a deflated supply, making it easier to meet the threshold with fewer tokens. Combined with a low proposalThresholdPercentage (set via the buggy setter that lacks proper access control), this could allow proposals to pass with minimal token holdings. However, the exploit requires multiple preconditions and external control, so severity is medium rather than critical.",
+    "file": "src/TokenGovernor.sol",
+    "lines": "58-62",
+    "candidate_original": {
+      "file": "src/TokenGovernor.sol",
+      "lines": "58-62",
+      "category": "business_logic",
+      "confidence": "medium",
+      "attack_sequence": "1. The `proposalThreshold()` function returns `type(uint256).max` when `agent.stage() == 0`, which prevents proposal creation. 2. However, if the agent's stage is set to 1 or higher, the threshold becomes `(getPastTotalSupply * proposalThresholdPercentage) / 10_000`. 3. An attacker who can influence the Agent's stage (e.g., via a separate vulnerability in `Agent.setStage`) could switch stages to enable governance at an opportune moment. 4. The `getPastTotalSupply` uses `Time.timestamp() - 1`, which relies on the block timestamp of the previous block. If the agent can influence token minting in the block immediately before a proposal, it could manipulate the total supply snapshot to either inflate (making threshold high) or deflate (making threshold low) the proposal threshold. 5. If `proposalThresholdPercentage` has been set to a low value via the buggy setter, combined with a manipulated supply snapshot, an attacker could pass governance proposals with minimal tokens.",
+      "reasoning": "The proposal threshold depends on both the agent stage and a historical supply snapshot. The interaction between these external dependencies creates potential manipulation vectors if the attacker can influence either the stage or the supply at the right moment.",
+      "trace_region": "src/TokenGovernor.sol"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The vulnerability is a theoretical underflow in `getReserves()` due to the complex interaction between phantom reserves, fee accounting, and external token balances. The `_reserveCurrencyToken` calculation (`phantomAmount + currencyToken.balanceOf(this) - currencyTokenFeeEarned`) assumes that the actual token balance minus earned fees is non-negative. However, if an attacker donates tokens directly to the pool contract (without going through the buy/sell functions), `currencyToken.balanceOf(this)` increases without a corresponding increase in `currencyTokenFeeEarned`. If the pool is later killed and fees are swept via `kill()` or `sweepFees()`, the `_sweepFees()` function transfers `currencyTokenFeeEarned` and resets it to zero, but does not adjust the phantom reserves. This could leave `currencyToken.balanceOf(this)` smaller than `currencyTokenFeeEarned` if fees were previously swept, causing an underflow when `getReserves()` is called. While the ReentrancyGuard and nonReentrant modifiers prevent flash-loan-style attacks within a single transaction, an attacker could still manipulate balances over multiple transactions. The impact is medium: it could break pool functionality (DoS) or lead to incorrect price calculations, but not direct theft.",
+    "file": "src/BootstrapPool.sol",
+    "lines": "51-55",
+    "candidate_original": {
+      "file": "src/BootstrapPool.sol",
+      "lines": "51-55",
+      "category": "Fee Accounting Manipulation via Phantom Amount",
+      "attack_sequence": [
+        "1. The phantomAmount is set in the constructor as (_initialPrice * _bootstrapAmount) / 1e18.",
+        "2. getReserves() computes _reserveCurrencyToken = phantomAmount + currencyToken.balanceOf(this) - currencyTokenFeeEarned.",
+        "3. In buy(), line 65: currencyTokenFeeEarned += _amountIn - (_amountIn * fee) / 10_000. This computes the fee as _amountIn - (_amountIn * fee) / 10_000 = _amountIn * (10000 - fee) / 10_000. Since fee = 10_000 - _fee in constructor, this becomes _amountIn * _fee / 10_000. So currencyTokenFeeEarned tracks the protocol fee portion.",
+        "4. The actual tokens transferred in are _amountIn. The reserves grow by _amountIn but currencyTokenFeeEarned also grows, effectively 'removing' the fee portion from the reserve calculation. This means the fee is implicitly added to reserves rather than withdrawn. Over time, phantomAmount effectively grows via fee accumulation, which inflates the perceived reserves.",
+        "5. This is by design (the pool is 'virtual' in nature), but the key issue: if the pool is killed and fees swept, the relationship between actual balances and tracked fees could become inconsistent if someone donates tokens."
+      ],
+      "confidence": 0.15,
+      "reasoning": "The fee accounting uses a phantom reserve model. While designed this way, the interaction between phantomAmount, fee accumulation, and actual token balances creates complexity that could lead to underflow in getReserves() if the pool is manipulated, though ReentrancyGuard mitigates flash-loan-style attacks.",
+      "trace_region": "src/BootstrapPool.sol"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "An attacker can exploit the BootstrapPool by directly transferring tokens to the contract address, bypassing the fee accounting mechanism. The `getReserves()` function calculates reserves as `phantomAmount + currencyToken.balanceOf(this) - currencyTokenFeeEarned` for currency tokens and `agentToken.balanceOf(this) - agentTokenFeeEarned` for agent tokens. Direct donations increase the token balances but do not increase the corresponding fee earned variables, inflating reserves unevenly. This breaks the constant product invariant (x*y=k) assumed by `getAmountOut` and `getAmountIn`. For example, an attacker could: 1) Donate a large amount of agentToken directly to the pool, inflating `_reserveAgentToken`. 2) Sell agentToken to get more currencyToken than the fair market value, since the inflated reserve allows larger output amounts in the constant product formula. Alternatively, an attacker could donate currencyToken to inflate `_reserveCurrencyToken`, then buy agentToken at a cheaper price. This manipulation allows the attacker to profit at the expense of later traders who get worse rates.",
+    "file": "src/BootstrapPool.sol",
+    "lines": "102-117",
+    "candidate_original": {
+      "file": "src/BootstrapPool.sol",
+      "lines": "102-117",
+      "category": "Underflow in getReserves",
+      "attack_sequence": [
+        "1. Anyone can donate agentToken directly to the BootstrapPool contract (without going through buy/sell).",
+        "2. This increases agentToken.balanceOf(this) but does NOT increase agentTokenFeeEarned.",
+        "3. getReserves() returns _reserveAgentToken = agentToken.balanceOf(this) - agentTokenFeeEarned. The donation increases this reserve without corresponding currency reserve growth.",
+        "4. This breaks the constant product invariant assumed by getAmountOut/getAmountIn, allowing an attacker to get more currencyToken per unit of agentToken by donating agent tokens first, then selling.",
+        "5. Conversely, donating currencyToken directly: _reserveCurrencyToken = phantomAmount + currencyToken.balanceOf(this) - currencyTokenFeeEarned. If donated without going through buy(), this inflates the currency reserve, allowing cheaper buys.",
+        "6. Attack sequence for profit: (a) Donate a large amount of currencyToken directly to the pool. (b) This inflates _reserveCurrencyToken without affecting agentToken reserves. (c) Buy agentToken at the now-deflated price (more agentToken per currencyToken). (d) Since getAmountOut computes based on inflated reserves, the attacker gets more agentToken than they should.",
+        "7. For the sell direction: (a) Donate agentToken directly to pool. (b) This inflates _reserveAgentToken. (c) Sell agentToken to get more currencyToken than fair value."
+      ],
+      "confidence": 0.7,
+      "reasoning": "Direct token donations to the pool contract bypass the fee accounting mechanism (currencyTokenFeeEarned / agentTokenFeeEarned), inflating reserves unevenly. This breaks the constant product formula that getAmountOut/getAmountIn relies on. An attacker can donate one token type, then swap the other at an unfair price. The pool has no mechanism to reject donations or account for them.",
+      "trace_region": "src/BootstrapPool.sol"
+    }
+  }
+]

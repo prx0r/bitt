@@ -1,0 +1,694 @@
+{
+  "findings": [
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "contracts/core/flash-swaps/FlashSwapRouter.sol",
+      "lines": [
+        722
+      ],
+      "raw_message": "External call at line 722 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "contracts/core/flash-swaps/FlashSwapRouter.sol",
+      "lines": [
+        729
+      ],
+      "raw_message": "External call at line 729 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "contracts/core/flash-swaps/FlashSwapRouter.sol",
+      "lines": [
+        731
+      ],
+      "raw_message": "External call at line 731 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "contracts/tokens/CST.sol",
+      "lines": [
+        142
+      ],
+      "raw_message": "External call at line 142 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "contracts/tokens/CST.sol",
+      "lines": [
+        170
+      ],
+      "raw_message": "External call at line 170 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "contracts/tokens/CST.sol",
+      "lines": [
+        197
+      ],
+      "raw_message": "External call at line 197 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "contracts/tokens/CST.sol",
+      "lines": [
+        142,
+        148
+      ],
+      "raw_message": "State change at line 148 after external call at line 142",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "contracts/tokens/CST.sol",
+      "lines": [
+        170,
+        175
+      ],
+      "raw_message": "State change at line 175 after external call at line 170",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "contracts/tokens/CST.sol",
+      "lines": [
+        197,
+        200
+      ],
+      "raw_message": "State change at line 200 after external call at line 197",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "contracts/dummy/DummyWETH.sol",
+      "lines": [
+        34
+      ],
+      "raw_message": "External call at line 34 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "contracts/dummy/DummyERCWithPermit.sol",
+      "lines": [
+        35
+      ],
+      "raw_message": "External call at line 35 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/Rollover.t.sol",
+      "lines": [
+        268
+      ],
+      "raw_message": "External call at line 268 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/Rollover.t.sol",
+      "lines": [
+        268,
+        273
+      ],
+      "raw_message": "State change at line 273 after external call at line 268",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/unit/TransferHelper.t.sol",
+      "lines": [
+        43
+      ],
+      "raw_message": "External call at line 43 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/unit/TransferHelper.t.sol",
+      "lines": [
+        44
+      ],
+      "raw_message": "External call at line 44 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/unit/TransferHelper.t.sol",
+      "lines": [
+        82
+      ],
+      "raw_message": "External call at line 82 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/unit/TransferHelper.t.sol",
+      "lines": [
+        43,
+        51
+      ],
+      "raw_message": "State change at line 51 after external call at line 43",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/unit/TransferHelper.t.sol",
+      "lines": [
+        44,
+        51
+      ],
+      "raw_message": "State change at line 51 after external call at line 44",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/unit/TransferHelper.t.sol",
+      "lines": [
+        82,
+        88
+      ],
+      "raw_message": "State change at line 88 after external call at line 82",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/integration/vault/deposit/Deposit.t.sol",
+      "lines": [
+        592
+      ],
+      "raw_message": "External call at line 592 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/integration/vault/deposit/Deposit.t.sol",
+      "lines": [
+        592,
+        594
+      ],
+      "raw_message": "State change at line 594 after external call at line 592",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/integration/protectedUnit/ProtectedUnitRouter.t.sol",
+      "lines": [
+        55
+      ],
+      "raw_message": "External call at line 55 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/integration/protectedUnit/ProtectedUnitRouter.t.sol",
+      "lines": [
+        70
+      ],
+      "raw_message": "External call at line 70 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/integration/protectedUnit/ProtectedUnitRouter.t.sol",
+      "lines": [
+        72
+      ],
+      "raw_message": "External call at line 72 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/integration/protectedUnit/ProtectedUnitRouter.t.sol",
+      "lines": [
+        55,
+        63
+      ],
+      "raw_message": "State change at line 63 after external call at line 55",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/integration/protectedUnit/ProtectedUnitRouter.t.sol",
+      "lines": [
+        70,
+        79
+      ],
+      "raw_message": "State change at line 79 after external call at line 70",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/integration/protectedUnit/ProtectedUnitRouter.t.sol",
+      "lines": [
+        72,
+        79
+      ],
+      "raw_message": "State change at line 79 after external call at line 72",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/integration/protectedUnit/ProtectedUnit.t.sol",
+      "lines": [
+        58
+      ],
+      "raw_message": "External call at line 58 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/integration/protectedUnit/ProtectedUnit.t.sol",
+      "lines": [
+        73
+      ],
+      "raw_message": "External call at line 73 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/integration/protectedUnit/ProtectedUnit.t.sol",
+      "lines": [
+        75
+      ],
+      "raw_message": "External call at line 75 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/integration/protectedUnit/ProtectedUnit.t.sol",
+      "lines": [
+        229
+      ],
+      "raw_message": "External call at line 229 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/integration/protectedUnit/ProtectedUnit.t.sol",
+      "lines": [
+        267
+      ],
+      "raw_message": "External call at line 267 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/integration/protectedUnit/ProtectedUnit.t.sol",
+      "lines": [
+        294
+      ],
+      "raw_message": "External call at line 294 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/integration/protectedUnit/ProtectedUnit.t.sol",
+      "lines": [
+        460
+      ],
+      "raw_message": "External call at line 460 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/integration/protectedUnit/ProtectedUnit.t.sol",
+      "lines": [
+        461
+      ],
+      "raw_message": "External call at line 461 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/integration/protectedUnit/ProtectedUnit.t.sol",
+      "lines": [
+        58,
+        66
+      ],
+      "raw_message": "State change at line 66 after external call at line 58",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/integration/protectedUnit/ProtectedUnit.t.sol",
+      "lines": [
+        73,
+        82
+      ],
+      "raw_message": "State change at line 82 after external call at line 73",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/integration/protectedUnit/ProtectedUnit.t.sol",
+      "lines": [
+        75,
+        82
+      ],
+      "raw_message": "State change at line 82 after external call at line 75",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/integration/protectedUnit/ProtectedUnit.t.sol",
+      "lines": [
+        229,
+        237
+      ],
+      "raw_message": "State change at line 237 after external call at line 229",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/integration/protectedUnit/ProtectedUnit.t.sol",
+      "lines": [
+        267,
+        270
+      ],
+      "raw_message": "State change at line 270 after external call at line 267",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/integration/protectedUnit/ProtectedUnit.t.sol",
+      "lines": [
+        294,
+        296
+      ],
+      "raw_message": "State change at line 296 after external call at line 294",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/integration/protectedUnit/ProtectedUnit.t.sol",
+      "lines": [
+        460,
+        463
+      ],
+      "raw_message": "State change at line 463 after external call at line 460",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/integration/protectedUnit/ProtectedUnit.t.sol",
+      "lines": [
+        461,
+        463
+      ],
+      "raw_message": "State change at line 463 after external call at line 461",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/integration/protectedUnit/LiquidityFunds.t.sol",
+      "lines": [
+        52
+      ],
+      "raw_message": "External call at line 52 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/integration/protectedUnit/LiquidityFunds.t.sol",
+      "lines": [
+        68
+      ],
+      "raw_message": "External call at line 68 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/integration/protectedUnit/LiquidityFunds.t.sol",
+      "lines": [
+        70
+      ],
+      "raw_message": "External call at line 70 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/integration/protectedUnit/LiquidityFunds.t.sol",
+      "lines": [
+        68,
+        75
+      ],
+      "raw_message": "State change at line 75 after external call at line 68",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/integration/protectedUnit/LiquidityFunds.t.sol",
+      "lines": [
+        70,
+        75
+      ],
+      "raw_message": "State change at line 75 after external call at line 70",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/integration/liquidation/ProtectedUnitLiquidation.t.sol",
+      "lines": [
+        54
+      ],
+      "raw_message": "External call at line 54 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/integration/liquidation/ProtectedUnitLiquidation.t.sol",
+      "lines": [
+        66
+      ],
+      "raw_message": "External call at line 66 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/integration/liquidation/ProtectedUnitLiquidation.t.sol",
+      "lines": [
+        68
+      ],
+      "raw_message": "External call at line 68 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/integration/liquidation/ProtectedUnitLiquidation.t.sol",
+      "lines": [
+        126
+      ],
+      "raw_message": "External call at line 126 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/integration/liquidation/ProtectedUnitLiquidation.t.sol",
+      "lines": [
+        169
+      ],
+      "raw_message": "External call at line 169 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/integration/liquidation/ProtectedUnitLiquidation.t.sol",
+      "lines": [
+        208
+      ],
+      "raw_message": "External call at line 208 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/integration/liquidation/ProtectedUnitLiquidation.t.sol",
+      "lines": [
+        252
+      ],
+      "raw_message": "External call at line 252 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/integration/liquidation/ProtectedUnitLiquidation.t.sol",
+      "lines": [
+        54,
+        63
+      ],
+      "raw_message": "State change at line 63 after external call at line 54",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/integration/liquidation/ProtectedUnitLiquidation.t.sol",
+      "lines": [
+        66,
+        73
+      ],
+      "raw_message": "State change at line 73 after external call at line 66",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/integration/liquidation/ProtectedUnitLiquidation.t.sol",
+      "lines": [
+        68,
+        73
+      ],
+      "raw_message": "State change at line 73 after external call at line 68",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/integration/liquidation/ProtectedUnitLiquidation.t.sol",
+      "lines": [
+        126,
+        128
+      ],
+      "raw_message": "State change at line 128 after external call at line 126",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/integration/liquidation/ProtectedUnitLiquidation.t.sol",
+      "lines": [
+        169,
+        171
+      ],
+      "raw_message": "State change at line 171 after external call at line 169",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/integration/liquidation/ProtectedUnitLiquidation.t.sol",
+      "lines": [
+        208,
+        210
+      ],
+      "raw_message": "State change at line 210 after external call at line 208",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/integration/liquidation/ProtectedUnitLiquidation.t.sol",
+      "lines": [
+        252,
+        254
+      ],
+      "raw_message": "State change at line 254 after external call at line 252",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/integration/liquidation/VaultLiquidation.t.sol",
+      "lines": [
+        124
+      ],
+      "raw_message": "External call at line 124 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/forge/integration/liquidation/VaultLiquidation.t.sol",
+      "lines": [
+        177
+      ],
+      "raw_message": "External call at line 177 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/integration/liquidation/VaultLiquidation.t.sol",
+      "lines": [
+        124,
+        128
+      ],
+      "raw_message": "State change at line 128 after external call at line 124",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/forge/integration/liquidation/VaultLiquidation.t.sol",
+      "lines": [
+        177,
+        179
+      ],
+      "raw_message": "State change at line 179 after external call at line 177",
+      "confidence": "low"
+    }
+  ]
+}

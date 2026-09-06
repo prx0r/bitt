@@ -1,0 +1,144 @@
+{
+  "project": "code4rena_mantra-dex_2025_03",
+  "timestamp": "2026-09-06T01:57:18",
+  "files_analyzed": 82,
+  "files_skipped": 0,
+  "total_vulnerabilities": 13,
+  "vulnerabilities": [
+    {
+      "title": "Unknown vulnerability",
+      "description": "In the ReverseSimulate direction, the function `calculate_stableswap_y` computes the invariant D from the original pools (offer_pool, ask_pool) but then subtracts offer_amount from ask_pool to get pool_sum. This creates a mismatch because D should be recomputed for the post-subtraction state. An attacker could call `query_reverse_simulation` with an offer_amount very close to ask_pool, making pool_sum nearly zero. With pool_sum \u2248 0, the computed c becomes nearly zero, causing the Newton-Raphson to converge to y \u2248 D (the full invariant from the original pools). This yields a return_amount that may be exploitable, as it doesn't respect the true constant-product invariant for the modified pool state, potentially allowing unfair swaps or value extraction.",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "contracts/pool-manager/src/helpers.rs",
+      "file": "contracts/pool-manager/src/helpers.rs",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "The Newton-Raphson iteration in calculate_stableswap_d has a convergence threshold that depends on the precision parameter (Decimal256::decimal_with_precision(1u8, precision)). With extreme pool imbalances (e.g., offer_pool=1, ask_pool=10^18), the iteration may fail to converge within 32 iterations, returning ConvergeError. This causes a denial of service for swaps on that pool. Additionally, if convergence succeeds but with significant precision loss, the resulting D value used in calculate_stableswap_y could lead to incorrect swap amounts, potentially allowing arbitrage or loss of funds through systematic miscalculation.",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "contracts/pool-manager/src/helpers.rs",
+      "file": "contracts/pool-manager/src/helpers.rs",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "The vulnerability exists in the fee computation logic. In compute_fees (lines 166-184), each fee (swap_fee, protocol_fee, burn_fee, extra_fees) is computed via a .compute(amount) method. If the input amount (return_amount) is extremely small (e.g., 0 or 1 after scaling), integer division in these computations will truncate to zero. This allows a swap with negligible fees. For ConstantProduct swaps, the spread_amount calculation (lines 159-164) also uses integer math: spread_amount = (offer_amount * exchange_rate) - return_amount. For very small offer_amounts, both terms could round to 0, causing spread_amount to be 0 as well, meaning no spread is detected. An attacker could perform many micro-swaps with near-zero fees, aggregating value over time if the protocol's tokenomics rely on these fees. The impact is a fee bypass leading to unfair fee collection.",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "contracts/pool-manager/src/helpers.rs",
+      "file": "contracts/pool-manager/src/helpers.rs",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "The vulnerability is plausible: if a pool's ask asset balance exactly equals the return_amount (with outgoing_fees being zero), the pool balance for that asset becomes zero after the swap. This drains the liquidity of one side of the pool. A subsequent swap from the opposite direction could then exploit the constant-product formula (which divides by the ask asset balance) to receive an extremely favorable rate, potentially draining the other side as well. This is a liquidity drainage issue that could lead to loss of funds for liquidity providers and unfair pricing for subsequent swappers.",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "contracts/pool-manager/src/swap/perform_swap.rs",
+      "file": "contracts/pool-manager/src/swap/perform_swap.rs",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "The perform_swap function does not validate that return_amount > 0 before modifying pool state. If compute_swap returns return_amount = 0 (e.g., due to high fees, rounding, or extreme price impact), the function still adds offer_asset to the pool (line 77) but subtracts nothing from the ask asset pool (since return_asset.amount is 0). This results in a net donation of tokens to the pool with no return to the user, effectively allowing griefing or loss of funds. An attacker could repeatedly perform zero-return swaps to drain their own tokens or manipulate pool ratios.",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "contracts/pool-manager/src/swap/perform_swap.rs",
+      "file": "contracts/pool-manager/src/swap/perform_swap.rs",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "When a belief_price is provided, the spread check uses expected_return as the denominator. An attacker can provide an extremely large belief_price (e.g., close to the maximum Decimal value) to make expected_return become 0 due to integer truncation (since inv() of a very large number becomes a tiny decimal, and multiplying by offer_amount and taking floor yields 0). In this case, spread_amount = 0.saturating_sub(return_amount) = 0, and the condition `return_amount < expected_return` becomes false (0 < 0), so the check passes. This allows a swap with a terrible execution price to bypass the spread limit, potentially leading to loss of value for the swapper.",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "contracts/pool-manager/src/swap/perform_swap.rs",
+      "file": "contracts/pool-manager/src/swap/perform_swap.rs",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "The perform_swap function lacks an explicit minimum return amount check. While assert_max_spread provides slippage protection relative to a belief price or pool spread, it does not prevent a swap where return_amount = 0. An attacker could repeatedly call perform_swap with parameters that result in zero return (e.g., due to extremely high fees or unfavorable pool state), donating the offer asset to the pool without receiving any output. This could be used to strategically shift pool ratios for profit in subsequent swaps, constituting a form of oracle/manipulation attack. The caller loses their entire offer asset, but the attacker can manipulate pool state.",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "contracts/pool-manager/src/swap/perform_swap.rs",
+      "file": "contracts/pool-manager/src/swap/perform_swap.rs",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "The vulnerability is plausible. In `provide_liquidity` for single-asset provision, the contract snapshots its balances (lines 95-115) and saves them to `SINGLE_SIDE_LIQUIDITY_PROVISION_BUFFER` before dispatching a SubMsg to swap half the deposited asset. Between the snapshot and the reply execution (where the buffer is used to mint LP shares), other transactions can alter the contract's balances. This creates a window where: (1) Another user could deposit or withdraw assets, changing balances and making the snapshot stale, leading to incorrect LP minting. (2) A sandwich attacker could front-run the swap, moving the price and causing the simulation result (computed at snapshot time) to mismatch the actual swap outcome. The `max_spread` check (if present) is evaluated against the pool state at simulation time, not execution time, so it may not catch the manipulation. (3) If two single-side liquidity provisions run concurrently, the second could overwrite the buffer, causing the first's reply handler to use incorrect data. The code lacks reentrancy guards or balance verification at reply time, making this state inconsistency exploitable.",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "contracts/pool-manager/src/liquidity/commands.rs",
+      "file": "contracts/pool-manager/src/liquidity/commands.rs",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "The first depositor can grief the pool by depositing assets where the square root of their product is exactly MINIMUM_LIQUIDITY_AMOUNT + 1, resulting in only 1 LP share for themselves while MINIMUM_LIQUIDITY_AMOUNT is permanently locked. This creates an extremely small initial liquidity ratio, skewing subsequent depositors' share calculations. For example, if the first depositor deposits (1, 1000000) where sqrt(1*1000000) = 1000, and MINIMUM_LIQUIDITY_AMOUNT is 999, they get 1 LP share. The pool's price is set at 1:1000000. A second depositor providing at the 'market' ratio of 1:1000 would receive far fewer LP tokens than expected due to the skewed ratio, effectively being griefed.",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "contracts/pool-manager/src/liquidity/commands.rs",
+      "file": "contracts/pool-manager/src/liquidity/commands.rs",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "The vulnerability is plausible. In the single-side liquidity provision flow, the code incorrectly assumes the contract's offer asset balance (the asset the user is providing) will remain unchanged after swapping half of the deposit. The comment on line 94-97 explicitly states: 'the expected offer asset balance in the contract will always be the same value as of now.' This is incorrect because half of the user's deposit is swapped for the other asset, reducing the contract's balance of the offer asset by that half. The `expected_offer_asset_balance_in_contract` value is saved and later used in the reply handler to compute LP shares. Since this value is inflated (by the amount of the swapped half), the attacker receives more LP tokens than they should, effectively diluting existing LPs. This could be exploited by repeatedly providing single-side liquidity to extract disproportionate LP shares.",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "contracts/pool-manager/src/liquidity/commands.rs",
+      "file": "contracts/pool-manager/src/liquidity/commands.rs",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "For ConstantProduct pools, if the deposits are provided in reverse order relative to pool_assets, the code incorrectly uses positional indexing to compute shares. Specifically, in the non-initial deposit path (line ~142-155), the code iterates over deposits and for each deposit, finds its matching pool_asset by denom, then uses pool_assets[pool_asset_index] to compute the share ratio. However, the final share is taken as the minimum of asset_shares[0] and asset_shares[1]. Since asset_shares is built in the order of deposits (not pool_assets), if deposits are reversed, asset_shares[0] corresponds to the second pool asset and asset_shares[1] to the first. The min() operation then incorrectly picks the lower ratio, which may not be the correct LP share calculation. This could lead to users receiving slightly different LP token amounts than intended, potentially favoring or disfavoring them depending on reserves. The initial deposit path uses symmetric sqrt(deposits[0].amount * deposits[1].amount), which is order-independent, so no issue there.",
+      "vulnerability_type": "other",
+      "severity": "low",
+      "confidence": 0.7,
+      "location": "contracts/pool-manager/src/liquidity/commands.rs",
+      "file": "contracts/pool-manager/src/liquidity/commands.rs",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "The instantiate function in contract.rs validates the addresses using `deps.api.addr_validate(&msg.fee_collector_addr)` and `deps.api.addr_validate(&msg.farm_manager_addr)`. This only ensures the addresses are valid bech32 addresses, not that they are deployed contract addresses. An attacker could deploy the pool-manager contract and set `fee_collector_addr` to a non-contract address (like an EOA or a contract that doesn't implement the expected interface). This could cause fee distribution to fail silently or revert when the pool-manager tries to execute messages to that address. Additionally, `pool_creation_fee` is set directly from user input without any bounds validation, allowing it to be set to zero or an excessively high value, bypassing economic controls. While this requires the attacker to be the deployer (i.e., the owner) and set up the malicious addresses during instantiation, the lack of validation makes this a plausible vulnerability.",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "contracts/pool-manager/src/contract.rs",
+      "file": "contracts/pool-manager/src/contract.rs",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "The fee collector contract is instantiated with an empty InstantiateMsg (no owner/admin field). In typical CosmWasm contract design, if no owner is set during instantiation, the contract may have unrestricted execute permissions or rely on the instantiator as implicit owner. If the fee collector lacks proper access control (e.g., anyone can call withdraw/exec messages), an attacker could drain accumulated fees sent by the pool-manager. This results in loss of protocol revenue, a medium-severity impact since it's conditional on the fee collector's access control implementation.",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "contracts/pool-manager/src/tests/suite.rs",
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "reported_by_model": "mimo-v2.5"
+    }
+  ],
+  "token_usage": {
+    "total_input": 0,
+    "total_output": 0
+  },
+  "duration_seconds": 800.9
+}

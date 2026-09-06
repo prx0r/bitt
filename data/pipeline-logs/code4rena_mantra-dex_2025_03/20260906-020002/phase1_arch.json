@@ -1,0 +1,2955 @@
+{
+  "entry_points": [
+    {
+      "file": "contracts/pool-manager/src/queries.rs",
+      "function_name": "query_config",
+      "line": 18,
+      "untrusted_input_flows_in": [],
+      "permission_level": "public"
+    },
+    {
+      "file": "contracts/pool-manager/src/queries.rs",
+      "function_name": "query_asset_decimals",
+      "line": 23,
+      "untrusted_input_flows_in": [
+        "pool_identifier",
+        "denom"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "contracts/pool-manager/src/queries.rs",
+      "function_name": "query_simulation",
+      "line": 43,
+      "untrusted_input_flows_in": [
+        "offer_asset",
+        "ask_asset_denom",
+        "pool_identifier"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "contracts/pool-manager/src/queries.rs",
+      "function_name": "query_reverse_simulation",
+      "line": 68,
+      "untrusted_input_flows_in": [
+        "ask_asset",
+        "offer_asset_denom",
+        "pool_identifier"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "contracts/pool-manager/src/queries.rs",
+      "function_name": "get_pools",
+      "line": 189,
+      "untrusted_input_flows_in": [
+        "pool_identifier",
+        "start_after",
+        "limit"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "contracts/pool-manager/src/queries.rs",
+      "function_name": "simulate_swap_operations",
+      "line": 235,
+      "untrusted_input_flows_in": [
+        "offer_amount",
+        "operations"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "contracts/pool-manager/src/queries.rs",
+      "function_name": "reverse_simulate_swap_operations",
+      "line": 260,
+      "untrusted_input_flows_in": [
+        "ask_amount",
+        "operations"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "contracts/pool-manager/src/helpers.rs",
+      "function": "compute_swap",
+      "line": 101,
+      "untrusted_input": [
+        "offer_pool",
+        "ask_pool",
+        "offer_amount",
+        "pool_fees",
+        "swap_type",
+        "offer_precision",
+        "ask_precision"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "contracts/pool-manager/src/helpers.rs",
+      "function": "compute_offer_amount",
+      "line": 188,
+      "untrusted_input": [
+        "offer_asset_in_pool",
+        "ask_asset_in_pool",
+        "ask_amount",
+        "pool_fees"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "contracts/pool-manager/src/helpers.rs",
+      "function": "assert_slippage_tolerance",
+      "line": 236,
+      "untrusted_input": [
+        "slippage_tolerance",
+        "deposits",
+        "pools",
+        "pool_type",
+        "amount",
+        "pool_token_supply"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "contracts/pool-manager/src/helpers.rs",
+      "function": "assert_admin",
+      "line": 288,
+      "untrusted_input": [
+        "sender"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "contracts/pool-manager/src/helpers.rs",
+      "function": "validate_asset_balance",
+      "line": 297,
+      "untrusted_input": [
+        "expected_balance"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "contracts/pool-manager/src/helpers.rs",
+      "function": "validate_pool_identifier",
+      "line": 309,
+      "untrusted_input": [
+        "identifier"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "contracts/pool-manager/src/helpers.rs",
+      "function": "validate_fees_are_paid",
+      "line": 336,
+      "untrusted_input": [
+        "pool_creation_fee",
+        "denom_creation_fee",
+        "info"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "contracts/pool-manager/src/helpers.rs",
+      "function": "validate_no_additional_funds_sent_with_pool_creation",
+      "line": 398,
+      "untrusted_input": [
+        "info",
+        "total_fees"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "contracts/pool-manager/src/helpers.rs",
+      "function": "get_asset_indexes_in_pool",
+      "line": 415,
+      "untrusted_input": [
+        "pool_info",
+        "offer_asset_denom",
+        "ask_asset_denom"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "contracts/pool-manager/src/helpers.rs",
+      "function": "compute_d",
+      "line": 438,
+      "untrusted_input": [
+        "amp_factor",
+        "deposits"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "contracts/pool-manager/src/helpers.rs",
+      "function": "compute_lp_mint_amount_for_stableswap_deposit",
+      "line": 467,
+      "untrusted_input": [
+        "amp_factor",
+        "old_pool_assets",
+        "new_pool_assets",
+        "pool_lp_token_total_supply"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "contracts/pool-manager/src/helpers.rs",
+      "function": "compute_y_raw",
+      "line": 487,
+      "untrusted_input": [
+        "n_coins",
+        "amp_factor",
+        "swap_in",
+        "no_swap",
+        "d"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "contracts/pool-manager/src/helpers.rs",
+      "function": "compute_y",
+      "line": 526,
+      "untrusted_input": [
+        "n_coins",
+        "amp_factor",
+        "x",
+        "no_swap",
+        "d"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "contracts/pool-manager/src/helpers.rs",
+      "function": "swap_to",
+      "line": 535,
+      "untrusted_input": [
+        "n_coins",
+        "amp_factor",
+        "source_amount",
+        "swap_source_amount",
+        "swap_destination_amount",
+        "unswaped_amount"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "contracts/pool-manager/src/contract.rs",
+      "function": "instantiate",
+      "line": 24,
+      "untrusted_input": "InstantiateMsg (fee_collector_addr, farm_manager_addr, pool_creation_fee)",
+      "permission_level": "creator"
+    },
+    {
+      "file": "contracts/pool-manager/src/contract.rs",
+      "function": "reply",
+      "line": 45,
+      "untrusted_input": "Reply (msg.id)",
+      "permission_level": "internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/contract.rs",
+      "function": "execute",
+      "line": 71,
+      "untrusted_input": "ExecuteMsg (varies per variant)",
+      "permission_level": "user"
+    },
+    {
+      "file": "contracts/pool-manager/src/contract.rs",
+      "function": "query",
+      "line": 126,
+      "untrusted_input": "QueryMsg (varies per variant)",
+      "permission_level": "user"
+    },
+    {
+      "file": "contracts/pool-manager/src/contract.rs",
+      "function": "migrate",
+      "line": 171,
+      "untrusted_input": "MigrateMsg",
+      "permission_level": "admin"
+    },
+    {
+      "file": "contracts/pool-manager/src/swap/commands.rs",
+      "function": "swap",
+      "line": 20,
+      "untrusted_input": "ask_asset_denom, belief_price, max_spread, receiver, pool_identifier, info.funds",
+      "permission_level": "user"
+    },
+    {
+      "file": "contracts/pool-manager/src/swap/perform_swap.rs",
+      "function": "perform_swap",
+      "line": 37,
+      "untrusted_input": [
+        "offer_asset",
+        "ask_asset_denom",
+        "pool_identifier",
+        "belief_price",
+        "max_spread"
+      ],
+      "permission_level": "user (external caller)"
+    },
+    {
+      "file": "contracts/pool-manager/src/swap/perform_swap.rs",
+      "function": "assert_max_spread",
+      "line": 98,
+      "untrusted_input": [
+        "belief_price",
+        "max_spread",
+        "offer_amount",
+        "return_amount",
+        "spread_amount"
+      ],
+      "permission_level": "internal (called by perform_swap)"
+    },
+    {
+      "file": "contracts/pool-manager/src/liquidity/commands.rs",
+      "function_name": "provide_liquidity",
+      "line": 26,
+      "untrusted_input_flows_in": "info.funds (deposits), slippage_tolerance, max_spread, receiver, pool_identifier, unlocking_duration, lock_position_identifier",
+      "permission_level": "user"
+    },
+    {
+      "file": "contracts/pool-manager/src/liquidity/commands.rs",
+      "function_name": "withdraw_liquidity",
+      "line": 235,
+      "untrusted_input_flows_in": "info.funds (LP token amount), pool_identifier",
+      "permission_level": "user"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "contract_pool_manager",
+      "line": 17,
+      "untrusted_input_flows_in": "None (internal test helper)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "fee_collector_contract",
+      "line": 25,
+      "untrusted_input_flows_in": "None (internal test helper)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "epoch_manager_contract",
+      "line": 35,
+      "untrusted_input_flows_in": "None (internal test helper)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "farm_manager_contract",
+      "line": 45,
+      "untrusted_input_flows_in": "None (internal test helper)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "TestingSuite::default_with_balances",
+      "line": 95,
+      "untrusted_input_flows_in": "initial_balance, startgate_mock (test-only)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "TestingSuite::instantiate",
+      "line": 126,
+      "untrusted_input_flows_in": "fee_collector_addr, farm_manager_addr (test-only)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "TestingSuite::instantiate_default",
+      "line": 141,
+      "untrusted_input_flows_in": "None (internal test helper)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "TestingSuite::update_ownership",
+      "line": 185,
+      "untrusted_input_flows_in": "sender, action (test-only)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "TestingSuite::provide_liquidity",
+      "line": 196,
+      "untrusted_input_flows_in": "sender, pool_identifier, unlocking_duration, lock_position_identifier, max_spread, receiver, funds (test-only)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "TestingSuite::swap",
+      "line": 216,
+      "untrusted_input_flows_in": "sender, ask_asset_denom, belief_price, max_spread, receiver, pool_identifier, funds (test-only)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "TestingSuite::execute_swap_operations",
+      "line": 236,
+      "untrusted_input_flows_in": "sender, operations, minimum_receive, receiver, max_spread, funds (test-only)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "TestingSuite::create_pool",
+      "line": 256,
+      "untrusted_input_flows_in": "sender, asset_denoms, asset_decimals, pool_fees, pool_type, pool_identifier, pool_creation_fee_funds (test-only)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "TestingSuite::withdraw_liquidity",
+      "line": 276,
+      "untrusted_input_flows_in": "sender, pool_identifier, funds (test-only)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "TestingSuite::update_config",
+      "line": 288,
+      "untrusted_input_flows_in": "sender, new_fee_collector_addr, new_farm_manager_addr, new_pool_creation_fee, new_feature_toggle (test-only)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "TestingSuite::update_farm_manager_config",
+      "line": 312,
+      "untrusted_input_flows_in": "sender, new_pool_manager_addr (test-only)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "TestingSuite::query_ownership",
+      "line": 326,
+      "untrusted_input_flows_in": "None (read-only)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "TestingSuite::query_balance",
+      "line": 336,
+      "untrusted_input_flows_in": "addr, denom (test-only)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "TestingSuite::query_all_balances",
+      "line": 347,
+      "untrusted_input_flows_in": "addr (test-only)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "TestingSuite::query_pools",
+      "line": 357,
+      "untrusted_input_flows_in": "pool_identifier, start_after, limit (test-only)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "TestingSuite::query_simulation",
+      "line": 370,
+      "untrusted_input_flows_in": "pool_identifier, offer_asset, ask_asset_denom (test-only)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "TestingSuite::query_reverse_simulation",
+      "line": 382,
+      "untrusted_input_flows_in": "pool_identifier, ask_asset, offer_asset_denom (test-only)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "TestingSuite::query_simulate_swap_operations",
+      "line": 394,
+      "untrusted_input_flows_in": "offer_amount, operations (test-only)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "TestingSuite::query_reverse_simulate_swap_operations",
+      "line": 407,
+      "untrusted_input_flows_in": "ask_amount, operations (test-only)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "TestingSuite::query_amount_of_lp_token",
+      "line": 420,
+      "untrusted_input_flows_in": "identifier, sender (test-only)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "TestingSuite::query_config",
+      "line": 446,
+      "untrusted_input_flows_in": "None (read-only)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "TestingSuite::query_farm_positions",
+      "line": 452,
+      "untrusted_input_flows_in": "filter_by, open_state, start_after, limit (test-only)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "function_name": "TestingSuite::query_lp_supply",
+      "line": 466,
+      "untrusted_input_flows_in": "identifier (test-only)",
+      "permission_level": "Internal"
+    },
+    {
+      "file": "contracts/pool-manager/src/router/commands.rs",
+      "function_name": "execute_swap_operations",
+      "line": 39,
+      "untrusted_input": "operations (Vec<SwapOperation>), minimum_receive (Option<Uint128>), receiver (Option<String>), max_spread (Option<Decimal>), MessageInfo (sender, funds)",
+      "permission_level": "user"
+    },
+    {
+      "file": "contracts/pool-manager/src/manager/commands.rs",
+      "function_name": "create_pool",
+      "line": 40,
+      "untrusted_input": "asset_denoms (Vec<String>), asset_decimals (Vec<u8>), pool_fees (PoolFee), pool_type (PoolType), pool_identifier (Option<String>), MessageInfo (sender, funds)",
+      "permission_level": "user"
+    },
+    {
+      "file": "contracts/pool-manager/src/manager/update_config.rs",
+      "function_name": "update_config",
+      "line": 12,
+      "untrusted_input": "fee_collector_addr (Option<String>), farm_manager_addr (Option<String>), pool_creation_fee (Option<Coin>), feature_toggle (Option<FeatureToggle>)",
+      "permission_level": "owner"
+    },
+    {
+      "file": "contracts/fee-collector/src/contract.rs",
+      "function_name": "execute (UpdateOwnership)",
+      "line": 30,
+      "untrusted_input": "cw_ownable::Action (TransferOwnership/AcceptOwnership)",
+      "permission_level": "owner"
+    },
+    {
+      "file": "contracts/fee-collector/src/contract.rs",
+      "function_name": "instantiate",
+      "line": 15,
+      "untrusted_input": "info.sender",
+      "permission_level": "deployer"
+    },
+    {
+      "file": "contracts/epoch-manager/src/contract.rs",
+      "function_name": "instantiate",
+      "line": 30,
+      "untrusted_input_flows_in": "owner: string, epoch_config: {genesis_epoch: Uint64, duration: Uint64}",
+      "permission_level": "contract_creator"
+    },
+    {
+      "file": "contracts/epoch-manager/src/contract.rs",
+      "function_name": "execute",
+      "line": 52,
+      "untrusted_input_flows_in": "ExecuteMsg enum: UpdateConfig { epoch_config: Option<EpochConfig> } | UpdateOwnership(action)",
+      "permission_level": "authenticated_user"
+    },
+    {
+      "file": "contracts/epoch-manager/src/contract.rs",
+      "function_name": "query",
+      "line": 71,
+      "untrusted_input_flows_in": "QueryMsg enum: Config {} | CurrentEpoch {} | Epoch { id: u64 } | Ownership {}",
+      "permission_level": "public_read"
+    },
+    {
+      "file": "contracts/epoch-manager/src/contract.rs",
+      "function_name": "migrate",
+      "line": 82,
+      "untrusted_input_flows_in": "MigrateMsg",
+      "permission_level": "contract_admin"
+    },
+    {
+      "file": "contracts/farm-manager/tests/integration.rs",
+      "function": "instantiate_farm_manager",
+      "line": 1,
+      "untrusted_input": "external_actor_controls_initial_parameters",
+      "permission_level": "external_user"
+    },
+    {
+      "file": "contracts/farm-manager/tests/integration.rs",
+      "function": "create_farms",
+      "line": 61,
+      "untrusted_input": "farm_parameters_and_funds",
+      "permission_level": "external_user"
+    },
+    {
+      "file": "contracts/farm-manager/tests/integration.rs",
+      "function": "expand_farms",
+      "line": 267,
+      "untrusted_input": "expansion_parameters_and_funds",
+      "permission_level": "farm_creator"
+    },
+    {
+      "file": "contracts/farm-manager/tests/integration.rs",
+      "function": "close_farms",
+      "line": 435,
+      "untrusted_input": "farm_identifier",
+      "permission_level": "farm_creator"
+    },
+    {
+      "file": "contracts/farm-manager/tests/integration.rs",
+      "function": "verify_ownership",
+      "line": 583,
+      "untrusted_input": "ownership_transfer_actions",
+      "permission_level": "contract_owner"
+    },
+    {
+      "file": "contracts/farm-manager/tests/integration.rs",
+      "function": "update_config",
+      "line": 617,
+      "untrusted_input": "config_update_parameters",
+      "permission_level": "contract_owner"
+    },
+    {
+      "file": "contracts/farm-manager/tests/integration.rs",
+      "function": "test_manage_position",
+      "line": 784,
+      "untrusted_input": "position_parameters_and_funds",
+      "permission_level": "external_user"
+    },
+    {
+      "file": "contracts/farm-manager/tests/common/suite.rs",
+      "function_name": "instantiate",
+      "line": 113,
+      "untrusted_input": [
+        "fee_collector_addr",
+        "epoch_manager_addr",
+        "pool_manager_addr",
+        "create_farm_fee",
+        "max_concurrent_farms",
+        "max_farm_epoch_buffer",
+        "min_unlocking_duration",
+        "max_unlocking_duration",
+        "farm_expiration_time",
+        "emergency_unlock_penalty"
+      ],
+      "permission_level": "owner"
+    },
+    {
+      "file": "contracts/farm-manager/tests/common/suite.rs",
+      "function_name": "update_ownership",
+      "line": 198,
+      "untrusted_input": [
+        "sender",
+        "action"
+      ],
+      "permission_level": "owner"
+    },
+    {
+      "file": "contracts/farm-manager/tests/common/suite.rs",
+      "function_name": "update_config",
+      "line": 214,
+      "untrusted_input": [
+        "sender",
+        "fee_collector_addr",
+        "epoch_manager_addr",
+        "pool_manager_addr",
+        "create_farm_fee",
+        "max_concurrent_farms",
+        "max_farm_epoch_buffer",
+        "min_unlocking_duration",
+        "max_unlocking_duration",
+        "farm_expiration_time",
+        "emergency_unlock_penalty",
+        "funds"
+      ],
+      "permission_level": "owner"
+    },
+    {
+      "file": "contracts/farm-manager/tests/common/suite.rs",
+      "function_name": "manage_farm",
+      "line": 256,
+      "untrusted_input": [
+        "sender",
+        "action",
+        "funds"
+      ],
+      "permission_level": "user"
+    },
+    {
+      "file": "contracts/farm-manager/tests/common/suite.rs",
+      "function_name": "manage_position",
+      "line": 268,
+      "untrusted_input": [
+        "sender",
+        "action",
+        "funds"
+      ],
+      "permission_level": "user"
+    },
+    {
+      "file": "contracts/farm-manager/tests/common/suite.rs",
+      "function_name": "claim",
+      "line": 280,
+      "untrusted_input": [
+        "sender",
+        "funds"
+      ],
+      "permission_level": "user"
+    },
+    {
+      "file": "contracts/farm-manager/tests/common/suite.rs",
+      "function_name": "query_ownership",
+      "line": 290,
+      "untrusted_input": [],
+      "permission_level": "public"
+    },
+    {
+      "file": "contracts/farm-manager/tests/common/suite.rs",
+      "function_name": "query_config",
+      "line": 300,
+      "untrusted_input": [],
+      "permission_level": "public"
+    },
+    {
+      "file": "contracts/farm-manager/tests/common/suite.rs",
+      "function_name": "query_farms",
+      "line": 308,
+      "untrusted_input": [
+        "filter_by",
+        "start_after",
+        "limit"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "contracts/farm-manager/tests/common/suite.rs",
+      "function_name": "query_positions",
+      "line": 322,
+      "untrusted_input": [
+        "filter_by",
+        "open_state",
+        "start_after",
+        "limit"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "contracts/farm-manager/tests/common/suite.rs",
+      "function_name": "query_rewards",
+      "line": 337,
+      "untrusted_input": [
+        "address"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "contracts/farm-manager/tests/common/suite.rs",
+      "function_name": "query_lp_weight",
+      "line": 347,
+      "untrusted_input": [
+        "address",
+        "denom",
+        "epoch_id"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "contracts/farm-manager/tests/common/suite.rs",
+      "function_name": "query_balance",
+      "line": 357,
+      "untrusted_input": [
+        "denom",
+        "address"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "contracts/farm-manager/tests/common/suite.rs",
+      "function_name": "query_current_epoch",
+      "line": 370,
+      "untrusted_input": [],
+      "permission_level": "public"
+    },
+    {
+      "file": "contracts/farm-manager/src/helpers.rs",
+      "function": "process_farm_creation_fee",
+      "line": 12,
+      "untrusted_input_flows": [
+        "info.funds",
+        "params.farm_asset.denom",
+        "params.farm_asset.amount"
+      ],
+      "permission_level": "external_actor"
+    },
+    {
+      "file": "contracts/farm-manager/src/helpers.rs",
+      "function": "assert_farm_asset",
+      "line": 48,
+      "untrusted_input_flows": [
+        "info.funds",
+        "params.farm_asset.denom",
+        "params.farm_asset.amount"
+      ],
+      "permission_level": "external_actor"
+    },
+    {
+      "file": "contracts/farm-manager/src/helpers.rs",
+      "function": "validate_farm_epochs",
+      "line": 81,
+      "untrusted_input_flows": [
+        "params.start_epoch",
+        "params.preliminary_end_epoch",
+        "current_epoch"
+      ],
+      "permission_level": "external_actor"
+    },
+    {
+      "file": "contracts/farm-manager/src/helpers.rs",
+      "function": "validate_emergency_unlock_penalty",
+      "line": 123,
+      "untrusted_input_flows": [
+        "emergency_unlock_penalty"
+      ],
+      "permission_level": "external_actor"
+    },
+    {
+      "file": "contracts/farm-manager/src/helpers.rs",
+      "function": "validate_lp_denom",
+      "line": 135,
+      "untrusted_input_flows": [
+        "lp_denom"
+      ],
+      "permission_level": "external_actor"
+    },
+    {
+      "file": "contracts/farm-manager/src/helpers.rs",
+      "function": "validate_unlocking_duration",
+      "line": 147,
+      "untrusted_input_flows": [
+        "min_unlocking_duration",
+        "max_unlocking_duration"
+      ],
+      "permission_level": "external_actor"
+    },
+    {
+      "file": "contracts/farm-manager/src/helpers.rs",
+      "function": "validate_farm_expiration_time",
+      "line": 159,
+      "untrusted_input_flows": [
+        "farm_expiration_time"
+      ],
+      "permission_level": "external_actor"
+    },
+    {
+      "file": "contracts/farm-manager/src/helpers.rs",
+      "function": "validate_identifier",
+      "line": 179,
+      "untrusted_input_flows": [
+        "identifier"
+      ],
+      "permission_level": "external_actor"
+    },
+    {
+      "file": "contracts/farm-manager/src/helpers.rs",
+      "function": "is_farm_expired",
+      "line": 168,
+      "untrusted_input_flows": [
+        "farm",
+        "config.farm_expiration_time",
+        "env.block.time"
+      ],
+      "permission_level": "external_actor"
+    },
+    {
+      "file": "contracts/farm-manager/src/state.rs",
+      "function": "get_farms",
+      "line": 92,
+      "untrusted_input_flows": [
+        "start_after",
+        "limit"
+      ],
+      "permission_level": "external_actor"
+    },
+    {
+      "file": "contracts/farm-manager/src/state.rs",
+      "function": "get_farms_by_lp_denom",
+      "line": 106,
+      "untrusted_input_flows": [
+        "lp_denom",
+        "start_after",
+        "limit"
+      ],
+      "permission_level": "external_actor"
+    },
+    {
+      "file": "contracts/farm-manager/src/state.rs",
+      "function": "get_farms_by_farm_asset",
+      "line": 120,
+      "untrusted_input_flows": [
+        "farm_asset",
+        "start_after",
+        "limit"
+      ],
+      "permission_level": "external_actor"
+    },
+    {
+      "file": "contracts/farm-manager/src/state.rs",
+      "function": "get_farm_by_identifier",
+      "line": 134,
+      "untrusted_input_flows": [
+        "farm_identifier"
+      ],
+      "permission_level": "external_actor"
+    },
+    {
+      "file": "contracts/farm-manager/src/state.rs",
+      "function": "get_positions",
+      "line": 143,
+      "untrusted_input_flows": [
+        "start_after",
+        "limit"
+      ],
+      "permission_level": "external_actor"
+    },
+    {
+      "file": "contracts/farm-manager/src/state.rs",
+      "function": "get_position",
+      "line": 157,
+      "untrusted_input_flows": [
+        "identifier"
+      ],
+      "permission_level": "external_actor"
+    },
+    {
+      "file": "contracts/farm-manager/src/state.rs",
+      "function": "get_positions_by_receiver",
+      "line": 169,
+      "untrusted_input_flows": [
+        "receiver",
+        "open_state",
+        "start_after",
+        "limit"
+      ],
+      "permission_level": "external_actor"
+    },
+    {
+      "file": "contracts/farm-manager/src/state.rs",
+      "function": "get_earliest_address_lp_weight",
+      "line": 206,
+      "untrusted_input_flows": [
+        "address",
+        "lp_denom"
+      ],
+      "permission_level": "external_actor"
+    },
+    {
+      "file": "contracts/farm-manager/src/state.rs",
+      "function": "has_any_lp_weight",
+      "line": 222,
+      "untrusted_input_flows": [
+        "address",
+        "lp_denom"
+      ],
+      "permission_level": "external_actor"
+    },
+    {
+      "file": "contracts/farm-manager/src/state.rs",
+      "function": "get_latest_address_lp_weight",
+      "line": 235,
+      "untrusted_input_flows": [
+        "address",
+        "lp_denom",
+        "epoch_id"
+      ],
+      "permission_level": "external_actor"
+    },
+    {
+      "file": "contracts/farm-manager/src/contract.rs",
+      "function": "instantiate",
+      "line": 17,
+      "untrusted_input_flows": [
+        "InstantiateMsg fields: owner, epoch_manager_addr, fee_collector_addr, pool_manager_addr, create_farm_fee, max_concurrent_farms, max_farm_epoch_buffer, min_unlocking_duration, max_unlocking_duration, farm_expiration_time, emergency_unlock_penalty"
+      ],
+      "permission_level": "instantiation"
+    },
+    {
+      "file": "contracts/farm-manager/src/contract.rs",
+      "function": "execute",
+      "line": 58,
+      "untrusted_input_flows": [
+        "ExecuteMsg enum variants: ManageFarm, UpdateOwnership, Claim, ManagePosition, UpdateConfig",
+        "FarmAction params: Fill params, Close farm_identifier",
+        "PositionAction params: Create identifier, unlocking_duration, receiver; Expand identifier; Close identifier, lp_asset; Withdraw identifier, emergency_unlock",
+        "UpdateConfig fields: fee_collector_addr, epoch_manager_addr, pool_manager_addr, create_farm_fee, max_concurrent_farms, max_farm_epoch_buffer, min_unlocking_duration, max_unlocking_duration, farm_expiration_time, emergency_unlock_penalty"
+      ],
+      "permission_level": "authenticated_user"
+    },
+    {
+      "file": "contracts/farm-manager/src/contract.rs",
+      "function": "query",
+      "line": 103,
+      "untrusted_input_flows": [
+        "QueryMsg variants: Config, Ownership, Farms, Positions, Rewards, LpWeight",
+        "Filter and pagination parameters"
+      ],
+      "permission_level": "public_read"
+    },
+    {
+      "file": "contracts/farm-manager/src/contract.rs",
+      "function": "migrate",
+      "line": 138,
+      "untrusted_input_flows": [
+        "MigrateMsg (empty struct)"
+      ],
+      "permission_level": "owner_only"
+    },
+    {
+      "file": "contracts/farm-manager/src/position/commands.rs",
+      "function_name": "create_position",
+      "line": 20,
+      "untrusted_input": "info.funds (LP asset), identifier, receiver, unlocking_duration",
+      "permission_level": "user"
+    },
+    {
+      "file": "contracts/farm-manager/src/position/commands.rs",
+      "function_name": "expand_position",
+      "line": 87,
+      "untrusted_input": "info.funds (LP asset), identifier",
+      "permission_level": "user"
+    },
+    {
+      "file": "contracts/farm-manager/src/position/commands.rs",
+      "function_name": "close_position",
+      "line": 131,
+      "untrusted_input": "identifier, lp_asset (optional)",
+      "permission_level": "user"
+    },
+    {
+      "file": "contracts/farm-manager/src/position/commands.rs",
+      "function_name": "withdraw_position",
+      "line": 217,
+      "untrusted_input": "identifier, emergency_unlock",
+      "permission_level": "user"
+    },
+    {
+      "file": "contracts/farm-manager/src/farm/commands.rs",
+      "function_name": "claim",
+      "line": 17,
+      "untrusted_input": [
+        "info.sender",
+        "info.funds"
+      ],
+      "permission_level": "user"
+    },
+    {
+      "file": "contracts/farm-manager/src/farm/commands.rs",
+      "function_name": "calculate_rewards",
+      "line": 102,
+      "untrusted_input": [
+        "lp_denom",
+        "receiver",
+        "current_epoch_id"
+      ],
+      "permission_level": "user"
+    },
+    {
+      "file": "contracts/farm-manager/src/farm/commands.rs",
+      "function_name": "sync_address_lp_weight_history",
+      "line": 257,
+      "untrusted_input": [
+        "address",
+        "lp_denom",
+        "current_epoch_id"
+      ],
+      "permission_level": "user"
+    },
+    {
+      "file": "contracts/farm-manager/src/manager/commands.rs",
+      "function_name": "fill_farm",
+      "line": 21,
+      "untrusted_input": "params: FarmParams (includes farm_identifier, lp_denom, farm_asset, curve)",
+      "permission_level": "public"
+    },
+    {
+      "file": "contracts/farm-manager/src/manager/commands.rs",
+      "function_name": "close_farm",
+      "line": 113,
+      "untrusted_input": "farm_identifier: String",
+      "permission_level": "farm_owner_or_contract_owner"
+    },
+    {
+      "file": "contracts/farm-manager/src/manager/commands.rs",
+      "function_name": "update_config",
+      "line": 165,
+      "untrusted_input": "multiple config fields (fee_collector_addr, epoch_manager_addr, pool_manager_addr, create_farm_fee, max_concurrent_farms, max_farm_epoch_buffer, min_unlocking_duration, max_unlocking_duration, farm_expiration_time, emergency_unlock_penalty)",
+      "permission_level": "contract_owner_only"
+    },
+    {
+      "file": "packages/amm/src/farm_manager.rs",
+      "function": "ExecuteMsg::ManageFarm",
+      "line": 0,
+      "untrusted_input": "FarmAction enum (Fill or Close), containing FarmParams and farm_identifier",
+      "permission_level": "user"
+    },
+    {
+      "file": "packages/amm/src/farm_manager.rs",
+      "function": "ExecuteMsg::ManagePosition",
+      "line": 0,
+      "untrusted_input": "PositionAction enum (Create, Expand, Close, Withdraw) with identifier, unlocking_duration, receiver, lp_asset, emergency_unlock",
+      "permission_level": "user"
+    },
+    {
+      "file": "packages/amm/src/farm_manager.rs",
+      "function": "ExecuteMsg::Claim",
+      "line": 0,
+      "untrusted_input": "None (sender is implicit)",
+      "permission_level": "user"
+    },
+    {
+      "file": "packages/amm/src/farm_manager.rs",
+      "function": "ExecuteMsg::UpdateConfig",
+      "line": 0,
+      "untrusted_input": "Optional fields for updating contract configuration (fee_collector_addr, epoch_manager_addr, pool_manager_addr, create_farm_fee, max_concurrent_farms, max_farm_epoch_buffer, min_unlocking_duration, max_unlocking_duration, farm_expiration_time, emergency_unlock_penalty)",
+      "permission_level": "admin"
+    },
+    {
+      "file": "packages/amm/src/farm_manager.rs",
+      "function": "QueryMsg::Config",
+      "line": 0,
+      "untrusted_input": "None",
+      "permission_level": "user"
+    },
+    {
+      "file": "packages/amm/src/farm_manager.rs",
+      "function": "QueryMsg::Farms",
+      "line": 0,
+      "untrusted_input": "filter_by (FarmsBy), start_after, limit",
+      "permission_level": "user"
+    },
+    {
+      "file": "packages/amm/src/farm_manager.rs",
+      "function": "QueryMsg::Positions",
+      "line": 0,
+      "untrusted_input": "filter_by (PositionsBy), open_state, start_after, limit",
+      "permission_level": "user"
+    },
+    {
+      "file": "packages/amm/src/farm_manager.rs",
+      "function": "QueryMsg::Rewards",
+      "line": 0,
+      "untrusted_input": "address",
+      "permission_level": "user"
+    },
+    {
+      "file": "packages/amm/src/farm_manager.rs",
+      "function": "QueryMsg::LpWeight",
+      "line": 0,
+      "untrusted_input": "address, denom, epoch_id",
+      "permission_level": "user"
+    },
+    {
+      "file": "packages/amm/src/common.rs",
+      "function": "validate_addr_or_default",
+      "line": 0,
+      "untrusted_input": "unvalidated (Option<String>)",
+      "permission_level": "library"
+    },
+    {
+      "file": "packages/amm/src/pool_manager.rs",
+      "function": "ExecuteMsg::CreatePool",
+      "line": 120,
+      "untrusted_input": "asset_denoms, asset_decimals, pool_fees, pool_type, pool_identifier",
+      "permission_level": "any external user (if not blocked by feature toggle)"
+    },
+    {
+      "file": "packages/amm/src/pool_manager.rs",
+      "function": "ExecuteMsg::ProvideLiquidity",
+      "line": 136,
+      "untrusted_input": "slippage_tolerance, max_spread, receiver, pool_identifier, unlocking_duration, lock_position_identifier, plus attached funds",
+      "permission_level": "any external user (if not blocked by feature toggle)"
+    },
+    {
+      "file": "packages/amm/src/pool_manager.rs",
+      "function": "ExecuteMsg::Swap",
+      "line": 160,
+      "untrusted_input": "ask_asset_denom, belief_price, max_spread, receiver, pool_identifier, plus attached funds",
+      "permission_level": "any external user (if not blocked by feature toggle)"
+    },
+    {
+      "file": "packages/amm/src/pool_manager.rs",
+      "function": "ExecuteMsg::WithdrawLiquidity",
+      "line": 178,
+      "untrusted_input": "pool_identifier, plus attached LP tokens",
+      "permission_level": "any external user (if not blocked by feature toggle)"
+    },
+    {
+      "file": "packages/amm/src/pool_manager.rs",
+      "function": "ExecuteMsg::ExecuteSwapOperations",
+      "line": 183,
+      "untrusted_input": "operations (Vec<SwapOperation>), minimum_receive, receiver, max_spread, plus attached funds",
+      "permission_level": "any external user (if not blocked by feature toggle)"
+    },
+    {
+      "file": "packages/amm/src/pool_manager.rs",
+      "function": "ExecuteMsg::UpdateConfig",
+      "line": 210,
+      "untrusted_input": "fee_collector_addr, farm_manager_addr, pool_creation_fee, feature_toggle",
+      "permission_level": "contract owner only (cw_ownable)"
+    },
+    {
+      "file": "packages/amm/src/pool_manager.rs",
+      "function": "QueryMsg::Config",
+      "line": 238,
+      "untrusted_input": "none",
+      "permission_level": "read-only, any external user"
+    },
+    {
+      "file": "packages/amm/src/pool_manager.rs",
+      "function": "QueryMsg::AssetDecimals",
+      "line": 242,
+      "untrusted_input": "pool_identifier, denom",
+      "permission_level": "read-only, any external user"
+    },
+    {
+      "file": "packages/amm/src/pool_manager.rs",
+      "function": "QueryMsg::Simulation",
+      "line": 250,
+      "untrusted_input": "offer_asset, ask_asset_denom, pool_identifier",
+      "permission_level": "read-only, any external user"
+    },
+    {
+      "file": "packages/amm/src/pool_manager.rs",
+      "function": "QueryMsg::ReverseSimulation",
+      "line": 260,
+      "untrusted_input": "ask_asset, offer_asset_denom, pool_identifier",
+      "permission_level": "read-only, any external user"
+    },
+    {
+      "file": "packages/amm/src/pool_manager.rs",
+      "function": "QueryMsg::SimulateSwapOperations",
+      "line": 270,
+      "untrusted_input": "offer_amount, operations",
+      "permission_level": "read-only, any external user"
+    },
+    {
+      "file": "packages/amm/src/pool_manager.rs",
+      "function": "QueryMsg::ReverseSimulateSwapOperations",
+      "line": 278,
+      "untrusted_input": "ask_amount, operations",
+      "permission_level": "read-only, any external user"
+    },
+    {
+      "file": "packages/amm/src/pool_manager.rs",
+      "function": "QueryMsg::Pools",
+      "line": 286,
+      "untrusted_input": "pool_identifier, start_after, limit",
+      "permission_level": "read-only, any external user"
+    },
+    {
+      "file": "packages/common-testing/src/multi_test/stargate_mock.rs",
+      "function_name": "execute_any",
+      "line": 60,
+      "untrusted_input_flows_in": "msg.type_url, msg.value, sender (Addr)",
+      "permission_level": "external_actor"
+    },
+    {
+      "file": "packages/common-testing/src/multi_test/stargate_mock.rs",
+      "function_name": "execute_stargate",
+      "line": 72,
+      "untrusted_input_flows_in": "type_url, value, sender (Addr)",
+      "permission_level": "external_actor"
+    },
+    {
+      "file": "packages/common-testing/src/multi_test/stargate_mock.rs",
+      "function_name": "query_stargate",
+      "line": 84,
+      "untrusted_input_flows_in": "path, data (Binary)",
+      "permission_level": "external_actor"
+    }
+  ],
+  "trust_boundaries": [
+    {
+      "file": "contracts/pool-manager/src/queries.rs",
+      "line": 31,
+      "what_crosses": "External input (pool_identifier, denom) used to query pool state; pool_identifier selects which pool's state is accessed.",
+      "what_should_be_validated": "Ensure pool_identifier maps to a valid, existing pool; ensure denom is a valid asset in the pool."
+    },
+    {
+      "file": "contracts/pool-manager/src/queries.rs",
+      "line": 52,
+      "what_crosses": "External input (offer_asset, ask_asset_denom, pool_identifier) used to compute swap amounts; pool state is read and fees are applied.",
+      "what_should_be_validated": "Validate pool_identifier exists; validate offer_asset and ask_asset_denom are assets in the pool; validate offer_asset.amount is non-zero and does not exceed pool reserves."
+    },
+    {
+      "file": "contracts/pool-manager/src/queries.rs",
+      "line": 78,
+      "what_crosses": "External input (ask_asset, offer_asset_denom, pool_identifier) used for reverse simulation; pool state and fees are used.",
+      "what_should_be_validated": "Validate pool_identifier exists; validate asset denominations are in the pool; validate ask_asset.amount is reasonable."
+    },
+    {
+      "file": "contracts/pool-manager/src/queries.rs",
+      "line": 198,
+      "what_crosses": "External input (pool_identifier, start_after, limit) controls pagination and which pools are returned.",
+      "what_should_be_validated": "Validate limit is within bounds (1-100); validate start_after is a valid key for pagination."
+    },
+    {
+      "file": "contracts/pool-manager/src/queries.rs",
+      "line": 240,
+      "what_crosses": "External input (offer_amount, operations) controls multi-hop swap simulation; each operation's pool_identifier and denoms cross trust boundaries.",
+      "what_should_be_validated": "Validate offer_amount > 0; validate operations not empty; for each operation, validate pool_identifier and denoms are valid."
+    },
+    {
+      "file": "contracts/pool-manager/src/queries.rs",
+      "line": 264,
+      "what_crosses": "External input (ask_amount, operations) controls reverse multi-hop swap simulation; each operation's pool_identifier and denoms cross trust boundaries.",
+      "what_should_be_validated": "Validate ask_amount > 0; validate operations not empty; for each operation, validate pool_identifier and denoms are valid."
+    },
+    {
+      "file": "contracts/pool-manager/src/helpers.rs",
+      "line": 288,
+      "crossing": "Admin permission check via contract_info.admin vs sender address",
+      "should_validate": "Ensure admin is correctly set and sender is properly authenticated"
+    },
+    {
+      "file": "contracts/pool-manager/src/helpers.rs",
+      "line": 336,
+      "crossing": "Fee payment validation crossing user input (info.funds) and expected fees",
+      "should_validate": "Ensure fee amounts and denoms are correctly validated against user payments"
+    },
+    {
+      "file": "contracts/pool-manager/src/helpers.rs",
+      "line": 398,
+      "crossing": "User funds (info.funds) vs expected total_fees for pool creation",
+      "should_validate": "Ensure no extra funds are sent and all required fees are paid"
+    },
+    {
+      "file": "contracts/pool-manager/src/contract.rs",
+      "line": 31,
+      "crossing": "External instantiation sets fee_collector_addr and farm_manager_addr (config)",
+      "should_validate": "Address validation (deps.api.addr_validate)"
+    },
+    {
+      "file": "contracts/pool-manager/src/contract.rs",
+      "line": 38,
+      "crossing": "Feature toggle stored in config, controls swaps_enabled",
+      "should_validate": "Admin-only update via UpdateConfig"
+    },
+    {
+      "file": "contracts/pool-manager/src/swap/commands.rs",
+      "line": 37,
+      "crossing": "Pool existence check crosses from user request to trusted pool state",
+      "should_validate": "Pool identifier validity"
+    },
+    {
+      "file": "contracts/pool-manager/src/swap/commands.rs",
+      "line": 79,
+      "crossing": "Receiver address from user input used in BankMsg::Send",
+      "should_validate": "Address validation (validate_addr_or_default)"
+    },
+    {
+      "file": "contracts/pool-manager/src/contract.rs",
+      "line": 113,
+      "crossing": "UpdateOwnership allows changing contract owner",
+      "should_validate": "Only current owner can call"
+    },
+    {
+      "file": "contracts/pool-manager/src/contract.rs",
+      "line": 121,
+      "crossing": "UpdateConfig can change fee_collector_addr, farm_manager_addr, pool_creation_fee, feature_toggle",
+      "should_validate": "Only admin/owner can call"
+    },
+    {
+      "file": "contracts/pool-manager/src/swap/perform_swap.rs",
+      "line": 45,
+      "what_crossing": "External user-supplied offer_asset (native token) enters pool state modification",
+      "should_be_validated": "offer_asset amount and denom validation, offer_asset must be native token as per doc"
+    },
+    {
+      "file": "contracts/pool-manager/src/swap/perform_swap.rs",
+      "line": 52,
+      "what_crossing": "External ask_asset_denom and pool_identifier are used to look up pool assets",
+      "should_be_validated": "pool_identifier must exist, ask_asset_denom must be valid denom in pool"
+    },
+    {
+      "file": "contracts/pool-manager/src/swap/perform_swap.rs",
+      "line": 58,
+      "what_crossing": "External belief_price and max_spread influence spread calculation",
+      "should_be_validated": "belief_price must be non-zero if provided, max_spread must be within [0, 0.5]"
+    },
+    {
+      "file": "contracts/pool-manager/src/swap/perform_swap.rs",
+      "line": 76,
+      "what_crossing": "Pool balance modification: offer asset added, ask asset subtracted with fees",
+      "should_be_validated": "Checked arithmetic used (checked_add, checked_sub) to prevent underflow/overflow"
+    },
+    {
+      "file": "contracts/pool-manager/src/liquidity/commands.rs",
+      "line": 31,
+      "what_crossing": "External deposit assets (info.funds) into pool logic",
+      "what_should_be_validated": "Denoms, amounts, non-empty, match pool assets, single-sided logic checks"
+    },
+    {
+      "file": "contracts/pool-manager/src/liquidity/commands.rs",
+      "line": 67,
+      "what_crossing": "User-provided receiver address",
+      "what_should_be_validated": "Valid CosmWasm address, or default to sender"
+    },
+    {
+      "file": "contracts/pool-manager/src/liquidity/commands.rs",
+      "line": 88,
+      "what_crossing": "User-provided pool_identifier",
+      "what_should_be_validated": "Exists in POOLS state, pool not empty for single-sided"
+    },
+    {
+      "file": "contracts/pool-manager/src/liquidity/commands.rs",
+      "line": 131,
+      "what_crossing": "External swap simulation response (return_amount, fees)",
+      "what_should_be_validated": "Fees correctly aggregated, return_amount plausible, max_spread assertion"
+    },
+    {
+      "file": "contracts/pool-manager/src/liquidity/commands.rs",
+      "line": 195,
+      "what_crossing": "External query to farm_manager for position existence",
+      "what_should_be_validated": "Position ownership, receiver matches sender"
+    },
+    {
+      "file": "contracts/pool-manager/src/liquidity/commands.rs",
+      "line": 244,
+      "what_crossing": "External LP token balance query (must_pay)",
+      "what_should_be_validated": "Exact LP token denom, amount > 0"
+    },
+    {
+      "file": "contracts/pool-manager/src/liquidity/commands.rs",
+      "line": 247,
+      "what_crossing": "External query for total_share (LP token supply)",
+      "what_should_be_validated": "Non-zero total_share, share_ratio <= 1"
+    },
+    {
+      "file": "contracts/pool-manager/src/liquidity/commands.rs",
+      "line": 300,
+      "what_crossing": "BankMsg::Send to user (refund_assets)",
+      "what_should_be_validated": "Amounts match calculated shares, pool state updated atomically"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "line": 126,
+      "crossing": "InstantiateMsg with external contract addresses (fee_collector_addr, farm_manager_addr)",
+      "should_validate": "Validate contract addresses, ensure they are valid Bech32, not zero address, and contracts are properly instantiated"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "line": 185,
+      "crossing": "Ownership transfer action passed to cw_ownable",
+      "should_validate": "Validate action type, ensure proper authorization checks"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "line": 196,
+      "crossing": "Liquidity provision with token funds",
+      "should_validate": "Validate token denominations and amounts match pool requirements"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "line": 216,
+      "crossing": "Swap execution with token funds and slippage parameters",
+      "should_validate": "Validate asset denominations, amounts, slippage tolerance, and pool compatibility"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "line": 256,
+      "crossing": "Pool creation with asset configuration and creation fee",
+      "should_validate": "Validate asset denominations, decimals, pool fees, and creation fee payment"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "line": 288,
+      "crossing": "Configuration update with new contract addresses and parameters",
+      "should_validate": "Validate new contract addresses are valid, parameters are within bounds, ensure admin authorization"
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "line": 312,
+      "crossing": "Farm manager config update with new pool manager address",
+      "should_validate": "Validate new pool manager address is valid and contract exists"
+    },
+    {
+      "file": "contracts/pool-manager/src/router/commands.rs",
+      "line": 39,
+      "crossing": "User-provided swap operations (denoms, pool identifiers) and parameters (min receive, receiver, max spread) flow into pool manager state and external token transfers.",
+      "should_validate": "All swap operation denoms must be valid, pool identifiers must exist, receiver address must be valid, min receive and max spread must be within bounds, and swap must be enabled."
+    },
+    {
+      "file": "contracts/pool-manager/src/manager/commands.rs",
+      "line": 40,
+      "crossing": "User-provided asset denoms, decimals, pool fees, pool type, and optional pool identifier flow into pool creation, token factory denom creation, and fee collection.",
+      "should_validate": "Asset denoms must be unique and non-empty, decimals must match denoms, pool fees must be valid (non-negative, sum <= 100%), pool identifier must be unique and valid format, fees must be paid exactly, no extra funds sent."
+    },
+    {
+      "file": "contracts/pool-manager/src/manager/update_config.rs",
+      "line": 12,
+      "crossing": "Owner-provided configuration updates (addresses, fees, feature toggles) modify global contract state.",
+      "should_validate": "Only owner can call, addresses must be valid bech32, pool_creation_fee must be non-negative, feature toggle must be valid enum."
+    },
+    {
+      "file": "contracts/fee-collector/src/contract.rs",
+      "line": 30,
+      "crossing": "Owner-provided ownership transfer action modifies contract ownership.",
+      "should_validate": "Only current owner can initiate, new_owner must be valid address, expiry must be in future if provided."
+    },
+    {
+      "file": "contracts/pool-manager/src/router/commands.rs",
+      "line": 70,
+      "crossing": "Swap output funds are sent to external receiver via BankMsg::Send.",
+      "should_validate": "Receiver address must be valid bech32, amount must be non-zero, and transaction must not exceed gas limits."
+    },
+    {
+      "file": "contracts/pool-manager/src/router/commands.rs",
+      "line": 76,
+      "crossing": "Fee assets (burn, protocol) are sent to external fee collector or burned via BankMsg::Send.",
+      "should_validate": "Fee collector address must be valid, amounts must be non-zero and correctly calculated."
+    },
+    {
+      "file": "contracts/epoch-manager/src/contract.rs",
+      "line": 56,
+      "crossing": "Ownership check: cw_ownable::assert_owner(deps.storage, &info.sender) in commands::update_config",
+      "should_validate": "info.sender must be contract owner for config updates"
+    },
+    {
+      "file": "contracts/epoch-manager/src/contract.rs",
+      "line": 60,
+      "crossing": "Ownership update: mantra_utils::ownership::update_ownership(deps, env, info, action)",
+      "should_validate": "action must be valid ownership transfer request from current owner"
+    },
+    {
+      "file": "contracts/epoch-manager/src/contract.rs",
+      "line": 38,
+      "crossing": "Ownership initialization: cw_ownable::initialize_owner(deps.storage, deps.api, Some(msg.owner.as_str()))",
+      "should_validate": "msg.owner must be valid address, set only during instantiation"
+    },
+    {
+      "file": "contracts/epoch-manager/src/contract.rs",
+      "line": 83,
+      "crossing": "Migration validation: validate_contract!(deps, CONTRACT_NAME, CONTRACT_VERSION)",
+      "should_validate": "Only admin can migrate, contract version must be compatible"
+    },
+    {
+      "file": "contracts/farm-manager/tests/integration.rs",
+      "line": 100,
+      "crossing": "user_provided_farm_asset_denomination_matches_configured_denomination",
+      "should_validate": "validate_asset_denomination_matches_config"
+    },
+    {
+      "file": "contracts/farm-manager/tests/integration.rs",
+      "line": 130,
+      "crossing": "user_provided_fee_matches_expected_fee_denomination_and_amount",
+      "should_validate": "validate_fee_payment_exact_amount_and_denom"
+    },
+    {
+      "file": "contracts/farm-manager/tests/integration.rs",
+      "line": 170,
+      "crossing": "farm_start_epoch_within_allowed_buffer_range",
+      "should_validate": "validate_start_epoch_not_too_far_in_future"
+    },
+    {
+      "file": "contracts/farm-manager/tests/integration.rs",
+      "line": 300,
+      "crossing": "expansion_amount_is_multiple_of_original_amount",
+      "should_validate": "validate_expansion_amount_is_valid_multiple"
+    },
+    {
+      "file": "contracts/farm-manager/tests/integration.rs",
+      "line": 340,
+      "crossing": "expansion_funds_match_farm_asset_denomination",
+      "should_validate": "validate_expansion_funds_match_farm_asset_denom"
+    },
+    {
+      "file": "contracts/farm-manager/tests/integration.rs",
+      "line": 470,
+      "crossing": "close_farm_caller_is_farm_creator",
+      "should_validate": "validate_caller_is_farm_creator"
+    },
+    {
+      "file": "contracts/farm-manager/tests/integration.rs",
+      "line": 583,
+      "crossing": "ownership_transfer_caller_is_current_owner",
+      "should_validate": "validate_caller_is_current_owner"
+    },
+    {
+      "file": "contracts/farm-manager/tests/integration.rs",
+      "line": 617,
+      "crossing": "config_update_caller_is_contract_owner",
+      "should_validate": "validate_caller_is_contract_owner"
+    },
+    {
+      "file": "contracts/farm-manager/tests/integration.rs",
+      "line": 810,
+      "crossing": "position_unlocking_duration_within_config_bounds",
+      "should_validate": "validate_unlocking_duration_in_configured_range"
+    },
+    {
+      "file": "contracts/farm-manager/tests/common/suite.rs",
+      "line": 120,
+      "what_crossing": "Instantiation of farm_manager contract with external addresses",
+      "what_should_be_validate": "All addresses should be validated as proper bech32 addresses and checked for existence."
+    },
+    {
+      "file": "contracts/farm-manager/tests/common/suite.rs",
+      "line": 158,
+      "what_crossing": "Instantiation of epoch_manager contract with owner address",
+      "what_should_be_validate": "Owner address should be validated as a proper bech32 address."
+    },
+    {
+      "file": "contracts/farm-manager/tests/common/suite.rs",
+      "line": 171,
+      "what_crossing": "Instantiation of fee_collector contract with owner address",
+      "what_should_be_validate": "Owner address should be validated as a proper bech32 address."
+    },
+    {
+      "file": "contracts/farm-manager/tests/common/suite.rs",
+      "line": 214,
+      "what_crossing": "Updating config with new addresses",
+      "what_should_be_validate": "All new addresses should be validated and checked for existence."
+    },
+    {
+      "file": "contracts/farm-manager/tests/common/suite.rs",
+      "line": 256,
+      "what_crossing": "User manages farm with funds",
+      "what_should_be_validate": "Funds should be validated for correct denomination and amount. Farm action should be validated."
+    },
+    {
+      "file": "contracts/farm-manager/tests/common/suite.rs",
+      "line": 268,
+      "what_crossing": "User manages position with funds",
+      "what_should_be_validate": "Funds should be validated for correct denomination and amount. Position action should be validated."
+    },
+    {
+      "file": "contracts/farm-manager/tests/common/suite.rs",
+      "line": 280,
+      "what_crossing": "User claims rewards",
+      "what_should_be_validate": "User address should be validated and checked for open positions."
+    },
+    {
+      "file": "contracts/farm-manager/src/queries.rs",
+      "line": 37,
+      "what_crossing": "Query for farms with filter parameters",
+      "what_should_be_validate": "Filter parameters should be validated for correctness and bounded."
+    },
+    {
+      "file": "contracts/farm-manager/src/queries.rs",
+      "line": 59,
+      "what_crossing": "Query for positions with filter parameters",
+      "what_should_be_validate": "Filter parameters should be validated for correctness and bounded."
+    },
+    {
+      "file": "contracts/farm-manager/src/queries.rs",
+      "line": 83,
+      "what_crossing": "Query for rewards with address",
+      "what_should_be_validate": "Address should be validated as a proper bech32 address."
+    },
+    {
+      "file": "contracts/farm-manager/src/queries.rs",
+      "line": 121,
+      "what_crossing": "Query for lp weight with address, denom, epoch_id",
+      "what_should_be_validate": "Address should be validated, denom should be checked, epoch_id should be within valid range."
+    },
+    {
+      "file": "contracts/farm-manager/src/helpers.rs",
+      "line": 12,
+      "crossing": "User-supplied funds and farm parameters into fee processing",
+      "should_validate": "Fee amount correctness, asset matching, and refund logic"
+    },
+    {
+      "file": "contracts/farm-manager/src/helpers.rs",
+      "line": 48,
+      "crossing": "User-supplied funds and farm parameters into asset assertion",
+      "should_validate": "Asset denom and amount matching, fund count"
+    },
+    {
+      "file": "contracts/farm-manager/src/helpers.rs",
+      "line": 81,
+      "crossing": "User-supplied epoch parameters into farm scheduling",
+      "should_validate": "Epoch ordering, future constraints, buffer limits"
+    },
+    {
+      "file": "contracts/farm-manager/src/helpers.rs",
+      "line": 123,
+      "crossing": "User-supplied penalty parameter into farm configuration",
+      "should_validate": "Penalty within 0-100% range"
+    },
+    {
+      "file": "contracts/farm-manager/src/helpers.rs",
+      "line": 135,
+      "crossing": "User-supplied LP denom into pool validation",
+      "should_validate": "Factory token creation and pool manager ownership"
+    },
+    {
+      "file": "contracts/farm-manager/src/helpers.rs",
+      "line": 147,
+      "crossing": "User-supplied unlocking durations into farm configuration",
+      "should_validate": "Min <= max ordering"
+    },
+    {
+      "file": "contracts/farm-manager/src/helpers.rs",
+      "line": 159,
+      "crossing": "User-supplied expiration time into farm configuration",
+      "should_validate": "Minimum of one month"
+    },
+    {
+      "file": "contracts/farm-manager/src/helpers.rs",
+      "line": 179,
+      "crossing": "User-supplied identifier string into system identifier",
+      "should_validate": "Length, alphanumeric characters, allowed symbols"
+    },
+    {
+      "file": "contracts/farm-manager/src/helpers.rs",
+      "line": 168,
+      "crossing": "Farm state and external epoch query into expiration check",
+      "should_validate": "Epoch query correctness, time arithmetic"
+    },
+    {
+      "file": "contracts/farm-manager/src/state.rs",
+      "line": 92,
+      "crossing": "User-supplied pagination parameters into farm query",
+      "should_validate": "Limit bounds, start_after parsing"
+    },
+    {
+      "file": "contracts/farm-manager/src/state.rs",
+      "line": 106,
+      "crossing": "User-supplied LP denom into farm query",
+      "should_validate": "Denom format, index prefix"
+    },
+    {
+      "file": "contracts/farm-manager/src/state.rs",
+      "line": 120,
+      "crossing": "User-supplied farm asset into farm query",
+      "should_validate": "Asset denom format, index prefix"
+    },
+    {
+      "file": "contracts/farm-manager/src/state.rs",
+      "line": 134,
+      "crossing": "User-supplied farm identifier into farm lookup",
+      "should_validate": "Identifier existence"
+    },
+    {
+      "file": "contracts/farm-manager/src/state.rs",
+      "line": 143,
+      "crossing": "User-supplied pagination parameters into position query",
+      "should_validate": "Limit bounds, start_after parsing"
+    },
+    {
+      "file": "contracts/farm-manager/src/state.rs",
+      "line": 157,
+      "crossing": "User-supplied position identifier into position lookup",
+      "should_validate": "Identifier format, existence"
+    },
+    {
+      "file": "contracts/farm-manager/src/state.rs",
+      "line": 169,
+      "crossing": "User-supplied receiver and state filters into position query",
+      "should_validate": "Address format, open_state boolean"
+    },
+    {
+      "file": "contracts/farm-manager/src/state.rs",
+      "line": 206,
+      "crossing": "User-supplied address and LP denom into weight history query",
+      "should_validate": "Address validity, denom existence"
+    },
+    {
+      "file": "contracts/farm-manager/src/state.rs",
+      "line": 222,
+      "crossing": "User-supplied address and LP denom into weight presence check",
+      "should_validate": "Address validity, denom existence"
+    },
+    {
+      "file": "contracts/farm-manager/src/state.rs",
+      "line": 235,
+      "crossing": "User-supplied address, LP denom, and epoch into weight history query",
+      "should_validate": "Address validity, denom existence, epoch format"
+    },
+    {
+      "file": "contracts/farm-manager/src/contract.rs",
+      "line": 35,
+      "crossing": "pool_manager_addr stored as Addr::unchecked from user input",
+      "should_validate": "Cross-contract address validation against trusted pool manager"
+    },
+    {
+      "file": "contracts/farm-manager/src/contract.rs",
+      "line": 67,
+      "crossing": "UpdateOwnership requires nonpayable check",
+      "should_validate": "Owner-only operation with payment validation"
+    },
+    {
+      "file": "contracts/farm-manager/src/contract.rs",
+      "line": 68,
+      "crossing": "UpdateConfig requires nonpayable check",
+      "should_validate": "Owner-only configuration updates with address validation"
+    },
+    {
+      "file": "contracts/farm-manager/src/position/helpers.rs",
+      "line": 125,
+      "crossing": "validate_no_pending_rewards checks rewards before position operations",
+      "should_validate": "Cross-contract query to epoch manager for current epoch"
+    },
+    {
+      "file": "contracts/farm-manager/src/position/helpers.rs",
+      "line": 168,
+      "crossing": "sync_address_lp_weight_history calls epoch manager",
+      "should_validate": "External call to epoch manager for epoch information"
+    },
+    {
+      "file": "contracts/farm-manager/src/position/commands.rs",
+      "line": 35,
+      "what_crossing": "Receiver can be set by pool_manager or the sender (user)",
+      "should_be_validated": "Ensure receiver is a valid address and that pool_manager only sets receiver when authorized"
+    },
+    {
+      "file": "contracts/farm-manager/src/position/commands.rs",
+      "line": 52,
+      "what_crossing": "Position identifier creation (auto vs explicit)",
+      "should_be_validated": "Ensure identifier uniqueness and format validation"
+    },
+    {
+      "file": "contracts/farm-manager/src/position/commands.rs",
+      "line": 108,
+      "what_crossing": "Position expansion: LP asset amount addition",
+      "should_be_validated": "Ensure LP denom matches and position is open; sender must be receiver or pool_manager"
+    },
+    {
+      "file": "contracts/farm-manager/src/position/commands.rs",
+      "line": 163,
+      "what_crossing": "Partial closing of position creates a new position with new identifier",
+      "should_be_validated": "Ensure new identifier doesn't collide; partial LP amount must be less than original"
+    },
+    {
+      "file": "contracts/farm-manager/src/position/commands.rs",
+      "line": 238,
+      "what_crossing": "Emergency unlock with penalty calculation and distribution to farm owners/fee collector",
+      "should_be_validated": "Validate penalty fee calculation; ensure fee_collector_addr is set; ensure farm owners list is correct"
+    },
+    {
+      "file": "contracts/farm-manager/src/position/commands.rs",
+      "line": 298,
+      "what_crossing": "Withdrawal sends remaining LP tokens to receiver via BankMsg",
+      "should_be_validated": "Ensure receiver is valid; amount is non-zero before sending"
+    },
+    {
+      "file": "contracts/farm-manager/src/position/commands.rs",
+      "line": 310,
+      "what_crossing": "Weight updates for contract and user based on fill/close operation",
+      "should_be_validated": "Ensure weight calculations are consistent and epoch_manager call is valid"
+    },
+    {
+      "file": "contracts/farm-manager/src/farm/commands.rs",
+      "line": 23,
+      "crossing": "MessageInfo.sender -> local positions lookup",
+      "should_validate": "sender address format, existence in positions storage"
+    },
+    {
+      "file": "contracts/farm-manager/src/farm/commands.rs",
+      "line": 33,
+      "crossing": "External epoch_manager contract call -> current_epoch",
+      "should_validate": "epoch_manager contract address validity, response integrity"
+    },
+    {
+      "file": "contracts/farm-manager/src/farm/commands.rs",
+      "line": 70,
+      "crossing": "Farm state modification after reward calculation",
+      "should_validate": "farm identifier validity, amount arithmetic overflow"
+    },
+    {
+      "file": "contracts/farm-manager/src/farm/commands.rs",
+      "line": 120,
+      "crossing": "BankMsg::Send with aggregated rewards to info.sender",
+      "should_validate": "total_rewards calculation, coin aggregation correctness"
+    },
+    {
+      "file": "contracts/farm-manager/src/farm/commands.rs",
+      "line": 130,
+      "crossing": "CONFIG.load() trust boundary - config read from storage",
+      "should_validate": "config initialization, admin-only setting"
+    },
+    {
+      "file": "contracts/farm-manager/src/farm/commands.rs",
+      "line": 155,
+      "crossing": "Farm state update (farm.claimed_amount) during reward calculation",
+      "should_validate": "claimed_amount addition overflow, farm exhaustion check"
+    },
+    {
+      "file": "contracts/farm-manager/src/farm/commands.rs",
+      "line": 265,
+      "crossing": "LP_WEIGHT_HISTORY storage modifications during sync",
+      "should_validate": "epoch range validity, weight persistence"
+    },
+    {
+      "file": "contracts/farm-manager/src/manager/commands.rs",
+      "line": 32,
+      "crossing": "External params (FarmParams) to internal farm creation logic",
+      "should_validate": "All parameters must be validated (lp_denom, farm_asset, epochs, curve)"
+    },
+    {
+      "file": "contracts/farm-manager/src/manager/commands.rs",
+      "line": 55,
+      "crossing": "External info.sender to farm ownership assignment",
+      "should_validate": "Sender authorization for farm creation"
+    },
+    {
+      "file": "contracts/farm-manager/src/manager/commands.rs",
+      "line": 88,
+      "crossing": "External farm_asset amount to emission_rate calculation",
+      "should_validate": "Amount must be >= MIN_FARM_AMOUNT and division must be safe"
+    },
+    {
+      "file": "contracts/farm-manager/src/manager/commands.rs",
+      "line": 125,
+      "crossing": "External farm_identifier to farm closure",
+      "should_validate": "Authorization check: farm.owner == info.sender || contract owner"
+    },
+    {
+      "file": "contracts/farm-manager/src/manager/commands.rs",
+      "line": 133,
+      "crossing": "BankMsg::Send to transfer unclaimed farm_asset back to farm.owner",
+      "should_validate": "Farm state must be consistent before transfer"
+    },
+    {
+      "file": "contracts/farm-manager/src/manager/commands.rs",
+      "line": 144,
+      "crossing": "External params (FarmParams) to farm expansion",
+      "should_validate": "Only farm owner can expand, farm not expired, asset matches, expansion multiple of emission_rate"
+    },
+    {
+      "file": "contracts/farm-manager/src/manager/commands.rs",
+      "line": 165,
+      "crossing": "External config parameters to contract configuration",
+      "should_validate": "Owner-only access, parameter validation (min/max durations, expiration time, penalty)"
+    },
+    {
+      "file": "packages/amm/src/farm_manager.rs",
+      "line": 0,
+      "crossing": "Cross-contract calls to epoch_manager, fee_collector, pool_manager via stored addresses (Config)",
+      "should_validate": "Verify that the external contract responses are consistent with expectations, validate addresses during configuration update"
+    },
+    {
+      "file": "packages/amm/src/farm_manager.rs",
+      "line": 0,
+      "crossing": "Token transfers (funds) during farm creation (create_farm_fee) and position management (lp_asset)",
+      "should_validate": "Validate coin denoms and amounts, ensure sufficient balances before operations, check for unexpected funds"
+    },
+    {
+      "file": "packages/amm/src/farm_manager.rs",
+      "line": 0,
+      "crossing": "Admin-only configuration updates (UpdateConfig)",
+      "should_validate": "Ensure sender is contract owner, validate new addresses and parameters against constraints"
+    },
+    {
+      "file": "packages/amm/src/common.rs",
+      "line": 0,
+      "crossing": "Address validation from untrusted input to trusted Addr",
+      "should_validate": "Ensure default address is correct and that validation failure does not lead to unintended behavior"
+    },
+    {
+      "file": "packages/amm/src/farm_manager.rs",
+      "line": 0,
+      "crossing": "Farm closure: expired farms can be closed by anyone, otherwise only creator or owner",
+      "should_validate": "Enforce permission checks correctly based on farm state and sender"
+    },
+    {
+      "file": "packages/amm/src/pool_manager.rs",
+      "line": 120,
+      "what_crossing": "User-provided pool parameters (asset_denoms, pool_type, pool_fees) determine pool configuration and can influence swap logic",
+      "should_be_validated": "Pool creation fee payment, asset denom format, pool identifier uniqueness, fee parameter bounds, pool type parameters (amp) for StableSwap"
+    },
+    {
+      "file": "packages/amm/src/pool_manager.rs",
+      "line": 160,
+      "what_crossing": "User-specified swap parameters (ask_asset_denom, belief_price, max_spread) and attached funds cross into swap execution",
+      "should_be_validated": "Asset existence in pool, slippage/spread bounds, minimum output verification, balance sufficiency"
+    },
+    {
+      "file": "packages/amm/src/pool_manager.rs",
+      "line": 183,
+      "what_crossing": "User-provided swap operations chain (SwapOperation) crosses into multi-hop swap execution",
+      "should_be_validated": "Operation sequence validity, pool existence for each operation, token denom consistency across hops, minimum_receive enforcement"
+    },
+    {
+      "file": "packages/amm/src/pool_manager.rs",
+      "line": 210,
+      "what_crossing": "Admin-only config updates cross trust boundary to modify contract parameters",
+      "should_be_validated": "New fee_collector_addr and farm_manager_addr should be valid contract addresses, pool_creation_fee non-negative"
+    },
+    {
+      "file": "packages/amm/src/pool_manager.rs",
+      "line": 286,
+      "what_crossing": "Pool identifier and pagination parameters cross from external query into pool data access",
+      "should_be_validated": "Pagination bounds (limit max), start_after format"
+    },
+    {
+      "file": "packages/amm/src/coin.rs",
+      "line": 43,
+      "what_crossing": "Factory token denom validation crosses trust boundary for token authenticity",
+      "should_be_validated": "Denom format strict validation, subdenom length, character set, total length"
+    },
+    {
+      "file": "packages/common-testing/src/multi_test/stargate_mock.rs",
+      "line": 20,
+      "what_crossing": "Denomination creation fee parameters (denom_creation_fee_denom, denom_creation_fee_amount) set at initialization vs. runtime usage in MsgCreateDenom and query responses",
+      "should_validate": "Fee parameters should be validated against a trusted source or configuration"
+    },
+    {
+      "file": "packages/common-testing/src/multi_test/stargate_mock.rs",
+      "line": 35,
+      "what_crossing": "Deserialization of MsgCreateDenom from untrusted binary value without explicit schema validation",
+      "should_validate": "Message structure and field values should be validated against known schemas"
+    },
+    {
+      "file": "packages/common-testing/src/multi_test/stargate_mock.rs",
+      "line": 52,
+      "what_crossing": "Deserialization of MsgMint from untrusted binary value",
+      "should_validate": "Amount and address fields should be validated for type and range constraints"
+    },
+    {
+      "file": "packages/common-testing/src/multi_test/stargate_mock.rs",
+      "line": 58,
+      "what_crossing": "Deserialization of MsgBurn from untrusted binary value",
+      "should_validate": "Amount and address fields should be validated for type and range constraints"
+    },
+    {
+      "file": "packages/common-testing/src/multi_test/stargate_mock.rs",
+      "line": 70,
+      "what_crossing": "BankMsg::Burn execution with amount and denom from fee configuration",
+      "should_validate": "Amount should be checked for sufficiency and denom for correctness"
+    },
+    {
+      "file": "packages/common-testing/src/multi_test/stargate_mock.rs",
+      "line": 89,
+      "what_crossing": "Query response for token factory params includes fee amount from configuration",
+      "should_validate": "Fee amount should be validated as a proper numeric string"
+    }
+  ],
+  "value_flows": [
+    {
+      "file": "contracts/pool-manager/src/queries.rs",
+      "line": 56,
+      "description": "Value (offer_asset.amount) flows into compute_swap which calculates return_amount, spread_amount, swap_fee_amount, protocol_fee_amount, burn_fee_amount, extra_fees_amount. No state mutation occurs in queries, but this simulates token movement."
+    },
+    {
+      "file": "contracts/pool-manager/src/queries.rs",
+      "line": 93,
+      "description": "In reverse simulation for ConstantProduct, ask_asset.amount flows into compute_offer_amount to derive offer_amount, spread_amount, fees. Simulates reverse token movement."
+    },
+    {
+      "file": "contracts/pool-manager/src/queries.rs",
+      "line": 112,
+      "description": "In reverse simulation for StableSwap, ask_asset.amount is adjusted for fees (before_fees), then used to calculate new_offer_pool_amount via calculate_stableswap_y, from which offer_amount is derived. Simulates reverse token movement with amplification factor."
+    },
+    {
+      "file": "contracts/pool-manager/src/queries.rs",
+      "line": 242,
+      "description": "In simulate_swap_operations, offer_amount flows through a chain of query_simulation calls, each updating amount based on return_amount. This simulates value flow across multiple pools."
+    },
+    {
+      "file": "contracts/pool-manager/src/queries.rs",
+      "line": 266,
+      "description": "In reverse_simulate_swap_operations, ask_amount flows through a reversed chain of query_simulation calls, each updating amount based on return_amount. This simulates reverse value flow across multiple pools."
+    },
+    {
+      "description": "Token swap computation: offer tokens -> ask tokens after fees",
+      "path": "compute_swap -> compute_fees -> get_swap_computation",
+      "order": [
+        "calculate return_amount",
+        "calculate spread_amount",
+        "compute fees",
+        "subtract fees from return_amount"
+      ]
+    },
+    {
+      "description": "Fee calculation and distribution",
+      "path": "compute_fees",
+      "order": [
+        "swap_fee",
+        "protocol_fee",
+        "burn_fee",
+        "extra_fees"
+      ]
+    },
+    {
+      "description": "LP token mint amount calculation for stableswap deposits",
+      "path": "compute_lp_mint_amount_for_stableswap_deposit -> compute_d",
+      "order": [
+        "compute initial D",
+        "compute new D after deposit",
+        "calculate proportional LP mint amount"
+      ]
+    },
+    {
+      "description": "Pool invariant D calculation",
+      "path": "compute_d -> compute_next_d",
+      "order": [
+        "Newton-Raphson iteration",
+        "convergence check"
+      ]
+    },
+    {
+      "description": "Stableswap Y calculation",
+      "path": "calculate_stableswap_y -> calculate_stableswap_d",
+      "order": [
+        "compute D",
+        "compute new Y via Newton-Raphson"
+      ]
+    },
+    {
+      "file": "contracts/pool-manager/src/swap/commands.rs",
+      "line": 27,
+      "value": "offer_asset (native token) sent via info.funds",
+      "operation": "creation/receipt"
+    },
+    {
+      "file": "contracts/pool-manager/src/swap/commands.rs",
+      "line": 52,
+      "value": "return_asset (ask token)",
+      "operation": "transfer via BankMsg::Send to receiver"
+    },
+    {
+      "file": "contracts/pool-manager/src/swap/commands.rs",
+      "line": 62,
+      "value": "burn_fee_asset",
+      "operation": "destruction via burn_coin_msg"
+    },
+    {
+      "file": "contracts/pool-manager/src/swap/commands.rs",
+      "line": 69,
+      "value": "protocol_fee_asset",
+      "operation": "transfer to fee_collector_addr"
+    },
+    {
+      "file": "contracts/pool-manager/src/contract.rs",
+      "line": 31,
+      "value": "fee_collector_addr",
+      "operation": "configuration set during instantiate"
+    },
+    {
+      "file": "contracts/pool-manager/src/state.rs",
+      "line": 30,
+      "value": "POOL_COUNTER",
+      "operation": "increment during pool creation"
+    },
+    {
+      "file": "contracts/pool-manager/src/swap/perform_swap.rs",
+      "line": 58,
+      "description": "Swap computation calculates return_amount, burn_fee_amount, protocol_fee_amount, swap_fee_amount, spread_amount from offer_asset and pool reserves"
+    },
+    {
+      "file": "contracts/pool-manager/src/swap/perform_swap.rs",
+      "line": 76,
+      "description": "Pool balance update: offer_asset.amount added to offer asset pool, return_asset.amount + outgoing_fees subtracted from ask asset pool"
+    },
+    {
+      "file": "contracts/pool-manager/src/swap/perform_swap.rs",
+      "line": 93,
+      "description": "Fees (burn_fee_asset, protocol_fee_asset, swap_fee_asset) separated from return_asset for external handling"
+    },
+    {
+      "description": "provide_liquidity: User sends assets (deposits). For single-sided: half swapped via internal swap submessage, then liquidity provision via reply. For dual-sided: assets added to pool, LP minted to user (or locked in farm_manager). Pool state (assets) incremented.",
+      "order_of_operations": [
+        "1. Validate inputs and pool existence",
+        "2. Single-sided path: simulate swap, store buffer, execute swap submessage",
+        "3. Dual-sided path: compute share, assert slippage, mint LP (or lock)",
+        "4. Update pool.assets with deposited amounts",
+        "5. Save pool state"
+      ]
+    },
+    {
+      "description": "withdraw_liquidity: User burns LP tokens. Proportional pool assets calculated and sent via BankMsg::Send. Pool assets decremented. LP tokens burned.",
+      "order_of_operations": [
+        "1. Validate inputs and pool existence",
+        "2. Verify LP token payment, compute share_ratio",
+        "3. Compute refund_assets (proportional)",
+        "4. Send refund_assets via BankMsg",
+        "5. Update pool.assets (subtract refund amounts)",
+        "6. Burn LP tokens",
+        "7. Save pool state"
+      ]
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "line": 95,
+      "description": "Initial token balances created via mock bank keeper for test accounts",
+      "value_type": "token_balance",
+      "operation": "creation",
+      "order": 1
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "line": 126,
+      "description": "Pool manager instantiation with creation fee configuration",
+      "value_type": "configuration",
+      "operation": "configuration",
+      "order": 2
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "line": 196,
+      "description": "Liquidity provision transfers tokens from sender to pool",
+      "value_type": "token_transfer",
+      "operation": "movement",
+      "order": 3
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "line": 216,
+      "description": "Swap transfers offer tokens to pool and receives ask tokens",
+      "value_type": "token_transfer",
+      "operation": "movement",
+      "order": 4
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "line": 276,
+      "description": "Liquidity withdrawal transfers LP tokens back to underlying assets",
+      "value_type": "token_transfer",
+      "operation": "movement",
+      "order": 5
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "line": 288,
+      "description": "Configuration update changes contract addresses and parameters",
+      "value_type": "configuration",
+      "operation": "configuration",
+      "order": 6
+    },
+    {
+      "file": "contracts/pool-manager/src/tests/suite.rs",
+      "line": 312,
+      "description": "Farm manager config update changes pool manager reference",
+      "value_type": "configuration",
+      "operation": "configuration",
+      "order": 7
+    },
+    {
+      "file": "contracts/pool-manager/src/router/commands.rs",
+      "line": 39,
+      "operation": "User sends offer_asset (e.g., uatom) to contract via MessageInfo.funds. Contract performs sequential swaps via perform_swap, accumulating swap_result.return_asset, burn_fee_asset, protocol_fee_asset. Final return_asset is sent to receiver via BankMsg::Send. Fees are sent to fee_collector_addr or burned. Value order: 1) input tokens locked in contract, 2) each swap transforms tokens, 3) fees deducted, 4) final output transferred to receiver."
+    },
+    {
+      "file": "contracts/pool-manager/src/manager/commands.rs",
+      "line": 40,
+      "operation": "User sends pool_creation_fee (and token factory denom creation fee) via MessageInfo.funds. Contract creates a new pool with zero balances, creates LP token denom via tokenfactory::create_denom. No immediate value transfer beyond fees. Value order: 1) fees collected and sent to fee_collector_addr, 2) pool metadata stored, 3) LP denom created but not minted."
+    },
+    {
+      "file": "contracts/pool-manager/src/manager/update_config.rs",
+      "line": 12,
+      "operation": "Owner updates config: fee_collector_addr, farm_manager_addr, pool_creation_fee, feature_toggle. No direct value transfer, but changes how future fees are collected and which features are enabled."
+    },
+    {
+      "file": "contracts/fee-collector/src/contract.rs",
+      "line": 30,
+      "operation": "Owner initiates ownership transfer. No value transfer, but control of fee_collector_addr changes."
+    },
+    {
+      "description": "Epoch configuration creation during instantiation",
+      "file": "contracts/epoch-manager/src/contract.rs",
+      "line": 44,
+      "value_type": "EpochConfig",
+      "operation": "creation"
+    },
+    {
+      "description": "Epoch configuration storage",
+      "file": "contracts/epoch-manager/src/state.rs",
+      "line": 4,
+      "value_type": "Config",
+      "operation": "storage"
+    },
+    {
+      "description": "Epoch configuration update",
+      "file": "contracts/epoch-manager/src/commands.rs",
+      "line": 15,
+      "value_type": "Config",
+      "operation": "mutation"
+    },
+    {
+      "description": "Epoch calculation from stored config",
+      "file": "contracts/epoch-manager/src/queries.rs",
+      "line": 21,
+      "value_type": "Epoch",
+      "operation": "derivation"
+    },
+    {
+      "description": "Ownership transfer flow",
+      "file": "contracts/epoch-manager/src/contract.rs",
+      "line": 60,
+      "value_type": "Ownership",
+      "operation": "transfer"
+    },
+    {
+      "file": "contracts/farm-manager/tests/integration.rs",
+      "line": 200,
+      "flow": "create_farm_fee_sent_to_fee_collector",
+      "order": "fee_payment_before_farm_creation"
+    },
+    {
+      "file": "contracts/farm-manager/tests/integration.rs",
+      "line": 210,
+      "flow": "farm_asset_tokens_sent_to_contract_held_in_escrow",
+      "order": "farm_asset_transfer_during_farm_fill"
+    },
+    {
+      "file": "contracts/farm-manager/tests/integration.rs",
+      "line": 320,
+      "flow": "expansion_tokens_added_to_existing_farm_asset_pool",
+      "order": "expansion_tokens_transferred_after_validation"
+    },
+    {
+      "file": "contracts/farm-manager/tests/integration.rs",
+      "line": 380,
+      "flow": "farm_asset_tokens_returned_to_creator_on_close",
+      "order": "return_after_close_validation"
+    },
+    {
+      "file": "contracts/farm-manager/tests/integration.rs",
+      "line": 500,
+      "flow": "claimed_rewards_distributed_to_position_owners",
+      "order": "rewards_accumulate_per_epoch_then_claimed"
+    },
+    {
+      "file": "contracts/farm-manager/tests/integration.rs",
+      "line": 820,
+      "flow": "lp_tokens_locked_in_position",
+      "order": "lp_tokens_transferred_to_contract_during_position_creation"
+    },
+    {
+      "file": "contracts/farm-manager/tests/integration.rs",
+      "line": 850,
+      "flow": "lp_tokens_released_on_unlocking_completion",
+      "order": "unlocking_duration_elapsed_then_tokens_returned"
+    },
+    {
+      "operation": "creation",
+      "description": "Farm creation with create_farm_fee",
+      "file": "contracts/farm-manager/tests/common/suite.rs",
+      "line": 256
+    },
+    {
+      "operation": "movement",
+      "description": "Position creation with funds",
+      "file": "contracts/farm-manager/tests/common/suite.rs",
+      "line": 268
+    },
+    {
+      "operation": "movement",
+      "description": "Reward claiming with funds",
+      "file": "contracts/farm-manager/tests/common/suite.rs",
+      "line": 280
+    },
+    {
+      "operation": "destruction",
+      "description": "Emergency unlock penalty deduction",
+      "file": "contracts/farm-manager/src/queries.rs",
+      "line": 92
+    },
+    {
+      "description": "Farm creation fee processing: fee coins are taken from user funds, sent to fee_collector_addr, and any overpayment refunded.",
+      "file": "contracts/farm-manager/src/helpers.rs",
+      "line": 12,
+      "order": [
+        "user_funds_verification",
+        "fee_amount_comparison",
+        "potential_refund",
+        "fee_transfer"
+      ]
+    },
+    {
+      "description": "Farm asset assertion: validates that the correct farm asset was sent, considering creation fee if same denom.",
+      "file": "contracts/farm-manager/src/helpers.rs",
+      "line": 48,
+      "order": [
+        "asset_denom_check",
+        "amount_calculation",
+        "fund_count_validation"
+      ]
+    },
+    {
+      "description": "Farm expiration check: determines if farm is expired based on remaining claimable assets or time elapsed since end.",
+      "file": "contracts/farm-manager/src/helpers.rs",
+      "line": 168,
+      "order": [
+        "epoch_query",
+        "time_calculation",
+        "asset_balance_check"
+      ]
+    },
+    {
+      "description": "Farm creation fee collected during FarmAction::Fill",
+      "creation": "FarmAction::Fill params include farm_asset and fee",
+      "movement": "Fee sent to fee_collector_addr, farm_asset becomes farm reward pool",
+      "destruction": "Farm rewards distributed to position holders during Claim",
+      "order": "1. Validate farm params 2. Collect fee 3. Create farm with remaining assets 4. Farm emits rewards over time"
+    },
+    {
+      "description": "Position LP tokens locked during creation",
+      "creation": "PositionAction::Create receives lp_asset",
+      "movement": "LP tokens locked in contract, weight calculated based on duration",
+      "destruction": "LP tokens returned during PositionAction::Close or PositionAction::Withdraw",
+      "order": "1. Validate user permissions 2. Lock LP tokens 3. Calculate weight 4. Update user state 5. Return LP tokens on close/withdraw"
+    },
+    {
+      "description": "Emergency unlock penalty distribution",
+      "creation": "Penalty calculated as 50% of LP asset during emergency withdraw",
+      "movement": "50% to farm creator, 50% returned to user",
+      "destruction": "Penalty tokens permanently transferred",
+      "order": "1. Detect emergency unlock flag 2. Calculate penalty 3. Send penalty to farm creator 4. Return remainder to user"
+    },
+    {
+      "description": "Reward distribution during Claim operation",
+      "creation": "Rewards calculated based on LP weight and epoch",
+      "movement": "Rewards transferred from farm to position holder",
+      "destruction": "Farm balance decreases by claimed amount",
+      "order": "1. Query pending rewards 2. Calculate share based on weight 3. Transfer rewards 4. Update last claimed epoch"
+    },
+    {
+      "file": "contracts/farm-manager/src/position/commands.rs",
+      "line": 24,
+      "description": "LP asset received from user in create_position; stored in Position struct"
+    },
+    {
+      "file": "contracts/farm-manager/src/position/commands.rs",
+      "line": 110,
+      "description": "Additional LP asset received in expand_position; added to existing Position.lp_asset.amount"
+    },
+    {
+      "file": "contracts/farm-manager/src/position/commands.rs",
+      "line": 163,
+      "description": "Partial closing: LP amount subtracted from original position, new position created with partial amount"
+    },
+    {
+      "file": "contracts/farm-manager/src/position/commands.rs",
+      "line": 238,
+      "description": "Emergency unlock: penalty fee calculated, subtracted from position.lp_asset.amount, distributed to farm owners and fee collector"
+    },
+    {
+      "file": "contracts/farm-manager/src/position/commands.rs",
+      "line": 298,
+      "description": "Withdrawal: remaining LP tokens sent to receiver via BankMsg::Send"
+    },
+    {
+      "file": "contracts/farm-manager/src/position/commands.rs",
+      "line": 310,
+      "description": "Weight updates: LP weight and address weight adjusted based on fill (increase) or close (decrease)"
+    },
+    {
+      "file": "contracts/farm-manager/src/farm/commands.rs",
+      "line": 17,
+      "description": "User claims rewards: triggers reward calculation and bank transfer",
+      "order": "claim -> calculate_rewards -> modify farms -> sync history -> send bank message"
+    },
+    {
+      "file": "contracts/farm-manager/src/farm/commands.rs",
+      "line": 102,
+      "description": "Reward calculation: reads farm configs, computes weights, emissions",
+      "order": "load config -> get farms -> compute start epoch -> compute user weights -> compute contract weights -> compute farm emissions -> aggregate rewards"
+    },
+    {
+      "file": "contracts/farm-manager/src/farm/commands.rs",
+      "line": 70,
+      "description": "Farm state mutation: farm.claimed_amount increases with claimed reward",
+      "order": "farm.claimed_amount.checked_add(claimed_reward) -> update FARMS storage"
+    },
+    {
+      "file": "contracts/farm-manager/src/farm/commands.rs",
+      "line": 120,
+      "description": "Token transfer: aggregated rewards sent to user via BankMsg",
+      "order": "aggregate_coins(total_rewards) -> BankMsg::Send"
+    },
+    {
+      "file": "contracts/farm-manager/src/farm/commands.rs",
+      "line": 265,
+      "description": "LP weight history cleanup: old entries removed, current epoch saved",
+      "order": "get earliest/latest weights -> remove range -> optionally save current"
+    },
+    {
+      "file": "contracts/farm-manager/src/manager/commands.rs",
+      "line": 88,
+      "flow": "Farm creation: farm_asset.amount (from info.funds) is stored in farm.farm_asset.amount, divided by epoch range to get emission_rate",
+      "order": "1. Validate params, 2. Check fee, 3. Assert asset sent, 4. Calculate emission_rate, 5. Save farm"
+    },
+    {
+      "file": "contracts/farm-manager/src/manager/commands.rs",
+      "line": 133,
+      "flow": "Farm closure: farm.farm_asset.amount minus farm.claimed_amount is returned to farm.owner via BankMsg::Send",
+      "order": "1. Validate authorization, 2. Remove farm from storage, 3. Calculate remaining amount, 4. Send bank message"
+    },
+    {
+      "file": "contracts/farm-manager/src/manager/commands.rs",
+      "line": 155,
+      "flow": "Farm expansion: reward.amount added to farm.farm_asset.amount, preliminary_end_epoch increased by additional_epochs",
+      "order": "1. Validate owner and not expired, 2. Validate asset match, 3. Ensure expansion multiple of emission_rate, 4. Update farm state"
+    },
+    {
+      "file": "contracts/farm-manager/src/manager/commands.rs",
+      "line": 165,
+      "flow": "Config update: various config fields modified based on input parameters",
+      "order": "1. Assert owner, 2. Validate and update each field individually"
+    },
+    {
+      "file": "packages/amm/src/farm_manager.rs",
+      "flow_type": "token_transfer",
+      "description": "Farm creation: create_farm_fee transferred from sender to fee_collector",
+      "order": [
+        "validate_fee",
+        "transfer_fee"
+      ]
+    },
+    {
+      "file": "packages/amm/src/farm_manager.rs",
+      "flow_type": "token_lock",
+      "description": "Position creation: LP tokens locked in contract via ManagePosition::Create",
+      "order": [
+        "validate_lp_asset",
+        "lock_tokens",
+        "update_position_state"
+      ]
+    },
+    {
+      "file": "packages/amm/src/farm_manager.rs",
+      "flow_type": "token_distribution",
+      "description": "Farm rewards distribution: calculated per epoch based on emission_rate and curve",
+      "order": [
+        "calculate_rewards",
+        "update_claimed_amount",
+        "distribute_rewards_on_claim"
+      ]
+    },
+    {
+      "file": "packages/amm/src/farm_manager.rs",
+      "flow_type": "token_unlock",
+      "description": "Position withdrawal: LP tokens returned after unlocking duration, possible penalty for emergency unlock",
+      "order": [
+        "check_expiration",
+        "calculate_penalty",
+        "transfer_lp_tokens"
+      ]
+    },
+    {
+      "file": "packages/amm/src/pool_manager.rs",
+      "line": 120,
+      "flow_type": "value_creation",
+      "description": "Pool creation: pool_creation_fee collected from user, LP tokens minted upon ProvideLiquidity"
+    },
+    {
+      "file": "packages/amm/src/pool_manager.rs",
+      "line": 136,
+      "flow_type": "value_movement",
+      "description": "ProvideLiquidity: user deposits token_in/token_out, receives LP tokens. LP tokens may be locked via farm_manager. Order: validate inputs -> check balances -> calculate shares -> transfer tokens -> mint LP -> optionally lock LP"
+    },
+    {
+      "file": "packages/amm/src/pool_manager.rs",
+      "line": 160,
+      "flow_type": "value_movement",
+      "description": "Swap: user sends token_in, receives token_out. Fees deducted from output. Order: validate pool -> calculate swap amounts -> deduct fees -> transfer token_in to pool -> transfer token_out to receiver"
+    },
+    {
+      "file": "packages/amm/src/pool_manager.rs",
+      "line": 178,
+      "flow_type": "value_movement",
+      "description": "WithdrawLiquidity: user burns LP tokens, receives underlying assets. Order: validate LP -> calculate share -> calculate withdrawal amounts -> burn LP -> transfer assets"
+    },
+    {
+      "file": "packages/amm/src/pool_manager.rs",
+      "line": 183,
+      "flow_type": "value_movement",
+      "description": "ExecuteSwapOperations: chained swaps where output of one swap becomes input of next. Final amount checked against minimum_receive"
+    },
+    {
+      "file": "packages/amm/src/pool_manager.rs",
+      "line": 210,
+      "flow_type": "authority_movement",
+      "description": "UpdateConfig: admin changes fee_collector_addr, farm_manager_addr, pool_creation_fee, feature_toggle"
+    },
+    {
+      "file": "packages/amm/src/coin.rs",
+      "line": 104,
+      "flow_type": "value_destruction",
+      "description": "burn_coin_msg: creates BankMsg::Burn to permanently remove tokens from supply"
+    },
+    {
+      "file": "packages/common-testing/src/multi_test/stargate_mock.rs",
+      "line": 35,
+      "description": "Token creation fee burned during MsgCreateDenom execution, using configured fee amount and denom"
+    },
+    {
+      "file": "packages/common-testing/src/multi_test/stargate_mock.rs",
+      "line": 52,
+      "description": "Tokens minted to specified address via BankSudo::Mint during MsgMint execution"
+    },
+    {
+      "file": "packages/common-testing/src/multi_test/stargate_mock.rs",
+      "line": 58,
+      "description": "Tokens burned from sender via BankMsg::Burn during MsgBurn execution"
+    }
+  ],
+  "call_graph_summary": {
+    "execute::swap": [
+      "swap/commands.rs::swap",
+      "state.rs::get_pool_by_identifier",
+      "swap/perform_swap.rs::perform_swap",
+      "amm::common::validate_addr_or_default",
+      "amm::coin::burn_coin_msg"
+    ],
+    "execute::ProvideLiquidity": [
+      "liquidity::commands::provide_liquidity"
+    ],
+    "execute::CreatePool": [
+      "manager::commands::create_pool"
+    ],
+    "execute::WithdrawLiquidity": [
+      "liquidity::commands::withdraw_liquidity"
+    ],
+    "execute::ExecuteSwapOperations": [
+      "router::commands::execute_swap_operations"
+    ],
+    "execute::UpdateConfig": {
+      "direct_calls": [
+        "cw_utils::nonpayable",
+        "manager::commands::update_config"
+      ],
+      "indirect_chains": [
+        "update_config -> address validation",
+        "update_config -> config state updates"
+      ],
+      "recursive_paths": []
+    },
+    "execute::UpdateOwnership": {
+      "direct_calls": [
+        "cw_utils::nonpayable",
+        "mantra_utils::ownership::update_ownership"
+      ],
+      "indirect_chains": [
+        "nonpayable -> payment validation",
+        "update_ownership -> state updates"
+      ],
+      "recursive_paths": []
+    },
+    "provide_liquidity": {
+      "direct_calls": [
+        "get_pool_by_identifier",
+        "aggregate_coins",
+        "validate_addr_or_default",
+        "query_simulation",
+        "aggregate_outgoing_fees",
+        "helpers::assert_slippage_tolerance",
+        "amm::lp_common::mint_lp_token_msg",
+        "amm::lp_common::burn_lp_asset_msg",
+        "compute_d (for stableswap)",
+        "compute_lp_mint_amount_for_stableswap_deposit (for stableswap)",
+        "wasm_execute (for swap submessage, farm_manager calls)"
+      ],
+      "internal_chains_2_plus_levels": [
+        "provide_liquidity -> get_pool_by_identifier -> deps.querier.query_wasm_smart (pool state)",
+        "provide_liquidity -> query_simulation -> (internal swap simulation logic)",
+        "provide_liquidity -> aggregate_outgoing_fees -> (fee computation from simulation)",
+        "provide_liquidity -> helpers::assert_slippage_tolerance -> (slippage math)",
+        "provide_liquidity -> compute_d -> (stableswap invariant computation)",
+        "provide_liquidity -> compute_lp_mint_amount_for_stableswap_deposit -> (stableswap LP math)",
+        "provide_liquidity -> wasm_execute (Swap) -> (triggers execute entry point, leading to swap logic)",
+        "provide_liquidity -> wasm_execute (ManagePosition) -> (external farm_manager call)"
+      ],
+      "recursive_or_circular": "The swap submessage may call back into the same contract's execute handler (for swap), but not recursive in a loop."
+    },
+    "withdraw_liquidity": {
+      "direct_calls": [
+        "get_pool_by_identifier",
+        "cw_utils::must_pay",
+        "get_total_share",
+        "amm::lp_common::burn_lp_asset_msg"
+      ],
+      "internal_chains_2_plus_levels": [
+        "withdraw_liquidity -> get_pool_by_identifier -> deps.querier.query_wasm_smart (pool state)",
+        "withdraw_liquidity -> get_total_share -> (LP token supply query)"
+      ],
+      "recursive_or_circular": "None."
+    },
+    "execute_swap_operations": {
+      "direct_calls": [
+        "perform_swap (for each SwapOperation)",
+        "burn_coin_msg",
+        "BankMsg::Send (for fees and output)"
+      ],
+      "deep_chain": [
+        "perform_swap -> pool state read/write, external swap logic (not shown in provided files), fee calculation",
+        "burn_coin_msg -> BankMsg::Burn"
+      ],
+      "recursive_circular": false
+    },
+    "create_pool": {
+      "direct_calls": [
+        "validate_fees_are_paid",
+        "validate_no_additional_funds_sent_with_pool_creation",
+        "validate_pool_identifier",
+        "amm::tokenfactory::create_denom::create_denom"
+      ],
+      "deep_chain": [
+        "validate_fees_are_paid -> CONFIG load, info.funds calculation",
+        "validate_pool_identifier -> identifier format check",
+        "create_denom -> external token factory contract call"
+      ],
+      "recursive_circular": false
+    },
+    "update_config": {
+      "direct_calls": [
+        "cw_ownable::assert_owner",
+        "deps.api.addr_validate",
+        "CONFIG.update"
+      ],
+      "deep_chain": [
+        "assert_owner -> storage read",
+        "addr_validate -> bech32 decode"
+      ],
+      "recursive_circular": false
+    },
+    "execute (UpdateOwnership)": {
+      "direct_calls": [
+        "mantra_utils::ownership::update_ownership",
+        "cw_utils::nonpayable"
+      ],
+      "deep_chain": [
+        "update_ownership -> cw_ownable::update_ownership -> storage update",
+        "nonpayable -> check info.funds.is_empty()"
+      ],
+      "recursive_circular": false
+    },
+    "instantiate": {
+      "direct_calls": [
+        "set_contract_version",
+        "validate_unlocking_duration",
+        "validate_farm_expiration_time",
+        "validate_emergency_unlock_penalty",
+        "cw_ownable::initialize_owner"
+      ],
+      "indirect_chains": [
+        "validate_unlocking_duration -> StdError handling",
+        "validate_farm_expiration_time -> StdError handling",
+        "validate_emergency_unlock_penalty -> StdError handling"
+      ],
+      "recursive_paths": []
+    },
+    "execute": [
+      "contract.rs:execute -> commands.rs:update_config -> state.rs:CONFIG.load/save",
+      "contract.rs:execute -> commands.rs:update_config -> helpers.rs:validate_epoch_duration",
+      "contract.rs:execute -> commands.rs:update_config -> cw_ownable::assert_owner",
+      "contract.rs:execute -> mantra_utils::ownership::update_ownership"
+    ],
+    "query": [
+      "contract.rs:query -> queries.rs:query_config -> state.rs:CONFIG.load",
+      "contract.rs:query -> queries.rs:query_current_epoch -> queries.rs:query_epoch -> state.rs:CONFIG.load",
+      "contract.rs:query -> cw_ownable::get_ownership"
+    ],
+    "migrate": {
+      "direct_calls": [
+        "validate_contract!",
+        "set_contract_version"
+      ],
+      "indirect_chains": [
+        "validate_contract! -> version checks"
+      ],
+      "recursive_paths": []
+    },
+    "recursive_or_circular_paths": [],
+    "execute::ManageFarm::Fill": {
+      "direct_calls": [
+        "manager::commands::fill_farm"
+      ],
+      "indirect_chains": [
+        "fill_farm -> farm validation",
+        "fill_farm -> fee collection",
+        "fill_farm -> farm state updates"
+      ],
+      "recursive_paths": []
+    },
+    "execute::ManageFarm::Close": {
+      "direct_calls": [
+        "manager::commands::close_farm"
+      ],
+      "indirect_chains": [
+        "close_farm -> farm lookup",
+        "close_farm -> farm closure"
+      ],
+      "recursive_paths": []
+    },
+    "execute::Claim": {
+      "direct_calls": [
+        "farm::commands::claim"
+      ],
+      "indirect_chains": [
+        "claim -> query_rewards",
+        "claim -> reward distribution",
+        "claim -> sync_address_lp_weight_history"
+      ],
+      "recursive_paths": []
+    },
+    "execute::ManagePosition::Create": {
+      "direct_calls": [
+        "position::commands::create_position"
+      ],
+      "indirect_chains": [
+        "create_position -> validate_positions_limit",
+        "create_position -> calculate_weight",
+        "create_position -> position state updates"
+      ],
+      "recursive_paths": []
+    },
+    "execute::ManagePosition::Expand": {
+      "direct_calls": [
+        "position::commands::expand_position"
+      ],
+      "indirect_chains": [
+        "expand_position -> position validation",
+        "expand_position -> weight recalculation"
+      ],
+      "recursive_paths": []
+    },
+    "execute::ManagePosition::Close": {
+      "direct_calls": [
+        "position::commands::close_position"
+      ],
+      "indirect_chains": [
+        "close_position -> validate_no_pending_rewards",
+        "close_position -> LP token return",
+        "close_position -> reconcile_user_state"
+      ],
+      "recursive_paths": []
+    },
+    "execute::ManagePosition::Withdraw": {
+      "direct_calls": [
+        "position::commands::withdraw_position"
+      ],
+      "indirect_chains": [
+        "withdraw_position -> emergency unlock check",
+        "withdraw_position -> penalty calculation",
+        "withdraw_position -> fund transfer",
+        "withdraw_position -> reconcile_user_state"
+      ],
+      "recursive_paths": []
+    },
+    "query::Farms": {
+      "direct_calls": [
+        "queries::query_farms"
+      ],
+      "indirect_chains": [
+        "query_farms -> state pagination"
+      ],
+      "recursive_paths": []
+    },
+    "query::Positions": {
+      "direct_calls": [
+        "queries::query_positions"
+      ],
+      "indirect_chains": [
+        "query_positions -> state pagination"
+      ],
+      "recursive_paths": []
+    },
+    "query::Rewards": {
+      "direct_calls": [
+        "queries::query_rewards"
+      ],
+      "indirect_chains": [
+        "query_rewards -> epoch manager query",
+        "query_rewards -> reward calculation"
+      ],
+      "recursive_paths": []
+    },
+    "query::LpWeight": {
+      "direct_calls": [
+        "queries::query_lp_weight"
+      ],
+      "indirect_chains": [
+        "query_lp_weight -> LP weight history lookup"
+      ],
+      "recursive_paths": []
+    },
+    "create_position": [
+      "validate_lp_denom",
+      "validate_unlocking_duration_for_position",
+      "validate_identifier",
+      "get_position",
+      "validate_positions_limit",
+      "update_weights -> calculate_weight, get_latest_address_weight, LP_WEIGHT_HISTORY.save"
+    ],
+    "expand_position": [
+      "get_position",
+      "validate_lp_denom",
+      "update_weights -> calculate_weight, get_latest_address_weight, LP_WEIGHT_HISTORY.save"
+    ],
+    "close_position": [
+      "validate_no_pending_rewards",
+      "get_position",
+      "validate_positions_limit",
+      "close_position_in_full",
+      "update_weights -> calculate_weight, get_latest_address_weight, LP_WEIGHT_HISTORY.save",
+      "reconcile_user_state"
+    ],
+    "withdraw_position": [
+      "get_position",
+      "get_farms_by_lp_denom",
+      "create_penalty_share_msg",
+      "update_weights -> calculate_weight, get_latest_address_weight, LP_WEIGHT_HISTORY.save (conditional on position.open)",
+      "reconcile_user_state (conditional on position.open)"
+    ],
+    "entry_points": [
+      {
+        "function": "ExecuteMsg::ManageFarm",
+        "call_chain": [
+          "handle_manage_farm",
+          "validate_farm_params",
+          "check_concurrent_farms",
+          "create_or_expand_farm",
+          "transfer_farm_asset"
+        ],
+        "recursive": false,
+        "circular": false
+      },
+      {
+        "function": "ExecuteMsg::ManagePosition",
+        "call_chain": [
+          "handle_manage_position",
+          "validate_position_action",
+          "lock_lp_tokens",
+          "update_position_state",
+          "check_unlocking_duration"
+        ],
+        "recursive": false,
+        "circular": false
+      },
+      {
+        "function": "ExecuteMsg::Claim",
+        "call_chain": [
+          "handle_claim",
+          "calculate_rewards_for_user",
+          "distribute_rewards",
+          "update_farm_state"
+        ],
+        "recursive": false,
+        "circular": false
+      },
+      {
+        "function": "ExecuteMsg::UpdateConfig",
+        "call_chain": [
+          "handle_update_config",
+          "validate_new_config",
+          "update_state"
+        ],
+        "recursive": false,
+        "circular": false
+      },
+      {
+        "function": "QueryMsg::Rewards",
+        "call_chain": [
+          "query_rewards",
+          "calculate_pending_rewards",
+          "fetch_farm_data"
+        ],
+        "recursive": false,
+        "circular": false
+      }
+    ]
+  },
+  "static_findings_context": []
+}

@@ -1,0 +1,12 @@
+{
+  "project": "code4rena_cabal-liquid-staking-token_2025_05",
+  "timestamp": "2026-09-05T22:29:25",
+  "files_analyzed": 0,
+  "files_skipped": 0,
+  "total_vulnerabilities": 0,
+  "vulnerabilities": [],
+  "token_usage": {
+    "total_input": 0,
+    "total_output": 0
+  }
+}

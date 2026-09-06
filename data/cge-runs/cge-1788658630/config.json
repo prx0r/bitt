@@ -1,0 +1,14 @@
+{
+  "generations": 2,
+  "pop_size": 4,
+  "projects": [
+    "code4rena_coded-estate-invitational_2024_12",
+    "code4rena_iq-ai_2025_03",
+    "code4rena_liquid-ron_2025_03",
+    "code4rena_mantra-dex_2025_03",
+    "sherlock_cork-protocol_2025_01",
+    "sherlock_crestal-network_2025_03"
+  ],
+  "model": "mimo-v2.5",
+  "timestamp": "2026-09-06 01:37:10"
+}

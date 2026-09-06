@@ -1,0 +1,49 @@
+{
+  "project": "code4rena_bakerfi-invitational_2025_02",
+  "timestamp": "2026-09-05T22:29:15",
+  "files_analyzed": 57,
+  "files_skipped": 0,
+  "total_vulnerabilities": 3,
+  "vulnerabilities": [
+    {
+      "title": "Unprotected Vault.initialize function with Public Initializer",
+      "description": "The Vault contract's initialize function is marked public with an initializer modifier but lacks additional access control (e.g., onlyOwner or a constructor guard). In upgradeable proxy patterns, this allows any caller to initialize the contract after deployment, potentially enabling re-initialization attacks or front-running. The initializer modifier typically prevents re-initialization, but if the contract is deployed behind a proxy, the first caller (not necessarily the legitimate deployer) can set the owner and strategy.",
+      "vulnerability_type": "access_control",
+      "severity": "high",
+      "confidence": 0.85,
+      "location": "Vault.initialize",
+      "file": "contracts/Vault.sol",
+      "scout_area": "Public initialization without access control",
+      "scout_risk_type": "access_control",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unprotected MultiStrategyVault.initialize function with Public Initializer",
+      "description": "The MultiStrategyVault contract's initialize function is also marked public with an initializer modifier but lacks explicit access control. Similar to Vault, this allows unauthorized callers to initialize the contract. The function initializes strategies and approves them to spend assets, which could be manipulated by an attacker who front-runs the legitimate initialization to set malicious strategies or alter ownership.",
+      "vulnerability_type": "access_control",
+      "severity": "high",
+      "confidence": 0.85,
+      "location": "MultiStrategyVault.initialize",
+      "file": "contracts/MultiStrategyVault.sol",
+      "scout_area": "Public initialization without access control",
+      "scout_risk_type": "access_control",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unprotected VaultRouter.initialize function with Public Initializer",
+      "description": "The VaultRouter contract's initialize function is marked public with an initializer modifier, allowing any caller to initialize it. This contract manages routing operations and WETH integration. Without proper access control, an attacker could initialize it before the legitimate deployer, potentially setting incorrect owner or WETH addresses, leading to loss of funds or operational disruption.",
+      "vulnerability_type": "access_control",
+      "severity": "high",
+      "confidence": 0.85,
+      "location": "VaultRouter.initialize",
+      "file": "contracts/VaultRouter.sol",
+      "scout_area": "Public initialization without access control",
+      "scout_risk_type": "access_control",
+      "reported_by_model": "mimo-v2.5"
+    }
+  ],
+  "token_usage": {
+    "total_input": 0,
+    "total_output": 0
+  }
+}

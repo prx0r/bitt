@@ -1,0 +1,64 @@
+{
+  "project": "code4rena_liquid-ron_2025_03",
+  "timestamp": "2026-09-06T01:43:57",
+  "files_analyzed": 11,
+  "files_skipped": 0,
+  "total_vulnerabilities": 5,
+  "vulnerabilities": [
+    {
+      "title": "Unknown vulnerability",
+      "description": "",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "src/LiquidRon.sol",
+      "file": "src/LiquidRon.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "src/LiquidRon.sol",
+      "file": "src/LiquidRon.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "src/ValidatorTracker.sol",
+      "file": "src/ValidatorTracker.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "src/ValidatorTracker.sol",
+      "file": "src/ValidatorTracker.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "",
+      "vulnerability_type": "other",
+      "severity": "low",
+      "confidence": 0.7,
+      "location": "src/ValidatorTracker.sol",
+      "file": "src/ValidatorTracker.sol",
+      "reported_by_model": "mimo-v2.5"
+    }
+  ],
+  "token_usage": {
+    "total_input": 0,
+    "total_output": 0
+  },
+  "duration_seconds": 425.4
+}

@@ -1,0 +1,3303 @@
+{
+  "entry_points": [
+    {
+      "file": "test/BlueprintV4.t.sol",
+      "function": "test_createAgentWithNFT",
+      "line": 14,
+      "untrusted_input_flows": [
+        "bytes32 projectId",
+        "string base64Proposal",
+        "string serverURL",
+        "uint256 validTokenId"
+      ],
+      "permission_level": "any_address"
+    },
+    {
+      "file": "test/BlueprintV4.t.sol",
+      "function": "test_createAgentWithWhitelistUsers",
+      "line": 44,
+      "untrusted_input_flows": [
+        "bytes32 projectId",
+        "string base64Proposal",
+        "string serverURL",
+        "uint256 validTokenId"
+      ],
+      "permission_level": "any_address"
+    },
+    {
+      "file": "test/BlueprintV4.t.sol",
+      "function": "test_createAgentWithWhitelistUsersWithSig",
+      "line": 79,
+      "untrusted_input_flows": [
+        "bytes32 projectId",
+        "string base64Proposal",
+        "string serverURL",
+        "uint256 validTokenId",
+        "bytes signature"
+      ],
+      "permission_level": "any_address"
+    },
+    {
+      "file": "test/BlueprintV4.t.sol",
+      "function": "test_getWorkerAddresses",
+      "line": 112,
+      "untrusted_input_flows": [],
+      "permission_level": "any_address"
+    },
+    {
+      "file": "test/EIP712.sol",
+      "function": "testGetRequestProposalHashDigest",
+      "line": 32,
+      "untrusted_input_flows": [
+        "bytes32 projId",
+        "string base64RecParam",
+        "string serverURL"
+      ],
+      "permission_level": "any_address"
+    },
+    {
+      "file": "test/EIP712.sol",
+      "function": "test_getRequestProposalDigest",
+      "line": 48,
+      "untrusted_input_flows": [],
+      "permission_level": "any_address"
+    },
+    {
+      "file": "test/EIP712.sol",
+      "function": "test_getSignerAddress",
+      "line": 63,
+      "untrusted_input_flows": [
+        "bytes signature"
+      ],
+      "permission_level": "any_address"
+    },
+    {
+      "file": "test/EIP712.sol",
+      "function": "test_invalidSignature",
+      "line": 81,
+      "untrusted_input_flows": [
+        "bytes signature"
+      ],
+      "permission_level": "any_address"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "function_name": "test_createAgentWithToken",
+      "line": 30,
+      "untrusted_input": "projectId (bytes32), base64Proposal (string), serverURL (string), workerAddress (address), tokenAddress (address)",
+      "permission_level": "user"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "function_name": "test_Revert_createAgentWithToken",
+      "line": 85,
+      "untrusted_input": "projectId (bytes32), base64Proposal (string), workerAddress (address), serverURL (string), tokenAddress (address)",
+      "permission_level": "user"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "function_name": "test_updateWorkerDeploymentConfigWithSig",
+      "line": 125,
+      "untrusted_input": "tokenAddress (address), projectId (bytes32), requestId (bytes32), base64Proposal (string), signature (bytes)",
+      "permission_level": "user"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "function_name": "test_updateWorkerDeploymentConfig",
+      "line": 158,
+      "untrusted_input": "tokenAddress (address), projectId (bytes32), requestId (bytes32), base64Proposal (string)",
+      "permission_level": "user"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "function_name": "test_resetDeploymentRequestWithSig",
+      "line": 193,
+      "untrusted_input": "projectId (bytes32), requestId (bytes32), workerAddress (address), base64Proposal (string), serverURL (string), signature (bytes)",
+      "permission_level": "user"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "function_name": "test_Revert_updateWorkerDeploymentConfig",
+      "line": 228,
+      "untrusted_input": "tokenAddress (address), projectId (bytes32), requestId (bytes32), base64Proposal (string)",
+      "permission_level": "user"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "function_name": "test_userTopUp",
+      "line": 263,
+      "untrusted_input": "tokenAddress (address), topUpAmount (uint256)",
+      "permission_level": "user"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "function_name": "test_Revert_userTopUp",
+      "line": 297,
+      "untrusted_input": "tokenAddress (address), topUpAmount (uint256)",
+      "permission_level": "user"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "function_name": "test_removePaymentAddress",
+      "line": 318,
+      "untrusted_input": "paymentAddress (address)",
+      "permission_level": "admin"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "function_name": "test_setCreateAgentTokenCost",
+      "line": 335,
+      "untrusted_input": "paymentAddress (address), cost (uint256)",
+      "permission_level": "admin"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "function_name": "test_setUpdateCreateAgentTokenCost",
+      "line": 352,
+      "untrusted_input": "paymentAddress (address), cost (uint256)",
+      "permission_level": "admin"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "function_name": "test_setWorkerPublicKey",
+      "line": 369,
+      "untrusted_input": "publicKey (bytes)",
+      "permission_level": "worker"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "function_name": "test_addPaymentAddress",
+      "line": 395,
+      "untrusted_input": "paymentAddress (address)",
+      "permission_level": "admin"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "function_name": "test_submitProofOfDeployment",
+      "line": 417,
+      "untrusted_input": "projectId (bytes32), deploymentRequestId (bytes32), proof (string)",
+      "permission_level": "worker"
+    },
+    {
+      "file": "src/BlueprintV4.sol",
+      "function_name": "initialize",
+      "line": 14,
+      "untrusted_input_flows_in": "msg.sender (implementation owner, set at deployment)",
+      "permission_level": "trusted (contract initializer)"
+    },
+    {
+      "file": "src/BlueprintV4.sol",
+      "function_name": "_authorizeUpgrade",
+      "line": 23,
+      "untrusted_input_flows_in": "newImplementation address",
+      "permission_level": "owner-only (onlyOwner modifier)"
+    },
+    {
+      "file": "src/Blueprint.sol",
+      "function_name": "setNFTContractAddress",
+      "line": 45,
+      "untrusted_input_flows": "_nftContractAddress (address)",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/Blueprint.sol",
+      "function_name": "setWhitelistAddresses",
+      "line": 51,
+      "untrusted_input_flows": "whitelistAddress (address[])",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/Blueprint.sol",
+      "function_name": "removeWhitelistAddresses",
+      "line": 58,
+      "untrusted_input_flows": "removedAddress (address[])",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/Blueprint.sol",
+      "function_name": "addPaymentAddress",
+      "line": 65,
+      "untrusted_input_flows": "paymentAddress (address)",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/Blueprint.sol",
+      "function_name": "setCreateAgentTokenCost",
+      "line": 80,
+      "untrusted_input_flows": "paymentAddress (address), cost (uint256)",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/Blueprint.sol",
+      "function_name": "setUpdateCreateAgentTokenCost",
+      "line": 87,
+      "untrusted_input_flows": "paymentAddress (address), cost (uint256)",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/Blueprint.sol",
+      "function_name": "removePaymentAddress",
+      "line": 94,
+      "untrusted_input_flows": "paymentAddress (address)",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/Blueprint.sol",
+      "function_name": "setFeeCollectionWalletAddress",
+      "line": 101,
+      "untrusted_input_flows": "_feeCollectionWalletAddress (address)",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/Blueprint.sol",
+      "function_name": "setWorkerAdmin",
+      "line": 108,
+      "untrusted_input_flows": "_workerAdmin (address)",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/Blueprint.sol",
+      "function_name": "updateWorker",
+      "line": 114,
+      "untrusted_input_flows": "workerAddress (address), isTrusted (bool)",
+      "permission_level": "isAdmin"
+    },
+    {
+      "file": "src/Blueprint.sol",
+      "function_name": "resetWorkers",
+      "line": 121,
+      "untrusted_input_flows": "none",
+      "permission_level": "isAdmin"
+    },
+    {
+      "file": "src/Blueprint.sol",
+      "function_name": "creditReward",
+      "line": 126,
+      "untrusted_input_flows": "userAddress (address), amount (uint256)",
+      "permission_level": "isAdmin"
+    },
+    {
+      "file": "src/Payment.sol",
+      "function_name": "checkNFTOwnership",
+      "line": 10,
+      "untrusted_input_flows": "nftTokenAddress (address), nftId (uint256), userAddress (address)",
+      "permission_level": "public view"
+    },
+    {
+      "file": "src/BlueprintV1.sol",
+      "function_name": "initialize",
+      "line": 16,
+      "untrusted_input_flows": "msg.sender (address)",
+      "permission_level": "public (reinitializer(1))"
+    },
+    {
+      "file": "src/BlueprintV2.sol",
+      "function_name": "initialize",
+      "line": 16,
+      "untrusted_input_flows": "msg.sender (address)",
+      "permission_level": "public (reinitializer(2))"
+    },
+    {
+      "file": "src/BlueprintV3.sol",
+      "function_name": "initialize",
+      "line": 18,
+      "untrusted_input_flows": "msg.sender (address)",
+      "permission_level": "public (reinitializer(3))"
+    },
+    {
+      "file": "src/BlueprintV5.sol",
+      "function_name": "initialize",
+      "line": 24,
+      "untrusted_input_flows": "msg.sender (address)",
+      "permission_level": "public (reinitializer(5))"
+    },
+    {
+      "file": "src/BlueprintV6.sol",
+      "function_name": "initialize",
+      "line": 16,
+      "untrusted_input_flows": "msg.sender (address)",
+      "permission_level": "public (reinitializer(6))"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "createProjectID",
+      "line": 120,
+      "untrusted_input": "block.timestamp, msg.sender, block.chainid",
+      "permission_level": "user"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "createProjectIDAndDeploymentRequest",
+      "line": 168,
+      "untrusted_input": "projectId, base64Proposal, serverURL",
+      "permission_level": "user"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "createProjectIDAndDeploymentRequestWithSig",
+      "line": 174,
+      "untrusted_input": "projectId, base64Proposal, serverURL, signature",
+      "permission_level": "user"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "createProjectIDAndPrivateDeploymentRequest",
+      "line": 184,
+      "untrusted_input": "projectId, base64Proposal, privateWorkerAddress, serverURL",
+      "permission_level": "user"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "createAgentWithToken",
+      "line": 243,
+      "untrusted_input": "projectId, base64Proposal, privateWorkerAddress, serverURL, tokenAddress, msg.value",
+      "permission_level": "user"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "createAgentWithTokenWithSig",
+      "line": 250,
+      "untrusted_input": "projectId, base64Proposal, privateWorkerAddress, serverURL, tokenAddress, signature, msg.value",
+      "permission_level": "user"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "createAgentWithNFT",
+      "line": 263,
+      "untrusted_input": "projectId, base64Proposal, privateWorkerAddress, serverURL, tokenId",
+      "permission_level": "user"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "createAgentWithSigWithNFT",
+      "line": 271,
+      "untrusted_input": "projectId, base64Proposal, privateWorkerAddress, serverURL, signature, tokenId",
+      "permission_level": "user"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "resetDeploymentRequest",
+      "line": 286,
+      "untrusted_input": "projectId, requestID, workerAddress, base64Proposal, serverURL",
+      "permission_level": "user"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "resetDeploymentRequestWithSig",
+      "line": 293,
+      "untrusted_input": "projectId, requestID, workerAddress, base64Proposal, serverURL, signature",
+      "permission_level": "user"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "submitProofOfDeployment",
+      "line": 317,
+      "untrusted_input": "projectId, requestID, proofBase64",
+      "permission_level": "trusted_worker"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "submitDeploymentRequest",
+      "line": 332,
+      "untrusted_input": "projectId, requestID",
+      "permission_level": "trusted_worker"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "updateWorkerDeploymentConfig",
+      "line": 350,
+      "untrusted_input": "tokenAddress, projectId, requestID, updatedBase64Config, msg.value",
+      "permission_level": "user"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "updateWorkerDeploymentConfigWithSig",
+      "line": 357,
+      "untrusted_input": "tokenAddress, projectId, requestID, updatedBase64Config, signature, msg.value",
+      "permission_level": "user"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "setWorkerPublicKey",
+      "line": 373,
+      "untrusted_input": "publicKey",
+      "permission_level": "trusted_worker"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "userTopUp",
+      "line": 395,
+      "untrusted_input": "tokenAddress, amount, msg.value",
+      "permission_level": "user"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "userTopUpOther",
+      "line": 400,
+      "untrusted_input": "userAddress, tokenAddress, amount, msg.value",
+      "permission_level": "user"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "getWorkerPublicKey",
+      "line": 382,
+      "untrusted_input": "workerAddress",
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "getWorkerAddresses",
+      "line": 387,
+      "untrusted_input": "none",
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "getPaymentAddresses",
+      "line": 390,
+      "untrusted_input": "none",
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "getLatestDeploymentRequestID",
+      "line": 404,
+      "untrusted_input": "addr",
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "getLatestUserProjectID",
+      "line": 409,
+      "untrusted_input": "addr",
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "getProjectInfo",
+      "line": 414,
+      "untrusted_input": "projectId",
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "getDeploymentProof",
+      "line": 421,
+      "untrusted_input": "requestID",
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "getEIP712ContractAddress",
+      "line": 426,
+      "untrusted_input": "none",
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "isWhitelistUser",
+      "line": 431,
+      "untrusted_input": "userAddress",
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "getUserNonce",
+      "line": 407,
+      "untrusted_input": "userAddress",
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "function_name": "getDeploymentStatus",
+      "line": 411,
+      "untrusted_input": "requestID",
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/EIP712.sol",
+      "function_name": "getRequestProposalDigest",
+      "line": 56,
+      "untrusted_input_flows": "projectId (bytes32), base64RecParam (string), serverURL (string)",
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/EIP712.sol",
+      "function_name": "getRequestDeploymentDigest",
+      "line": 70,
+      "untrusted_input_flows": "projectId (bytes32), base64RecParam (string), serverURL (string)",
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/EIP712.sol",
+      "function_name": "getCreateAgentWithTokenDigest",
+      "line": 84,
+      "untrusted_input_flows": "projectId (bytes32), base64RecParam (string), serverURL (string), privateWorkerAddress (address), tokenAddress (address)",
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/EIP712.sol",
+      "function_name": "getCreateAgentWithNFTDigest",
+      "line": 100,
+      "untrusted_input_flows": "projectId (bytes32), base64RecParam (string), serverURL (string), privateWorkerAddress (address), tokenId (uint256)",
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/EIP712.sol",
+      "function_name": "getUpdateWorkerConfigDigest",
+      "line": 116,
+      "untrusted_input_flows": "tokenAddress (address), projectId (bytes32), requestID (bytes32), updatedBase64Config (string), nonce (uint256)",
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/EIP712.sol",
+      "function_name": "getRequestResetDeploymentDigest",
+      "line": 130,
+      "untrusted_input_flows": "projectId (bytes32), requestID (bytes32), workerAddress (address), updatedBase64Config (string), nonce (uint256)",
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/EIP712.sol",
+      "function_name": "getSignerAddress",
+      "line": 145,
+      "untrusted_input_flows": "hash (bytes32), signature (bytes)",
+      "permission_level": "public_pure"
+    },
+    {
+      "file": "src/history/BlueprintV4.sol",
+      "function_name": "setNFTContractAddress",
+      "line": 12,
+      "untrusted_input_flows": "_nftContractAddress (address)",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/history/BlueprintV4.sol",
+      "function_name": "setWhitelistAddresses",
+      "line": 17,
+      "untrusted_input_flows": "whitelistAddress (address[])",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/history/BlueprintV4.sol",
+      "function_name": "addWhitelistAddress",
+      "line": 23,
+      "untrusted_input_flows": "whitelistAddress (address)",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/history/BlueprintV4.sol",
+      "function_name": "deleteWhitelistAddress",
+      "line": 27,
+      "untrusted_input_flows": "whitelistAddress (address)",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/history/BlueprintV4.sol",
+      "function_name": "resetAgentCreationStatus",
+      "line": 31,
+      "untrusted_input_flows": "userAddress (address), tokenId (uint256)",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/history/BlueprintV4.sol",
+      "function_name": "removeWhitelistAddresses",
+      "line": 36,
+      "untrusted_input_flows": "removedAddress (address[])",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/history/EIP712V4.sol",
+      "function_name": "getRequestProposalDigest",
+      "line": 30,
+      "untrusted_input_flows": "projectId (bytes32), base64RecParam (string), serverURL (string)",
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/history/EIP712V4.sol",
+      "function_name": "getRequestDeploymentDigest",
+      "line": 44,
+      "untrusted_input_flows": "projectId (bytes32), base64RecParam (string), serverURL (string)",
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/history/EIP712V4.sol",
+      "function_name": "getSignerAddress",
+      "line": 59,
+      "untrusted_input_flows": "hash (bytes32), signature (bytes)",
+      "permission_level": "public_pure"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "createProjectID",
+      "line": 120,
+      "untrusted_input": [
+        "msg.sender (address)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "upgradeProject",
+      "line": 129,
+      "untrusted_input": [
+        "projectId (bytes32)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "createProposalRequest",
+      "line": 198,
+      "untrusted_input": [
+        "projectId (bytes32)",
+        "base64RecParam (string)",
+        "serverURL (string)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "createProposalRequestWithSig",
+      "line": 206,
+      "untrusted_input": [
+        "projectId (bytes32)",
+        "base64RecParam (string)",
+        "serverURL (string)",
+        "signature (bytes)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "createPrivateProposalRequest",
+      "line": 218,
+      "untrusted_input": [
+        "projectId (bytes32)",
+        "privateSolverAddress (address)",
+        "base64RecParam (string)",
+        "serverURL (string)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "createProjectIDAndProposalRequest",
+      "line": 228,
+      "untrusted_input": [
+        "projectId (bytes32)",
+        "base64RecParam (string)",
+        "serverURL (string)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "createProjectIDAndProposalRequestWithSig",
+      "line": 238,
+      "untrusted_input": [
+        "projectId (bytes32)",
+        "base64RecParam (string)",
+        "serverURL (string)",
+        "signature (bytes)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "createDeploymentRequest",
+      "line": 306,
+      "untrusted_input": [
+        "projectId (bytes32)",
+        "solverAddress (address)",
+        "base64Proposal (string)",
+        "serverURL (string)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "createDeploymentRequestWithSig",
+      "line": 314,
+      "untrusted_input": [
+        "projectId (bytes32)",
+        "solverAddress (address)",
+        "base64Proposal (string)",
+        "serverURL (string)",
+        "signature (bytes)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "createMultipleDeploymentRequest",
+      "line": 324,
+      "untrusted_input": [
+        "projectId (bytes32)",
+        "solverAddress (address)",
+        "workerAddress (address)",
+        "base64Proposals (string[])",
+        "serverURL (string)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "createPrivateDeploymentRequest",
+      "line": 352,
+      "untrusted_input": [
+        "projectId (bytes32)",
+        "solverAddress (address)",
+        "privateWorkerAddress (address)",
+        "base64Proposal (string)",
+        "serverURL (string)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "createPrivateDeploymentRequestWithSig",
+      "line": 361,
+      "untrusted_input": [
+        "projectId (bytes32)",
+        "solverAddress (address)",
+        "privateWorkerAddress (address)",
+        "base64Proposal (string)",
+        "serverURL (string)",
+        "signature (bytes)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "createProjectIDAndDeploymentRequest",
+      "line": 392,
+      "untrusted_input": [
+        "projectId (bytes32)",
+        "base64Proposal (string)",
+        "serverURL (string)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "createProjectIDAndDeploymentRequestWithSig",
+      "line": 401,
+      "untrusted_input": [
+        "projectId (bytes32)",
+        "base64Proposal (string)",
+        "serverURL (string)",
+        "signature (bytes)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "createProjectIDAndPrivateDeploymentRequest",
+      "line": 411,
+      "untrusted_input": [
+        "projectId (bytes32)",
+        "base64Proposal (string)",
+        "privateWorkerAddress (address)",
+        "serverURL (string)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "createProjectIDAndPrivateDeploymentRequestWithSig",
+      "line": 420,
+      "untrusted_input": [
+        "projectId (bytes32)",
+        "base64Proposal (string)",
+        "privateWorkerAddress (address)",
+        "serverURL (string)",
+        "signature (bytes)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "createProjectIdAndPrivateDeploymentWithConfig",
+      "line": 430,
+      "untrusted_input": [
+        "projectId (bytes32)",
+        "base64Proposal (string)",
+        "privateWorkerAddress (address)",
+        "serverURL (string)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "submitProofOfDeployment",
+      "line": 438,
+      "untrusted_input": [
+        "projectId (bytes32)",
+        "requestID (bytes32)",
+        "proofBase64 (string)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "submitDeploymentRequest",
+      "line": 447,
+      "untrusted_input": [
+        "projectId (bytes32)",
+        "requestID (bytes32)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "updateWorkerDeploymentConfig",
+      "line": 463,
+      "untrusted_input": [
+        "projectId (bytes32)",
+        "requestID (bytes32)",
+        "updatedBase64Config (string)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "setWorkerPublicKey",
+      "line": 474,
+      "untrusted_input": [
+        "publicKey (bytes)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "getWorkerPublicKey",
+      "line": 482,
+      "untrusted_input": [
+        "workerAddress (address)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "getWorkerAddresses",
+      "line": 488,
+      "untrusted_input": [],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "getDeploymentStatus",
+      "line": 493,
+      "untrusted_input": [
+        "requestID (bytes32)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "getLatestProposalRequestID",
+      "line": 499,
+      "untrusted_input": [
+        "addr (address)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "getLatestDeploymentRequestID",
+      "line": 504,
+      "untrusted_input": [
+        "addr (address)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "getLatestUserProjectID",
+      "line": 509,
+      "untrusted_input": [
+        "addr (address)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "getProjectInfo",
+      "line": 514,
+      "untrusted_input": [
+        "projectId (bytes32)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "getDeploymentProof",
+      "line": 522,
+      "untrusted_input": [
+        "requestID (bytes32)"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "function_name": "getEIP712ContractAddress",
+      "line": 527,
+      "untrusted_input": [],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/EIP712V5.sol",
+      "function_name": "getAddress",
+      "line": 23,
+      "untrusted_input_flows": [],
+      "permission_level": "view"
+    },
+    {
+      "file": "src/history/EIP712V5.sol",
+      "function_name": "getRequestProposalDigest",
+      "line": 27,
+      "untrusted_input_flows": [
+        "projectId",
+        "base64RecParam",
+        "serverURL"
+      ],
+      "permission_level": "view"
+    },
+    {
+      "file": "src/history/EIP712V5.sol",
+      "function_name": "getRequestDeploymentDigest",
+      "line": 38,
+      "untrusted_input_flows": [
+        "projectId",
+        "base64RecParam",
+        "serverURL"
+      ],
+      "permission_level": "view"
+    },
+    {
+      "file": "src/history/EIP712V5.sol",
+      "function_name": "getCreateAgentWithTokenDigest",
+      "line": 49,
+      "untrusted_input_flows": [
+        "projectId",
+        "base64RecParam",
+        "serverURL",
+        "privateWorkerAddress",
+        "tokenAddress"
+      ],
+      "permission_level": "view"
+    },
+    {
+      "file": "src/history/EIP712V5.sol",
+      "function_name": "getCreateAgentWithNFTDigest",
+      "line": 65,
+      "untrusted_input_flows": [
+        "projectId",
+        "base64RecParam",
+        "serverURL",
+        "privateWorkerAddress",
+        "tokenId"
+      ],
+      "permission_level": "view"
+    },
+    {
+      "file": "src/history/EIP712V5.sol",
+      "function_name": "getUpdateWorkerConfigDigest",
+      "line": 81,
+      "untrusted_input_flows": [
+        "tokenAddress",
+        "projectId",
+        "requestID",
+        "updatedBase64Config",
+        "nonce"
+      ],
+      "permission_level": "view"
+    },
+    {
+      "file": "src/history/EIP712V5.sol",
+      "function_name": "getRequestResetDeploymentDigest",
+      "line": 98,
+      "untrusted_input_flows": [
+        "projectId",
+        "requestID",
+        "workerAddress",
+        "updatedBase64Config",
+        "nonce"
+      ],
+      "permission_level": "view"
+    },
+    {
+      "file": "src/history/EIP712V5.sol",
+      "function_name": "getSignerAddress",
+      "line": 115,
+      "untrusted_input_flows": [
+        "hash",
+        "signature"
+      ],
+      "permission_level": "pure"
+    },
+    {
+      "file": "src/history/BlueprintV1.sol",
+      "function_name": "getReputation",
+      "line": 59,
+      "untrusted_input_flows": [
+        "addr"
+      ],
+      "permission_level": "view"
+    },
+    {
+      "file": "src/history/BlueprintV1.sol",
+      "function_name": "createProjectID",
+      "line": 68,
+      "untrusted_input_flows": [
+        "msg.sender",
+        "block.timestamp",
+        "block.chainid"
+      ],
+      "permission_level": "write"
+    },
+    {
+      "file": "src/history/BlueprintV1.sol",
+      "function_name": "createProposalRequest",
+      "line": 84,
+      "untrusted_input_flows": [
+        "projectId",
+        "base64RecParam",
+        "serverURL",
+        "msg.sender",
+        "block.timestamp",
+        "block.chainid"
+      ],
+      "permission_level": "write"
+    },
+    {
+      "file": "src/history/BlueprintV1.sol",
+      "function_name": "createPrivateProposalRequest",
+      "line": 107,
+      "untrusted_input_flows": [
+        "projectId",
+        "privateSolverAddress",
+        "base64RecParam",
+        "serverURL",
+        "msg.sender",
+        "block.timestamp",
+        "block.chainid"
+      ],
+      "permission_level": "write"
+    },
+    {
+      "file": "src/history/BlueprintV1.sol",
+      "function_name": "createDeploymentRequest",
+      "line": 130,
+      "untrusted_input_flows": [
+        "projectId",
+        "solverAddress",
+        "base64Proposal",
+        "serverURL",
+        "msg.sender",
+        "block.timestamp",
+        "block.chainid"
+      ],
+      "permission_level": "write"
+    },
+    {
+      "file": "src/history/BlueprintV1.sol",
+      "function_name": "createPrivateDeploymentRequest",
+      "line": 156,
+      "untrusted_input_flows": [
+        "projectId",
+        "solverAddress",
+        "privateWorkerAddress",
+        "base64Proposal",
+        "serverURL",
+        "msg.sender",
+        "block.timestamp",
+        "block.chainid"
+      ],
+      "permission_level": "write"
+    },
+    {
+      "file": "src/history/BlueprintV1.sol",
+      "function_name": "submitProofOfDeployment",
+      "line": 185,
+      "untrusted_input_flows": [
+        "projectId",
+        "requestID",
+        "proofBase64",
+        "msg.sender"
+      ],
+      "permission_level": "write"
+    },
+    {
+      "file": "src/history/BlueprintV1.sol",
+      "function_name": "submitDeploymentRequest",
+      "line": 198,
+      "untrusted_input_flows": [
+        "projectId",
+        "requestID",
+        "msg.sender"
+      ],
+      "permission_level": "write"
+    },
+    {
+      "file": "src/history/BlueprintV1.sol",
+      "function_name": "getDeploymentStatus",
+      "line": 214,
+      "untrusted_input_flows": [
+        "requestID"
+      ],
+      "permission_level": "view"
+    },
+    {
+      "file": "src/history/BlueprintV1.sol",
+      "function_name": "getLatestProposalRequestID",
+      "line": 219,
+      "untrusted_input_flows": [
+        "addr"
+      ],
+      "permission_level": "view"
+    },
+    {
+      "file": "src/history/BlueprintV1.sol",
+      "function_name": "getLatestDeploymentRequestID",
+      "line": 224,
+      "untrusted_input_flows": [
+        "addr"
+      ],
+      "permission_level": "view"
+    },
+    {
+      "file": "src/history/BlueprintV1.sol",
+      "function_name": "getLatestUserProjectID",
+      "line": 229,
+      "untrusted_input_flows": [
+        "addr"
+      ],
+      "permission_level": "view"
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "function_name": "createProjectID",
+      "line": 96,
+      "untrusted_input_flows_in": "None (only uses msg.sender, block.timestamp, block.chainid)",
+      "permission_level": "anyone"
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "function_name": "upgradeProject",
+      "line": 104,
+      "untrusted_input_flows_in": "projectId (bytes32)",
+      "permission_level": "anyone"
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "function_name": "createProposalRequest",
+      "line": 120,
+      "untrusted_input_flows_in": "projectId (bytes32), base64RecParam (string), serverURL (string)",
+      "permission_level": "anyone"
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "function_name": "createPrivateProposalRequest",
+      "line": 126,
+      "untrusted_input_flows_in": "projectId (bytes32), privateSolverAddress (address), base64RecParam (string), serverURL (string)",
+      "permission_level": "anyone"
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "function_name": "createProjectIDAndProposalRequest",
+      "line": 136,
+      "untrusted_input_flows_in": "projectId (bytes32), base64RecParam (string), serverURL (string)",
+      "permission_level": "anyone"
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "function_name": "createDeploymentRequest",
+      "line": 194,
+      "untrusted_input_flows_in": "projectId (bytes32), solverAddress (address), base64Proposal (string), serverURL (string)",
+      "permission_level": "anyone"
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "function_name": "createMultipleDeploymentRequest",
+      "line": 213,
+      "untrusted_input_flows_in": "projectId (bytes32), solverAddress (address), base64Proposals (string[]), serverURL (string)",
+      "permission_level": "anyone"
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "function_name": "createPrivateDeploymentRequest",
+      "line": 234,
+      "untrusted_input_flows_in": "projectId (bytes32), solverAddress (address), privateWorkerAddress (address), base64Proposal (string), serverURL (string)",
+      "permission_level": "anyone"
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "function_name": "createMultiplePrivateDeploymentRequest",
+      "line": 257,
+      "untrusted_input_flows_in": "projectId (bytes32), solverAddress (address), privateWorkerAddress (address), base64Proposals (string[]), serverURL (string)",
+      "permission_level": "anyone"
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "function_name": "createProjectIDAndDeploymentRequest",
+      "line": 298,
+      "untrusted_input_flows_in": "projectId (bytes32), base64Proposal (string), serverURL (string)",
+      "permission_level": "anyone"
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "function_name": "createProjectIDAndPrivateDeploymentRequest",
+      "line": 314,
+      "untrusted_input_flows_in": "projectId (bytes32), base64Proposal (string), privateWorkerAddress (address), serverURL (string)",
+      "permission_level": "anyone"
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "function_name": "submitProofOfDeployment",
+      "line": 333,
+      "untrusted_input_flows_in": "projectId (bytes32), requestID (bytes32), proofBase64 (string)",
+      "permission_level": "worker (must be the designated deployWorkerAddr)"
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "function_name": "submitDeploymentRequest",
+      "line": 352,
+      "untrusted_input_flows_in": "projectId (bytes32), requestID (bytes32)",
+      "permission_level": "any worker (first-come, first-served)"
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "function_name": "UpdateWorkerDeploymentConfig",
+      "line": 373,
+      "untrusted_input_flows_in": "projectId (bytes32), requestID (bytes32), updatedBase64Config (string)",
+      "permission_level": "anyone"
+    },
+    {
+      "file": "src/history/EIP712V3.sol",
+      "function_name": "getRequestProposalDigest",
+      "line": 19,
+      "untrusted_input_flows_in": "projectId (bytes32), base64RecParam (string), serverURL (string)",
+      "permission_level": "anyone (view function)"
+    },
+    {
+      "file": "src/history/EIP712V3.sol",
+      "function_name": "getRequestDeploymentDigest",
+      "line": 30,
+      "untrusted_input_flows_in": "projectId (bytes32), base64RecParam (string), serverURL (string)",
+      "permission_level": "anyone (view function)"
+    },
+    {
+      "file": "src/history/EIP712V3.sol",
+      "function_name": "getSignerAddress",
+      "line": 40,
+      "untrusted_input_flows_in": "hash (bytes32), signature (bytes)",
+      "permission_level": "anyone (pure function)"
+    },
+    {
+      "file": "src/history/BlueprintV5.sol",
+      "function": "setNFTContractAddress",
+      "line": 33,
+      "untrusted_input": "_nftContractAddress (address from caller)",
+      "permission_level": "owner-only"
+    },
+    {
+      "file": "src/history/BlueprintV5.sol",
+      "function": "setWhitelistAddresses",
+      "line": 37,
+      "untrusted_input": "whitelistAddress (calldata array)",
+      "permission_level": "owner-only"
+    },
+    {
+      "file": "src/history/BlueprintV5.sol",
+      "function": "addWhitelistAddress",
+      "line": 44,
+      "untrusted_input": "whitelistAddress (address)",
+      "permission_level": "owner-only"
+    },
+    {
+      "file": "src/history/BlueprintV5.sol",
+      "function": "deleteWhitelistAddress",
+      "line": 49,
+      "untrusted_input": "whitelistAddress (address)",
+      "permission_level": "owner-only"
+    },
+    {
+      "file": "src/history/BlueprintV5.sol",
+      "function": "resetAgentCreationStatus",
+      "line": 54,
+      "untrusted_input": "userAddress (address), tokenId (uint256)",
+      "permission_level": "owner-only"
+    },
+    {
+      "file": "src/history/BlueprintV5.sol",
+      "function": "removeWhitelistAddresses",
+      "line": 60,
+      "untrusted_input": "removedAddress (calldata array)",
+      "permission_level": "owner-only"
+    },
+    {
+      "file": "src/history/BlueprintV5.sol",
+      "function": "addPaymentAddress",
+      "line": 67,
+      "untrusted_input": "paymentAddress (address)",
+      "permission_level": "owner-only"
+    },
+    {
+      "file": "src/history/BlueprintV5.sol",
+      "function": "setCreateAgentTokenCost",
+      "line": 74,
+      "untrusted_input": "paymentAddress (address), cost (uint256)",
+      "permission_level": "owner-only"
+    },
+    {
+      "file": "src/history/BlueprintV5.sol",
+      "function": "setUpdateCreateAgentTokenCost",
+      "line": 81,
+      "untrusted_input": "paymentAddress (address), cost (uint256)",
+      "permission_level": "owner-only"
+    },
+    {
+      "file": "src/history/BlueprintV5.sol",
+      "function": "removePaymentAddress",
+      "line": 88,
+      "untrusted_input": "paymentAddress (address)",
+      "permission_level": "owner-only"
+    },
+    {
+      "file": "src/history/BlueprintV5.sol",
+      "function": "setFeeCollectionWalletAddress",
+      "line": 95,
+      "untrusted_input": "_feeCollectionWalletAddress (address)",
+      "permission_level": "owner-only"
+    },
+    {
+      "file": "src/history/BlueprintV5.sol",
+      "function": "setWorkerAdmin",
+      "line": 101,
+      "untrusted_input": "_workerAdmin (address)",
+      "permission_level": "owner-only"
+    },
+    {
+      "file": "src/history/BlueprintV5.sol",
+      "function": "updateWorker",
+      "line": 107,
+      "untrusted_input": "workerAddress (address), isTrusted (bool)",
+      "permission_level": "admin-or-owner"
+    },
+    {
+      "file": "src/history/BlueprintV5.sol",
+      "function": "resetWorkers",
+      "line": 113,
+      "untrusted_input": "none",
+      "permission_level": "admin-or-owner"
+    },
+    {
+      "file": "src/history/PaymentV4.sol",
+      "function": "checkNFTOwnership",
+      "line": 13,
+      "untrusted_input": "nftTokenAddress (address), nftId (uint256), userAddress (address)",
+      "permission_level": "public"
+    },
+    {
+      "file": "src/history/PaymentV4.sol",
+      "function": "payWithERC20",
+      "line": 22,
+      "untrusted_input": "erc20TokenAddress (address), amount (uint256), fromAddress (address), toAddress (address)",
+      "permission_level": "internal"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "getReputation",
+      "line": 101,
+      "untrusted_input": "address addr",
+      "permission_level": "external view"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "createProjectID",
+      "line": 130,
+      "untrusted_input": "msg.sender",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "upgradeProject",
+      "line": 137,
+      "untrusted_input": "bytes32 projectId",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "createProposalRequest",
+      "line": 180,
+      "untrusted_input": "bytes32 projectId, string base64RecParam, string serverURL",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "createProposalRequestWithSig",
+      "line": 187,
+      "untrusted_input": "bytes32 projectId, string base64RecParam, string serverURL, bytes signature",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "createPrivateProposalRequest",
+      "line": 197,
+      "untrusted_input": "bytes32 projectId, address privateSolverAddress, string base64RecParam, string serverURL",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "createProjectIDAndProposalRequest",
+      "line": 206,
+      "untrusted_input": "bytes32 projectId, string base64RecParam, string serverURL",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "createProjectIDAndProposalRequestWithSig",
+      "line": 213,
+      "untrusted_input": "bytes32 projectId, string base64RecParam, string serverURL, bytes signature",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "createDeploymentRequest",
+      "line": 260,
+      "untrusted_input": "bytes32 projectId, address solverAddress, string base64Proposal, string serverURL",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "createDeploymentRequestWithSig",
+      "line": 267,
+      "untrusted_input": "bytes32 projectId, address solverAddress, string base64Proposal, string serverURL, bytes signature",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "createMultipleDeploymentRequest",
+      "line": 275,
+      "untrusted_input": "bytes32 projectId, address solverAddress, address workerAddress, string[] base64Proposals, string serverURL",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "createPrivateDeploymentRequest",
+      "line": 301,
+      "untrusted_input": "bytes32 projectId, address solverAddress, address privateWorkerAddress, string base64Proposal, string serverURL",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "createPrivateDeploymentRequestWithSig",
+      "line": 308,
+      "untrusted_input": "bytes32 projectId, address solverAddress, address privateWorkerAddress, string base64Proposal, string serverURL, bytes signature",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "createProjectIDAndDeploymentRequest",
+      "line": 335,
+      "untrusted_input": "bytes32 projectId, string base64Proposal, string serverURL",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "createProjectIDAndDeploymentRequestWithSig",
+      "line": 342,
+      "untrusted_input": "bytes32 projectId, string base64Proposal, string serverURL, bytes signature",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "createProjectIDAndPrivateDeploymentRequest",
+      "line": 349,
+      "untrusted_input": "bytes32 projectId, string base64Proposal, address privateWorkerAddress, string serverURL",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "createAgentWithNFT",
+      "line": 376,
+      "untrusted_input": "bytes32 projectId, string base64Proposal, address privateWorkerAddress, string serverURL, uint256 tokenId",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "createAgentWithWhitelistUsers",
+      "line": 383,
+      "untrusted_input": "bytes32 projectId, string base64Proposal, address privateWorkerAddress, string serverURL, uint256 tokenId",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "createAgentWithWhitelistUsersWithSig",
+      "line": 394,
+      "untrusted_input": "bytes32 projectId, string base64Proposal, address privateWorkerAddress, string serverURL, uint256 tokenId, bytes signature",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "createAgentWithSigWithNFT",
+      "line": 410,
+      "untrusted_input": "bytes32 projectId, string base64Proposal, address privateWorkerAddress, string serverURL, bytes signature, uint256 tokenId",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "createProjectIDAndPrivateDeploymentRequestWithSig",
+      "line": 420,
+      "untrusted_input": "bytes32 projectId, string base64Proposal, address privateWorkerAddress, string serverURL, bytes signature",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "createProjectIdAndPrivateDeploymentWithConfig",
+      "line": 430,
+      "untrusted_input": "bytes32 projectId, string base64Proposal, address privateWorkerAddress, string serverURL",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "submitProofOfDeployment",
+      "line": 440,
+      "untrusted_input": "bytes32 projectId, bytes32 requestID, string proofBase64",
+      "permission_level": "external (worker only)"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "submitDeploymentRequest",
+      "line": 450,
+      "untrusted_input": "bytes32 projectId, bytes32 requestID",
+      "permission_level": "external (worker only)"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "updateWorkerDeploymentConfig",
+      "line": 468,
+      "untrusted_input": "bytes32 projectId, bytes32 requestID, string updatedBase64Config",
+      "permission_level": "external (owner only)"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "updateWorkerDeploymentConfigWithSig",
+      "line": 475,
+      "untrusted_input": "bytes32 projectId, bytes32 requestID, string updatedBase64Config, bytes signature",
+      "permission_level": "external (owner only)"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "setWorkerPublicKey",
+      "line": 483,
+      "untrusted_input": "bytes publicKey",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "getWorkerPublicKey",
+      "line": 491,
+      "untrusted_input": "address workerAddress",
+      "permission_level": "external view"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "getWorkerAddresses",
+      "line": 496,
+      "untrusted_input": "none",
+      "permission_level": "external view"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "getDeploymentStatus",
+      "line": 501,
+      "untrusted_input": "bytes32 requestID",
+      "permission_level": "external view"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "getLatestProposalRequestID",
+      "line": 506,
+      "untrusted_input": "address addr",
+      "permission_level": "external view"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "getLatestDeploymentRequestID",
+      "line": 511,
+      "untrusted_input": "address addr",
+      "permission_level": "external view"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "getLatestUserProjectID",
+      "line": 516,
+      "untrusted_input": "address addr",
+      "permission_level": "external view"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "getProjectInfo",
+      "line": 521,
+      "untrusted_input": "bytes32 projectId",
+      "permission_level": "external view"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "getDeploymentProof",
+      "line": 530,
+      "untrusted_input": "bytes32 requestID",
+      "permission_level": "external view"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "getEIP712ContractAddress",
+      "line": 535,
+      "untrusted_input": "none",
+      "permission_level": "external view"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "function": "isWhitelistUser",
+      "line": 540,
+      "untrusted_input": "address userAddress",
+      "permission_level": "external view"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "createProjectID",
+      "line": 100,
+      "untrusted_input_flows": [],
+      "permission_level": "public"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "createProjectIDAndDeploymentRequest",
+      "line": 127,
+      "untrusted_input_flows": [
+        "projectId",
+        "base64Proposal",
+        "serverURL"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "createProjectIDAndDeploymentRequestWithSig",
+      "line": 133,
+      "untrusted_input_flows": [
+        "projectId",
+        "base64Proposal",
+        "serverURL",
+        "signature"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "createProjectIDAndPrivateDeploymentRequest",
+      "line": 142,
+      "untrusted_input_flows": [
+        "projectId",
+        "base64Proposal",
+        "privateWorkerAddress",
+        "serverURL"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "createAgentWithToken",
+      "line": 153,
+      "untrusted_input_flows": [
+        "projectId",
+        "base64Proposal",
+        "privateWorkerAddress",
+        "serverURL",
+        "tokenAddress",
+        "msg.value"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "createAgentWithTokenWithSig",
+      "line": 163,
+      "untrusted_input_flows": [
+        "projectId",
+        "base64Proposal",
+        "privateWorkerAddress",
+        "serverURL",
+        "tokenAddress",
+        "signature"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "createAgentWithNFT",
+      "line": 174,
+      "untrusted_input_flows": [
+        "projectId",
+        "base64Proposal",
+        "privateWorkerAddress",
+        "serverURL",
+        "tokenId"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "createAgentWithSigWithNFT",
+      "line": 184,
+      "untrusted_input_flows": [
+        "projectId",
+        "base64Proposal",
+        "privateWorkerAddress",
+        "serverURL",
+        "signature",
+        "tokenId"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "resetDeploymentRequest",
+      "line": 210,
+      "untrusted_input_flows": [
+        "projectId",
+        "requestID",
+        "workerAddress",
+        "base64Proposal",
+        "serverURL"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "resetDeploymentRequestWithSig",
+      "line": 217,
+      "untrusted_input_flows": [
+        "projectId",
+        "requestID",
+        "workerAddress",
+        "base64Proposal",
+        "serverURL",
+        "signature"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "submitProofOfDeployment",
+      "line": 235,
+      "untrusted_input_flows": [
+        "projectId",
+        "requestID",
+        "proofBase64"
+      ],
+      "permission_level": "trusted_worker"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "submitDeploymentRequest",
+      "line": 247,
+      "untrusted_input_flows": [
+        "projectId",
+        "requestID"
+      ],
+      "permission_level": "trusted_worker"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "updateWorkerDeploymentConfig",
+      "line": 265,
+      "untrusted_input_flows": [
+        "tokenAddress",
+        "projectId",
+        "requestID",
+        "updatedBase64Config",
+        "msg.value"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "updateWorkerDeploymentConfigWithSig",
+      "line": 271,
+      "untrusted_input_flows": [
+        "tokenAddress",
+        "projectId",
+        "requestID",
+        "updatedBase64Config",
+        "signature"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "setWorkerPublicKey",
+      "line": 280,
+      "untrusted_input_flows": [
+        "publicKey"
+      ],
+      "permission_level": "trusted_worker"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "getWorkerPublicKey",
+      "line": 288,
+      "untrusted_input_flows": [
+        "workerAddress"
+      ],
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "getWorkerAddresses",
+      "line": 293,
+      "untrusted_input_flows": [],
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "getPaymentAddresses",
+      "line": 308,
+      "untrusted_input_flows": [],
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "getLatestProposalRequestID",
+      "line": 313,
+      "untrusted_input_flows": [
+        "addr"
+      ],
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "getLatestDeploymentRequestID",
+      "line": 318,
+      "untrusted_input_flows": [
+        "addr"
+      ],
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "getLatestUserProjectID",
+      "line": 323,
+      "untrusted_input_flows": [
+        "addr"
+      ],
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "getProjectInfo",
+      "line": 328,
+      "untrusted_input_flows": [
+        "projectId"
+      ],
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "getDeploymentProof",
+      "line": 335,
+      "untrusted_input_flows": [
+        "requestID"
+      ],
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "getEIP712ContractAddress",
+      "line": 340,
+      "untrusted_input_flows": [],
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "isWhitelistUser",
+      "line": 345,
+      "untrusted_input_flows": [
+        "userAddress"
+      ],
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "userTopUp",
+      "line": 350,
+      "untrusted_input_flows": [
+        "tokenAddress",
+        "amount",
+        "msg.value"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "getUserNonce",
+      "line": 363,
+      "untrusted_input_flows": [
+        "userAddress"
+      ],
+      "permission_level": "public_view"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "function": "getDeploymentStatus",
+      "line": 372,
+      "untrusted_input_flows": [
+        "requestID"
+      ],
+      "permission_level": "public_view"
+    }
+  ],
+  "trust_boundaries": [
+    {
+      "file": "test/BlueprintV4.t.sol",
+      "line": 22,
+      "what_crossing": "MockERC721.mint called to external address, sets up trust for ownership checks",
+      "should_validate": "Minting to arbitrary addresses in test setup; trust boundary between test and mocked contract"
+    },
+    {
+      "file": "test/BlueprintV4.t.sol",
+      "line": 118,
+      "what_crossing": "vm.prank(dummyAddress) used to simulate external caller for setWorkerPublicKey",
+      "should_validate": "Privilege escalation simulation; trust boundary between test and target contract"
+    },
+    {
+      "file": "test/EIP712.sol",
+      "line": 54,
+      "what_crossing": "vm.sign with private key to generate signature for external verification",
+      "should_validate": "Signature generation trust boundary between test and contract's EIP-712 verification"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "line": 119,
+      "crossing": "External call to feeCollectionWalletAddress for ETH transfer (line 119: blueprint.createAgentWithToken{value: 1 ether}(...))",
+      "should_validate": "Ensure feeCollectionWalletAddress is a trusted, immutable address and that ETH transfer cannot be intercepted or reentranted"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "line": 123,
+      "crossing": "vm.mockCall to simulate successful ETH transfer to feeCollectionWalletAddress",
+      "should_validate": "In production, the actual ETH transfer to feeCollectionWalletAddress must be validated; mock calls are test-only"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "line": 294,
+      "crossing": "External call to feeCollectionWalletAddress for ETH transfer via userTopUp (line 294: blueprint.userTopUp{value: topUpAmount}(...))",
+      "should_validate": "Ensure feeCollectionWalletAddress is trusted and that native token transfers are validated for amount and recipient"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "line": 417,
+      "crossing": "Worker trust boundary: submitDeploymentRequest and submitProofOfDeployment require trusted worker (line 417-418)",
+      "should_validate": "Verify that worker trust status is correctly checked and cannot be bypassed or manipulated"
+    },
+    {
+      "file": "src/BlueprintV4.sol",
+      "line": 23,
+      "what_crossing": "upgrade authorization from external call to owner-only internal function",
+      "what_should_be_validated": "Only the owner can authorize upgrades, ensuring upgrade path integrity"
+    },
+    {
+      "file": "src/BlueprintV4.sol",
+      "line": 14,
+      "what_crossing": "initialize function called by msg.sender to set initial owner",
+      "what_should_be_validated": "Ensure initialize can only be called once via reinitializer(4)"
+    },
+    {
+      "file": "src/Blueprint.sol",
+      "line": 31,
+      "crossing": "Admin/Owner authority to modify critical contract state (nftContractAddress, whitelistUsers, paymentAddressesMp, feeCollectionWalletAddress, workerAdmin)",
+      "should_be_validated": "Caller identity (owner/workerAdmin) via modifiers, zero-address checks on inputs"
+    },
+    {
+      "file": "src/Blueprint.sol",
+      "line": 45,
+      "crossing": "External input (_nftContractAddress) to trusted storage (nftContractAddress)",
+      "should_be_validated": "Zero-address check already present"
+    },
+    {
+      "file": "src/Blueprint.sol",
+      "line": 65,
+      "crossing": "External input (paymentAddress) to trusted mapping (paymentAddressEnableMp, paymentAddressesMp)",
+      "should_be_validated": "Uniqueness check present (paymentAddressEnableMp), but array cleanup loop may have stale entries"
+    },
+    {
+      "file": "src/Payment.sol",
+      "line": 23,
+      "crossing": "External inputs (erc20TokenAddress, fromAddress, toAddress, amount) to token transfer operation",
+      "should_be_validated": "zero-address checks, amount >0, from != to. Relies on SafeERC20 for safe transfer."
+    },
+    {
+      "file": "src/Payment.sol",
+      "line": 31,
+      "crossing": "External inputs (toAddress, amount) to native token transfer (payable)",
+      "should_be_validated": "Zero-address check, amount >0. Uses Address.sendValue which can fail."
+    },
+    {
+      "file": "src/Payment.sol",
+      "line": 10,
+      "crossing": "External inputs (nftTokenAddress, nftId, userAddress) to cross-contract call (IERC721.ownerOf)",
+      "should_be_validated": "Zero-address checks on addresses. nftId not validated but not needed for ownership check."
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "line": 90,
+      "crossing": "msg.sender (external user) to trusted worker check via trustWorkerMp[msg.sender]",
+      "should_validate": "Worker address must be registered and trusted by admin before setWorkerPublicKey, submitProofOfDeployment, submitDeploymentRequest"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "line": 112,
+      "crossing": "block.timestamp used for ID generation, potential manipulation by miners",
+      "should_validate": "Ensure ID uniqueness not solely dependent on block.timestamp"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "line": 234,
+      "crossing": "Token transfer to feeCollectionWalletAddress via payWithERC20/payWithNativeToken",
+      "should_validate": "Verify tokenAddress is valid, amount matches required cost, and feeCollectionWalletAddress is set"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "line": 240,
+      "crossing": "External call to NFT contract via checkNFTOwnership (assumed external)",
+      "should_validate": "NFT contract interaction may be untrusted; ensure ownership check is reliable"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "line": 245,
+      "crossing": "External call to ERC20 contract via payWithERC20 (assumed external)",
+      "should_validate": "ERC20 transfer may fail or be malicious; ensure token transfer is safe"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "line": 270,
+      "crossing": "EIP712 signature verification to derive signer address",
+      "should_validate": "Signature must be valid and signer must be the intended owner"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "line": 321,
+      "crossing": "Worker submission of deployment proof, trusted worker only",
+      "should_validate": "Proof is stored without further validation; ensure worker is trustworthy"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "line": 395,
+      "crossing": "Token transfer for user top-up to feeCollectionWalletAddress",
+      "should_validate": "Amount must match msg.value for native token; token transfer must be valid"
+    },
+    {
+      "file": "src/BlueprintCore.sol",
+      "line": 400,
+      "crossing": "userTopUpOther allows any user to top up another user's balance",
+      "should_validate": "Ensure no privilege escalation; owner may need confirmation"
+    },
+    {
+      "file": "src/EIP712.sol",
+      "line": 146,
+      "crossing": "ECDSA.recover extracts address from external signature data",
+      "should_validate": "Signature must be validated against trusted domain separator and expected message hash; caller must ensure only authorized signers are accepted"
+    },
+    {
+      "file": "src/history/BlueprintV4.sol",
+      "line": 13,
+      "crossing": "onlyOwner sets nftContractAddress - changes trust boundary for all NFT checks",
+      "should_validate": "Only valid NFT contract addresses should be allowed; consider zero-address check"
+    },
+    {
+      "file": "src/history/BlueprintV4.sol",
+      "line": 18,
+      "crossing": "onlyOwner adds addresses to whitelist - changes trust level for those addresses",
+      "should_validate": "Only valid addresses should be whitelisted"
+    },
+    {
+      "file": "src/history/BlueprintV4.sol",
+      "line": 32,
+      "crossing": "onlyOwner resets agent creation status - changes user trust status and NFT status",
+      "should_validate": "Verify tokenId is valid and userAddress is legitimate"
+    },
+    {
+      "file": "src/history/PaymentV5.sol",
+      "line": 38,
+      "crossing": "Internal payWithERC20 calls external ERC20 token contract",
+      "should_validate": "Ensure ERC20 contract is trusted; validate amount > 0, fromAddress != toAddress, toAddress != address(0)"
+    },
+    {
+      "file": "src/history/PaymentV5.sol",
+      "line": 52,
+      "crossing": "Internal payWithNativeToken calls to external address with value transfer",
+      "should_validate": "Ensure toAddress is trusted; validate amount > 0 and toAddress != address(0)"
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "line": 156,
+      "crossing": "User-provided solverAddress passed to proposalRequest. If solverAddress is not dummyAddress, it's set as private solver.",
+      "should_validate": "Address should be validated as a legitimate solver address."
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "line": 283,
+      "crossing": "User-provided workerAddress in deploymentRequest determines if deployment is public or private.",
+      "should_validate": "workerAddress should be validated as a legitimate worker address."
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "line": 293,
+      "crossing": "solverAddress reputation is updated via setReputation. Reputation affects future ranking.",
+      "should_validate": "Reputation updates should be rate-limited or validated."
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "line": 310,
+      "crossing": "solverAddress validated not dummyAddress before proceeding.",
+      "should_validate": "Additional validation may be needed to ensure solverAddress is a registered solver."
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "line": 442,
+      "crossing": "submitProofOfDeployment: only the designated worker can submit proof.",
+      "should_validate": "Worker address should be verified against a registry or trusted list."
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "line": 453,
+      "crossing": "submitDeploymentRequest: any external actor can pick up a deployment request.",
+      "should_validate": "Worker should be validated as a legitimate worker address."
+    },
+    {
+      "file": "src/history/BlueprintV3.sol",
+      "line": 474,
+      "crossing": "setWorkerPublicKey: msg.sender sets their public key.",
+      "should_validate": "No validation needed; it's self-registration."
+    },
+    {
+      "file": "src/history/BlueprintV1.sol",
+      "line": 84,
+      "what_crosses": "External input (projectId, base64RecParam, serverURL) from untrusted caller into proposal creation logic.",
+      "what_should_be_validated": "Validation of projectId existence, non-empty strings, caller authorization."
+    },
+    {
+      "file": "src/history/BlueprintV1.sol",
+      "line": 107,
+      "what_crosses": "External input (privateSolverAddress) from untrusted caller, setting a privileged solver address.",
+      "what_should_be_validated": "Caller should be authorized to set private solver; privateSolverAddress should be valid."
+    },
+    {
+      "file": "src/history/BlueprintV1.sol",
+      "line": 130,
+      "what_crosses": "External input (solverAddress) from untrusted caller into deployment creation and reputation update.",
+      "what_should_be_validated": "Caller should be authorized; solverAddress should be valid; solver reputation update logic."
+    },
+    {
+      "file": "src/history/BlueprintV1.sol",
+      "line": 156,
+      "what_crosses": "External input (privateWorkerAddress, solverAddress) from untrusted caller, setting privileged worker address and updating solver reputation.",
+      "what_should_be_validated": "Caller authorization; valid addresses; proper state transition to Pickup status."
+    },
+    {
+      "file": "src/history/BlueprintV1.sol",
+      "line": 185,
+      "what_crosses": "External input (proofBase64) from msg.sender (deployWorkerAddr) into deployment proof storage.",
+      "what_should_be_validated": "Worker address must match deployWorkerAddr; requestID must be in correct status; proof should be validated."
+    },
+    {
+      "file": "src/history/BlueprintV1.sol",
+      "line": 198,
+      "what_crosses": "msg.sender taking over deployment request (changing status and assignee).",
+      "what_should_be_validated": "Status check to prevent takeover of already picked requests."
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "line": 104,
+      "what_is_crossing": "UpgradeProject resets project state \u2014 any caller can reset project proposals/deployments if projectId exists.",
+      "what_should_be_validated": "Caller should be authorized (project owner/admin) or projectId ownership verified."
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "line": 120,
+      "what_is_crossing": "createProposalRequest allows anyone to create a proposal request for any existing projectId.",
+      "what_should_be_validated": "Caller should be authorized to create proposals for the given projectId."
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "line": 194,
+      "what_is_crossing": "createDeploymentRequest allows anyone to create a deployment request for any existing projectId with any solverAddress.",
+      "what_should_be_validated": "Caller should be authorized to create deployments for the given projectId, and solverAddress should be a valid solver."
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "line": 333,
+      "what_is_crossing": "submitProofOfDeployment allows only the designated worker (deployWorkerAddr) to submit proof for a requestID.",
+      "what_should_be_validated": "Worker address is checked via require statement \u2014 trust boundary is enforced."
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "line": 352,
+      "what_is_crossing": "submitDeploymentRequest allows any worker to pick up a requestID that is not yet picked or generated proof.",
+      "what_should_be_validated": "No validation of worker credentials \u2014 any address can claim deployment."
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "line": 373,
+      "what_is_crossing": "UpdateWorkerDeploymentConfig allows anyone to update deployment config for any requestID that is not Init or Issued.",
+      "what_should_be_validated": "Caller should be the assigned worker or authorized admin."
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "line": 152,
+      "what_is_crossing": "proposalRequest internal function uses solverAddress to set requestSolver mapping \u2014 trusts solverAddress provided by caller.",
+      "what_should_be_validated": "solverAddress should be validated as a legitimate solver."
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "line": 267,
+      "what_is_crossing": "createMultiplePrivateDeploymentRequest sets status to Pickup and assigns workerAddress \u2014 trusts caller-provided privateWorkerAddress.",
+      "what_should_be_validated": "privateWorkerAddress should be validated as a legitimate worker."
+    },
+    {
+      "file": "src/history/BlueprintV5.sol",
+      "line": 25,
+      "crossing": "Modifier isAdmin checks msg.sender against workerAdmin and owner \u2014 authority delegation from owner to worker admin",
+      "validation_needed": "workerAdmin address must be validated on assignment; workerAdmin could be set to zero address if bypassed"
+    },
+    {
+      "file": "src/history/BlueprintV5.sol",
+      "line": 33,
+      "crossing": "setNFTContractAddress sets external contract address; affects which NFT contract is used for ownership checks",
+      "validation_needed": "Zero address check is present; but no check that _nftContractAddress is a valid NFT contract"
+    },
+    {
+      "file": "src/history/BlueprintV5.sol",
+      "line": 101,
+      "crossing": "setWorkerAdmin transfers admin authority to a new address; potential privilege escalation if workerAdmin is set maliciously",
+      "validation_needed": "Zero address check present; but no multi-sig or timelock protection"
+    },
+    {
+      "file": "src/history/BlueprintV5.sol",
+      "line": 107,
+      "crossing": "updateWorker grants trusted status to arbitrary addresses; could enable malicious workers if called by compromised workerAdmin",
+      "validation_needed": "Zero address check present; but no limit on number of trusted workers"
+    },
+    {
+      "file": "src/history/PaymentV4.sol",
+      "line": 22,
+      "crossing": "payWithERC20 performs ERC20 transferFrom \u2014 external call to arbitrary ERC20 contract; could be a malicious token",
+      "validation_needed": "No validation that erc20TokenAddress is a legitimate ERC20 token; relies on caller to provide correct address"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "line": 140,
+      "crossing": "Modifier hasProject checks project existence via both new and old mapping (projects or projectIDs)",
+      "should_be_validated": "Ensure projectId is consistent across both old and new systems to prevent confusion."
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "line": 166,
+      "crossing": "EIP712 signature verification in createProposalRequestWithSig",
+      "should_be_validated": "Verify signature against EIP712 domain and correct message hash to ensure signer is authorized."
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "line": 267,
+      "crossing": "EIP712 signature verification in createDeploymentRequestWithSig",
+      "should_be_validated": "Verify signature against EIP712 domain and correct message hash."
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "line": 440,
+      "crossing": "submitProofOfDeployment requires deployWorkerAddr == msg.sender (worker only)",
+      "should_be_validated": "Ensure msg.sender is indeed the worker assigned to the deployment."
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "line": 450,
+      "crossing": "submitDeploymentRequest allows any worker to pick up an issued deployment",
+      "should_be_validated": "Validate worker eligibility (e.g., reputation, whitelist) before allowing pickup."
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "line": 468,
+      "crossing": "updateWorkerDeploymentConfig requires deploymentOwners[requestID] == userAddress",
+      "should_be_validated": "Ensure userAddress is the legitimate owner of the deployment request."
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "line": 475,
+      "crossing": "EIP712 signature verification in updateWorkerDeploymentConfigWithSig",
+      "should_be_validated": "Verify signature matches the deployment update request."
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "line": 376,
+      "crossing": "createAgent checks NFT ownership and token usage",
+      "should_be_validated": "Verify NFT ownership via external call to nftContractAddress and ensure tokenId hasn't been used."
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "line": 383,
+      "crossing": "createAgentWithWhitelistUsers checks whitelistUsers mapping",
+      "should_be_validated": "Ensure msg.sender is in whitelist and hasn't already created an agent."
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "line": 118,
+      "crossing": "setReputation modifies solver reputation based on totalProposalRequest",
+      "should_be_validated": "Ensure totalProposalRequest is not manipulated to inflate reputation unfairly."
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "line": 89,
+      "crossing": "isTrustedWorker modifier checks msg.sender is trusted worker via trustWorkerMp",
+      "should_validate": "Worker trust status should be managed by admin; ensure only admin can modify trustWorkerMp"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "line": 153,
+      "crossing": "createAgentWithToken transfers tokens via payWithERC20 or payWithNativeToken to feeCollectionWalletAddress",
+      "should_validate": "Token address validity, cost calculation, and fee collection wallet address should be admin-controlled"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "line": 265,
+      "crossing": "updateWorkerDeploymentConfig transfers tokens via payWithERC20 or payWithNativeToken to feeCollectionWalletAddress",
+      "should_validate": "Token address validity, cost calculation, and fee collection wallet address should be admin-controlled"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "line": 350,
+      "crossing": "userTopUp transfers tokens via payWithERC20 or payWithNativeToken to feeCollectionWalletAddress",
+      "should_validate": "Token address validity and fee collection wallet address should be admin-controlled"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "line": 133,
+      "crossing": "createProjectIDAndDeploymentRequestWithSig uses EIP712 signature verification to extract signer address",
+      "should_validate": "Signature verification should be robust; nonce handling should prevent replay"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "line": 163,
+      "crossing": "createAgentWithTokenWithSig uses EIP712 signature verification to extract signer address",
+      "should_validate": "Signature verification should be robust; nonce handling should prevent replay"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "line": 184,
+      "crossing": "createAgentWithSigWithNFT uses EIP712 signature verification to extract signer address",
+      "should_validate": "Signature verification should be robust; nonce handling should prevent replay"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "line": 217,
+      "crossing": "resetDeploymentRequestWithSig uses EIP712 signature verification to extract signer address",
+      "should_validate": "Signature verification should be robust; nonce handling should prevent replay"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "line": 271,
+      "crossing": "updateWorkerDeploymentConfigWithSig uses EIP712 signature verification to extract signer address",
+      "should_validate": "Signature verification should be robust; nonce handling should prevent replay"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "line": 340,
+      "crossing": "checkNFTOwnership called from createAgent to verify NFT ownership",
+      "should_validate": "NFT contract address and ownership verification should be correct"
+    },
+    {
+      "file": "src/history/BlueprintCoreV5.sol",
+      "line": 52,
+      "crossing": "workerAdmin state variable controls admin privileges",
+      "should_validate": "Admin privileges should be managed securely; consider using OpenZeppelin AccessControl"
+    }
+  ],
+  "value_flows": [
+    {
+      "file": "test/BlueprintV4.t.sol",
+      "line": 18,
+      "type": "NFT ownership",
+      "description": "MockERC721.mint transfers token ownership to test contract, then checked via blueprint.checkNFTOwnership"
+    },
+    {
+      "file": "test/BlueprintV4.t.sol",
+      "line": 47,
+      "type": "Whitelist status",
+      "description": "setWhitelistAddresses modifies whitelist state, then createAgentWithWhitelistUsers checks and uses whitelist status"
+    },
+    {
+      "file": "test/BlueprintV4.t.sol",
+      "line": 96,
+      "type": "Agent creation status",
+      "description": "resetAgentCreationStatus modifies agent creation state, allowing subsequent createAgentWithWhitelistUsers calls"
+    },
+    {
+      "file": "test/EIP712.sol",
+      "line": 67,
+      "type": "Signature verification",
+      "description": "getSignerAddress recovers address from signature, demonstrating signature-to-identity flow"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "line": 30,
+      "flow_description": "ERC20 token transfer from user to blueprint contract during createAgentWithToken (token cost deduction)",
+      "order_of_operations": "User calls createAgentWithToken -> blueprint transfers ERC20 tokens from user to contract -> agent is created"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "line": 85,
+      "flow_description": "ETH transfer from user to feeCollectionWalletAddress during createAgentWithToken (native token)",
+      "order_of_operations": "User calls createAgentWithToken with value -> blueprint sends ETH to feeCollectionWalletAddress -> agent is created"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "line": 158,
+      "flow_description": "ERC20 token transfer from user to blueprint contract during updateWorkerDeploymentConfig (update cost deduction)",
+      "order_of_operations": "User calls updateWorkerDeploymentConfig -> blueprint transfers ERC20 tokens from user to contract -> deployment config updated"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "line": 263,
+      "flow_description": "ERC20 token transfer from user to feeCollectionWalletAddress during userTopUp",
+      "order_of_operations": "User calls userTopUp -> blueprint transfers ERC20 tokens to feeCollectionWalletAddress -> user top-up balance increased"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "line": 294,
+      "flow_description": "ETH transfer from user to feeCollectionWalletAddress during userTopUp (native token)",
+      "order_of_operations": "User calls userTopUp with value -> blueprint sends ETH to feeCollectionWalletAddress -> user top-up balance increased"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "line": 335,
+      "flow_description": "Admin sets cost for createAgentTokenCost in mapping",
+      "order_of_operations": "Admin calls setCreateAgentTokenCost -> paymentOpCostMp[paymentAddress][CREATE_AGENT_OP] updated"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "line": 352,
+      "flow_description": "Admin sets cost for updateCreateAgentTokenCost in mapping",
+      "order_of_operations": "Admin calls setUpdateCreateAgentTokenCost -> paymentOpCostMp[paymentAddress][UPDATE_AGENT_OP] updated"
+    },
+    {
+      "file": "test/BlueprintV5.t.sol",
+      "line": 395,
+      "flow_description": "Admin adds paymentAddress to mapping and enables it",
+      "order_of_operations": "Admin calls addPaymentAddress -> paymentAddressEnableMp[paymentAddress] = true"
+    },
+    {
+      "description": "No direct value flows in this file - it's a minimal upgradeable contract with authorization only",
+      "file": "src/BlueprintV4.sol",
+      "operations": [
+        "initialize sets owner",
+        "_authorizeUpgrade controls upgrade path"
+      ]
+    },
+    {
+      "description": "Payment configuration (costs, addresses) set by owner via Blueprint functions",
+      "created": "setCreateAgentTokenCost (costs), addPaymentAddress (paymentAddressesMp, paymentAddressEnableMp)",
+      "moved": "payWithERC20 (token transfer), payWithNativeToken (native transfer) - called elsewhere, not in provided code",
+      "destroyed": "removePaymentAddress (soft remove via mapping flag)",
+      "order": "Owner sets payment addresses and costs -> External caller initiates payment via Payment functions -> Tokens/native moved to feeCollectionWalletAddress"
+    },
+    {
+      "description": "Worker trust management",
+      "created": "updateWorker (sets trustWorkerMp[workerAddress] = isTrusted)",
+      "moved": "None in provided code (trust used elsewhere)",
+      "destroyed": "resetWorkers (calls resetWorkerAddresses - not shown)",
+      "order": "Admin/Owner sets worker trust -> Trusted worker may perform privileged actions off-chain or via other contracts"
+    },
+    {
+      "description": "Whitelist management",
+      "created": "setWhitelistAddresses (sets whitelistUsers[addr] = Status.Issued)",
+      "moved": "None in provided code (whitelist checked elsewhere)",
+      "destroyed": "removeWhitelistAddresses (deletes mapping entries)",
+      "order": "Owner adds/removes addresses from whitelist -> Whitelisted addresses may gain access elsewhere"
+    },
+    {
+      "description": "Credit reward event emission (no on-chain value movement)",
+      "created": "creditReward emits event",
+      "moved": "None (event only)",
+      "destroyed": "None",
+      "order": "Admin calls creditReward -> Event emitted -> Off-chain processing expected"
+    },
+    {
+      "description": "Token flow in createAgent: user pays fee to feeCollectionWalletAddress",
+      "creation": "Token or NFT from user",
+      "movement": "Via payWithERC20/payWithNativeToken to feeCollectionWalletAddress",
+      "destruction": "None, tokens are transferred",
+      "order": "1. Validate token/NFT ownership, 2. Update state, 3. Transfer tokens (CEI)"
+    },
+    {
+      "description": "Token flow in updateWorkerDeploymentConfig: user pays fee for update",
+      "creation": "Token from user",
+      "movement": "Via payWithERC20/payWithNativeToken to feeCollectionWalletAddress",
+      "destruction": "None, tokens are transferred",
+      "order": "1. Validate ownership, 2. Update state, 3. Transfer tokens (CEI)"
+    },
+    {
+      "description": "Token flow in userTopUp: user adds funds to their balance",
+      "creation": "Token from msg.sender",
+      "movement": "Via payWithERC20/payWithNativeToken to feeCollectionWalletAddress, balance updated in userTopUpMp",
+      "destruction": "None, tokens are transferred",
+      "order": "1. Validate amount, 2. Update userTopUpMp, 3. Transfer tokens"
+    },
+    {
+      "description": "Token flow in userTopUpOther: user tops up another user's balance",
+      "creation": "Token from msg.sender",
+      "movement": "Via payWithERC20/payWithNativeToken to feeCollectionWalletAddress, balance updated in userTopUpMp for recipient",
+      "destruction": "None, tokens are transferred",
+      "order": "1. Validate amount, 2. Update userTopUpMp, 3. Transfer tokens"
+    },
+    {
+      "description": "NFT token usage in createAgentWithNFT: NFT ID is marked as used",
+      "creation": "NFT from user",
+      "movement": "NFT ownership not transferred, but token ID status changes from unused to Pickup",
+      "destruction": "NFT ID is locked (cannot be reused)",
+      "order": "1. Check NFT ownership and availability, 2. Update state, 3. Transfer tokens if any"
+    },
+    {
+      "description": "Worker reputation: implicit via workerReputation mapping",
+      "creation": "Not directly updated in provided code",
+      "movement": "None",
+      "destruction": "None",
+      "order": "N/A"
+    },
+    {
+      "file": "src/history/PaymentV5.sol",
+      "line": 38,
+      "flow_type": "ERC20 transfer",
+      "description": "payWithERC20 moves ERC20 tokens from fromAddress to toAddress via safeTransferFrom",
+      "order_of_operations": "1. Validate fromAddress != toAddress, toAddress != address(0), amount > 0; 2. Execute token.safeTransferFrom"
+    },
+    {
+      "file": "src/history/PaymentV5.sol",
+      "line": 52,
+      "flow_type": "Native token transfer",
+      "description": "payWithNativeToken sends native tokens to toAddress via call{value: amount}",
+      "order_of_operations": "1. Validate toAddress != address(0), amount > 0; 2. Execute toAddress.call{value: amount}"
+    },
+    {
+      "type": "reputation",
+      "flow": "Reputation is created for solverAddress in deploymentRequest (line 283). It is updated via setReputation (line 64) based on solverAddress's prior reputation and totalProposalRequest.",
+      "order": [
+        "proposalRequest increments totalProposalRequest",
+        "deploymentRequest calls setReputation for solverAddress"
+      ]
+    },
+    {
+      "type": "project_ownership",
+      "flow": "Project ownership is established via setProjectId when a project is created (line 133). User address is linked to projectId via latestProjectID mapping.",
+      "order": [
+        "createProjectID sets projectId",
+        "latestProjectID[userAddr] = projectId"
+      ]
+    },
+    {
+      "type": "deployment_assignment",
+      "flow": "Deployment requests are created and assigned to workers. Worker address is set in DeploymentStatus. If workerAddress is dummyAddress, status is Issued; otherwise Pickup.",
+      "order": [
+        "deploymentRequest creates requestID",
+        "requestDeploymentStatus[requestID] is set with status and workerAddress"
+      ]
+    },
+    {
+      "type": "deployment_proof",
+      "flow": "Deployment proof is submitted via submitProofOfDeployment and stored in deploymentProof mapping.",
+      "order": [
+        "requestDeploymentStatus[requestID].status changes to GeneratedProof",
+        "deploymentProof[requestID] = proofBase64"
+      ]
+    },
+    {
+      "description": "Project creation: msg.sender creates projectId, stored in projectIDs and latestProjectID mappings.",
+      "file": "src/history/BlueprintV1.sol",
+      "line": 68,
+      "order_of_operations": [
+        "Generate projectId from block.timestamp, msg.sender, block.chainid",
+        "Store mapping",
+        "Emit event"
+      ]
+    },
+    {
+      "description": "Proposal request creation: msg.sender creates requestID, updates latestProposalRequestID, increments totalProposalRequest.",
+      "file": "src/history/BlueprintV1.sol",
+      "line": 84,
+      "order_of_operations": [
+        "Validate projectId exists",
+        "Validate non-empty strings",
+        "Generate requestID",
+        "Update latestProposalRequestID",
+        "Increment total",
+        "Emit event"
+      ]
+    },
+    {
+      "description": "Private proposal request creation: similar to proposal but also stores privateSolverAddress mapping.",
+      "file": "src/history/BlueprintV1.sol",
+      "line": 107,
+      "order_of_operations": [
+        "Validate projectId exists",
+        "Validate non-empty strings",
+        "Generate requestID",
+        "Update latestProposalRequestID",
+        "Increment total",
+        "Store privateSolver mapping",
+        "Emit event"
+      ]
+    },
+    {
+      "description": "Deployment request creation: msg.sender creates requestID, updates latestDeploymentRequestID, increments totalDeploymentRequest, initializes DeploymentStatus to Issued, updates solver reputation.",
+      "file": "src/history/BlueprintV1.sol",
+      "line": 130,
+      "order_of_operations": [
+        "Validate projectId exists",
+        "Validate non-empty strings and valid solverAddress",
+        "Generate requestID",
+        "Update latestDeploymentRequestID",
+        "Increment total",
+        "Init DeploymentStatus",
+        "Update solver reputation",
+        "Emit event"
+      ]
+    },
+    {
+      "description": "Private deployment request creation: similar to deployment but also assigns privateWorkerAddress and sets status to Pickup, then emits AcceptDeployment.",
+      "file": "src/history/BlueprintV1.sol",
+      "line": 156,
+      "order_of_operations": [
+        "Validate projectId exists",
+        "Validate non-empty strings and valid solverAddress",
+        "Generate requestID",
+        "Update latestDeploymentRequestID",
+        "Increment total",
+        "Update solver reputation",
+        "Init DeploymentStatus with private worker",
+        "Emit RequestPrivateDeployment",
+        "Emit AcceptDeployment"
+      ]
+    },
+    {
+      "description": "Worker submits proof of deployment: msg.sender (deployWorkerAddr) stores proofBase64, updates status to GeneratedProof.",
+      "file": "src/history/BlueprintV1.sol",
+      "line": 185,
+      "order_of_operations": [
+        "Validate projectId exists",
+        "Validate requestID exists and status",
+        "Validate worker address matches",
+        "Set status to GeneratedProof",
+        "Store proof",
+        "Emit event"
+      ]
+    },
+    {
+      "description": "Worker submits deployment request: msg.sender picks up request, sets status to Pickup and assigns deployWorkerAddr.",
+      "file": "src/history/BlueprintV1.sol",
+      "line": 198,
+      "order_of_operations": [
+        "Validate projectId exists",
+        "Validate requestID exists and status",
+        "Set status to Pickup",
+        "Assign deployWorkerAddr",
+        "Emit event"
+      ]
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "line": 96,
+      "value_type": "projectID (identity)",
+      "creation": "Created via keccak256 of block.timestamp, msg.sender, block.chainid",
+      "movement": "Stored in projects mapping and latestProjectID",
+      "destruction": "None"
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "line": 120,
+      "value_type": "proposalRequestID (identity)",
+      "creation": "Created via keccak256 of block.timestamp, msg.sender, base64RecParam, block.chainid",
+      "movement": "Stored in projects[projectId].requestProposalID and latestProposalRequestID",
+      "destruction": "None"
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "line": 194,
+      "value_type": "deploymentRequestID (identity)",
+      "creation": "Created via keccak256 of block.timestamp, msg.sender, base64Proposal, block.chainid, index",
+      "movement": "Stored in requestDeploymentStatus, latestDeploymentRequestID, and deploymentIdList",
+      "destruction": "None"
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "line": 234,
+      "value_type": "deploymentStatus (Status enum)",
+      "creation": "Set to Status.Pickup with deployWorkerAddr for private deployments",
+      "movement": "Updated via submitDeploymentRequest (to Pickup) and submitProofOfDeployment (to GeneratedProof)",
+      "destruction": "None"
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "line": 333,
+      "value_type": "deploymentProof (string)",
+      "creation": "Created via submitProofOfDeployment",
+      "movement": "Stored in deploymentProof mapping",
+      "destruction": "None"
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "line": 163,
+      "value_type": "solverReputation (uint256)",
+      "creation": "Initialized to 0",
+      "movement": "Increased via setReputation on each deploymentRequest",
+      "destruction": "None"
+    },
+    {
+      "file": "src/history/BlueprintV2.sol",
+      "line": 352,
+      "value_type": "requestDeploymentStatus.deployWorkerAddr (address)",
+      "creation": "Set to msg.sender when worker picks up request",
+      "movement": "Overwrites previous value if status is not Pickup or GeneratedProof",
+      "destruction": "None"
+    },
+    {
+      "file": "src/history/PaymentV4.sol",
+      "line": 22,
+      "action": "ERC20 tokens transferred from fromAddress to toAddress via safeTransferFrom",
+      "order": "Requires prior approval; amount must be >0; fromAddress != toAddress; toAddress != zero"
+    },
+    {
+      "file": "src/history/BlueprintV5.sol",
+      "line": 74,
+      "action": "Cost configuration for agent creation at a payment address",
+      "order": "Payment address must be enabled first (addPaymentAddress); sets operation cost for CREATE_AGENT_OP"
+    },
+    {
+      "file": "src/history/BlueprintV5.sol",
+      "line": 81,
+      "action": "Cost configuration for agent update at a payment address",
+      "order": "Payment address must be enabled first (addPaymentAddress); sets operation cost for UPDATE_AGENT_OP"
+    },
+    {
+      "file": "src/history/BlueprintV5.sol",
+      "line": 54,
+      "action": "Reset agent creation status for user and token ID",
+      "order": "Sets whitelistUsers[userAddress] to Issued; sets nftTokenIdMap[tokenId] to Init \u2014 allows re-creation"
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "operation": "Project creation",
+      "line": 130,
+      "description": "New project ID generated from timestamp, sender, chain ID. Stored in projects mapping and latestProjectID mapping."
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "operation": "Proposal request creation",
+      "line": 180,
+      "description": "Request ID generated and stored in projects[projectId].requestProposalID. totalProposalRequest incremented. Solver reputation updated if solverAddress provided."
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "operation": "Deployment request creation",
+      "line": 260,
+      "description": "Request ID and projectDeploymentId generated. Deployment status set (Issued or Pickup). totalDeploymentRequest incremented. DeploymentIdList mapping updated."
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "operation": "Worker pickup",
+      "line": 450,
+      "description": "submitDeploymentRequest changes status from Issued to Pickup, assigns msg.sender as deployWorkerAddr."
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "operation": "Proof submission",
+      "line": 440,
+      "description": "submitProofOfDeployment changes status from Pickup to GeneratedProof, stores deployment proof string."
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "operation": "Config update",
+      "line": 468,
+      "description": "updateWorkerDeploymentConfig resets status from GeneratedProof to Pickup if needed, emits update event."
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "operation": "NFT-based agent creation",
+      "line": 376,
+      "description": "Checks NFT ownership, sets nftTokenIdMap[tokenId] to Pickup, sets deploymentOwners mapping."
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "operation": "Whitelist user agent creation",
+      "line": 383,
+      "description": "Checks whitelist status, sets whitelistUsers[msg.sender] to Pickup after creation."
+    },
+    {
+      "file": "src/history/BlueprintCoreV4.sol",
+      "operation": "Reputation increment",
+      "line": 118,
+      "description": "setReputation increases solver reputation based on current level and totalProposalRequest count."
+    },
+    {
+      "description": "Native token or ERC20 token transfer from user to feeCollectionWalletAddress during createAgentWithToken",
+      "file": "src/history/BlueprintCoreV5.sol",
+      "line": 153,
+      "operation": "payWithNativeToken or payWithERC20 called after state updates"
+    },
+    {
+      "description": "Native token or ERC20 token transfer from user to feeCollectionWalletAddress during updateWorkerDeploymentConfig",
+      "file": "src/history/BlueprintCoreV5.sol",
+      "line": 265,
+      "operation": "payWithNativeToken or payWithERC20 called after state updates"
+    },
+    {
+      "description": "Native token or ERC20 token transfer from user to feeCollectionWalletAddress during userTopUp",
+      "file": "src/history/BlueprintCoreV5.sol",
+      "line": 350,
+      "operation": "payWithNativeToken or payWithERC20 called after state updates"
+    },
+    {
+      "description": "NFT ownership check and status update during createAgentWithNFT",
+      "file": "src/history/BlueprintCoreV5.sol",
+      "line": 153,
+      "operation": "checkNFTOwnership and nftTokenIdMap status update"
+    },
+    {
+      "description": "Deployment status changes (Init -> Issued -> Pickup -> Deploying -> Deployed -> GeneratedProof) managed via requestDeploymentStatus mapping",
+      "file": "src/history/BlueprintCoreV5.sol",
+      "line": 235,
+      "operation": "Status transitions controlled by trusted workers and deployment owners"
+    },
+    {
+      "description": "Deployment proof stored in deploymentProof mapping",
+      "file": "src/history/BlueprintCoreV5.sol",
+      "line": 240,
+      "operation": "Proof of deployment stored for requestID"
+    },
+    {
+      "description": "User top-up balance tracked in userTopUpMp mapping",
+      "file": "src/history/BlueprintCoreV5.sol",
+      "line": 350,
+      "operation": "Balance updated during userTopUp"
+    },
+    {
+      "description": "Nonce increment for EIP712 signature verification in WithSig functions",
+      "file": "src/history/BlueprintCoreV5.sol",
+      "line": 217,
+      "operation": "userNonceMp[owner]++ after signature verification"
+    },
+    {
+      "description": "Worker public key storage and worker address list management",
+      "file": "src/history/BlueprintCoreV5.sol",
+      "line": 280,
+      "operation": "workersPublicKey and workerAddressesMp updated for trusted workers"
+    }
+  ],
+  "call_graph_summary": {
+    "initialize": [
+      "__Ownable_init(msg.sender)",
+      "__EIP712_init(SIGNING_DOMAIN, VERSION)",
+      "__UUPSUpgradeable_init()"
+    ],
+    "_authorizeUpgrade": [
+      "onlyOwner modifier check"
+    ],
+    "src/Blueprint.sol::setNFTContractAddress": [],
+    "src/Blueprint.sol::setWhitelistAddresses": [],
+    "src/Blueprint.sol::removeWhitelistAddresses": [],
+    "src/Blueprint.sol::addPaymentAddress": [],
+    "src/Blueprint.sol::setCreateAgentTokenCost": [],
+    "src/Blueprint.sol::setUpdateCreateAgentTokenCost": [],
+    "src/Blueprint.sol::removePaymentAddress": [],
+    "src/Blueprint.sol::setFeeCollectionWalletAddress": [],
+    "src/Blueprint.sol::setWorkerAdmin": [],
+    "src/Blueprint.sol::updateWorker": [],
+    "src/Blueprint.sol::resetWorkers": [
+      "resetWorkerAddresses (internal, inherited from BlueprintCore, not shown)"
+    ],
+    "src/Blueprint.sol::creditReward": [],
+    "src/Payment.sol::checkNFTOwnership": [
+      "IERC721(nftTokenAddress).ownerOf(nftId) (external call)"
+    ],
+    "src/Payment.sol::payWithERC20": [
+      "IERC20(erc20TokenAddress).safeTransferFrom(fromAddress, toAddress, amount) (external call via SafeERC20)"
+    ],
+    "src/Payment.sol::payWithNativeToken": [
+      "Address.sendValue(toAddress, amount) (external call)"
+    ],
+    "src/BlueprintV1.sol::initialize": [
+      "__Ownable_init(msg.sender), __UUPSUpgradeable_init() (internal)"
+    ],
+    "src/BlueprintV2.sol::initialize": [
+      "__Ownable_init(msg.sender), __UUPSUpgradeable_init() (internal)"
+    ],
+    "src/BlueprintV3.sol::initialize": [
+      "__Ownable_init(msg.sender), __EIP712_init(SIGNING_DOMAIN, VERSION), __UUPSUpgradeable_init() (internal)"
+    ],
+    "src/BlueprintV5.sol::initialize": [
+      "__Ownable_init(msg.sender), __EIP712_init(SIGNING_DOMAIN, VERSION), __UUPSUpgradeable_init() (internal)"
+    ],
+    "src/BlueprintV6.sol::initialize": [
+      "__Blueprint_init(SIGNING_DOMAIN, VERSION), __UUPSUpgradeable_init() (internal)"
+    ],
+    "createProjectID": [
+      "No internal calls (leaf)."
+    ],
+    "createProjectIDAndDeploymentRequest": [
+      "createCommonProjectIDAndDeploymentRequest (internal)",
+      "  - setProjectId (internal)",
+      "  - deploymentRequest (internal)"
+    ],
+    "createProjectIDAndDeploymentRequestWithSig": [
+      "getRequestDeploymentDigest (from EIP712)",
+      "getSignerAddress (from EIP712)",
+      "createCommonProjectIDAndDeploymentRequest (internal)",
+      "  - setProjectId (internal)",
+      "  - deploymentRequest (internal)"
+    ],
+    "createProjectIDAndPrivateDeploymentRequest": [
+      "createCommonProjectIDAndDeploymentRequest (internal)",
+      "  - setProjectId (internal)",
+      "  - deploymentRequest (internal)"
+    ],
+    "createAgentWithToken": [
+      "createAgent (internal)",
+      "  - createCommonProjectIDAndDeploymentRequest (internal)",
+      "    - setProjectId (internal)",
+      "    - deploymentRequest (internal)",
+      "  - payWithERC20/payWithNativeToken (from Payment)"
+    ],
+    "createAgentWithTokenWithSig": [
+      "getCreateAgentWithTokenDigest (from EIP712)",
+      "getSignerAddress (from EIP712)",
+      "createAgent (internal)",
+      "  - createCommonProjectIDAndDeploymentRequest (internal)",
+      "    - setProjectId (internal)",
+      "    - deploymentRequest (internal)",
+      "  - payWithERC20/payWithNativeToken (from Payment)"
+    ],
+    "createAgentWithNFT": [
+      "createAgent (internal)",
+      "  - checkNFTOwnership (assumed external)",
+      "  - createCommonProjectIDAndDeploymentRequest (internal)",
+      "    - setProjectId (internal)",
+      "    - deploymentRequest (internal)"
+    ],
+    "createAgentWithSigWithNFT": [
+      "getCreateAgentWithNFTDigest (from EIP712)",
+      "getSignerAddress (from EIP712)",
+      "createAgent (internal)",
+      "  - checkNFTOwnership (assumed external)",
+      "  - createCommonProjectIDAndDeploymentRequest (internal)",
+      "    - setProjectId (internal)",
+      "    - deploymentRequest (internal)"
+    ],
+    "resetDeploymentRequest": [
+      "resetDeployment (internal)"
+    ],
+    "resetDeploymentRequestWithSig": [
+      "getRequestResetDeploymentDigest (from EIP712)",
+      "getSignerAddress (from EIP712)",
+      "resetDeployment (internal)"
+    ],
+    "submitProofOfDeployment": [
+      "Requires projectIDs[projectId] != address(0) (view); reads requestDeploymentStatus[requestID] (view)."
+    ],
+    "submitDeploymentRequest": [
+      "Requires projectIDs[projectId] != address(0) (view); reads requestDeploymentStatus[requestID] (view)."
+    ],
+    "updateWorkerDeploymentConfig": [
+      "updateWorkerDeploymentConfigCommon (internal)",
+      "  - payWithERC20/payWithNativeToken (from Payment)"
+    ],
+    "updateWorkerDeploymentConfigWithSig": [
+      "getUpdateWorkerConfigDigest (from EIP712)",
+      "getSignerAddress (from EIP712)",
+      "updateWorkerDeploymentConfigCommon (internal)",
+      "  - payWithERC20/payWithNativeToken (from Payment)"
+    ],
+    "setWorkerPublicKey": [
+      "getWorkerAddresses (view)",
+      "workerAddressesMp update"
+    ],
+    "userTopUp": [
+      "topUp (internal)",
+      "  - payWithERC20/payWithNativeToken (from Payment)"
+    ],
+    "userTopUpOther": [
+      "topUp (internal)",
+      "  - payWithERC20/payWithNativeToken (from Payment)"
+    ],
+    "getRequestProposalDigest": [
+      "EIP712._hashTypedDataV4",
+      "EIP712.sol: keccak256 (struct hash computation)"
+    ],
+    "getRequestDeploymentDigest": [
+      "EIP712._hashTypedDataV4",
+      "EIP712.sol: keccak256 (struct hash computation)"
+    ],
+    "getCreateAgentWithTokenDigest": [
+      "EIP712._hashTypedDataV4",
+      "EIP712.sol: keccak256 (struct hash computation)"
+    ],
+    "getCreateAgentWithNFTDigest": [
+      "EIP712._hashTypedDataV4",
+      "EIP712.sol: keccak256 (struct hash computation)"
+    ],
+    "getUpdateWorkerConfigDigest": [
+      "EIP712._hashTypedDataV4",
+      "EIP712.sol: keccak256 (struct hash computation)"
+    ],
+    "getRequestResetDeploymentDigest": [
+      "EIP712._hashTypedDataV4",
+      "EIP712.sol: keccak256 (struct hash computation)"
+    ],
+    "getSignerAddress": [
+      "ECDSA.recover",
+      "EIP712.sol: require(signerAddr != address(0))"
+    ],
+    "setNFTContractAddress": [
+      "require(_nftContractAddress != address(0))",
+      "BlueprintV4.sol: nftContractAddress = _nftContractAddress"
+    ],
+    "setWhitelistAddresses": [
+      "BlueprintV4.sol: whitelistUsers[whitelistAddress[i]] = Status.Issued (loop)"
+    ],
+    "addWhitelistAddress": [
+      "BlueprintV4.sol: whitelistUsers[whitelistAddress] = Status.Issued"
+    ],
+    "deleteWhitelistAddress": [
+      "BlueprintV4.sol: delete whitelistUsers[whitelistAddress]"
+    ],
+    "resetAgentCreationStatus": [
+      "BlueprintV4.sol: whitelistUsers[userAddress] = Status.Issued",
+      "BlueprintV4.sol: nftTokenIdMap[tokenId] = Status.Init"
+    ],
+    "removeWhitelistAddresses": [
+      "BlueprintV4.sol: delete whitelistUsers[removedAddress[i]] (loop)"
+    ],
+    "getRequestProposalDigest (V4)": [
+      "EIP712._hashTypedDataV4",
+      "EIP712V4.sol: keccak256 (struct hash computation)"
+    ],
+    "getRequestDeploymentDigest (V4)": [
+      "EIP712._hashTypedDataV4",
+      "EIP712V4.sol: keccak256 (struct hash computation)"
+    ],
+    "getSignerAddress (V4)": [
+      "ECDSA.recover",
+      "EIP712V4.sol: require(signerAddr != address(0))"
+    ],
+    "createProposalRequest": [
+      "Requires projectIDs[projectId] != address(0) (view)."
+    ],
+    "createPrivateProposalRequest": [
+      "Requires projectIDs[projectId] != address(0) (view)."
+    ],
+    "createDeploymentRequest": [
+      "Requires projectIDs[projectId] != address(0) (view); calls setReputation (private)."
+    ],
+    "createPrivateDeploymentRequest": [
+      "Requires projectIDs[projectId] != address(0) (view); calls setReputation (private)."
+    ],
+    "setReputation": [
+      "No internal calls (leaf)."
+    ],
+    "entry_points_without_internal_chains": [
+      "setNFTContractAddress",
+      "setWhitelistAddresses",
+      "addWhitelistAddress",
+      "deleteWhitelistAddress",
+      "resetAgentCreationStatus",
+      "removeWhitelistAddresses",
+      "addPaymentAddress",
+      "setCreateAgentTokenCost",
+      "setUpdateCreateAgentTokenCost",
+      "removePaymentAddress",
+      "setFeeCollectionWalletAddress",
+      "setWorkerAdmin",
+      "checkNFTOwnership"
+    ],
+    "note": "All entry points in BlueprintV5.sol are single-level setter functions with no internal call chains deeper than one level. resetWorkers calls resetWorkerAddresses() which is defined in BlueprintCoreV5.sol (not provided), but given the file list, no deeper chains are visible. PaymentV4.sol's payWithERC20 is internal and not called by any public entry point in the provided files."
+  },
+  "static_findings_context": [
+    {
+      "finding_tool": "regex",
+      "finding_detector": "unchecked_external_call",
+      "file": "test/BlueprintV5.t.sol",
+      "line": 119,
+      "reachability": "Not reachable from provided entry points; file not included in provided codebase",
+      "likely_real_or_false_positive": "Likely false positive due to missing file context"
+    },
+    {
+      "finding_tool": "regex",
+      "finding_detector": "unchecked_external_call",
+      "file": "test/MockERC20.sol",
+      "line": 38,
+      "reachability": "Not reachable from provided entry points; file not included in provided codebase",
+      "likely_real_or_false_positive": "Likely false positive due to missing file context"
+    },
+    {
+      "finding": "External call at line 119 \u2014 check return value",
+      "reachable_entry_points": [
+        "test_createAgentWithToken"
+      ],
+      "likely_real": false,
+      "context": "Line 119 is in test_createAgentWithToken where blueprint.createAgentWithToken{value: 1 ether}(...) is called. This is a contract function call, not a low-level external call; the return value is handled by the function's logic. This is likely a false positive from regex pattern matching on 'createAgentWithToken' which resembles a call pattern."
+    },
+    {
+      "finding": "External call at line 38 \u2014 check return value (MockERC20.sol)",
+      "reachable_entry_points": [
+        "test_createAgentWithToken",
+        "test_Revert_createAgentWithToken",
+        "test_updateWorkerDeploymentConfig",
+        "test_Revert_updateWorkerDeploymentConfig",
+        "test_userTopUp",
+        "test_Revert_userTopUp"
+      ],
+      "likely_real": false,
+      "context": "Line 38 in MockERC20.sol is the mock contract's external function. The test file uses mock contracts for testing; any unchecked external calls here are test mocks and not part of the production codebase. This is a false positive for the audit."
+    },
+    {
+      "finding": "unchecked_external_call in test/BlueprintV5.t.sol:119",
+      "entry_point": "test/BlueprintV5.t.sol (test file, not production entry point)",
+      "context": "Test code likely making external calls to Blueprint or other contracts. In test context, unchecked calls are less critical but may mask failures. Real vulnerability depends on test implementation.",
+      "is_likely_real": false
+    },
+    {
+      "finding": "unchecked_external_call in test/MockERC20.sol:38",
+      "entry_point": "test/MockERC20.sol (test mock, not production entry point)",
+      "context": "Mock ERC20 contract's transfer function. In test context, unchecked return is common for simplicity. Could hide issues if mock behaves differently than real token.",
+      "is_likely_real": false
+    },
+    {
+      "finding": "unchecked_external_call in test/BlueprintV5.t.sol:119",
+      "entry_point": "N/A (test file, not contract)",
+      "likely_real": false,
+      "reason": "Test file contains unchecked external call, but not part of production contract."
+    },
+    {
+      "finding": "unchecked_external_call in test/MockERC20.sol:38",
+      "entry_point": "N/A (mock contract, not production)",
+      "likely_real": false,
+      "reason": "Mock contract used for testing, not deployed."
+    },
+    {
+      "finding": "unchecked_external_call in test/BlueprintV5.t.sol:119",
+      "reachable_entry_points": [
+        "setNFTContractAddress",
+        "setWhitelistAddresses",
+        "addWhitelistAddress",
+        "deleteWhitelistAddress",
+        "resetAgentCreationStatus",
+        "removeWhitelistAddresses"
+      ],
+      "likely_real": false,
+      "reason": "Test file, not production code; external call in test context is likely intentional mock"
+    },
+    {
+      "finding": "unchecked_external_call in test/MockERC20.sol:38",
+      "reachable_entry_points": [
+        "setNFTContractAddress",
+        "setWhitelistAddresses",
+        "addWhitelistAddress",
+        "deleteWhitelistAddress",
+        "resetAgentCreationStatus",
+        "removeWhitelistAddresses"
+      ],
+      "likely_real": false,
+      "reason": "Mock contract in test file, not production code; external call is part of test infrastructure"
+    },
+    {
+      "finding": "unchecked_external_call in test/BlueprintV5.t.sol line 119",
+      "context": "This is a test file, not the main contract. The finding is in a test and not reachable from any production entry point. Likely false positive for production audit.",
+      "reachable_entry_points": []
+    },
+    {
+      "finding": "unchecked_external_call in test/MockERC20.sol line 38",
+      "context": "This is a mock ERC20 contract used in tests. It is not part of the production Blueprint contract and not reachable from any entry point. Likely false positive for production audit.",
+      "reachable_entry_points": []
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/BlueprintV5.t.sol",
+      "line": 119,
+      "raw_message": "External call at line 119 \u2014 check return value",
+      "confidence": "low",
+      "likely_real": false,
+      "reachable_from_entry_points": [],
+      "context": "Finding is in test file, not production code; likely false positive."
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/MockERC20.sol",
+      "line": 38,
+      "raw_message": "External call at line 38 \u2014 check return value",
+      "confidence": "low",
+      "likely_real": false,
+      "reachable_from_entry_points": [],
+      "context": "Finding is in mock contract in test; likely false positive."
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/BlueprintV5.t.sol",
+      "line": 119,
+      "confidence": "low",
+      "context": "Test file, not production code. No entry points from BlueprintV2.sol can reach this line. Likely false positive for production audit."
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/MockERC20.sol",
+      "line": 38,
+      "confidence": "low",
+      "context": "Test mock contract, not production code. No entry points from BlueprintV2.sol can reach this line. Likely false positive for production audit."
+    },
+    {
+      "finding": "unchecked_external_call in test/BlueprintV5.t.sol line 119",
+      "reachable_from": "test function (not a contract entry point)",
+      "likely_real": false,
+      "context": "This is in a test file, not production code. The call is likely a mock or test helper; not a real vulnerability."
+    },
+    {
+      "finding": "unchecked_external_call in test/MockERC20.sol line 38",
+      "reachable_from": "test mock contract",
+      "likely_real": false,
+      "context": "This is in a test mock, not production code. The call is likely a test setup; not a real vulnerability."
+    },
+    {
+      "finding": "unchecked_external_call in test/BlueprintV5.t.sol line 119",
+      "likely_real": false,
+      "reason": "Test file only, not production code. External call in test is expected to be unchecked."
+    },
+    {
+      "finding": "unchecked_external_call in test/MockERC20.sol line 38",
+      "likely_real": false,
+      "reason": "Test mock contract, not production code. Mocks often skip return value checks intentionally."
+    },
+    {
+      "finding": "unchecked_external_call in test/BlueprintV5.t.sol line 119",
+      "reachable_from_entry_points": [],
+      "likely_real": false,
+      "notes": "This is in a test file, not in the main contract code. It is not reachable by external actors in production."
+    },
+    {
+      "finding": "unchecked_external_call in test/MockERC20.sol line 38",
+      "reachable_from_entry_points": [],
+      "likely_real": false,
+      "notes": "This is in a test mock contract, not in the main contract code. It is not reachable by external actors in production."
+    }
+  ]
+}

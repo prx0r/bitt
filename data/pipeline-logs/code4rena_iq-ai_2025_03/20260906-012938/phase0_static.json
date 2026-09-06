@@ -1,0 +1,14 @@
+{
+  "findings": [
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "src/LiquidityManager.sol",
+      "lines": [
+        220
+      ],
+      "raw_message": "External call at line 220 \u2014 check return value",
+      "confidence": "low"
+    }
+  ]
+}

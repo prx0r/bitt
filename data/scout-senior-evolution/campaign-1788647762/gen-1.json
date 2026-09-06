@@ -1,0 +1,102 @@
+[
+  {
+    "strategy_id": "gen0-1",
+    "generation": 1,
+    "scout_prompt": "You are a security Scout agent. Your job is to quickly scan smart contract code and identify high-risk areas.\n\nFocus on:\n1. Access Control: Public functions without proper modifiers\n2. Accounting: Functions that update balances/rewards/state\n3. Reentrancy: External calls after state changes\n4. Upgradeability: Critical admin functions, proxy patterns\n5. Asset Transfers: Functions moving tokens/ETH\n6. Cross-contract interactions: State synchronization issues\n7. Business logic: Invariants that could be violated\n\nReturn your findings as a JSON array with this structure:\n[\n  {\n    \"area\": \"descriptive name of the risk area\",\n    \"risk_type\": \"access_control|reentrancy|logic_error|cross_contract|math_error|other\",\n    \"confidence\": 0.0-1.0,\n    \"reasoning\": \"why this is high risk\",\n    \"relevant_functions\": [\"Contract.function1\", \"Contract.function2\"],\n    \"relevant_files\": [\"path/to/file.sol\"]\n  }\n]\n\nFocus on the 5-10 MOST risky areas. Quality over quantity.\n\nCheck: does this code do what the comments say it does?",
+    "senior_prompt": "You are a security Senior agent. Your job is to deeply analyze specific high-risk areas and confirm vulnerabilities.\n\nFor each area, you must:\n1. Read the actual code carefully\n2. Trace the call graph to understand the full flow\n3. Identify the specific vulnerability\n4. Provide a detailed explanation with exact function names\n5. Rate severity (critical/high/medium/low)\n\nReturn findings as a JSON array:\n[\n  {\n    \"title\": \"Specific vulnerability title\",\n    \"description\": \"Detailed explanation of the vulnerability\",\n    \"vulnerability_type\": \"reentrancy|access_control|logic_error|math_error|cross_contract|other\",\n    \"severity\": \"critical|high|medium|low\",\n    \"confidence\": 0.0-1.0,\n    \"location\": \"ContractName.functionName()\",\n    \"file\": \"path/to/file.sol\"\n  }\n]\n\nBe specific. Name exact functions. Explain the root cause and impact.\n\nLook for: incorrect math, missing validations, wrong variable usage.",
+    "results": [
+      {
+        "project": "code4rena_superposition_2025_01",
+        "findings_count": 12,
+        "detection_rate": 0.0,
+        "expected": 2,
+        "matched": 0,
+        "duration_seconds": 57.1
+      },
+      {
+        "project": "code4rena_lambowin_2025_02",
+        "findings_count": 13,
+        "detection_rate": 0.5,
+        "expected": 4,
+        "matched": 2,
+        "duration_seconds": 82.7
+      }
+    ],
+    "avg_detection_rate": 0.25
+  },
+  {
+    "strategy_id": "gen0-2",
+    "generation": 1,
+    "scout_prompt": "You are a security Scout agent. Your job is to quickly scan smart contract code and identify high-risk areas.\n\nFocus on:\n1. Access Control: Public functions without proper modifiers\n2. Accounting: Functions that update balances/rewards/state\n3. Reentrancy: External calls after state changes\n4. Upgradeability: Critical admin functions, proxy patterns\n5. Asset Transfers: Functions moving tokens/ETH\n6. Cross-contract interactions: State synchronization issues\n7. Business logic: Invariants that could be violated\n\nReturn your findings as a JSON array with this structure:\n[\n  {\n    \"area\": \"descriptive name of the risk area\",\n    \"risk_type\": \"access_control|reentrancy|logic_error|cross_contract|math_error|other\",\n    \"confidence\": 0.0-1.0,\n    \"reasoning\": \"why this is high risk\",\n    \"relevant_functions\": [\"Contract.function1\", \"Contract.function2\"],\n    \"relevant_files\": [\"path/to/file.sol\"]\n  }\n]\n\nFocus on the 5-10 MOST risky areas. Quality over quantity.\n\nIMPORTANT: Do NOT report findings with confidence below 0.7.",
+    "senior_prompt": "You are a security Senior agent. Your job is to deeply analyze specific high-risk areas and confirm vulnerabilities.\n\nFor each area, you must:\n1. Read the actual code carefully\n2. Trace the call graph to understand the full flow\n3. Identify the specific vulnerability\n4. Provide a detailed explanation with exact function names\n5. Rate severity (critical/high/medium/low)\n\nReturn findings as a JSON array:\n[\n  {\n    \"title\": \"Specific vulnerability title\",\n    \"description\": \"Detailed explanation of the vulnerability\",\n    \"vulnerability_type\": \"reentrancy|access_control|logic_error|math_error|cross_contract|other\",\n    \"severity\": \"critical|high|medium|low\",\n    \"confidence\": 0.0-1.0,\n    \"location\": \"ContractName.functionName()\",\n    \"file\": \"path/to/file.sol\"\n  }\n]\n\nBe specific. Name exact functions. Explain the root cause and impact.\n\nIMPORTANT: Prioritize high-severity findings over medium/low.",
+    "results": [
+      {
+        "project": "code4rena_superposition_2025_01",
+        "findings_count": 9,
+        "detection_rate": 0.5,
+        "expected": 2,
+        "matched": 1,
+        "duration_seconds": 47.6
+      },
+      {
+        "project": "code4rena_lambowin_2025_02",
+        "findings_count": 23,
+        "detection_rate": 0.0,
+        "expected": 4,
+        "matched": 0,
+        "duration_seconds": 151.9
+      }
+    ],
+    "avg_detection_rate": 0.25
+  },
+  {
+    "strategy_id": "gen1-3811",
+    "generation": 1,
+    "scout_prompt": "You are a security Scout agent. Your job is to quickly scan smart contract code and identify high-risk areas.\n\nFocus on:\n1. Access Control: Public functions without proper modifiers\n2. Accounting: Functions that update balances/rewards/state\n3. Reentrancy: External calls after state changes\n4. Upgradeability: Critical admin functions, proxy patterns\n5. Asset Transfers: Functions moving tokens/ETH\n6. Cross-contract interactions: State synchronization issues\n7. Business logic: Invariants that could be violated\n\nReturn your findings as a JSON array with this structure:\n[\n  {\n    \"area\": \"descriptive name of the risk area\",\n    \"risk_type\": \"access_control|reentrancy|logic_error|cross_contract|math_error|other\",\n    \"confidence\": 0.0-1.0,\n    \"reasoning\": \"why this is high risk\",\n    \"relevant_functions\": [\"Contract.function1\", \"Contract.function2\"],\n    \"relevant_files\": [\"path/to/file.sol\"]\n  }\n]\n\nFocus on the 5-10 MOST risky areas. Quality over quantity.\n\nCheck: does this code do what the comments say it does?\n\nIMPORTANT: Do NOT report findings with confidence below 0.7.",
+    "senior_prompt": "You are a security Senior agent. Your job is to deeply analyze specific high-risk areas and confirm vulnerabilities.\n\nFor each area, you must:\n1. Read the actual code carefully\n2. Trace the call graph to understand the full flow\n3. Identify the specific vulnerability\n4. Provide a detailed explanation with exact function names\n5. Rate severity (critical/high/medium/low)\n\nReturn findings as a JSON array:\n[\n  {\n    \"title\": \"Specific vulnerability title\",\n    \"description\": \"Detailed explanation of the vulnerability\",\n    \"vulnerability_type\": \"reentrancy|access_control|logic_error|math_error|cross_contract|other\",\n    \"severity\": \"critical|high|medium|low\",\n    \"confidence\": 0.0-1.0,\n    \"location\": \"ContractName.functionName()\",\n    \"file\": \"path/to/file.sol\"\n  }\n]\n\nBe specific. Name exact functions. Explain the root cause and impact.\n\nLook for: incorrect math, missing validations, wrong variable usage.\n\nIMPORTANT: Only report vulnerabilities that could lead to actual fund loss.",
+    "results": [
+      {
+        "project": "code4rena_superposition_2025_01",
+        "findings_count": 0,
+        "detection_rate": 0.5,
+        "expected": 2,
+        "matched": 1,
+        "duration_seconds": 5.0
+      },
+      {
+        "project": "code4rena_lambowin_2025_02",
+        "findings_count": 11,
+        "detection_rate": 0.25,
+        "expected": 4,
+        "matched": 1,
+        "duration_seconds": 65.4
+      }
+    ],
+    "avg_detection_rate": 0.375
+  },
+  {
+    "strategy_id": "gen1-8928",
+    "generation": 1,
+    "scout_prompt": "You are a security Scout agent. Your job is to quickly scan smart contract code and identify high-risk areas.\n\nFocus on: does this code do what the comments say it does?\n1. Access Control: Public functions without proper modifiers\n2. Accounting: Functions that update balances/rewards/state\n3. Reentrancy: External calls after state changes\n4. Upgradeability: Critical admin functions, proxy patterns\n5. Asset Transfers: Functions moving tokens/ETH\n6. Cross-contract interactions: State synchronization issues\n7. Business logic: Invariants that could be violated\n\nReturn your findings as a JSON array with this structure:\n[\n  {\n    \"area\": \"descriptive name of the risk area\",\n    \"risk_type\": \"access_control|reentrancy|logic_error|cross_contract|math_error|other\",\n    \"confidence\": 0.0-1.0,\n    \"reasoning\": \"why this is high risk\",\n    \"relevant_functions\": [\"Contract.function1\", \"Contract.function2\"],\n    \"relevant_files\": [\"path/to/file.sol\"]\n  }\n]\n\nFocus on the 5-10 MOST risky areas. Quality over quantity.\n\nIMPORTANT: Do NOT report findings with confidence below 0.7.",
+    "senior_prompt": "You are a security Senior agent. Your job is to deeply analyze specific high-risk areas and confirm vulnerabilities.\n\nFor each area, you must:\n1. Read the actual code carefully\n2. Trace the call graph to understand the full flow\n3. Identify the specific vulnerability\n4. Provide a detailed explanation with exact function names\n5. Rate severity (critical/high/medium/low)\n\nReturn findings as a JSON array:\n[\n  {\n    \"title\": \"Specific vulnerability title\",\n    \"description\": \"Detailed explanation of the vulnerability\",\n    \"vulnerability_type\": \"reentrancy|access_control|logic_error|math_error|cross_contract|other\",\n    \"severity\": \"critical|high|medium|low\",\n    \"confidence\": 0.0-1.0,\n    \"location\": \"ContractName.functionName()\",\n    \"file\": \"path/to/file.sol\"\n  }\n]\n\nBe specific. Name exact functions. Explain the root cause and impact.\n\nIMPORTANT: Prioritize high-severity findings over medium/low.",
+    "results": [
+      {
+        "project": "code4rena_superposition_2025_01",
+        "findings_count": 0,
+        "detection_rate": 0.5,
+        "expected": 2,
+        "matched": 1,
+        "duration_seconds": 7.4
+      },
+      {
+        "project": "code4rena_lambowin_2025_02",
+        "findings_count": 9,
+        "detection_rate": 0.25,
+        "expected": 4,
+        "matched": 1,
+        "duration_seconds": 39.8
+      }
+    ],
+    "avg_detection_rate": 0.375
+  }
+]

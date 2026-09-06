@@ -1,0 +1,164 @@
+[
+  {
+    "strategy_id": "gen0-0",
+    "generation": 1,
+    "params": {
+      "system_prompt": "You are a senior smart contract security auditor. Analyze code for security vulnerabilities. Report findings using report_vulnerabilities tool.",
+      "max_tokens": 8192,
+      "turns_per_file": 3,
+      "seed_with_list": true,
+      "seed_with_content": true,
+      "content_truncate": 8000,
+      "architecture_first": false,
+      "priority_order": "random"
+    },
+    "results": [
+      {
+        "project": "code4rena_superposition_2025_01",
+        "findings_count": 45,
+        "detection_rate": 0.0,
+        "expected": 2,
+        "matched": 0,
+        "duration_seconds": 311.4,
+        "high_findings": 0
+      }
+    ],
+    "avg_detection_rate": 0.0,
+    "fitness": 0.0
+  },
+  {
+    "strategy_id": "gen0-1",
+    "generation": 1,
+    "params": {
+      "system_prompt": "You are a senior smart contract security auditor. Think step-by-step: 1) What does this code do? 2) What could go wrong? 3) Where specifically? 4) What's the impact? Report findings using report_vulnerabilities tool.",
+      "max_tokens": 8192,
+      "turns_per_file": 3,
+      "seed_with_list": true,
+      "seed_with_content": true,
+      "content_truncate": 8000,
+      "architecture_first": false,
+      "priority_order": "random"
+    },
+    "results": [
+      {
+        "project": "code4rena_superposition_2025_01",
+        "findings_count": 6,
+        "detection_rate": 0.0,
+        "expected": 2,
+        "matched": 0,
+        "duration_seconds": 312.8,
+        "high_findings": 1
+      }
+    ],
+    "avg_detection_rate": 0.0,
+    "fitness": 0.0
+  },
+  {
+    "strategy_id": "gen1-1824",
+    "generation": 1,
+    "params": {
+      "system_prompt": "You are a senior smart contract security auditor. Analyze code for security vulnerabilities. Report findings using report_vulnerabilities tool.\n\nTrace the flow of assets (tokens, ETH) through this code.",
+      "max_tokens": 8192,
+      "turns_per_file": 3,
+      "seed_with_list": true,
+      "seed_with_content": true,
+      "content_truncate": 8000,
+      "architecture_first": false,
+      "priority_order": "random"
+    },
+    "results": [
+      {
+        "project": "code4rena_superposition_2025_01",
+        "findings_count": 18,
+        "detection_rate": 0.0,
+        "expected": 2,
+        "matched": 0,
+        "duration_seconds": 321.3,
+        "high_findings": 0
+      }
+    ],
+    "avg_detection_rate": 0.0,
+    "fitness": 0.0
+  },
+  {
+    "strategy_id": "gen1-4506",
+    "generation": 1,
+    "params": {
+      "system_prompt": "You are a senior smart contract security auditor. Analyze code for security vulnerabilities. Report findings using report_vulnerabilities tool.",
+      "max_tokens": 8192,
+      "turns_per_file": 3,
+      "seed_with_list": true,
+      "seed_with_content": true,
+      "content_truncate": 8000,
+      "architecture_first": false,
+      "priority_order": "random"
+    },
+    "results": [
+      {
+        "project": "code4rena_superposition_2025_01",
+        "findings_count": 20,
+        "detection_rate": 0.0,
+        "expected": 2,
+        "matched": 0,
+        "duration_seconds": 324.8,
+        "high_findings": 2
+      }
+    ],
+    "avg_detection_rate": 0.0,
+    "fitness": 0.0
+  },
+  {
+    "strategy_id": "gen1-2286",
+    "generation": 1,
+    "params": {
+      "system_prompt": "You are a senior smart contract security auditor. Think step-by-step: 1) What does this code do? 2) What could go wrong? 3) Where specifically? 4) What's the impact? Report findings using report_vulnerabilities tool.",
+      "max_tokens": 8192,
+      "turns_per_file": 3,
+      "seed_with_list": true,
+      "seed_with_content": true,
+      "content_truncate": 8000,
+      "architecture_first": false,
+      "priority_order": "random"
+    },
+    "results": [
+      {
+        "project": "code4rena_superposition_2025_01",
+        "findings_count": 13,
+        "detection_rate": 0.0,
+        "expected": 2,
+        "matched": 0,
+        "duration_seconds": 307.6,
+        "high_findings": 0
+      }
+    ],
+    "avg_detection_rate": 0.0,
+    "fitness": 0.0
+  },
+  {
+    "strategy_id": "gen1-8935",
+    "generation": 1,
+    "params": {
+      "system_prompt": "You are a senior smart contract security auditor. Think step-by-step: 1) What does this code do? 2) What could go wrong? 3) Where specifically? 4) What's the impact? Report findings using report_vulnerabilities tool.\n\nCompare with known vulnerability patterns in similar protocols.",
+      "max_tokens": 8192,
+      "turns_per_file": 3,
+      "seed_with_list": true,
+      "seed_with_content": true,
+      "content_truncate": 8000,
+      "architecture_first": false,
+      "priority_order": "random"
+    },
+    "results": [
+      {
+        "project": "code4rena_superposition_2025_01",
+        "findings_count": 4,
+        "detection_rate": 0.0,
+        "expected": 2,
+        "matched": 0,
+        "duration_seconds": 300.3,
+        "high_findings": 0
+      }
+    ],
+    "avg_detection_rate": 0.0,
+    "fitness": 0.0
+  }
+]

@@ -1,0 +1,24 @@
+{
+  "project": "code4rena_superposition_2025_01",
+  "timestamp": "2026-09-05T23:31:57",
+  "files_analyzed": 57,
+  "files_skipped": 0,
+  "total_vulnerabilities": 1,
+  "vulnerabilities": [
+    {
+      "title": "Unknown vulnerability",
+      "description": "1. Attacker finds a position ID (e.g., via enumeration or off-chain data). 2. Attacker calls `burnPositionAE401070(id)` directly on the ISeawaterExecutorPosition interface. 3. If the implementation lacks ownership checks, the position's liquidity is burned and permanently locked. 4. The position owner loses all liquidity and future yield, which constitutes a loss of funds (though not direct theft). This is a high-severity denial-of-service attack with real financial impact.",
+      "vulnerability_type": "other",
+      "severity": "high",
+      "confidence": 0.7,
+      "location": "pkg/sol/ISeawaterExecutorPosition.sol",
+      "file": "pkg/sol/ISeawaterExecutorPosition.sol",
+      "reported_by_model": "mimo-v2.5"
+    }
+  ],
+  "token_usage": {
+    "total_input": 0,
+    "total_output": 0
+  },
+  "duration_seconds": 1502.4
+}

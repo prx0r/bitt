@@ -1,0 +1,44 @@
+[
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The constants DEFAULT_LIMIT and MAX_LIMIT are both set to u32::MAX (4294967295). In the paginated query functions (operators, tokens, all_tokens), when the caller does not provide a limit parameter, it defaults to DEFAULT_LIMIT. The `.min(MAX_LIMIT)` clamp is ineffective because MAX_LIMIT equals DEFAULT_LIMIT, so the effective limit remains u32::MAX. This allows an attacker to trigger a query that attempts to iterate over all possible items (up to ~4 billion) in storage, causing excessive gas consumption or memory exhaustion in the query VM, potentially DoS-ing the node or making queries extremely expensive. While CosmWasm queries are gas-metered, this configuration removes the intended safety bound on pagination, making resource exhaustion trivial.",
+    "file": "contracts/codedestate/src/query.rs",
+    "lines": "14-15",
+    "candidate_original": {
+      "file": "contracts/codedestate/src/query.rs",
+      "lines": "14-15",
+      "category": "Resource Exhaustion / DoS",
+      "attack_sequence": [
+        "1. Attacker calls the `query` entry point with a message that triggers any of the paginated query functions (e.g., `Operators`, `Tokens`, `AllTokens`) with `limit` set to None.",
+        "2. DEFAULT_LIMIT is 4294967295 (u32::MAX) and MAX_LIMIT is also 4294967295, so the effective limit defaults to the full u32 range.",
+        "3. The `.min(MAX_LIMIT)` clamp is a no-op since DEFAULT_LIMIT == MAX_LIMIT == u32::MAX.",
+        "4. `.take(limit)` on the iterator will attempt to yield up to ~4 billion items, causing massive gas consumption or OOM in the query VM.",
+        "5. Even if the chain's gas meter catches this, a single query call can consume enormous resources, potentially DoS-ing the node or at minimum making queries expensive."
+      ],
+      "confidence": "high",
+      "reasoning": "DEFAULT_LIMIT and MAX_LIMIT are both set to u32::MAX (4294967295), which means pagination effectively has no upper bound. In CosmWasm, queries are still gas-metered, but this means a caller can request an astronomically large page size. The clamping logic `.min(MAX_LIMIT)` provides no protection since both values are identical. This is a clear denial-of-service vector where a single query can force the node to iterate over the entire dataset without limit. The correct fix is to set MAX_LIMIT to a reasonable value (e.g., 100 or 500) and DEFAULT_LIMIT to a smaller value (e.g., 10-50).",
+      "trace_region": "contracts/codedestate/src/query.rs"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The DEFAULT_LIMIT and MAX_LIMIT constants are both set to u32::MAX (4294967295). This means that any query (like `tokens`, `all_tokens`, or `operators`) that uses default pagination will attempt to return up to 4 billion items in a single response. An attacker can intentionally mint a large number of NFTs (or create many operators) to bloat state. When a legitimate consumer (frontend, indexer, etc.) makes a paginated query without specifying a limit, it triggers an attempt to fetch and serialize an enormous result set, potentially causing RPC node out-of-memory (OOM) errors, timeouts, or excessive gas consumption. This effectively disables pagination and creates a denial-of-service vector.",
+    "file": "contracts/codedestate/src/query.rs",
+    "lines": "14-15",
+    "candidate_original": {
+      "file": "contracts/codedestate/src/query.rs",
+      "lines": "14-15",
+      "category": "Configuration Error / Pagination Bypass",
+      "attack_sequence": [
+        "1. Any external consumer (frontend, indexer, bridge) that relies on DEFAULT_LIMIT for paginating through all tokens or operators will discover that the default page size is u32::MAX.",
+        "2. This means pagination is effectively disabled \u2014 all results are returned in one call, or the call fails if there are more than u32::MAX items.",
+        "3. An attacker who controls a large number of NFTs can bloat state such that a legitimate paginated query with the 'default' limit tries to return an enormous result set, causing the RPC node to OOM or timeout."
+      ],
+      "confidence": "medium",
+      "reasoning": "While this is related to the same root cause as the above finding, it specifically targets the practical impact: the pagination system is broken because DEFAULT_LIMIT equals MAX_LIMIT equals u32::MAX. Any caller expecting sane default pagination behavior will be affected.",
+      "trace_region": "contracts/codedestate/src/query.rs"
+    }
+  }
+]

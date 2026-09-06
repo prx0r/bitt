@@ -1,0 +1,134 @@
+[
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The 4-argument `buy` and `sell` functions allow specifying an arbitrary `_recipient` address. While this is intended functionality, it creates a phishing vector where a malicious front-end can trick users into signing transactions that send tokens to an attacker-controlled address. An attacker could deploy a deceptive website or contract that prompts users to call `buy` with `_recipient` set to the attacker, causing the user's purchased tokens to be sent to the attacker instead. Similarly, for `sell`, the proceeds could be redirected to the attacker. This does not require front-running in the mempool; it's a social engineering/phishing attack enabled by the flexible recipient parameter.",
+    "file": "src/AgentRouter.sol",
+    "lines": "59-98",
+    "candidate_original": {
+      "file": "src/AgentRouter.sol",
+      "lines": "59-98",
+      "category": "arbitrary-recipient-front-running",
+      "attack_sequence": [
+        "1. Attacker monitors the mempool for `buy` calls from users to the 4-argument `buy` function with a large `_amountIn`",
+        "2. Attacker front-runs by calling `buy(_agentToken, 0, 0, attackerAddress)` - but this gives attacker 0 tokens, not useful directly",
+        "3. More importantly: when the `buy` function is called with `_recipient = msg.sender`, the recipient receives tokens directly. An attacker observing a pending `buy(_token, largeAmount, minOut, victim)` can see the exact recipient address, but cannot redirect it. However, the 4-argument version allows anyone to specify any recipient - this means a contract could call `buy(token, amount, 0, victim)` to send tokens to an unwilling recipient (minor) OR more critically, a user can be tricked into calling `buy` with `_recipient` set to an attacker-controlled address via a phishing front-end.\n4. The same applies to `sell` - an attacker can construct a phishing interface that sets `_recipient` to the attacker, so when the user signs the transaction, the proceeds go to the attacker.",
+        "confidence",
+        "0.5",
+        "reasoning",
+        "The 4-argument buy/sell functions allow arbitrary recipient addresses. While this is by design, it opens phishing vectors where a malicious front-end can set _recipient to the attacker. This is a moderate design concern but not strictly a code-level vulnerability."
+      ],
+      "trace_region": "src/AgentRouter.sol"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The `burn` function in AIToken.sol allows the owner (Agent contract) to burn tokens from any address without consent or approval. If the Agent contract has any vulnerability (e.g., reentrancy, incorrect accounting, or privilege escalation) that allows untrusted code execution, an attacker could trick the Agent into calling `burn` against a victim's address. This design flaw amplifies any bug in the Agent contract to cause arbitrary token destruction without recourse for the victim.",
+    "file": "src/AIToken.sol",
+    "lines": "62-65",
+    "candidate_original": {
+      "file": "src/AIToken.sol",
+      "lines": "62-65",
+      "category": "Arbitrary Burn Without Recipient Consent",
+      "attack_sequence": [
+        "1. The `burn` function allows the owner (Agent) to burn tokens from any address without that address's consent or approval.",
+        "2. A legitimate caller interacts with the Agent contract and triggers a state change (e.g., through AgentRouter's `sell` function or other Agent functions).",
+        "3. If the Agent's logic has a bug (e.g., reentrancy, incorrect accounting, or a privilege escalation), the Agent could be tricked into calling `burn` against a victim's address.",
+        "4. The victim loses their tokens with no recourse \u2014 there is no approval mechanism, no time-lock, and no way for the token holder to prevent the burn."
+      ],
+      "confidence": "medium",
+      "reasoning": "This is a design amplification issue rather than a standalone vulnerability. The lack of any approval or consent mechanism for burning means that any bug in the Agent contract that allows untrusted code execution has an outsized impact. Combined with the fact that the Agent is the sole authority over minting and burning, a single Agent vulnerability can lead to complete token supply manipulation.",
+      "trace_region": "src/AIToken.sol"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The AIToken contract has no supply cap. The `mint` function is only callable by the owner (Agent contract). If the Agent contract is compromised or has a vulnerability allowing unauthorized minting, an attacker could mint arbitrary amounts of tokens. These could then be sold on DEXes or through integrated routers to drain liquidity. While the impact depends on a prior compromise, the lack of a cap makes the attack surface larger and could lead to significant financial loss proportional to available liquidity.",
+    "file": "src/AIToken.sol",
+    "lines": "42-44",
+    "candidate_original": {
+      "file": "src/AIToken.sol",
+      "lines": "42-44",
+      "category": "No Supply Cap / Unlimited Inflation",
+      "attack_sequence": [
+        "1. There is no `cap` on the total supply of AIToken \u2014 no use of OpenZeppelin's ERC20Capped or similar mechanism.",
+        "2. The `mint` function has no amount check beyond the uint256 overflow protection inherent in Solidity >=0.8.x.",
+        "3. If the Agent contract (owner) is compromised or has a logic bug, the attacker can call `mint(attackerAddress, type(uint256).max / 2)` to inflate the supply arbitrarily.",
+        "4. The inflated tokens can then be sold on any DEX or through the AgentRouter for the underlying asset (ETH or base token), draining liquidity."
+      ],
+      "confidence": "medium",
+      "reasoning": "The absence of a supply cap is a deliberate design choice that amplifies any Agent vulnerability. In a scenario where the Agent is compromised (or has a privilege escalation), the attacker gains the ability to create unlimited tokens and extract value from any integrated liquidity pool. The impact is proportional to the liquidity available in pools trading this token.",
+      "trace_region": "src/AIToken.sol"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The Agent (owner) can mint tokens to any address, which immediately grants that address voting power for governance proposals that check the current balance or checkpoint. The Agent can then burn those tokens after the vote, effectively performing a flash-vote attack. While ERC20Votes uses checkpoints, the minting and burning still alter the checkpoint balance within a single transaction, allowing temporary voting power manipulation. This could be exploited to sway governance outcomes without long-term token commitment.",
+    "file": "src/AIToken.sol",
+    "lines": "38-40",
+    "candidate_original": {
+      "file": "src/AIToken.sol",
+      "lines": "38-40",
+      "category": "Governance Voting Power Manipulation",
+      "attack_sequence": [
+        "1. The token uses ERC20Votes for governance checkpointing, with timestamp-based clock.",
+        "2. Since the Agent (owner) can mint tokens to any address at any time, the Agent can mint tokens to an address, that address can vote in governance, and then the Agent can burn those tokens.",
+        "3. This allows the Agent owner to temporarily give voting power to any address and then revoke it \u2014 enabling flash-vote attacks if the governance contract (TokenGovernor) doesn't properly handle balance snapshots.",
+        "4. However, ERC20Votes naturally uses checkpoints (snapshots at block/tx), so a single-transaction mint-vote-burn would show the balance at the checkpoint. The vulnerability depends on whether TokenGovernor checks current balance vs checkpointed balance."
+      ],
+      "confidence": "low",
+      "reasoning": "ERC20Votes stores checkpoints per block/timestamp, so a mint-vote-burn in a single transaction would correctly reflect the temporary balance in that checkpoint. However, the Agent owner could still manipulate governance by strategically minting tokens to allied addresses before proposal snapshots and burning them after. This is a governance manipulation concern but depends heavily on the TokenGovernor implementation.",
+      "trace_region": "src/AIToken.sol"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "low",
+    "exploit_description": "The buy() function does not explicitly check that _amountIn > 0 at the start. Although getAmountOut() internally requires _amountIn > 0 (line 86), a user could still call buy(0) and the function would revert inside getAmountOut. However, the candidate's attack sequence describes a scenario where getAmountOut returns 0, which is incorrect because getAmountOut reverts when _amountIn == 0. Therefore, the vulnerability is not exploitable as described. However, the lack of an explicit zero-amount check is a minor code quality issue that could lead to confusion and gas waste. The severity is low because it does not lead to loss of funds or state corruption, but it is a best practice violation.",
+    "file": "src/BootstrapPool.sol",
+    "lines": "70-76",
+    "candidate_original": {
+      "file": "src/BootstrapPool.sol",
+      "lines": "70-76",
+      "category": "Missing Zero-Amount Check / State Inconsistency",
+      "attack_sequence": [
+        "1. Call buy(0, recipient) with _amountIn = 0.",
+        "2. getAmountOut(0, currencyToken) returns 0 (since _numerator = 0).",
+        "3. currencyTokenFeeEarned += 0 - (0 * fee) / 10000 = 0, state updated but no impact.",
+        "4. currencyToken.safeTransferFrom(msg.sender, address(this), 0) \u2014 no tokens transferred (ERC20 behavior).",
+        "5. agentToken.safeTransfer(recipient, 0) \u2014 no tokens transferred, but the function does not revert."
+      ],
+      "confidence": 0.4,
+      "reasoning": "The function does not check _amountIn > 0 at the top level. While getAmountOut requires _amountIn > 0 and will revert (the check is inside getAmountOut), so this is actually protected by getAmountOut's require statement. This lowers the severity. Let me reconsider \u2014 actually getAmountOut does require _amountIn > 0, so this is a false positive. Removing this.",
+      "trace_region": "buy(uint256)"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The buy() function does not check that _amountOut > 0 before executing the transfer. If a user sends a very small _amountIn, the getAmountOut() calculation can round down to 0. The user's currencyToken is taken, zero agentTokens are sent, but currencyTokenFeeEarned is incremented by the full _amountIn minus fee. This inflates currencyTokenFeeEarned, which reduces the apparent currency reserve in getReserves() (since reserve = phantomAmount + balance - feeEarned). A repeated attacker can cause progressive price degradation for all subsequent traders by artificially inflating the fee accounting. While the attacker loses their _amountIn, they can grief the pool by worsening the exchange rate for others.",
+    "file": "src/BootstrapPool.sol",
+    "lines": "69-75",
+    "candidate_original": {
+      "file": "src/BootstrapPool.sol",
+      "lines": "102-119",
+      "category": "Missing Validation \u2014 getAmountOut Returns 0 / Zero Output Tokens Sent",
+      "attack_sequence": [
+        "1. Call buy() with a very small _amountIn such that _amountOut from getAmountOut rounds down to 0.",
+        "2. This happens when _amountIn * fee * _reserveOut < _denominator (the denominator is very large relative to the numerator).",
+        "3. _amountOut = 0 is returned.",
+        "4. On line 71: currencyTokenFeeEarned += _amountIn - (_amountIn * fee) / 10000 \u2014 the full _amountIn minus the fee portion is added to currencyTokenFeeEarned.",
+        "5. On line 73: currencyToken.safeTransferFrom(msg.sender, address(this), _amountIn) \u2014 the full _amountIn is taken from the user.",
+        "6. On line 74: agentToken.safeTransfer(_recipient, 0) \u2014 zero tokens sent.",
+        "7. The user loses _amountIn of currencyToken and receives 0 agentTokens. The fee accounting inflates currencyTokenFeeEarned even though no swap effectively occurred.",
+        "8. Repeated small-value buys cause currencyTokenFeeEarned to accumulate, which reduces getReserves() currency reserve calculation, progressively worsening the exchange rate for all subsequent traders."
+      ],
+      "confidence": 0.65,
+      "reasoning": "This is a concrete, exploitable vulnerability. There is no check that _amountOut > 0 before executing the swap. The user can lose their entire _amountIn to rounding, and worse, the fee accounting makes currencyTokenFeeEarned larger than it should be relative to actual fees earned, which deflates the apparent currency reserves in getReserves(). This can be repeated to drain value from other traders by progressively worsening the price. The sell() function does not have this same issue because it checks post-transfer that balance >= feeEarned.",
+      "trace_region": "buy(uint256)"
+    }
+  }
+]

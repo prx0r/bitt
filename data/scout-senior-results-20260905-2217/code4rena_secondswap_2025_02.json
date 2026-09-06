@@ -1,0 +1,37 @@
+{
+  "project": "code4rena_secondswap_2025_02",
+  "timestamp": "2026-09-05T22:25:18",
+  "files_analyzed": 13,
+  "files_skipped": 0,
+  "total_vulnerabilities": 2,
+  "vulnerabilities": [
+    {
+      "title": "Flawed Token Ownership Verification in Vesting Creation",
+      "description": "The createVesting() and createVestings() functions verify token ownership using the pattern: require(_tokenOwner[msg.sender] == address(SecondSwap_StepVesting(_stepVesting).token())). This verification is insufficient because it doesn't check if the msg.sender is actually authorized to create vestings for that specific stepVesting contract. The check only ensures the caller has a mapping entry for the token, not that they're the legitimate owner of that stepVesting instance. An attacker who can manipulate the _tokenOwner mapping (through setTokenOwner if they gain admin access) can create vestings for any stepVesting contract by providing the correct token address.",
+      "vulnerability_type": "access_control",
+      "severity": "high",
+      "confidence": 0.85,
+      "location": "SecondSwap_VestingDeployer.createVesting()",
+      "file": "SecondSwap_VestingDeployer.sol",
+      "scout_area": "VestingDeployer Admin Function Exposure",
+      "scout_risk_type": "access_control",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Token Owner Mapping Allows Cross-Contract Vesting Manipulation",
+      "description": "The setTokenOwner() function allows an admin to map any address to any token address, creating a token ownership record. The createVesting() functions use this mapping to authorize vesting creation, but don't verify that the msg.sender is actually the owner of the specific stepVesting contract. An attacker who gains admin access (through setAdmin()) can set themselves as owner of any token, then create vestings on any stepVesting contract that uses that token. This allows arbitrary vesting schedule creation without proper authorization from the stepVesting contract owner.",
+      "vulnerability_type": "logic_error",
+      "severity": "high",
+      "confidence": 0.8,
+      "location": "SecondSwap_VestingDeployer.setTokenOwner() and SecondSwap_VestingDeployer.createVesting()",
+      "file": "SecondSwap_VestingDeployer.sol",
+      "scout_area": "VestingDeployer Admin Function Exposure",
+      "scout_risk_type": "access_control",
+      "reported_by_model": "mimo-v2.5"
+    }
+  ],
+  "token_usage": {
+    "total_input": 0,
+    "total_output": 0
+  }
+}

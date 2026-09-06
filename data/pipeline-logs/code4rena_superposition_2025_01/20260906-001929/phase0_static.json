@@ -1,0 +1,575 @@
+{
+  "findings": [
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/sol/SeawaterAMM.sol",
+      "lines": [
+        92
+      ],
+      "raw_message": "External call at line 92 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/sol/SeawaterAMM.sol",
+      "lines": [
+        141
+      ],
+      "raw_message": "External call at line 141 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/sol/SeawaterAMM.sol",
+      "lines": [
+        263
+      ],
+      "raw_message": "External call at line 263 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/sol/SeawaterAMM.sol",
+      "lines": [
+        282
+      ],
+      "raw_message": "External call at line 282 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/sol/SeawaterAMM.sol",
+      "lines": [
+        305
+      ],
+      "raw_message": "External call at line 305 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/sol/SeawaterAMM.sol",
+      "lines": [
+        323
+      ],
+      "raw_message": "External call at line 323 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/sol/IERC20.sol",
+      "lines": [
+        22
+      ],
+      "raw_message": "External call at line 22 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "lines": [
+        55
+      ],
+      "raw_message": "External call at line 55 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "lines": [
+        109
+      ],
+      "raw_message": "External call at line 109 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "lines": [
+        125
+      ],
+      "raw_message": "External call at line 125 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "lines": [
+        135
+      ],
+      "raw_message": "External call at line 135 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "lines": [
+        144
+      ],
+      "raw_message": "External call at line 144 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "lines": [
+        155
+      ],
+      "raw_message": "External call at line 155 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "lines": [
+        172
+      ],
+      "raw_message": "External call at line 172 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/sol/Faucet.sol",
+      "lines": [
+        8
+      ],
+      "raw_message": "External call at line 8 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/sol/Faucet.sol",
+      "lines": [
+        52
+      ],
+      "raw_message": "External call at line 52 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/sol/Faucet.sol",
+      "lines": [
+        57
+      ],
+      "raw_message": "External call at line 57 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "pkg/sol/Faucet.sol",
+      "lines": [
+        52,
+        55
+      ],
+      "raw_message": "State change at line 55 after external call at line 52",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "pkg/sol/Faucet.sol",
+      "lines": [
+        57,
+        63
+      ],
+      "raw_message": "State change at line 63 after external call at line 57",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/test/LightweightERC20.sol",
+      "lines": [
+        64
+      ],
+      "raw_message": "External call at line 64 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/test/permit2.sol",
+      "lines": [
+        221
+      ],
+      "raw_message": "External call at line 221 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/test/permit2.sol",
+      "lines": [
+        368
+      ],
+      "raw_message": "External call at line 368 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/test/permit2.sol",
+      "lines": [
+        405
+      ],
+      "raw_message": "External call at line 405 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/test/permit2.sol",
+      "lines": [
+        437
+      ],
+      "raw_message": "External call at line 437 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/test/permit2.sol",
+      "lines": [
+        469
+      ],
+      "raw_message": "External call at line 469 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/leo/src/seawater.rs",
+      "lines": [
+        36
+      ],
+      "raw_message": "External call at line 36 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/leo/src/seawater.rs",
+      "lines": [
+        51
+      ],
+      "raw_message": "External call at line 51 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/leo/src/seawater.rs",
+      "lines": [
+        66
+      ],
+      "raw_message": "External call at line 66 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/leo/src/seawater.rs",
+      "lines": [
+        81
+      ],
+      "raw_message": "External call at line 81 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "pkg/leo/src/seawater.rs",
+      "lines": [
+        36,
+        40
+      ],
+      "raw_message": "State change at line 40 after external call at line 36",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "pkg/leo/src/seawater.rs",
+      "lines": [
+        51,
+        55
+      ],
+      "raw_message": "State change at line 55 after external call at line 51",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "pkg/leo/src/seawater.rs",
+      "lines": [
+        66,
+        70
+      ],
+      "raw_message": "State change at line 70 after external call at line 66",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "pkg/leo/src/seawater.rs",
+      "lines": [
+        81,
+        85
+      ],
+      "raw_message": "State change at line 85 after external call at line 81",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/leo/src/nft_manager.rs",
+      "lines": [
+        30
+      ],
+      "raw_message": "External call at line 30 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/leo/src/nft_manager.rs",
+      "lines": [
+        45
+      ],
+      "raw_message": "External call at line 45 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "pkg/leo/src/nft_manager.rs",
+      "lines": [
+        30,
+        37
+      ],
+      "raw_message": "State change at line 37 after external call at line 30",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "pkg/leo/src/nft_manager.rs",
+      "lines": [
+        45,
+        52
+      ],
+      "raw_message": "State change at line 52 after external call at line 45",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/seawater/src/wasm_erc20.rs",
+      "lines": [
+        36
+      ],
+      "raw_message": "External call at line 36 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/seawater/src/wasm_erc20.rs",
+      "lines": [
+        72
+      ],
+      "raw_message": "External call at line 72 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/seawater/src/wasm_erc20.rs",
+      "lines": [
+        73
+      ],
+      "raw_message": "External call at line 73 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/seawater/src/wasm_erc20.rs",
+      "lines": [
+        89
+      ],
+      "raw_message": "External call at line 89 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/seawater/src/wasm_erc20.rs",
+      "lines": [
+        90
+      ],
+      "raw_message": "External call at line 90 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/seawater/src/wasm_erc20.rs",
+      "lines": [
+        111
+      ],
+      "raw_message": "External call at line 111 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/seawater/src/wasm_erc20.rs",
+      "lines": [
+        112
+      ],
+      "raw_message": "External call at line 112 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/seawater/src/wasm_erc20.rs",
+      "lines": [
+        151
+      ],
+      "raw_message": "External call at line 151 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/seawater/src/wasm_erc20.rs",
+      "lines": [
+        159
+      ],
+      "raw_message": "External call at line 159 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/seawater/src/wasm_erc20.rs",
+      "lines": [
+        199
+      ],
+      "raw_message": "External call at line 199 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/seawater/src/wasm_erc20.rs",
+      "lines": [
+        277
+      ],
+      "raw_message": "External call at line 277 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/seawater/src/wasm_erc20.rs",
+      "lines": [
+        296
+      ],
+      "raw_message": "External call at line 296 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/seawater/src/wasm_erc20.rs",
+      "lines": [
+        297
+      ],
+      "raw_message": "External call at line 297 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/seawater/src/wasm_erc20.rs",
+      "lines": [
+        302
+      ],
+      "raw_message": "External call at line 302 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "pkg/seawater/src/wasm_erc20.rs",
+      "lines": [
+        36,
+        38
+      ],
+      "raw_message": "State change at line 38 after external call at line 36",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "pkg/seawater/src/wasm_erc20.rs",
+      "lines": [
+        199,
+        200
+      ],
+      "raw_message": "State change at line 200 after external call at line 199",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "pkg/seawater/src/wasm_erc20.rs",
+      "lines": [
+        277,
+        278
+      ],
+      "raw_message": "State change at line 278 after external call at line 277",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/seawater/src/eth_serde.rs",
+      "lines": [
+        141
+      ],
+      "raw_message": "External call at line 141 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "pkg/seawater/src/eth_serde.rs",
+      "lines": [
+        156
+      ],
+      "raw_message": "External call at line 156 \u2014 check return value",
+      "confidence": "low"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+[
+  {
+    "status": "confirmed",
+    "severity": "high",
+    "exploit_scenario": "1. Attacker finds a position ID (e.g., via enumeration or off-chain data). 2. Attacker calls `burnPositionAE401070(id)` directly on the ISeawaterExecutorPosition interface. 3. If the implementation lacks ownership checks, the position's liquidity is burned and permanently locked. 4. The position owner loses all liquidity and future yield, which constitutes a loss of funds (though not direct theft). This is a high-severity denial-of-service attack with real financial impact.",
+    "refutation": "",
+    "file": "pkg/sol/ISeawaterExecutorPosition.sol",
+    "lines": "84-88",
+    "candidate_original": {
+      "file": "pkg/sol/ISeawaterExecutors.sol",
+      "lines": "84-88",
+      "category": "missing_validation",
+      "attack_sequence": [
+        "1. Attacker calls burnPositionAE401070(id) on a position they don't own",
+        "2. If the implementation doesn't verify msg.sender == position owner, the attacker burns someone else's position",
+        "3. The liquidity becomes permanently inaccessible per the function documentation",
+        "4. This is a denial-of-service attack against the position owner's funds"
+      ],
+      "confidence": 0.65,
+      "reasoning": "Burning a position makes its liquidity permanently inaccessible. This is a destructive operation that should strictly require position ownership. The interface specifies only `id` as parameter \u2014 there's no explicit indication of authorization check. If the implementation fails to verify msg.sender owns the position (or is approved), any user can destroy any position's liquidity.",
+      "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+    }
+  }
+]

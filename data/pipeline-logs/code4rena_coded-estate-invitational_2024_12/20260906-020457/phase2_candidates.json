@@ -1,0 +1,139 @@
+[
+  {
+    "file": "contracts/codedestate/src/execute.rs",
+    "lines": "375",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "1. The full file is truncated, but the static finding at line 375 flags an unchecked external call (likely a BankMsg::Send or Cw721ReceiveMsg callback). In CosmWasm, BankMsg::Send is not a real external call that returns \u2014 it succeeds or the whole tx fails. However, if line 375 is a WasmMsg::Execute (callback to another contract), a malicious contract could return Err or alter state. 2. If the unchecked external call is within buy_nft or a rental finalization flow where funds are sent via BankMsg::Send to info.sender and then state is updated, the ordering may be safe by default in CosmWasm (submessages still execute atomically). 3. However, if a Receive hook (Cw721ReceiveMsg) is dispatched and the receiving contract is malicious, it could re-enter the contract during the callback. Without seeing the full function body, this is a speculative but reasonable hypothesis."
+    ],
+    "confidence": "low",
+    "reasoning": "CosmWasm's BankMsg::Send is not fallible \u2014 the transaction either succeeds atomically or fails. However, if the external call is a WasmMsg::Execute or a Receive hook, a malicious receiver could re-enter. The file is truncated so exact flow is uncertain, but the pattern of 'send funds then update state' or 'dispatch callback then update state' is a common vulnerability class.",
+    "trace_region": "contracts/codedestate/src/execute.rs"
+  },
+  {
+    "file": "contracts/codedestate/src/execute.rs",
+    "lines": "531",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "1. Line 531 is flagged as another unchecked external call. If this is within a rental approval or finalization flow where payment is expected from a traveler/tenant, the contract may not verify that the payment was actually received. 2. An attacker could call the approval/finalization function without attaching the required funds. 3. If the contract relies on info.funds to process payment but does not validate denom or amount matches the listed price, the attacker gets the rental/approval for free. 4. Alternatively, if this is a BankMsg::Send back to a user (refund or withdrawal), a malicious user contract receiving the callback could re-enter."
+    ],
+    "confidence": "medium",
+    "reasoning": "Multiple rental-related functions (short-term and long-term) involve payment flows. Without seeing the full validation logic at line 531, the pattern suggests a potential missing payment validation or a re-entrant callback. The sheer number of rental operations (reservation, approval, finalization) increases the probability of at least one having inadequate payment checking.",
+    "trace_region": "contracts/codedestate/src/execute.rs"
+  },
+  {
+    "file": "contracts/codedestate/src/execute.rs",
+    "lines": "561",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "1. Line 561 is a third unchecked external call. If this is in the withdraw or withdrawToLandlord flow, it likely sends funds to a specified address. 2. An attacker who is the landlord or has appropriate permissions could call withdrawToLandlord with an inflated amount or to an arbitrary address. 3. If the amount parameter is not bounded by the contract's actual escrow balance for that rental period, the attacker could drain more than what was deposited. 4. If the address parameter is attacker-controlled and not validated against the actual tenant/landlord, funds could be misdirected."
+    ],
+    "confidence": "medium",
+    "reasoning": "The withdrawToLandlord function takes an 'amount' and 'address' as parameters. If the contract does not verify that the amount does not exceed the escrowed funds for that specific rental period, or does not verify the address matches the expected party, this is an exploitable vulnerability. The unchecked external call flag supports this hypothesis.",
+    "trace_region": "contracts/codedestate/src/execute.rs"
+  },
+  {
+    "file": "contracts/codedestate/src/execute.rs",
+    "lines": "36-175",
+    "category": "business_logic",
+    "attack_sequence": [
+      "1. The execute dispatcher at line 36 routes to numerous rental, sale, and NFT management functions. 2. Several operations like CreateSale/BuyNft and rental reservations may have race conditions. For example, an owner could simultaneously list for sell AND create a rental, potentially double-spending the same property rights. 3. If the SetListForSell and SetListForShortTermRental/LongTermRental functions do not check whether the token is already listed under another mode, a token could be in multiple listing states simultaneously. 4. A buyer might complete a purchase while a rental is active, or a renter might finalize a rental while the property is being sold, leading to conflicting ownership/possession states."
+    ],
+    "confidence": "medium",
+    "reasoning": "The contract supports multiple listing modes (sell, short-term rental, long-term rental) for the same token. Without mutual exclusion checks across listing types, conflicting states could arise. The architecture shows separate unlist functions for each rental type but no global 'is_listed' check that prevents cross-listing.",
+    "trace_region": "contracts/codedestate/src/execute.rs"
+  },
+  {
+    "file": "contracts/codedestate/src/execute.rs",
+    "lines": "100-120",
+    "category": "arithmetic",
+    "attack_sequence": [
+      "1. The fee-based system (SetFeeValue) combined with payment calculations in buy_nft and rental flows could have rounding issues. 2. If fee is calculated as a percentage using integer division (e.g., price * fee / 10000), small values could round down to zero, allowing fee-free transactions. 3. Conversely, if fee is subtracted from payment before sending to landlord, accumulation of rounding errors across many rentals could drain the contract. 4. An attacker could create many micro-transactions to exploit rounding in either direction."
+    ],
+    "confidence": "low",
+    "reasoning": "Without seeing the exact fee calculation code, this is speculative. However, percentage-based fee calculations in CosmWasm (using Uint128) are a known source of rounding vulnerabilities. The confidence is low because CosmWasm's Uint128 uses checked arithmetic that prevents overflow, but rounding direction matters.",
+    "trace_region": "contracts/codedestate/src/execute.rs"
+  },
+  {
+    "file": "contracts/codedestate/src/execute.rs",
+    "lines": "85-95",
+    "category": "business_logic",
+    "attack_sequence": [
+      "1. The auto_approve flag in SetListForSell and rental listing functions appears to skip the approval step. 2. If auto_approve is true, a purchase/reservation could be immediately finalized without the owner's explicit consent. 3. An attacker could call BuyNft on an auto-approved listing, but the more subtle attack is if the owner sets auto_approve and the listing price is then updated via UpdateSalePrice between the listing and the purchase \u2014 the buyer pays the old price or the new price depending on implementation. 4. If there is no lock between SetListForSell and BuyNft, front-running or timing attacks could extract value."
+    ],
+    "confidence": "medium",
+    "reasoning": "The auto_approve feature across multiple listing types (sell, short-term rental, long-term rental) creates a pattern where owner consent is bypassed. Combined with price updates (UpdateSalePrice), this creates a TOCTOU-like vulnerability where the economics at listing time may differ from execution time.",
+    "trace_region": "contracts/codedestate/src/execute.rs"
+  },
+  {
+    "[]": [],
+    "trace_region": "contracts/codedestate/src/lib.rs"
+  },
+  {
+    "file": "packages/cw721/src/query.rs",
+    "lines": "1-200",
+    "category": "information_disclosure",
+    "attack_sequence": [
+      "1. Attacker queries Cw721QueryMsg::OwnerOf { token_id, include_expired: Some(true) }",
+      "2. Contract returns expired approvals in the response that the caller should not see",
+      "3. Attacker uses the expired spender addresses to social-engineer or front-run re-approvals"
+    ],
+    "confidence": 0.25,
+    "reasoning": "The `include_expired` parameter is user-controlled and allows any caller to enumerate expired approvals. This is a standard CW721 feature, but the contract's execute path may not adequately warn sellers/buyers that expired approvals remain queryable. Low confidence because this is by design in CW721 and the security impact depends on downstream usage.",
+    "trace_region": "packages/cw721/src/query.rs"
+  },
+  {
+    "file": "packages/cw721/src/query.rs",
+    "lines": "108-120",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "1. Attacker queries Tokens { owner: <arbitrary_addr>, limit: None }",
+      "2. Contract returns all tokens owned by any address without authentication",
+      "3. Attacker queries AllTokens { start_after: None, limit: None } to enumerate entire token set"
+    ],
+    "confidence": 0.35,
+    "reasoning": "The Tokens and AllTokens queries have no access control, allowing anyone to enumerate all token owners and token IDs. While this is typical for on-chain NFTs, the real-estate context (codedestate) with rental/sale data stored in extensions means an attacker can discover all property listings, their owners, pricing, availability periods, and rental history. This information asymmetry could be exploited to target specific owners or undercut listings.",
+    "trace_region": "packages/cw721/src/query.rs"
+  },
+  {
+    "file": "packages/cw721/src/query.rs",
+    "lines": "130-155",
+    "category": "information_disclosure",
+    "attack_sequence": [
+      "1. Attacker queries NftInfo { token_id } for any token",
+      "2. Contract returns full extension data including Rental/LongTermRental/ShortTermRental structs",
+      "3. Attacker extracts: deposit_amount, price_per_month/day, available_period, cancellation terms, approved dates, guest counts, addresses of renters"
+    ],
+    "confidence": 0.55,
+    "reasoning": "The NftInfo response includes the full extension data, which for codedestate contains sensitive rental information: deposit amounts (Uint128), tenant addresses (Option<Addr>), approval dates, cancellation percentage schedules, and guest counts. An attacker can query any token_id and extract this PII/business-sensitive data. The Landlord, Host, Rental, LongTermRental, and ShortTermRental structs all contain fields that could be used for competitive intelligence or targeted attacks.",
+    "trace_region": "packages/cw721/src/query.rs"
+  },
+  {
+    "file": "packages/cw721/src/query.rs",
+    "lines": "145-150",
+    "category": "type_confusion_or_truncation",
+    "attack_sequence": [
+      "1. Examine the Landlord struct: price_per_month and refundable_deposit are u64 (max ~18.4 quintillion)",
+      "2. Examine the Sell struct: price is u64",
+      "3. If the execute path accepts Uint128 deposits but queries return u64 prices, a truncation could occur if a price > u64::MAX is set",
+      "4. Attacker lists a property with a price that truncates when stored as u64 but was validated as a valid Uint128"
+    ],
+    "confidence": 0.45,
+    "reasoning": "Multiple structs mix u64 and Uint128 for monetary values: deposit_amount is Uint128 but price_per_month/price_per_day/refundable_deposit are all u64. The Bid struct uses Uint128 for 'offer' but Sell.price is u64. This inconsistency suggests that during execute, if deposit/pricing logic converts between these types without bounds checking, values could silently truncate or overflow. The query structs are the serialization boundary \u2014 if the execute path writes a value that doesn't match the query struct's type width, data corruption or loss occurs.",
+    "trace_region": "packages/cw721/src/query.rs"
+  },
+  {
+    "file": "packages/cw721/src/query.rs",
+    "lines": "160-180",
+    "category": "arithmetic_overflow",
+    "attack_sequence": [
+      "1. LongTermRental has withdrawn_amount (Uint128) and deposit_amount (Uint128) as separate fields",
+      "2. CancellationItem.percentage is u64 \u2014 if percentage > 100, the cancellation calculation could yield incorrect refund amounts",
+      "3. No on-chain validation is visible in the query struct that percentage <= 100",
+      "4. Attacker (if they can set cancellation terms via execute) sets percentage: 200, causing the contract to over-refund from deposit_amount"
+    ],
+    "confidence": 0.4,
+    "reasoning": "The CancellationItem struct stores percentage as a raw u64 with no enforced upper bound visible in the query definitions. If the execute path allows setting cancellation percentages without validating they are <= 100, an attacker who controls listing creation could set a percentage like 200 to receive double their deposit back upon cancellation. The query struct faithfully reflects whatever is stored, so if the write path lacks validation, the query will expose and confirm the exploit. Cross-referencing with execute::CreateSale or rental listing functions would confirm.",
+    "trace_region": "packages/cw721/src/query.rs"
+  }
+]

@@ -1,0 +1,114 @@
+{
+  "project": "sherlock_cork-protocol_2025_01",
+  "timestamp": "2026-09-06T02:19:51",
+  "files_analyzed": 57,
+  "files_skipped": 0,
+  "total_vulnerabilities": 10,
+  "vulnerabilities": [
+    {
+      "title": "Unknown vulnerability",
+      "description": "The getTokenPrice function reads spot prices from Uniswap V2 reserves via getAmountsOut, which is trivially manipulable within a single block. An attacker can: (1) Flash-borrow a large amount of sourceToken, (2) Swap a large amount of destToken into the Uniswap V2 pair, temporarily moving the price, (3) Have any downstream contract call getTokenPrice to read the manipulated price, (4) Exploit the downstream contract based on the manipulated price (e.g., for unfair liquidations, minting/unstaking at incorrect valuations), (5) Swap back and repay the flash loan, all in one transaction. The contract has no TWAP protection, staleness check, deviation bounds, or oracle fallback. While the contract itself is a passive reader, any protocol component that depends on its output inherits this vulnerability.",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "contracts/readers/PriceReader.sol",
+      "file": "contracts/readers/PriceReader.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "An attacker can create a Uniswap V2 pair with minimal liquidity (e.g., 1 wei of each token) for the target tokens. The pair will exist and pass the address(0) check. When getTokenPrice is called with 1e18 amount, getAmountsOut will return an extremely large price due to the thin liquidity (e.g., 1e18 * reserve_out / reserve_in with tiny reserve_in). If this price is used for financial calculations like collateral valuation or profit/loss determination, it could lead to incorrect liquidations, unfair trade execution, or other financial losses. The vulnerability is theoretical but plausible since Uniswap V2 factories are permissionless.",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "contracts/readers/PriceReader.sol",
+      "file": "contracts/readers/PriceReader.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "The function returns a spot price without any metadata (timestamp, block number, or reserve data) indicating freshness. While the function itself is view-only and cannot be directly exploited, downstream contracts that use this price for critical decisions (e.g., liquidations, oracles, swaps) may not be able to detect stale prices. On L2s or during network congestion, this could lead to decisions based on outdated market conditions. However, exploitation requires a specific pattern where the caller relies solely on this reader without additional checks.",
+      "vulnerability_type": "other",
+      "severity": "low",
+      "confidence": 0.7,
+      "location": "contracts/readers/PriceReader.sol",
+      "file": "contracts/readers/PriceReader.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "The setRoleAdmin function in CorkConfig.sol allows any role holder (e.g., MANAGER_ROLE) to change the admin of any role, including DEFAULT_ADMIN_ROLE itself. A compromised or malicious MANAGER_ROLE holder can call setRoleAdmin(DEFAULT_ADMIN_ROLE, MANAGER_ROLE), making MANAGER_ROLE the admin of DEFAULT_ADMIN_ROLE. This grants the manager the ability to grant or revoke DEFAULT_ADMIN_ROLE to any address, effectively seizing full administrative control over the contract. The manager can then use transferAdmin to assign DEFAULT_ADMIN_ROLE to themselves and perform arbitrary privileged operations, leading to total compromise of the protocol's configuration and potentially loss of funds.",
+      "vulnerability_type": "other",
+      "severity": "high",
+      "confidence": 0.7,
+      "location": "contracts/core/CorkConfig.sol",
+      "file": "contracts/core/CorkConfig.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "The setRoleAdmin function allows the admin of a role to change the admin of that role to any other role. A holder of MANAGER_ROLE (which is the admin of both RATE_UPDATERS_ROLE and BASE_LIQUIDATOR_ROLE) can call setRoleAdmin(RATE_UPDATERS_ROLE, BASE_LIQUIDATOR_ROLE). This means that after this change, only holders of BASE_LIQUIDATOR_ROLE (not MANAGER_ROLE) would be able to grant/revoke RATE_UPDATERS_ROLE. Since MANAGER_ROLE is designed to manage rate updaters, this effectively removes the manager's ability to control rate updaters and transfers that authority to any liquidator contract or its assigned accounts. This is a privilege escalation that breaks the intended role hierarchy and could lead to unauthorized rate updates if a liquidator contract or its beneficiaries are compromised or malicious.",
+      "vulnerability_type": "other",
+      "severity": "high",
+      "confidence": 0.7,
+      "location": "contracts/core/CorkConfig.sol",
+      "file": "contracts/core/CorkConfig.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "The function `updateDecayDiscountRateInDays` in CorkConfig.sol (lines 95-96) has no validation on the input parameter `newDiscountRateInDays`. A manager can set this value to 0 (disabling decay discounts) or to an astronomically high value like type(uint256).max. While this requires MANAGER_ROLE, a compromised manager could cause arithmetic overflow/underflow or incorrect calculations in downstream contracts that use this value for NAV calculations or liquidation thresholds, potentially leading to incorrect price computations, reverts, or protocol malfunction. The lack of bounds checking is a deficiency that could be exploited to disrupt protocol invariants.",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "contracts/core/CorkConfig.sol",
+      "file": "contracts/core/CorkConfig.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "The `updateRolloverPeriodInBlocks` function has no validation, allowing a compromised manager to set it to 0. This could cause excessive gas consumption in liquidation/rollover contracts that depend on the rollover period, or break time-dependent logic that assumes a minimum period. The impact is conditional DoS and potential disruption of protocol operations, but requires a compromised manager role.",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "contracts/core/CorkConfig.sol",
+      "file": "contracts/core/CorkConfig.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "The `updateNavThreshold` function in CorkConfig.sol (lines 103-105) allows the MANAGER_ROLE to set an arbitrary NAV threshold for a specific pair without validation. This can be exploited in two ways: 1) Setting the threshold to 0 disables the NAV safety check entirely, allowing deposits regardless of the vault's health, which undermines the protocol's intended risk management. 2) Setting the threshold to type(uint256).max makes it impossible for the NAV to ever exceed the threshold, effectively blocking all deposits for that pair (a DoS condition). Both actions could be performed by a compromised manager or as a griefing vector if the manager role is mismanaged.",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "contracts/core/CorkConfig.sol",
+      "file": "contracts/core/CorkConfig.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "The `receiveLeftoverFunds` function in `Vault.sol` (lines 155-159) lacks any access control modifier. It directly calls `states[id].receiveLeftoverFunds(amount, _msgSender())` without verifying that `_msgSender()` is a trusted contract (e.g., a router or withdrawal contract). While the underlying `VaultLibrary.receiveLeftoverFunds` might enforce some checks, the exposed interface allows any external caller to invoke this state mutation. An attacker could call this function with any `id` and arbitrary `amount` to inject unwanted ERC20 tokens into the vault's accounting as 'leftover funds'. These funds could then affect NAV calculations, LP token valuations, or be swept, potentially distorting vault economics and causing indirect losses for legitimate users through diluted ownership or mispriced assets.",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "contracts/core/Vault.sol",
+      "file": "contracts/core/Vault.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "If the Vault ever calls the add() function with owner = address(0) due to a bug or misconfiguration, the resulting withdrawal entry becomes unclaimable because the onlyOwner modifier checks if msg.sender matches the owner address. Since msg.sender can never be address(0), no external caller can satisfy this check, and the tokens transferred to the Withdrawal contract become permanently locked. There is no admin rescue function or recovery mechanism in the contract to recover these funds.",
+      "vulnerability_type": "other",
+      "severity": "high",
+      "confidence": 0.7,
+      "location": "contracts/core/Withdrawal.sol",
+      "file": "contracts/core/Withdrawal.sol",
+      "reported_by_model": "mimo-v2.5"
+    }
+  ],
+  "token_usage": {
+    "total_input": 0,
+    "total_output": 0
+  },
+  "duration_seconds": 1352.7
+}

@@ -1,0 +1,760 @@
+[
+  {
+    "file": "src/AgentRouter.sol",
+    "lines": "56-84",
+    "category": "Price Manipulation / Front-Running / Sandwich Attack",
+    "attack_sequence": "1. Attacker observes a large pending buy() transaction in the mempool targeting a specific _agentToken.\n2. Attacker calls buy() with a small _amountIn first, driving up the price in the bootstrap pool or Fraxswap pair.\n3. The victim's large buy() executes at the now-inflated price, receiving fewer tokens.\n4. Attacker calls sell() to cash out at the inflated price, profiting from the victim's slippage.\n5. The _minAmountOut check is set by the victim but can be bypassed if the victim sets it too loosely (this is a user error but the protocol doesn't protect against it).",
+    "confidence": "medium",
+    "reasoning": "The buy/sell functions interact directly with DEX pools (BootstrapPool and Fraxswap) without any MEV protection, time-weighted pricing, or slippage protection beyond the user-supplied _minAmountOut. The fraxswapPair.sync() call before getAmountOut makes the pool state reflect the latest block, which doesn't prevent sandwich attacks within the same block.",
+    "trace_region": "src/AgentRouter.sol"
+  },
+  {
+    "file": "src/AgentRouter.sol",
+    "lines": "68-83",
+    "category": "Reentrancy / State Change Order",
+    "attack_sequence": "1. In the Fraxswap branch of buy(), the contract calls currencyToken.safeTransferFrom(msg.sender, address(fraxswapPair), _amountIn) (line 80).\n2. Then it calls fraxswapPair.swap() (lines 81-83) which transfers tokens to _recipient.\n3. The _amountOut is computed BEFORE the transfer from msg.sender (line 79: fraxswapPair.getAmountOut) and BEFORE the swap, but the sync() call on line 78 updates the reserves first.\n4. However, the _minAmountOut check (line 84) happens AFTER all external calls, meaning the state is checked after all transfers. This is acceptable for a router, but note that _amountOut is computed from getAmountOut before sync is called in the bootstrap pool branch - wait, actually sync IS called before getAmountOut on line 78.\n5. The real issue: in the bootstrap pool branch (lines 69-73), currencyToken is transferred to the router, then approved to bootstrapPool, then bootstrapPool.buy() is called. If bootstrapPool.buy() makes a callback to msg.sender (the original caller), they could re-enter. But since we're calling msg.sender earlier and now bootstrapPool is the one interacting, this is limited. The more concerning pattern is that the entire buy/sell logic has no reentrancy guard.",
+    "confidence": "low",
+    "reasoning": "The function makes multiple external calls but the critical state (amounts) is computed inline and checked at the end. The lack of reentrancy guard is a code smell but doesn't lead to a concrete exploit in this specific code path because the function doesn't update any persistent state that could be corrupted by reentry - it's a router that transfers tokens through.",
+    "trace_region": "src/AgentRouter.sol"
+  },
+  {
+    "file": "src/AgentRouter.sol",
+    "lines": "56-84",
+    "category": "Unchecked Return Value / Silent Failure",
+    "attack_sequence": "1. In the Fraxswap branch, fraxswapPair.sync() is called (line 78). If this call fails silently (returns false), the subsequent getAmountOut would use stale reserve data, potentially returning an inaccurate amount.\n2. However, sync() in Fraxswap is typically a void function that doesn't return a value, so there's no return to check.\n3. More importantly, if fraxswapFactory.getPair() returns address(0) because no pair exists for the token pair, the subsequent calls to fraxswapPair would revert (calling methods on address(0)), which would cause the entire transaction to revert. This is acceptable behavior.\n4. The fraxswapPair.sync() call on line 78 can be front-run by an attacker who adds/removes liquidity in the same block, manipulating the reserves before sync() is called.",
+    "confidence": "medium",
+    "reasoning": "The sync() call updates reserves to reflect actual token balances, but an attacker can manipulate the actual token balances of the pair contract before this call by depositing/withdrawing tokens, causing the getAmountOut to return a manipulated value.",
+    "trace_region": "src/AgentRouter.sol"
+  },
+  {
+    "file": "src/AgentRouter.sol",
+    "lines": "87-120",
+    "category": "Front-Running / Price Oracle Manipulation",
+    "attack_sequence": "1. Attacker identifies a pending sell() call in the mempool.\n2. Attacker front-runs by calling buy() with a large _amountIn to increase the price of the agent token.\n3. The victim's sell() now receives less currency token than expected due to the price increase.\n4. Attacker back-runs by calling sell() to profit from the inflated price.\n5. Alternatively, in the Fraxswap branch, fraxswapPair.sync() is called before getAmountOut. An attacker can manipulate the pair's token balances just before the victim's transaction, causing sync() to update to manipulated reserves, leading to an inaccurate getAmountOut calculation.",
+    "confidence": "medium",
+    "reasoning": "The sync() + getAmountOut pattern is vulnerable to same-block price manipulation. An attacker can donate tokens to the pair to manipulate reserves, causing getAmountOut to return a different value than the actual swap would yield.",
+    "trace_region": "src/AgentRouter.sol"
+  },
+  {
+    "file": "src/AgentRouter.sol",
+    "lines": "56-73",
+    "category": "Missing Input Validation / Zero Amount",
+    "attack_sequence": "1. Attacker calls buy() with _amountIn = 0.\n2. In the bootstrap pool branch, this results in a transfer of 0 tokens and a call to bootstrapPool.buy(0, _recipient).\n3. In the Fraxswap branch, fraxswapPair.getAmountOut(0, address(currencyToken)) likely returns 0, and a swap of 0 tokens is performed.\n4. While not directly exploitable for profit, it can be used for griefing or to interact with pools that have edge cases for zero amounts.",
+    "confidence": "low",
+    "reasoning": "Zero amount calls are typically harmless but indicate missing input validation. Most DEX functions handle zero amounts gracefully.",
+    "trace_region": "src/AgentRouter.sol"
+  },
+  {
+    "file": "src/AgentRouter.sol",
+    "lines": "68-73",
+    "category": "Approval Front-Running / Token Approval Issue",
+    "attack_sequence": "1. In the bootstrap pool branch, the contract calls currencyToken.forceApprove(address(bootstrapPool), _amountIn) (line 70).\n2. forceApprove sets the allowance to exactly _amountIn. If the bootstrapPool.buy() doesn't consume the full allowance, the remaining allowance is left set to _amountIn (though forceApprove is called each time, so previous allowances are overwritten).\n3. However, if there's a race condition where multiple buy() calls execute in the same block, the second call's forceApprove would overwrite the first call's allowance, potentially causing the first bootstrapPool.buy() to fail if it hasn't consumed the allowance yet.\n4. Actually, this is more nuanced: since forceApprove sets the exact amount, and each buy() call sets its own approval, this should be fine for sequential execution. But in a batch scenario, this could cause issues.",
+    "confidence": "low",
+    "reasoning": "The forceApprove pattern is actually safer than approve() as it doesn't have the approve race condition. Each call sets a fresh approval amount. This is not a vulnerability.",
+    "trace_region": "src/AgentRouter.sol"
+  },
+  {
+    "file": "src/AgentRouter.sol",
+    "lines": "78-83",
+    "category": "Price Manipulation via sync() before getAmountOut",
+    "attack_sequence": "1. Attacker deposits a large amount of currencyToken into the Fraxswap pair contract (not via swap, but via direct transfer), inflating the reserves of one side.\n2. When victim calls buy() in the Fraxswap branch, fraxswapPair.sync() updates reserves to reflect the manipulated balances.\n3. fraxswapPair.getAmountOut() calculates the output based on these inflated reserves.\n4. If the victim is buying agent tokens, and the attacker inflated the currencyToken side of the pair, getAmountOut would return a different (potentially larger or smaller depending on which side was inflated) amount.\n5. The swap() then executes with this manipulated amount, and the attacker can later withdraw their donated tokens.\n6. This is a classic oracle manipulation attack where sync() creates a vulnerable price oracle.",
+    "confidence": "high",
+    "reasoning": "The pattern of sync() followed by getAmountOut() is a well-known vulnerability. The sync() call makes the pair's reserves equal to its actual token balances, which can be manipulated by direct token transfers. This allows an attacker to manipulate the price that getAmountOut returns, which is then used to determine the swap amount. This is a concrete, exploitable vulnerability.",
+    "trace_region": "src/AgentRouter.sol"
+  },
+  {
+    "file": "src/AgentRouter.sol",
+    "lines": "56-84",
+    "category": "Missing Access Control on Recipient",
+    "attack_sequence": "1. The buy() function with 4 parameters accepts an arbitrary _recipient (line 56).\n2. Any caller can specify _recipient as any address, meaning the purchased tokens go to an address the caller specifies.\n3. While this is by design (it's a public function), it means that any contract calling buy() can redirect tokens to any address, which could be exploited in a composability attack.\n4. For example, a malicious contract could call buy() specifying a recipient, then in the callback during token transfer, perform additional actions.\n5. This is actually a feature, not a bug, as it allows contract composability.",
+    "confidence": "low",
+    "reasoning": "The _recipient parameter is a standard DEX router pattern and is by design. This is not a vulnerability.",
+    "trace_region": "src/AgentRouter.sol"
+  },
+  {
+    "file": "src/AgentRouter.sol",
+    "lines": "96-120",
+    "category": "Sell Function - Agent Token Approval Front-Running",
+    "attack_sequence": "1. In the sell() function, IERC20(_agentToken).safeTransferFrom(msg.sender, address(this), _amountIn) is called (line 107).\n2. Then IERC20(_agentToken).forceApprove(address(bootstrapPool), _amountIn) (line 108).\n3. Then bootstrapPool.sell(_amountIn, _recipient) is called (line 109).\n4. If msg.sender is a contract and _agentToken is a token with special transfer logic (like a fee-on-transfer token), the actual amount received by the router could be less than _amountIn.\n5. The router then approves bootstrapPool for _amountIn (the original amount), but only received less than _amountIn.\n6. This would cause bootstrapPool.sell() to try to transfer more tokens than the router holds, potentially failing or causing unexpected behavior.\n7. However, SafeERC20.safeTransferFrom would revert if the actual transfer is less than expected (for tokens that return false on insufficient transfer), but for fee-on-transfer tokens that actually transfer less, the router would have approved more than it has.",
+    "confidence": "high",
+    "reasoning": "Fee-on-transfer tokens (or rebasing tokens) could cause the router to approve the bootstrap pool for more tokens than it actually received. The safeTransferFrom reports success but transfers _amountIn minus fees, while forceApprove sets approval for the full _amountIn. This means bootstrapPool.sell() would try to pull _amountIn tokens when the router only holds _amountIn minus fees, causing a revert or, worse, if the bootstrapPool doesn't use SafeERC20, it could silently transfer less. However, if the _agentToken is an AIToken (as implied by the architecture), it likely doesn't have transfer fees, so this may not be exploitable in practice.",
+    "trace_region": "src/AgentRouter.sol"
+  },
+  {
+    "file": "src/AgentRouter.sol",
+    "lines": "87-120",
+    "category": "Sell Function - Fraxswap Branch - Stale Price After sync()",
+    "attack_sequence": "1. Attacker manipulates the Fraxswap pair reserves by donating tokens.\n2. Victim calls sell() targeting the Fraxswap branch.\n3. fraxswapPair.sync() updates reserves to reflect manipulated balances.\n4. fraxswapPair.getAmountOut(_amountIn, _agentToken) calculates output based on manipulated reserves.\n5. The swap executes with this potentially manipulated amount.\n6. Attacker can profit by reverting the price manipulation after the victim's trade.",
+    "confidence": "high",
+    "reasoning": "Same vulnerability as the buy() function's Fraxswap branch. The sync() + getAmountOut pattern is vulnerable to reserve manipulation. The attacker donates tokens to the pair to manipulate the price oracle created by sync(), causing getAmountOut to return a manipulated value.",
+    "trace_region": "src/AgentRouter.sol"
+  },
+  {
+    "file": "src/Agent.sol",
+    "lines": [
+      84,
+      85,
+      86
+    ],
+    "category": "Logic Error",
+    "attack_sequence": [
+      "1. Agent starts at stage 0.",
+      "2. AgentFactory calls setStage(5) on the Agent, moving stage to 5.",
+      "3. AgentFactory calls setStage(3) on the Agent.",
+      "4. The check '_stage > stage' evaluates as 3 > 5 \u2192 false, so stage remains 5. No downgrade occurs.",
+      "5. However, the emit StageSet(_stage) on line 86 still emits StageSet(3), which is misleading \u2014 the event claims stage is 3 but the actual state is 5.",
+      "6. Off-chain consumers reading this event will have an incorrect view of the agent's stage.",
+      "7. More critically, this means only upward progression is enforced, but if the factory logic later calls setStage with a lower value (e.g., to pause or demote an agent), the stage won't actually change. If the system relies on being able to demote agents, this is a broken invariant."
+    ],
+    "confidence": 0.55,
+    "reasoning": "The one-way stage progression is intentional in many designs, but the mismatch between the emitted event value and the actual stored value is a concrete bug. The event emits the argument, not the actual stored value after the check. Additionally, the inability to downgrade stage could be an issue depending on system expectations, but without seeing the factory logic, the event mismatch is the clear finding.",
+    "trace_region": "src/Agent.sol"
+  },
+  {
+    "file": "src/Agent.sol",
+    "lines": [
+      68,
+      69
+    ],
+    "category": "Missing Access Control / Irrevocable Initialization",
+    "attack_sequence": [
+      "1. Deploy a new Agent via AgentFactory. At this point, Owner is the factory address and token is address(0).",
+      "2. The owner (factory) calls initializeToken() with a valid AIToken address A.",
+      "3. token is set to A and cannot be changed (the 'if token == address(0)' guard prevents re-initialization).",
+      "4. If the AIToken at address A is later found to be malicious, upgradeable to a malicious implementation, or if the factory made an error in providing the token address, there is no way to update it \u2014 ever.",
+      "5. This means the Agent is permanently bound to whatever token address was first set, even if that token becomes compromised or the wrong address was provided.",
+      "6. This is not directly exploitable by an external attacker, but it is a design fragility that could lead to stuck or broken agents."
+    ],
+    "confidence": 0.4,
+    "reasoning": "The one-time initialization pattern is common and often intentional, but combined with the fact that the owner (factory) is the only entity that can call this, a mistake in the factory's initialization flow would be irreversible. The confidence is moderate because this is a design concern rather than a clear exploit path.",
+    "trace_region": "src/Agent.sol"
+  },
+  {
+    "file": "src/Agent.sol",
+    "lines": [
+      60,
+      61,
+      62,
+      63,
+      64,
+      65
+    ],
+    "category": "Proxy Delegatecall Risk / Storage Collision",
+    "attack_sequence": [
+      "1. The Agent contract inherits from OpenZeppelin's Proxy contract, meaning all calls to non-existent functions are delegated to the implementation via delegatecall.",
+      "2. The owner calls setProxyImplementation() to set a custom implementation address.",
+      "3. An attacker who is the owner (or compromised factory that transferred ownership) can set proxyImplementation to any contract that passes the allowedProxyImplementation check, or to address(0) to revert to the factory default.",
+      "4. If the set of allowed proxy implementations contains a malicious contract (or if the factory's allowedProxyImplementation whitelist is too broad), the delegatecall target can read/write arbitrary storage slots of the Agent contract.",
+      "5. A malicious implementation could, for example, overwrite the 'token' storage slot, the 'stage' slot, the ERC721 ownership slot, or the 'proxyImplementation' slot itself.",
+      "6. However, the check against factory.allowedProxyImplementation() mitigates this IF the factory maintainers are honest. The real risk is in the interaction with storage layout: if the implementation's storage layout doesn't perfectly match Agent's, normal operations can corrupt state."
+    ],
+    "confidence": 0.5,
+    "reasoning": "The Proxy pattern with delegatecall is inherently dangerous if the implementation doesn't perfectly mirror the proxy's storage layout. The allowedProxyImplementation whitelist provides some guard, but storage layout mismatches between Agent and any implementation could cause critical state corruption. The confidence is moderate because exploitation requires control over which implementations are allowed.",
+    "trace_region": "src/Agent.sol"
+  },
+  {
+    "file": "src/Agent.sol",
+    "lines": [
+      76,
+      77,
+      78,
+      79
+    ],
+    "category": "Incorrect Reentrancy/Ordering Pattern",
+    "attack_sequence": [
+      "1. Owner calls setProxyImplementation() with a new implementation address.",
+      "2. The check on line 77-79 is: if (_proxyImplementation != address(0) && !factory.allowedProxyImplementation(_proxyImplementation)) revert.",
+      "3. Note: setting proxyImplementation to address(0) bypasses the factory whitelist check entirely.",
+      "4. Setting proxyImplementation to address(0) causes _implementation() to fall through to factory.defaultProxyImplementation().",
+      "5. If the factory's defaultProxyImplementation() can be changed by the factory admin to point to a malicious contract, then setting proxyImplementation to address(0) and then having the factory change its default creates a delayed attack vector.",
+      "6. More importantly, the owner can set proxyImplementation to address(0) at any time, which means any custom implementation is immediately reverted to the factory default, potentially enabling a griefing attack where the owner can't maintain a custom implementation if the factory admin is adversarial."
+    ],
+    "confidence": 0.35,
+    "reasoning": "The ability to set proxyImplementation to address(0) without a whitelist check is a deliberate design choice (to allow reverting to the default), but it creates a trust dependency on the factory's default implementation that could be exploited if factory governance is compromised. Confidence is low-to-moderate because it requires factory-level compromise.",
+    "trace_region": "src/Agent.sol"
+  },
+  {
+    "file": "src/Agent.sol",
+    "lines": [
+      84,
+      85,
+      86
+    ],
+    "category": "Event Emission Bug",
+    "attack_sequence": [
+      "1. AgentFactory calls setStage(2), stage becomes 2, StageSet(2) emitted.",
+      "2. AgentFactory calls setStage(1) \u2014 this is a lower value.",
+      "3. Line 85: 'if (_stage > stage) stage = _stage' \u2192 1 > 2 is false, so stage remains 2.",
+      "4. Line 86: 'emit StageSet(_stage)' emits StageSet(1) even though stage is actually still 2.",
+      "5. Off-chain indexers, UIs, and monitoring systems that rely on StageSet events will record stage as 1 when it's actually 2.",
+      "6. This is a definitive bug: the event does not reflect the actual contract state."
+    ],
+    "confidence": 0.9,
+    "reasoning": "This is a concrete, verifiable bug. The event unconditionally emits the input parameter _stage, but the actual state may not have changed due to the guard on line 85. This creates a permanent inconsistency between on-chain state and off-chain event logs.",
+    "trace_region": "src/Agent.sol"
+  },
+  {
+    "file": "src/AIToken.sol",
+    "lines": "42-43",
+    "category": "Unprotected mint/burn - excessive supply inflation",
+    "attack_sequence": [
+      "1. The AIToken is owned by an Agent contract (Ownable(agent)). 2. The Agent.sol has setProxyImplementation (onlyOwner) and initializeToken (onlyOwner) functions. The Agent itself may be upgradeable or have delegatecall patterns. 3. If the Agent contract is compromised, upgraded, or has a vulnerability in its proxy implementation, the attacker gains access to the Owner role of AIToken. 4. With owner access, the attacker calls AIToken.mint(attackerAddress, maxUint256) to mint unlimited tokens. 5. The mint function at line 56 has no supply cap check. 6. Similarly, burn(address, uint256) at line 63 can burn any holder's tokens via _burn, which uses transferFrom-like allowance logic internally - but actually _burn directly deducts from the holder without requiring allowance. 7. The attacker calls AIToken.burn(victimAddress, victimBalance) to destroy any holder's tokens."
+    ],
+    "confidence": 0.55,
+    "reasoning": "The mint function has no maximum supply cap. While it is gated by onlyOwner (the Agent contract), the Agent is upgradeable (setProxyImplementation exists), meaning the Agent's logic can change. If the Agent proxy is compromised or malicious, unlimited minting is possible. The burn function also has no check that the caller has allowance over the victim's tokens - the _burn in ERC20 only checks sufficient balance, not allowance, so an owner can burn from any address.",
+    "trace_region": "src/AIToken.sol"
+  },
+  {
+    "file": "src/AIToken.sol",
+    "lines": "30-31",
+    "category": "Centralized owner risk - Agent as single point of failure",
+    "attack_sequence": [
+      "1. The AIToken constructor sets Ownable(agent) making the Agent contract the sole owner. 2. The Agent contract is a proxy (setProxyImplementation exists in Agent.sol). 3. The Agent's owner can call setProxyImplementation to change the implementation. 4. If the new implementation maliciously calls AIToken.mint or AIToken.burn, it can arbitrarily inflate/deflate supply. 5. Even without a proxy upgrade, the Agent contract's initializeToken function (onlyOwner) may re-initialize state. 6. The ERC20Votes extension means minted tokens get voting power, potentially affecting any governance that relies on token balances."
+    ],
+    "confidence": 0.5,
+    "reasoning": "While this is a design choice rather than a direct bug, the concentration of power in a single upgradeable Agent contract means any vulnerability or malicious upgrade of the Agent directly translates to full control over the token supply. The lack of a supply cap or timelock on minting makes this a high-impact trust dependency.",
+    "trace_region": "src/AIToken.sol"
+  },
+  {
+    "file": "src/AIToken.sol",
+    "lines": "56-58",
+    "category": "No supply cap on minting",
+    "attack_sequence": [
+      "1. The mint function at line 56 calls _mint(to, amount) with only an onlyOwner modifier. 2. There is no check against a maximum total supply. 3. The initial supply of 100,000,000 tokens is minted in the constructor to the factory, but nothing prevents minting additional tokens. 4. If the Agent owner (or any entity that compromises the Agent) calls mint, they can mint arbitrary amounts. 5. This dilutes existing holders' share of the token supply and can manipulate any price calculations in AgentRouter."
+    ],
+    "confidence": 0.7,
+    "reasoning": "This is a clear missing check. The AIToken has no MAX_SUPPLY constant or totalSupply cap in the mint function. The initial supply constant INITAL_SUPPLY is defined but never used as a bound. An owner can mint unlimited tokens, which directly impacts the router's price calculations since the router likely uses token reserves for pricing.",
+    "trace_region": "src/AIToken.sol"
+  },
+  {
+    "file": "src/AIToken.sol",
+    "lines": "63-65",
+    "category": "Unconditional burn from any address",
+    "attack_sequence": [
+      "1. The burn function at line 63 accepts any 'from' address and burns the specified amount. 2. The _burn function in OpenZeppelin's ERC20 deducts from the specified address's balance without requiring token allowance approval. 3. An owner (the Agent contract) can burn tokens from any holder's address without their consent. 4. This could be used to forcibly remove tokens from addresses, affecting votes in ERC20Votes, reducing liquidity, or manipulating token balances for profit in the router."
+    ],
+    "confidence": 0.65,
+    "reasoning": "The burn function does not require the 'from' address to have approved the caller, nor does it require the caller to be the 'from' address. The OpenZeppelin _burn function simply reduces the balance of the specified address. This is a significant centralization risk - the Agent can destroy any holder's tokens at will.",
+    "trace_region": "src/AIToken.sol"
+  },
+  {
+    "file": "src/AIToken.sol",
+    "lines": "46-48",
+    "category": "ERC20Votes _update override potential checkpoint manipulation",
+    "attack_sequence": [
+      "1. The _update function at line 46 calls super._update(from, to, amount) which chains through both ERC20 and ERC20Votes implementations. 2. ERC20Votes checkpoints voting power on every transfer. 3. If the Agent mints tokens to itself (or an accomplice) immediately before a governance snapshot, it gains disproportionate voting power. 4. Then it can burn or transfer those tokens after the vote. 5. Combined with the no-supply-cap mint, this enables flash-vote-style governance attacks."
+    ],
+    "confidence": 0.45,
+    "reasoning": "This is more of a governance manipulation vector enabled by the lack of supply cap in mint. The _update override itself appears correctly implemented (calling super._update which handles both ERC20 bookkeeping and ERC20Votes checkpointing). The vulnerability is that minted tokens receive voting power immediately, and there's no timelock or vesting requirement.",
+    "trace_region": "src/AIToken.sol"
+  },
+  {
+    "file": "src/TokenGovernor.sol",
+    "lines": "42-44",
+    "category": "business_logic_violation",
+    "attack_sequence": [
+      "1. Deploy TokenGovernor with test parameters: votingDelayInSeconds=2 minutes, votingPeriodInSeconds=5 minutes, proposalThresholdPercentage=1 (0.01% instead of intended 1%)",
+      "2. The comment says proposalThresholdPercentage should be 100 (1%) but the actual value is 1 (0.01%), making it trivially easy for anyone with a tiny token balance to create proposals",
+      "3. With 2-minute voting delay and 5-minute voting period, governance attacks complete in ~7 minutes",
+      "4. An attacker with 0.01% of supply can propose and pass malicious actions extremely quickly"
+    ],
+    "confidence": 0.85,
+    "reasoning": "The test values are extremely permissive and are likely to be deployed to production. The voting delay of 2 minutes and voting period of 5 minutes allow governance attacks to complete in ~7 minutes. The proposalThresholdPercentage of 1 (0.01%) is 100x lower than the commented intention of 100 (1%). Even if intended for testing, these values create a trivially exploitable governance setup if deployed as-is.",
+    "trace_region": "src/TokenGovernor.sol"
+  },
+  {
+    "file": "src/TokenGovernor.sol",
+    "lines": "80-82",
+    "category": "missing_check",
+    "attack_sequence": [
+      "1. Attacker acquires 0.01% of token supply (trivially small amount)",
+      "2. Attacker calls propose() with malicious targets/values/calldatas that drain the treasury or transfer ownership",
+      "3. Due to 2-minute voting delay, proposal enters voting in 2 minutes",
+      "4. Attacker (or accomplices) vote in favor during the 5-minute voting period",
+      "5. Quorum is only 4% of supply (GovernorVotesQuorumFraction(4) with 25% comment but 4/100=4%)",
+      "6. Proposal executes within ~7 minutes of creation"
+    ],
+    "confidence": 0.8,
+    "reasoning": "The quorum fraction is set to 4 (meaning 4/100 = 4% of supply), though the comment says 25%. Combined with the extremely short voting periods and low proposal threshold, this makes governance capture trivial. The comment/documentation mismatch suggests the deployer may not understand the actual security parameters.",
+    "trace_region": "src/TokenGovernor.sol"
+  },
+  {
+    "file": "src/TokenGovernor.sol",
+    "lines": "80",
+    "category": "missing_check",
+    "attack_sequence": [
+      "1. Note the constructor comment says 'quorum is 25% (1/4th) of supply' but GovernorVotesQuorumFraction(4) actually sets quorum to 4/100 = 4%",
+      "2. If deployer intended 25% quorum but only configured 4%, an attacker needs far fewer votes to reach quorum",
+      "3. An attacker controlling just over 4% of supply plus some co-conspirators can pass any proposal",
+      "4. This is a critical misconfiguration that makes governance attacks much easier than intended"
+    ],
+    "confidence": 0.9,
+    "reasoning": "GovernorVotesQuorumFraction(4) sets the quorum denominator to 100 (OpenZeppelin default), so quorum is 4% of total supply, not 25% as the comment states. The comment 'quorum is 25% (1/4th) of supply' is misleading \u2014 4/100 = 4%, not 25%. If the deployer intended 25%, they should have used 25 instead of 4. This discrepancy could indicate a deployment vulnerability.",
+    "trace_region": "src/TokenGovernor.sol"
+  },
+  {
+    "file": "src/TokenGovernor.sol",
+    "lines": "95-97",
+    "category": "state_change_wrong_order",
+    "attack_sequence": [
+      "1. setProposalThresholdPercentage is gated by msg.sender != address(this) \u2014 only governor governance can call it",
+      "2. The check proposalThresholdPercentage > 1000 (max 10%) is applied AFTER the message.sender check",
+      "3. However, the current deployment value is 1, which is already below 1000, so the constraint is not useful in the current state",
+      "4. A governance proposal could set proposalThresholdPercentage to 0, which would make proposalThreshold() return 0, allowing anyone with any tokens (or even 0 tokens via past voting power) to create proposals"
+    ],
+    "confidence": 0.75,
+    "reasoning": "If proposalThresholdPercentage is set to 0 via governance, proposalThreshold() returns 0, meaning anyone (even with negligible voting power) could potentially create proposals. The minimum bound check is missing \u2014 only a maximum of 1000 is enforced, not a minimum above 0.",
+    "trace_region": "src/TokenGovernor.sol"
+  },
+  {
+    "file": "src/TokenGovernor.sol",
+    "lines": "87-93",
+    "category": "state_change_wrong_order",
+    "attack_sequence": [
+      "1. A malicious governance proposal could call setVotingPeriod(3 days) and setVotingDelay(12 hours)",
+      "2. Immediately after, another proposal (submitted in the previous short window) could be executed",
+      "3. The short voting delay (2 minutes) means multiple proposals can be queued and executed before the new parameters take effect",
+      "4. Attacker creates a proposal to change governance parameters to be maximally permissive, then uses the permissive parameters to pass further malicious proposals"
+    ],
+    "confidence": 0.7,
+    "reasoning": "The extremely short voting delay (2 minutes) means an attacker could front-run governance parameter changes. A proposal to tighten parameters might not take effect fast enough before an attacker exploits the current permissive settings.",
+    "trace_region": "src/TokenGovernor.sol"
+  },
+  {
+    "file": "src/TokenGovernor.sol",
+    "lines": "86-98",
+    "category": "invariant_violation",
+    "attack_sequence": [
+      "1. setVotingPeriod requires min 3 days, but current deployment is 5 minutes",
+      "2. setVotingDelay requires min 12 hours, but current deployment is 2 minutes",
+      "3. setProposalThresholdPercentage requires max 10%, but current deployment is 0.01%",
+      "4. These setters can ONLY be called by the governor itself (via proposal), meaning these constraints cannot fix the current permissive deployment values",
+      "5. There is no owner/admin function to set initial values to safe production values",
+      "6. The contract constructor does not validate that initial values meet the same constraints enforced by the setters"
+    ],
+    "confidence": 0.8,
+    "reasoning": "The setter functions enforce minimum/maximum bounds that are stricter than the constructor values, but there is no mechanism to transition from the permissive test values to production-safe values. The only way to change these is via governance proposals, which require passing proposals under the current permissive settings \u2014 creating a bootstrapping problem. Additionally, the constructor does not enforce the same bounds that the setters do.",
+    "trace_region": "src/TokenGovernor.sol"
+  },
+  {
+    "file": "src/TokenGovernor.sol",
+    "lines": "42-44",
+    "category": "business_logic_violation",
+    "attack_sequence": [
+      "1. Deployer deploys TokenGovernor with test parameters (2min delay, 5min period, 0.01% threshold) to mainnet",
+      "2. Attacker quickly acquires small token balance",
+      "3. Attacker submits governance proposal targeting Agent contract (e.g., setProxyImplementation to attacker's contract)",
+      "4. After 2-minute delay, voting begins",
+      "5. After 5-minute voting period, proposal passes with minimal votes",
+      "6. Proposal executes, replacing Agent proxy implementation with attacker contract",
+      "7. Attacker now controls the Agent and can drain funds, mint tokens, etc."
+    ],
+    "confidence": 0.75,
+    "reasoning": "The combination of extremely short voting times and low proposal threshold creates a complete attack path from token acquisition to full governance capture in under 10 minutes. The test values appear to be intended for development but could easily be deployed to production.",
+    "trace_region": "src/TokenGovernor.sol"
+  },
+  {
+    "file": "src/BootstrapPool.sol",
+    "lines": "69-76",
+    "category": "state_ordering",
+    "attack_sequence": [
+      "1. Attacker calls buy(_amountIn, _recipient) with _amountIn very large.",
+      "2. Line 71: _amountOut is computed based on current reserves.",
+      "3. Line 72: currencyTokenFeeEarned is updated (fee accounting done BEFORE transfer).",
+      "4. Line 73: currencyToken.safeTransferFrom(msg.sender, ...) transfers tokens in.",
+      "5. Line 74: agentToken.safeTransfer(_recipient, _amountOut) transfers tokens out.",
+      "6. The fee accounting on line 72 happens BEFORE the actual token transfer on line 73. This means if a reentrancy were possible (guarded by nonReentrant here), the fee state would be pre-committed. However, the real issue is that currencyTokenFeeEarned is updated by (_amountIn - (_amountIn * fee) / 10_000), but the pool's reserves are computed as phantomAmount + balance - currencyTokenFeeEarned. So the fee accounting is 'correct' in that it reduces the reserve. But the fee-earned update happens before the actual token receipt. If the currencyToken.safeTransferFrom were a callback token (e.g., ERC777), the token transfer on line 73 could trigger a callback before the state fully settles. The nonReentrant guard prevents direct re-entry but not cross-contract re-entrant callbacks into other functions of this contract... actually nonReentrant DOES protect. However, the ordering is still logically inconsistent: fee earned is credited before tokens arrive. If transferFrom fails, the revert catches it, so in practice it's safe due to atomicity. Lower confidence."
+    ],
+    "confidence": 0.25,
+    "reasoning": "The nonReentrant guard prevents actual reentrancy exploitation. The pre-update of fee accounting before transfer is a code smell but doesn't lead to exploitation given the reentrancy guard. However, it's worth flagging as a state ordering concern.",
+    "trace_region": "src/BootstrapPool.sol"
+  },
+  {
+    "file": "src/BootstrapPool.sol",
+    "lines": "98-110",
+    "category": "state_ordering",
+    "attack_sequence": [
+      "1. Attacker calls sell(_amountIn, _recipient) with _amountIn large enough to drain currency token.",
+      "2. Line 100: _amountOut computed from getAmountOut.",
+      "3. Line 101: agentTokenFeeEarned updated BEFORE agent tokens are transferred in.",
+      "4. Line 102: agentToken.safeTransferFrom(msg.sender, ...) brings agent tokens in.",
+      "5. Line 103: currencyToken.safeTransfer(_recipient, _amountOut) sends currency tokens out.",
+      "6. Line 104: require checks that pool balance >= currencyTokenFeeEarned.",
+      "7. The critical issue: agentTokenFeeEarned is incremented on line 101 BEFORE the agent tokens are actually transferred on line 102. If we use the fee-earned to compute reserves via getReserves(), the reserve of agent tokens (agentToken.balanceOf - agentTokenFeeEarned) would be DECREASED by the fee even though the tokens haven't arrived yet. But since nonReentrant prevents re-entry, this ordering issue doesn't create an exploitable race within a single transaction. The atomicity of the transaction means the state is consistent at the end. This is a logic smell but not directly exploitable in isolation."
+    ],
+    "confidence": 0.3,
+    "reasoning": "Fee accounting before token transfer is a state ordering issue but protected by nonReentrant. Could matter in cross-contract interaction scenarios.",
+    "trace_region": "src/BootstrapPool.sol"
+  },
+  {
+    "file": "src/BootstrapPool.sol",
+    "lines": "69-76",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "1. Attacker calls buy(0, recipient).",
+      "2. getAmountOut(0, address(currencyToken)) is called on line 70.",
+      "3. Inside getAmountOut, line 154 checks _amountIn > 0, which would revert. So amountIn=0 is blocked.",
+      "4. Attacker calls buy with _amountIn = 1 (smallest possible).",
+      "5. Fee is computed: _amountIn * fee / 10_000. With fee close to 10000 (e.g., fee=9500 for 5% fee), 1 * 9500 / 10000 = 0. So the fee rounds to zero.",
+      "6. currencyTokenFeeEarned += 1 - 0 = 1. Full amount counted as fee.",
+      "7. This means extremely small trades pay zero fee (fee rounds to zero), allowing fee-free micro-swaps. An attacker can repeatedly micro-trade to avoid fees entirely."
+    ],
+    "confidence": 0.55,
+    "reasoning": "When _amountIn is very small, (_amountIn * fee) / 10_000 can round to zero depending on the fee parameter. For instance if fee=9500 (5% fee), then 1*9500/10000 = 0, meaning the entire _amountIn is counted as fee but 0 is subtracted for the actual fee. Wait - let me re-examine. The fee variable stores 10000-_fee (inverted). So fee=9500 means 5% fee. The fee subtraction is (_amountIn * fee) / 10_000 = 1*9500/10000 = 0. So currencyTokenFeeEarned += 1 - 0 = 1. But the ACTUAL fee deducted from the trade amount (for reserves) is computed in getAmountOut as _amountInWithFee = _amountIn * fee = 9500. This is used in the AMM formula. So the fee IS applied in the price computation. The issue is only in the feeEarned tracking which is off by rounding, but since the AMM formula uses the same fee, the price impact is correctly applied. The feeEarned accounting error is minor and doesn't enable profit.",
+    "trace_region": "src/BootstrapPool.sol"
+  },
+  {
+    "file": "src/BootstrapPool.sol",
+    "lines": "86-87",
+    "category": "insufficient_validation",
+    "attack_sequence": [
+      "1. After buy(), agentToken balance may become very low.",
+      "2. Call sell() with _amountIn = agentToken.balanceOf(address(this)) - agentTokenFeeEarned (drain all agent tokens).",
+      "3. getAmountOut will compute a large _amountOut since reserveOut (currency) is large and reserveIn (agent) is now very small.",
+      "4. The sell will drain most/all of the currency tokens from the pool.",
+      "5. The require on line 84 checks currencyToken.balanceOf >= currencyTokenFeeEarned, which should hold if reserves were positive.",
+      "6. This is normal AMM behavior, not a vulnerability per se. The pool can be drained as expected."
+    ],
+    "confidence": 0.15,
+    "reasoning": "This is standard AMM behavior where one side can be drained. Not a vulnerability.",
+    "trace_region": "src/BootstrapPool.sol"
+  },
+  {
+    "file": "src/BootstrapPool.sol",
+    "lines": "130-145",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "1. Attacker passes an address as _tokenIn that is neither currencyToken nor agentToken.",
+      "2. In getAmountOut, both if conditions fail, so _reserveIn and _reserveOut remain 0 (default).",
+      "3. The require on line 154 checks _amountIn > 0 && _reserveIn > 0 && _reserveOut > 0, which reverts because reserves are 0.",
+      "4. This is properly handled by the require statement. No vulnerability here."
+    ],
+    "confidence": 0.1,
+    "reasoning": "The require guard catches invalid token addresses. No exploitation path.",
+    "trace_region": "src/BootstrapPool.sol"
+  },
+  {
+    "file": "src/BootstrapPool.sol",
+    "lines": "112-123",
+    "category": "invariant_violation",
+    "attack_sequence": [
+      "1. Call kill() as owner (line 112-123).",
+      "2. _sweepFees() is called first (but its implementation is not shown in the file - likely defined elsewhere or missing).",
+      "3. killed = true is set.",
+      "4. agentToken.safeTransfer(owner, agentToken.balanceOf(address(this))) transfers ALL agent tokens to owner.",
+      "5. currencyToken.safeTransfer(owner, currencyToken.balanceOf(address(this))) transfers ALL currency tokens to owner.",
+      "6. After kill, the reserves are effectively zero but phantomAmount is unchanged.",
+      "7. getReserves() would now return: phantomAmount + 0 - currencyTokenFeeEarned and 0 - agentTokenFeeEarned, which could underflow for agentToken if agentTokenFeeEarned > 0.",
+      "8. In Solidity 0.8.x, this would revert on underflow. But since killed=true and notKilled modifier is on getPrice and getAmountOut, external calls to view functions that use getReserves would revert. However, getReserves() itself has NO notKilled modifier.",
+      "9. Any external caller can still view getReserves() after kill and see garbage/underflow values. If getReserves is called by other contracts, it would revert due to underflow, which could break integrations.",
+      "10. More critically: the owner calls kill() which transfers everything. But _sweepFees() is called first - if it transfers fees to owner, then the balance transfers on lines 120-121 might transfer 0 or very little. The order matters."
+    ],
+    "confidence": 0.45,
+    "reasoning": "After kill(), agentTokenFeeEarned may exceed agentToken.balanceOf(address(this)) which is 0, causing underflow revert in getReserves(). getReserves() lacks notKilled modifier, creating inconsistency. The kill function also calls _sweepFees() before setting killed=true, but the fee sweep is before the state change - if _sweepFees transfers tokens, those transfers could interact with the subsequent transfers. Implementation of _sweepFees is not shown.",
+    "trace_region": "src/BootstrapPool.sol"
+  },
+  {
+    "file": "src/BootstrapPool.sol",
+    "lines": "69-76",
+    "category": "access_control",
+    "attack_sequence": [
+      "1. The buy() function with only _amountIn parameter calls buy(_amountIn, msg.sender).",
+      "2. The two-argument buy() is public, not external, so it can be called internally.",
+      "3. There is no access control on who can call buy - this is intentional for a trading pool.",
+      "4. However, the _recipient parameter in the 2-arg version is completely untrusted.",
+      "5. An attacker could call buy(0, some_address) but amountIn=0 is blocked by getAmountOut require.",
+      "6. No real vulnerability here - this is by design for a permissionless pool."
+    ],
+    "confidence": 0.1,
+    "reasoning": "Permissionless buy/sell is by design for a liquidity pool. No access control vulnerability.",
+    "trace_region": "src/BootstrapPool.sol"
+  },
+  {
+    "file": "src/BootstrapPool.sol",
+    "lines": "86-110",
+    "category": "denial_of_service",
+    "attack_sequence": [
+      "1. Attacker calls sell() with _amountIn equal to all agent tokens in the pool minus agentTokenFeeEarned.",
+      "2. This drains all currency tokens from the pool.",
+      "3. After this, currencyToken.balanceOf(address(this)) may be very low or equal to currencyTokenFeeEarned.",
+      "4. The require on line 84 (currencyToken.balanceOf >= currencyTokenFeeEarned) might fail for subsequent sells if the pool is nearly drained.",
+      "5. However, buys would still work as long as there are agent tokens available (but there might be zero after the drain).",
+      "6. If agentToken balance becomes 0, getReserves returns reserveAgentToken = 0 - agentTokenFeeEarned which underflows. Any buy attempt would call getAmountOut which calls getReserves, which would revert.",
+      "7. The pool becomes effectively bricked after one side is fully drained, because getReserves underflows."
+    ],
+    "confidence": 0.65,
+    "reasoning": "After a sell that drains all agent tokens, agentTokenFeeEarned > agentToken.balanceOf(address(this)) (= 0), causing getReserves() to underflow on line 143 (agentToken.balanceOf - agentTokenFeeEarned). Since getReserves has no notKilled guard, and both buy and sell call getAmountOut which calls getReserves, the entire pool becomes permanently non-functional. This is a permanent denial-of-service where the pool can never be used again. The phantomAmount is never reduced. An attacker can intentionally trigger this state and then the pool is bricked. Note: this is partially expected for constant-product AMMs (one side can be drained), but the permanent underflow in getReserves is a bug that prevents any recovery.",
+    "trace_region": "src/BootstrapPool.sol"
+  },
+  {
+    "file": "src/BootstrapPool.sol",
+    "lines": "138-143",
+    "category": "arithmetic_underflow",
+    "attack_sequence": [
+      "1. After buy transactions, agentTokenFeeEarned accumulates fees taken from sell-side trades.",
+      "2. But agentTokenFeeEarned is only incremented in sell() calls, not buy() calls. In buy(), only currencyTokenFeeEarned is incremented.",
+      "3. So agentTokenFeeEarned = sum of (amountIn - fee) for all sell() calls.",
+      "4. If sells drain all agent tokens from the pool, then agentToken.balanceOf(address(this)) = 0.",
+      "5. But agentTokenFeeEarned > 0 from the sells that occurred.",
+      "6. getReserves() line 143: _reserveAgentToken = agentToken.balanceOf(address(this)) - agentTokenFeeEarned = 0 - positive = UNDERFLOW.",
+      "7. Solidity 0.8.x reverts on this underflow.",
+      "8. Any subsequent call to buy() or sell() calls getAmountOut() which calls getReserves(), which reverts.",
+      "9. The pool is permanently bricked. Owner's kill() also calls _sweepFees() and transferFrom, but those would likely also revert if they depend on getReserves.",
+      "10. Even kill() might not work if _sweepFees or the safeTransfer calls trigger getReserves internally (unlikely but possible if tokens are fee-on-transfer or have callbacks)."
+    ],
+    "confidence": 0.7,
+    "reasoning": "The underflow in getReserves() when agentToken balance is less than agentTokenFeeEarned is a concrete bug. Once the agent token side is fully drained via sells, the permanent state corruption (agentTokenFeeEarned > 0 while balance = 0) causes all pool operations to revert. This is a permanent DoS. The kill() function might still work if _sweepFees doesn't depend on getReserves, but all trading functions are bricked.",
+    "trace_region": "src/BootstrapPool.sol"
+  },
+  {
+    "file": "src/BootstrapPool.sol",
+    "lines": "69-76",
+    "category": "lack_of_min_amount_out",
+    "attack_sequence": [
+      "1. The buy() function does NOT accept a _minAmountOut parameter.",
+      "2. The caller cannot specify a minimum amount of agent tokens they expect to receive.",
+      "3. If an attacker front-runs a large buy transaction, they can sandwich it: buy before the victim (moving the price up), let the victim's buy execute at worse price, then sell after.",
+      "4. Without minAmountOut, the victim has no protection against sandwich attacks.",
+      "5. Step 1: Attacker calls buy() with small amount to shift price.",
+      "6. Step 2: Victim's transaction is mined with worse execution price.",
+      "7. Step 3: Attacker calls sell() to extract profit from the price impact.",
+      "8. Same applies to sell() - no minAmountOut protection."
+    ],
+    "confidence": 0.75,
+    "reasoning": "Neither buy() nor sell() accepts a minAmountOut parameter. This makes every trade vulnerable to sandwich attacks. An MEV bot or front-runner can trivially extract value from every trade. The AgentRouter functions (buy/sell) do accept _minAmountOut, but the BootstrapPool itself does not, and users calling BootstrapPool directly are unprotected. This is a significant economic vulnerability in a DeFi context.",
+    "trace_region": "src/BootstrapPool.sol"
+  },
+  {
+    "file": "src/BootstrapPool.sol",
+    "lines": "72",
+    "category": "incorrect_accounting",
+    "attack_sequence": [
+      "1. In buy(), line 72: currencyTokenFeeEarned += _amountIn - (_amountIn * fee) / 10_000.",
+      "2. fee = 10_000 - _fee (constructor inverts the fee). So if _fee = 500 (5%), fee = 9500.",
+      "3. Fee deducted = (_amountIn * fee) / 10_000 = (_amountIn * 9500) / 10_000 = _amountIn * 0.95.",
+      "4. currencyTokenFeeEarned += _amountIn - _amountIn * 0.95 = _amountIn * 0.05.",
+      "5. This looks correct - 5% fee is tracked. But wait: the fee variable name is confusing. fee = 10000 - _fee means fee represents the portion the USER KEEPS (the non-fee portion). So _amountIn * fee / 10000 = amount user effectively pays (minus fee), and _amountIn - that = fee portion. This is correct.",
+      "6. However, in getAmountOut(), _amountInWithFee = _amountIn * fee. This means _amountInWithFee = _amountIn * 9500, which is NOT with fee - it's without fee. The variable name is misleading but the math in the AMM formula is consistent with constant-product: numerator = (amountIn * (1-feePercent)) * reserveOut. So the naming is wrong but the math works.",
+      "7. Actually, looking more carefully at getAmountOut: _amountInWithFee = _amountIn * fee. The denominator = _reserveIn * 10_000 + _amountInWithFee = reserveIn * 10000 + amountIn * 9500. This gives the effective reserve as if the fee portion was added but not used for output. Standard Uniswap formula: amountOut = (amountIn * (10000-feePercent) * reserveOut) / (reserveIn * 10000 + amountIn * (10000-feePercent)). Here fee=9500, so (10000-feePercent)=9500. So the formula is: amountOut = (amountIn * 9500 * reserveOut) / (reserveIn * 10000 + amountIn * 9500). This is correct for a 5% fee.",
+      "8. But in buy(), currencyTokenFeeEarned += _amountIn - (_amountIn * fee) / 10_000 = _amountIn - _amountIn*9500/10000 = _amountIn * 500/10000 = _amountIn * 0.05. This is the fee earned. Correct.",
+      "9. The actual tokens transferred: buy() transfers _amountIn from msg.sender and _amountOut to recipient. The fee portion (_amountIn * 0.05) stays in the pool. The effective reserve change: +_amountIn (in) - _amountOut (out). The fee accounting via currencyTokenFeeEarned correctly tracks that _amountIn * 0.05 is fee. getReserves uses phantomAmount + balance - feeEarned to get the 'organic' reserve. This seems correct."
+    ],
+    "confidence": 0.2,
+    "reasoning": "After careful analysis, the fee accounting appears mathematically correct despite confusing variable naming. The fee variable stores the non-fee portion (fee=10000-_fee), and the AMM formula and fee tracking are consistent. No exploit here.",
+    "trace_region": "src/BootstrapPool.sol"
+  },
+  {
+    "file": "src/BootstrapPool.sol",
+    "lines": "86-110",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "1. sell() on line 101: agentTokenFeeEarned += _amountIn - (_amountIn * fee) / 10_000.",
+      "2. sell() on line 102: agentToken.safeTransferFrom(msg.sender, address(this), _amountIn) transfers agent tokens IN.",
+      "3. sell() on line 103: currencyToken.safeTransfer(_recipient, _amountOut) transfers currency tokens OUT.",
+      "4. sell() on line 104: require(currencyToken.balanceOf(address(this)) >= currencyTokenFeeEarned).",
+      "5. The problem: The require checks currencyToken balance but does NOT check that agentToken.balanceOf(address(this)) >= agentTokenFeeEarned after the transfer.",
+      "6. After agent tokens arrive on line 102, the total agent token balance increases. But agentTokenFeeEarned also increased on line 101. Since the tokens arrived, the invariant should hold: balance (old + _amountIn) >= agentTokenFeeEarned (old + fee). The new balance = old + _amountIn. New feeEarned = old + _amountIn * (10000-fee)/10000. So new balance - new feeEarned = (old - old_feeEarned) + _amountIn - _amountIn*(10000-fee)/10000 = old_reserve + _amountIn * fee/10000 >= old_reserve. So the invariant is maintained as long as old_reserve >= 0. This is fine.",
+      "7. The key asymmetry: buy() does NOT have a require checking agentToken.balanceOf >= agentTokenFeeEarned after transfer. In buy(), agent tokens go OUT (line 74) but agentTokenFeeEarned is NOT updated (only currencyTokenFeeEarned is). So after buy, agentToken.balanceOf decreases but agentTokenFeeEarned stays same. The invariant agentToken.balanceOf >= agentTokenFeeEarned can be violated if buy() drains too many agent tokens.",
+      "8. If an attacker buys a huge amount of agent tokens in a single transaction, agentToken.balanceOf can go below agentTokenFeeEarned (accumulated from prior sells).",
+      "9. This would cause getReserves() to underflow, as analyzed earlier, permanently bricking the pool."
+    ],
+    "confidence": 0.7,
+    "reasoning": "buy() lacks the invariant check that sell() has. sell() verifies currencyToken.balanceOf >= currencyTokenFeeEarned, but buy() does not verify agentToken.balanceOf >= agentTokenFeeEarned after sending agent tokens out. This means a large buy can permanently violate the invariant, causing getReserves() to underflow and brick the pool. The asymmetric protection between buy and sell is the root cause.",
+    "trace_region": "src/BootstrapPool.sol"
+  },
+  {
+    "file": "src/BootstrapPool.sol",
+    "lines": "60-67",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "1. The constructor takes _fee as a parameter and computes fee = 10_000 - _fee.",
+      "2. There is no validation that _fee is in a reasonable range (e.g., 0 < _fee < 10000).",
+      "3. If _fee = 0, then fee = 10000, meaning no fee is charged (fee portion = 100%). currencyTokenFeeEarned would always be 0. The pool earns no fees.",
+      "4. If _fee = 10000, then fee = 0, meaning 100% fee. _amountInWithFee = 0, _numerator = 0, _amountOut = 0. Users get zero tokens but their currency tokens are taken. This would drain users entirely.",
+      "5. If _fee > 10000, fee underflows (Solidity 0.8 reverts in constructor). If _fee is passed as a very large uint256, 10_000 - _fee would underflow and revert.",
+      "6. This is a constructor parameter issue - if the deploying factory/owner passes _fee >= 10000, the contract can't be deployed. If _fee = 10000, the pool steals all input. The validation is missing but depends on the caller being the factory."
+    ],
+    "confidence": 0.3,
+    "reasoning": "The fee parameter is not validated in the constructor. While this is a constructor-only issue and depends on the factory deploying correctly, an incorrect _fee value could create a malicious pool. Low confidence since this requires the deployer to make an error.",
+    "trace_region": "src/BootstrapPool.sol"
+  },
+  {
+    "file": "src/BootstrapPool.sol",
+    "lines": "86-87, 96-97",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "1. sell() is public (not external), allowing internal calls.",
+      "2. buy() is also public (the 2-arg version), allowing internal calls.",
+      "3. Neither function validates _recipient != address(0).",
+      "4. If _recipient is address(0), tokens are sent to the zero address and burned (for ERC20). This is a loss of funds for the caller.",
+      "5. While not exploitable by an attacker (it's self-harm), it's a missing validation that could cause accidental loss."
+    ],
+    "confidence": 0.15,
+    "reasoning": "Sending tokens to address(0) is user error, not an exploit. Very low confidence.",
+    "trace_region": "src/BootstrapPool.sol"
+  },
+  {
+    "file": "src/AgentFactory.sol",
+    "lines": "66-116",
+    "category": "Missing Validation / Authorization",
+    "attack_sequence": [
+      "1. Attacker calls createAgent() with arbitrary _name, _symbol, _url, and _amountToBuy=0.",
+      "2. The creationFee is transferred from the attacker to the factory (if > 0).",
+      "3. An Agent, AIToken, and LiquidityManager are deployed and configured.",
+      "4. The agent is added to the agents array and all events are emitted.",
+      "5. No validation is performed on _name, _symbol, or _url. An attacker could use extremely long strings to increase gas costs for other users querying these values, or use misleading names/symbols (e.g., impersonating well-known tokens).",
+      "6. More critically, no validation ensures that the created agent's token is unique or that the name/symbol doesn't collide with existing agents, potentially enabling confusion attacks."
+    ],
+    "confidence": 0.3,
+    "reasoning": "The lack of input validation on string parameters is a minor issue, but could lead to spam or confusion. The main concern is that any address can create an agent, and there's no rate limiting or validation beyond the fee payment. This is a design choice rather than a critical vulnerability.",
+    "trace_region": "src/AgentFactory.sol"
+  },
+  {
+    "file": "src/AgentFactory.sol",
+    "lines": "66-116",
+    "category": "Arithmetic / Precision Loss",
+    "attack_sequence": [
+      "1. Attacker calls createAgent() with _amountToBuy=0.",
+      "2. In the createAgent function, the following calculations occur:",
+      "   - mintToDAOAmount = (token.totalSupply() * mintToDAO) / 10_000",
+      "   - mintToAgentAmount = (token.totalSupply() * mintToAgent) / 10_000",
+      "   - initialLiquidity = token.totalSupply() - mintToDAOAmount - mintToAgentAmount",
+      "3. If mintToDAO + mintToAgent >= 10_000, then initialLiquidity could be zero or negative (underflow).",
+      "4. However, the contract uses Solidity >=0.8.25, which has built-in overflow/underflow checks. So this would revert if initialLiquidity underflows.",
+      "5. If mintToDAO + mintToAgent == 10_000 exactly, initialLiquidity = 0, which might cause issues in the liquidity pool initialization.",
+      "6. The contract does not validate that mintToDAO + mintToAgent < 10_000, nor does it validate that initialLiquidity > 0 before deploying the LiquidityManager."
+    ],
+    "confidence": 0.6,
+    "reasoning": "This is a potential configuration issue. If the owner sets mintToDAO + mintToAgent to 100%, then initialLiquidity becomes zero. The LiquidityManager might not handle zero initial liquidity correctly, potentially causing reverts or broken state. The owner should validate these parameters when setting them.",
+    "trace_region": "src/AgentFactory.sol"
+  },
+  {
+    "file": "src/AgentFactory.sol",
+    "lines": "97-116",
+    "category": "Reentrancy / State Change Order",
+    "attack_sequence": [
+      "1. Attacker calls createAgent() with _amountToBuy > 0.",
+      "2. The function collects the creation fee first.",
+      "3. It deploys Agent, AIToken, LiquidityManager, and Governor contracts.",
+      "4. It transfers ownership of the agent to the governance contract.",
+      "5. It mints tokens to DAO and Agent, then transfers tokens to the liquidity pool.",
+      "6. It calls manager.initializeBootstrapPool() - this is an external call to a newly deployed contract.",
+      "7. Then, if _amountToBuy > 0, it transfers currencyToken from msg.sender to the factory, approves the bootstrap pool, and calls bootstrapPool.buy().",
+      "8. The bootstrapPool.buy() call is an external call that could potentially call back into the factory or other contracts.",
+      "9. However, all state changes (agent array push, event emission) happen after these external calls, but the critical state (token transfers, pool initialization) happens before the external buy call.",
+      "10. The reentrancy risk is mitigated because the bootstrap pool is a freshly deployed contract that shouldn't have any callbacks to the factory, but this depends on the bootstrap pool implementation."
+    ],
+    "confidence": 0.4,
+    "reasoning": "The code follows a pattern where external calls happen after state changes for the agent creation, but the initial buy involves external calls (approve and buy) after the pool is initialized. If the bootstrap pool were malicious or had a callback, it could potentially exploit this. However, since the bootstrap pool is deployed from trusted bytecode stored in the factory, this is low risk.",
+    "trace_region": "src/AgentFactory.sol"
+  },
+  {
+    "file": "src/AgentFactory.sol",
+    "lines": "66-116",
+    "category": "Access Control / Privilege Escalation",
+    "attack_sequence": [
+      "1. The createAgent function is external, so anyone can call it.",
+      "2. The function collects a creation fee and deploys a new agent.",
+      "3. After deployment, the agent's ownership is transferred to a governance contract.",
+      "4. The factory does not retain any administrative control over the deployed agent.",
+      "5. However, the factory stores the agent in the agents array and the mapping agentManager.",
+      "6. There is no function to remove agents from the array or update the mappings.",
+      "7. If the governance contract is compromised, the attacker could potentially take control of the agent, but that's a risk in the governance contract, not the factory.",
+      "8. The factory owner can change parameters like creationFee, tradingFee, initialPrice, etc., but these only affect new agents, not existing ones."
+    ],
+    "confidence": 0.2,
+    "reasoning": "This is by design - the factory deploys agents and relinquishes control. The main risk would be if the factory owner maliciously changes parameters to harm future agents, but that's a centralization risk, not a vulnerability in the code logic.",
+    "trace_region": "src/AgentFactory.sol"
+  },
+  {
+    "file": "src/AgentFactory.sol",
+    "lines": "118-140",
+    "category": "Missing Validation / Configuration",
+    "attack_sequence": [
+      "1. The deployLiquidityManager function is internal, so it can only be called by the factory.",
+      "2. It deploys a LiquidityManager using create2 with a salt based on agents.length.",
+      "3. The function does not validate that the deployed contract address is not already used (though create2 prevents collisions with different bytecode or salt).",
+      "4. It does not validate the parameters passed to the LiquidityManager constructor.",
+      "5. If the liquidityManagerBytecode in storage is malicious or incorrect, all deployed LiquidityManagers would be compromised.",
+      "6. The factory owner can update liquidityManagerBytecode, which could be a rug pull vector if they change it after deployment but before users interact with the pools."
+    ],
+    "confidence": 0.5,
+    "reasoning": "The reliance on stored bytecode creates a centralization risk. If the factory owner changes the liquidityManagerBytecode to a malicious version, new agents would deploy compromised pools. Users should verify the bytecode or trust the owner. This is more of a design consideration than a direct vulnerability.",
+    "trace_region": "src/AgentFactory.sol"
+  },
+  {
+    "file": "src/LiquidityManager.sol",
+    "lines": "[55, 64]",
+    "category": "missing_access_control",
+    "attack_sequence": [
+      "1. Observe that `initializeBootstrapPool()` is an `external` function with no access control modifier (no `onlyOwner` or similar).",
+      "2. Call `initializeBootstrapPool()` from any address before the legitimate caller (AgentFactory) does.",
+      "3. The function sets `initialized = true`, creates the BootstrapPool with `initialPrice`, `initialLiquidity`, and `fee` from constructor args, and transfers `initialLiquidity` worth of `agentToken` to the pool.",
+      "4. Now the legitimate owner cannot call `initializeBootstrapPool()` again \u2014 it will revert with 'BootstrapPool already initialized' \u2014 permanently bricking the liquidity initialization flow for this LiquidityManager instance.",
+      "5. Additionally, the attacker controls the timing: they can front-run the legitimate transaction to choose the block/timestamp context under which the pool is initialized, which may affect bonding-curve behavior."
+    ],
+    "confidence": "high",
+    "reasoning": "The `initializeBootstrapPool()` function at line 55 has `external` visibility with no `require(msg.sender == owner)` or any other access-control check. The `initialized` flag only prevents double-initialization but does not restrict who can call it. This is a classic front-running / griefing vulnerability where any address can permanently lock the initialization to their chosen conditions.",
+    "trace_region": "initializeBootstrapPool"
+  },
+  {
+    "file": "src/LiquidityManager.sol",
+    "lines": "[107, 128]",
+    "category": "incorrect_state_update_order",
+    "attack_sequence": [
+      "1. In `moveLiquidity()`, the function first reads `_reserveCurrencyToken` from `bootstrapPool.getReserves()` and subtracts `phantomAmount` to get the real reserve.",
+      "2. It then calls `bootstrapPool.kill()` at line 107, which is a state-changing operation on the bootstrap pool.",
+      "3. After `kill()`, it proceeds to compute `currencyAmount` from `currencyToken.balanceOf(address(this))` and calculates `liquidityAmount` and then calls `addLiquidityToFraxswap()` which makes multiple external calls to the Fraxswap factory and pair contracts.",
+      "4. The external calls to `fraxswapFactory.getPair()`, `fraxswapFactory.createPair()`, and `fraxswapPair.mint()` could trigger callbacks or reentrancy via malicious token implementations (the agent token is user-influenced since it is an AIToken with owner-controlled mint/burn).",
+      "5. However, the `kill()` before the external calls means the bootstrap pool is in its final state during the Fraxswap operations \u2014 this is actually correct ordering (effects before interactions) for the bootstrap pool, but the lack of reentrancy guard on `moveLiquidity()` means a malicious token could reenter `moveLiquidity()` before the final token transfers and `setAgentStage()` call.",
+      "6. If `agentToken` is a malicious ERC20 with a callback on `transfer`, the attacker could reenter `moveLiquidity()` and extract tokens multiple times from the residual balances."
+    ],
+    "confidence": "medium",
+    "reasoning": "The state change ordering within `moveLiquidity()` appears intentionally correct for the bootstrap pool (kill before external calls). However, the function lacks a reentrancy guard and relies on the agent token being well-behaved during `safeTransfer` calls. A malicious agent token could potentially reenter the function. The risk is somewhat mitigated because `currencyToken` (likely a stablecoin) is typically well-behaved, but the `agentToken` path is more dangerous.",
+    "trace_region": "initializeBootstrapPool"
+  },
+  {
+    "file": "src/LiquidityManager.sol",
+    "lines": "[66, 72]",
+    "category": "incorrect_arithmetic",
+    "attack_sequence": [
+      "1. In `moveLiquidity()`, line 66: `_reserveCurrencyToken = _reserveCurrencyToken - bootstrapPool.phantomAmount();`",
+      "2. If `phantomAmount()` returns a value greater than `_reserveCurrencyToken`, this subtraction underflows (Solidity 0.8.25 will revert).",
+      "3. An attacker who can manipulate the bootstrap pool's phantom amount relative to the actual reserves could prevent `moveLiquidity()` from ever succeeding.",
+      "4. More practically: if the bootstrap pool has accumulated phantom debt (from buy operations that haven't been settled) exceeding the actual currency reserves, this function will always revert, permanently locking the liquidity in the bootstrap pool and preventing graduation to Fraxswap.",
+      "5. The phantom amount grows as users buy agent tokens against the bonding curve. If a large buy is executed, phantomAmount could temporarily exceed reserves if there is a rounding or accounting issue in BootstrapPool."
+    ],
+    "confidence": "medium",
+    "reasoning": "The subtraction on line 66 does not check that `_reserveCurrencyToken >= phantomAmount()` before performing the subtraction. While Solidity 0.8.25 will revert on underflow (preventing fund loss), this could be exploited as a denial-of-service vector where an attacker strategically buys on the bonding curve to inflate phantomAmount beyond reserves, blocking graduation permanently.",
+    "trace_region": "initializeBootstrapPool"
+  },
+  {
+    "file": "src/LiquidityManager.sol",
+    "lines": "[76, 85]",
+    "category": "missing_recipient_validation",
+    "attack_sequence": [
+      "1. After `addLiquidityToFraxswap()` completes, the function transfers remaining agent tokens and currency tokens to `address(agent)` on lines 82-83.",
+      "2. The `agent` address is immutable and set in the constructor. If the Agent contract has been self-destructed or if the agent address is a contract that cannot receive tokens (no fallback/receive), the `safeTransfer` calls will revert.",
+      "3. This would permanently prevent `moveLiquidity()` from completing, locking all liquidity.",
+      "4. Additionally, after transferring tokens, the function calls `AgentFactory(owner).setAgentStage(agent, 1)` \u2014 if this external call reverts (e.g., factory state issue), the entire transaction reverts, and no state changes persist."
+    ],
+    "confidence": "low",
+    "reasoning": "This is more of a robustness concern than a direct exploitable vulnerability, since the agent address is set immutably by the factory. However, if the Agent contract is proxied and the implementation is changed (via `setProxyImplementation`), the new implementation might not handle token transfers, causing a permanent lock.",
+    "trace_region": "initializeBootstrapPool"
+  },
+  {
+    "file": "src/LiquidityManager.sol",
+    "lines": "[116, 125]",
+    "category": "arithmetic_precision_loss",
+    "attack_sequence": [
+      "1. In `moveLiquidity()`, `liquidityAmount = (currencyAmount * 1e18) / price` where `price = bootstrapPool.getPrice()`.",
+      "2. If `price` is very large or `currencyAmount` is very small, the division could round to 0, resulting in zero liquidity being added to Fraxswap.",
+      "3. Conversely, if `price` is very small, `liquidityAmount` could overflow (though Solidity 0.8 would revert on overflow).",
+      "4. An attacker who manipulates the bootstrap pool price (through strategic buy/sell operations on the bonding curve) before `moveLiquidity()` is called could influence how much liquidity ends up in the Fraxswap pair vs. being sent to the agent.",
+      "5. More concretely: an attacker could buy large amounts of agent tokens to drive up the price, then trigger `moveLiquidity()`. The higher price means `liquidityAmount = (currencyAmount * 1e18) / price` is smaller, so less agentToken goes to Fraxswap and more goes to the agent address. This shifts the liquidity ratio in the Fraxswap pair, potentially allowing the attacker to profit from arbitrage between the bootstrap and Fraxswap pools."
+    ],
+    "confidence": "medium",
+    "reasoning": "The price-dependent calculation for liquidity amounts is susceptible to manipulation through bonding curve operations. An attacker can strategically time their trades to influence the price at the moment `moveLiquidity()` is called, affecting the ratio of tokens deposited to Fraxswap vs. sent to the agent.",
+    "trace_region": "initializeBootstrapPool"
+  }
+]

@@ -1,0 +1,64 @@
+{
+  "findings": [
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/ERC7914.t.sol",
+      "lines": [
+        77
+      ],
+      "raw_message": "External call at line 77 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/Calibur.execute.hooks.t.sol",
+      "lines": [
+        62
+      ],
+      "raw_message": "External call at line 62 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/utils/FunctionCallGenerator.sol",
+      "lines": [
+        192
+      ],
+      "raw_message": "External call at line 192 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "src/Calibur.sol",
+      "lines": [
+        201
+      ],
+      "raw_message": "External call at line 201 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "src/ERC4337Account.sol",
+      "lines": [
+        43
+      ],
+      "raw_message": "External call at line 43 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "src/ERC7914.sol",
+      "lines": [
+        52
+      ],
+      "raw_message": "External call at line 52 \u2014 check return value",
+      "confidence": "low"
+    }
+  ]
+}

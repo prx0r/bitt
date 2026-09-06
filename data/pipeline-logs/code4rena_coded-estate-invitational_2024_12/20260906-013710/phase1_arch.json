@@ -1,0 +1,1324 @@
+{
+  "entry_points": [
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "execute",
+      "line": 1,
+      "untrusted_input": "ExecuteMsg variants (e.g., Transfer, Send, Approve, Revoke, etc.)",
+      "permission_level": "user"
+    },
+    {
+      "file": "contracts/codedestate/src/query.rs",
+      "function_name": "query",
+      "line": 1,
+      "untrusted_input": "QueryMsg variants (e.g., OwnerOf, Approval, etc.)",
+      "permission_level": "user"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "instantiate",
+      "line": 38,
+      "untrusted_input": [
+        "msg.name",
+        "msg.symbol",
+        "msg.minter"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "execute",
+      "line": 50,
+      "untrusted_input": [
+        "info.sender",
+        "info.funds",
+        "msg variants"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "mint",
+      "line": 184,
+      "untrusted_input": [
+        "info.sender",
+        "token_id",
+        "owner",
+        "token_uri",
+        "extension"
+      ],
+      "permission_level": "minter"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "set_fee_value",
+      "line": 257,
+      "untrusted_input": [
+        "info.sender",
+        "fee"
+      ],
+      "permission_level": "owner"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "withdraw",
+      "line": 262,
+      "untrusted_input": [
+        "info.sender",
+        "target",
+        "amount"
+      ],
+      "permission_level": "owner"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "update_ownership",
+      "line": 279,
+      "untrusted_input": [
+        "info.sender",
+        "action"
+      ],
+      "permission_level": "owner"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "transfer_nft",
+      "line": 292,
+      "untrusted_input": [
+        "info.sender",
+        "recipient",
+        "token_id"
+      ],
+      "permission_level": "token_owner/operator"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "send_nft",
+      "line": 333,
+      "untrusted_input": [
+        "info.sender",
+        "contract",
+        "token_id",
+        "msg"
+      ],
+      "permission_level": "token_owner/operator"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "approve",
+      "line": 351,
+      "untrusted_input": [
+        "info.sender",
+        "spender",
+        "token_id",
+        "expires"
+      ],
+      "permission_level": "token_owner/operator"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "revoke",
+      "line": 357,
+      "untrusted_input": [
+        "info.sender",
+        "spender",
+        "token_id"
+      ],
+      "permission_level": "token_owner/operator"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "approve_all",
+      "line": 363,
+      "untrusted_input": [
+        "info.sender",
+        "operator",
+        "expires"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "revoke_all",
+      "line": 379,
+      "untrusted_input": [
+        "info.sender",
+        "operator"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "burn",
+      "line": 386,
+      "untrusted_input": [
+        "info.sender",
+        "token_id"
+      ],
+      "permission_level": "token_owner/operator"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "_transfer_nft",
+      "line": 400,
+      "untrusted_input": [
+        "info.sender",
+        "recipient",
+        "token_id"
+      ],
+      "permission_level": "internal"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "setmetadata",
+      "line": 411,
+      "untrusted_input": [
+        "info.sender",
+        "token_id",
+        "token_uri"
+      ],
+      "permission_level": "token_owner/operator"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "setextension",
+      "line": 421,
+      "untrusted_input": [
+        "info.sender",
+        "token_id",
+        "extension"
+      ],
+      "permission_level": "token_owner/operator"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "setlistforsell",
+      "line": 432,
+      "untrusted_input": [
+        "info.sender",
+        "islisted",
+        "token_id",
+        "denom",
+        "price",
+        "auto_approve"
+      ],
+      "permission_level": "token_owner/operator"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "setbidtobuy",
+      "line": 446,
+      "untrusted_input": [
+        "info.sender",
+        "token_id",
+        "info.funds"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "setlistforshorttermrental",
+      "line": 481,
+      "untrusted_input": [
+        "info.sender",
+        "token_id",
+        "denom",
+        "price_per_day",
+        "auto_approve",
+        "available_period",
+        "minimum_stay",
+        "cancellation"
+      ],
+      "permission_level": "token_owner/operator"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "setunlistforshorttermrental",
+      "line": 501,
+      "untrusted_input": [
+        "info.sender",
+        "token_id"
+      ],
+      "permission_level": "token_owner/operator"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "setreservationforshortterm",
+      "line": 516,
+      "untrusted_input": [
+        "info.sender",
+        "token_id",
+        "renting_period",
+        "guests",
+        "info.funds"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "setapproveforshortterm",
+      "line": 580,
+      "untrusted_input": [
+        "info.sender",
+        "token_id",
+        "renting_period",
+        "traveler"
+      ],
+      "permission_level": "token_owner/operator"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "rejectreservationforshortterm",
+      "line": 627,
+      "untrusted_input": [
+        "info.sender",
+        "token_id",
+        "traveler",
+        "renting_period"
+      ],
+      "permission_level": "token_owner/operator"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "cancelreservationafterapprovalforshortterm",
+      "line": 661,
+      "untrusted_input": [
+        "info.sender",
+        "token_id",
+        "renting_period"
+      ],
+      "permission_level": "token_owner/operator/renter"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "cancelreservationbeforeapprovalforshortterm",
+      "line": 716,
+      "untrusted_input": [
+        "info.sender",
+        "token_id",
+        "renting_period"
+      ],
+      "permission_level": "renter"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "finalizeshorttermrental",
+      "line": 746,
+      "untrusted_input": [
+        "info.sender",
+        "token_id",
+        "traveler",
+        "renting_period"
+      ],
+      "permission_level": "token_owner/operator/renter"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "setlistforlongtermrental",
+      "line": 806,
+      "untrusted_input": [
+        "info.sender",
+        "token_id",
+        "denom",
+        "price_per_month",
+        "auto_approve",
+        "available_period",
+        "minimum_stay",
+        "cancellation"
+      ],
+      "permission_level": "token_owner/operator"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "setunlistforlongtermrental",
+      "line": 826,
+      "untrusted_input": [
+        "info.sender",
+        "token_id"
+      ],
+      "permission_level": "token_owner/operator"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "setreservationforlongterm",
+      "line": 841,
+      "untrusted_input": [
+        "info.sender",
+        "token_id",
+        "renting_period",
+        "guests"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "cancelreservationbeforeapprovalforlongterm",
+      "line": 886,
+      "untrusted_input": [
+        "info.sender",
+        "token_id",
+        "renting_period"
+      ],
+      "permission_level": "renter"
+    },
+    {
+      "file": "contracts/codedestate/src/lib.rs",
+      "function_name": "entry::instantiate",
+      "line": 56,
+      "untrusted_input_flows_in": [
+        "info: MessageInfo (sender)",
+        "msg: InstantiateMsg (minter address)"
+      ],
+      "permission_level": "any"
+    },
+    {
+      "file": "contracts/codedestate/src/lib.rs",
+      "function_name": "entry::execute",
+      "line": 65,
+      "untrusted_input_flows_in": [
+        "info: MessageInfo (sender, funds)",
+        "msg: ExecuteMsg (token_id, recipient, spender, operator, fee, prices, periods, etc.)"
+      ],
+      "permission_level": "owner_or_operator_per_variant"
+    },
+    {
+      "file": "contracts/codedestate/src/lib.rs",
+      "function_name": "entry::query",
+      "line": 74,
+      "untrusted_input_flows_in": [
+        "msg: QueryMsg (token_id, owner, spender, operator, denom, etc.)"
+      ],
+      "permission_level": "any"
+    },
+    {
+      "file": "contracts/codedestate/src/query.rs",
+      "function_name": "query",
+      "line": 161,
+      "untrusted_input_flows_in": [
+        "msg: QueryMsg<Q> (includes token_id, owner, spender, operator, include_expired, start_after, limit, denom, msg fields)"
+      ],
+      "permission_level": "public"
+    },
+    {
+      "file": "packages/cw721/src/traits.rs",
+      "function_name": "transfer_nft",
+      "line": 31,
+      "untrusted_input_flows_in": [
+        "info: MessageInfo (sender)",
+        "recipient: String",
+        "token_id: String"
+      ],
+      "permission_level": "owner or approved"
+    },
+    {
+      "file": "packages/cw721/src/traits.rs",
+      "function_name": "send_nft",
+      "line": 39,
+      "untrusted_input_flows_in": [
+        "info: MessageInfo (sender)",
+        "contract: String",
+        "token_id: String",
+        "msg: Binary"
+      ],
+      "permission_level": "owner or approved"
+    },
+    {
+      "file": "packages/cw721/src/traits.rs",
+      "function_name": "approve",
+      "line": 47,
+      "untrusted_input_flows_in": [
+        "info: MessageInfo (sender)",
+        "spender: String",
+        "token_id: String",
+        "expires: Option<Expiration>"
+      ],
+      "permission_level": "owner or approved"
+    },
+    {
+      "file": "packages/cw721/src/traits.rs",
+      "function_name": "revoke",
+      "line": 55,
+      "untrusted_input_flows_in": [
+        "info: MessageInfo (sender)",
+        "spender: String",
+        "token_id: String"
+      ],
+      "permission_level": "owner or approved"
+    },
+    {
+      "file": "packages/cw721/src/traits.rs",
+      "function_name": "approve_all",
+      "line": 63,
+      "untrusted_input_flows_in": [
+        "info: MessageInfo (sender)",
+        "operator: String",
+        "expires: Option<Expiration>"
+      ],
+      "permission_level": "owner"
+    },
+    {
+      "file": "packages/cw721/src/traits.rs",
+      "function_name": "revoke_all",
+      "line": 71,
+      "untrusted_input_flows_in": [
+        "info: MessageInfo (sender)",
+        "operator: String"
+      ],
+      "permission_level": "owner"
+    },
+    {
+      "file": "packages/cw721/src/traits.rs",
+      "function_name": "burn",
+      "line": 79,
+      "untrusted_input_flows_in": [
+        "info: MessageInfo (sender)",
+        "token_id: String"
+      ],
+      "permission_level": "owner or approved"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "function_name": "execute",
+      "line": 1,
+      "untrusted_input": "ExecuteMsg variants, including token_id, owner, operator, price, denom, rental parameters, bids, etc.",
+      "permission_level": "public"
+    },
+    {
+      "file": "contracts/codedestate/src/query.rs",
+      "function_name": "query",
+      "line": 1,
+      "untrusted_input": "QueryMsg variants, including token_id, owner, operator, start_after, limit, include_expired.",
+      "permission_level": "public"
+    }
+  ],
+  "trust_boundaries": [
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 375,
+      "what_crossing": "External call to Cw721Contract::call for token transfer",
+      "should_validate": "Caller authorization and token ownership/approval"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 531,
+      "what_crossing": "External call to Cw721Contract::call for token approval",
+      "should_validate": "Caller is token owner"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 561,
+      "what_crossing": "External call to Cw721Contract::call for token revocation",
+      "should_validate": "Caller is token owner"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 257,
+      "what_crossing": "Owner-only fee setting",
+      "what_should_be_validated": "Owner authorization via cw_ownable::assert_owner"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 262,
+      "what_crossing": "Owner-only token withdrawal",
+      "what_should_be_validated": "Owner authorization, balance check, target address validation"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 292,
+      "what_crossing": "NFT transfer with payment logic",
+      "what_should_be_validated": "Token ownership/approval, bid amount validation, fee calculation"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 400,
+      "what_crossing": "Internal NFT transfer",
+      "what_should_be_validated": "Token ownership/approval, recipient address validation"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 446,
+      "what_crossing": "Bid placement with funds",
+      "what_should_be_validated": "Funds denomination, amount vs price, existing bid handling"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 516,
+      "what_crossing": "Short-term rental reservation with funds",
+      "what_should_be_validated": "Rental availability, funds denomination/amount, minimum stay, fee calculation"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 580,
+      "what_crossing": "Short-term rental approval",
+      "what_should_be_validated": "Token ownership/approval, reservation existence, approval state"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 627,
+      "what_crossing": "Short-term rental rejection with refund",
+      "what_should_be_validated": "Token ownership/approval, reservation existence, refund calculation"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 661,
+      "what_crossing": "Short-term rental cancellation after approval with refund",
+      "what_should_be_validated": "Token ownership/approval, reservation state, cancellation policy, refund calculation"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 716,
+      "what_crossing": "Short-term rental cancellation before approval with refund",
+      "what_should_be_validated": "Rental ownership, reservation state"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 746,
+      "what_crossing": "Short-term rental finalization with payment",
+      "what_should_be_validated": "Token ownership/approval, reservation state, checkout time, fee calculation"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 841,
+      "what_crossing": "Long-term rental reservation",
+      "what_should_be_validated": "Rental availability, minimum stay"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 886,
+      "what_crossing": "Long-term rental cancellation before approval",
+      "what_should_be_validated": "Rental ownership, reservation state"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 375,
+      "what_crosses": "external call via msg (SendNft) to another contract",
+      "what_should_be_validated": "receiving contract's execute response; potential reentrancy"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 531,
+      "what_crosses": "external call via msg (FinalizeShortTermRental) to another contract",
+      "what_should_be_validated": "receiving contract's execute response; potential reentrancy"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 561,
+      "what_crosses": "external call via msg (FinalizeLongTermRental) to another contract",
+      "what_should_be_validated": "receiving contract's execute response; potential reentrancy"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 0,
+      "what_crosses": "operator delegation (ApproveAll) allowing operator to act on behalf of owner",
+      "what_should_be_validated": "expiration checks, proper revocation"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 0,
+      "what_crosses": "minter authority (Mint) only from minter address",
+      "what_should_be_validated": "only minter can call, token_id uniqueness"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 0,
+      "what_crosses": "owner-only operations (TransferNft, Burn, SetListFor*, etc.)",
+      "what_should_be_validated": "sender == owner or operator with valid approval"
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 0,
+      "what_crosses": "funds transfer (Withdraw) from contract balance",
+      "what_should_be_validated": "sufficient balance, proper denom, authorization"
+    },
+    {
+      "file": "contracts/codedestate/src/query.rs",
+      "line": 163,
+      "what_crossing": "msg: QueryMsg variant matched; untrusted token_id/owner/operator strings enter via public query endpoint",
+      "should_be_validated": "Addr validation for owner/operator (done via deps.api.addr_validate). token_id should be validated as non-empty string (not explicitly validated)."
+    },
+    {
+      "file": "packages/cw721/src/traits.rs",
+      "line": 31,
+      "what_crossing": "transfer_nft: external caller (sender) triggers token transfer to recipient",
+      "should_be_validated": "Ensure sender is token owner or approved operator. Ensure recipient is valid address."
+    },
+    {
+      "file": "packages/cw721/src/traits.rs",
+      "line": 39,
+      "what_crossing": "send_nft: external caller triggers token send to contract with message",
+      "should_be_validated": "Ensure sender is token owner or approved operator. Ensure contract address is valid. Validate msg structure at receiving contract."
+    },
+    {
+      "file": "packages/cw721/src/traits.rs",
+      "line": 63,
+      "what_crossing": "approve_all: external caller grants operator status for all tokens",
+      "should_be_validated": "Ensure caller is token owner (should be enforced by implementation). Validate operator address."
+    },
+    {
+      "file": "contracts/codedestate/src/query.rs",
+      "line": 185,
+      "what_crossing": "all_tokens: public query returns all token IDs without owner filter",
+      "should_be_validated": "Consider limiting query size or access control if sensitive."
+    },
+    {
+      "file": "contracts/codedestate/src/query.rs",
+      "line": 202,
+      "what_crossing": "all_nft_info: public query returns owner and approvals for token",
+      "should_be_validated": "Consider if owner/approvals should be public (information disclosure)."
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 375,
+      "crossing": "Cross-contract call to external token contract (e.g., cw721) for token transfer.",
+      "should_validate": "Ensure the external call returns expected values and handle failures; the caller must have proper permissions."
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 531,
+      "crossing": "Cross-contract call to external token contract for token transfer.",
+      "should_validate": "Ensure the external call returns expected values and handle failures; the caller must have proper permissions."
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 561,
+      "crossing": "Cross-contract call to external token contract for token transfer.",
+      "should_validate": "Ensure the external call returns expected values and handle failures; the caller must have proper permissions."
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 0,
+      "crossing": "Admin/ownership checks (e.g., is_creator, is_token_owner) to gate privileged actions.",
+      "should_validate": "Consistent use of ownership checks to prevent unauthorized actions."
+    },
+    {
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 0,
+      "crossing": "Token ownership and approval checks before transfers or updates.",
+      "should_validate": "Proper validation of token ownership and approvals to prevent unauthorized transfers."
+    }
+  ],
+  "value_flows": [
+    {
+      "description": "Token ownership and approval state managed by external Cw721 contract",
+      "creation": "External Cw721 contract",
+      "movement": "Transferred via ExecuteMsg::Transfer/Send, approvals via ExecuteMsg::Approve/Revoke",
+      "destruction": "None (NFTs are not destroyed, only transferred)",
+      "order_of_operations": "ExecuteMsg variants processed sequentially, each calling external Cw721Contract methods"
+    },
+    {
+      "operation": "Mint NFT",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 184,
+      "value_created": "TokenInfo with owner, rental structures, sell structure",
+      "order": "Initialize rental/sell defaults, save token, increment count"
+    },
+    {
+      "operation": "Bid to buy",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 446,
+      "value_created": "Bid entry with address and offer amount",
+      "value_moved": "Funds transferred in via info.funds",
+      "order": "Check existing bid, validate funds, update approval if auto_approve, push bid, refund if updating"
+    },
+    {
+      "operation": "Transfer NFT",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 292,
+      "value_moved": "Token ownership transferred, bid payment to previous owner minus fee",
+      "order": "Check permissions, update owner, clear approvals, calculate fee, increase contract balance, send payment"
+    },
+    {
+      "operation": "Short-term rental reservation",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 516,
+      "value_moved": "Rental deposit from renter to contract, fee retained by contract",
+      "order": "Parse timestamps, validate availability, calculate rent+fee, increase contract balance, insert rental"
+    },
+    {
+      "operation": "Reject short-term rental",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 627,
+      "value_moved": "Full deposit refund from contract to renter",
+      "order": "Find reservation, calculate refund, remove rental, send refund"
+    },
+    {
+      "operation": "Cancel short-term rental after approval",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 661,
+      "value_moved": "Partial/full refund based on cancellation policy",
+      "order": "Find reservation, apply cancellation policy, mark cancelled, adjust deposit, send refund if >0"
+    },
+    {
+      "operation": "Cancel short-term rental before approval",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 716,
+      "value_moved": "Full deposit refund from contract to renter",
+      "order": "Find reservation, remove rental, send full refund"
+    },
+    {
+      "operation": "Finalize short-term rental",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 746,
+      "value_moved": "Deposit to owner (minus fee) or refund to renter",
+      "order": "Find reservation, calculate fee, increase contract balance, determine recipient, remove rental, send payment"
+    },
+    {
+      "operation": "Set fee value",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 257,
+      "value_modified": "Contract fee percentage",
+      "order": "Owner validation, set fee in storage"
+    },
+    {
+      "operation": "Withdraw",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 262,
+      "value_moved": "Contract balance to external address",
+      "order": "Owner validation, check balance, decrease balance, send bank message"
+    },
+    {
+      "flow": "NFT creation",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 0,
+      "description": "Mint increases token_count, sets owner, initializes rental/bid/sell state",
+      "order": [
+        "token_count incremented",
+        "token_info saved"
+      ]
+    },
+    {
+      "flow": "NFT transfer",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 0,
+      "description": "TransferNft changes owner, clears approvals",
+      "order": [
+        "approval check",
+        "owner updated",
+        "approvals cleared"
+      ]
+    },
+    {
+      "flow": "NFT burn",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 0,
+      "description": "Burn removes token, decreases token_count",
+      "order": [
+        "approval check",
+        "token removed",
+        "token_count decremented"
+      ]
+    },
+    {
+      "flow": "Balance management",
+      "file": "contracts/codedestate/src/state.rs",
+      "line": 0,
+      "description": "Increase/decrease balance for denom",
+      "order": [
+        "load current balance",
+        "add/subtract",
+        "save new balance"
+      ]
+    },
+    {
+      "flow": "Fee setting",
+      "file": "contracts/codedestate/src/state.rs",
+      "line": 0,
+      "description": "Set/get fee value",
+      "order": [
+        "admin sets fee",
+        "fee stored"
+      ]
+    },
+    {
+      "flow": "Short-term rental reservation",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 0,
+      "description": "Reservation adds rental to token's rentals vec with traveler and period",
+      "order": [
+        "availability check",
+        "reservation added",
+        "rentals updated"
+      ]
+    },
+    {
+      "flow": "Long-term rental reservation",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 0,
+      "description": "Reservation adds rental with deposit requirement",
+      "order": [
+        "availability check",
+        "deposit check",
+        "reservation added",
+        "rentals updated"
+      ]
+    },
+    {
+      "flow": "Rental approval/finalization",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 0,
+      "description": "Approve changes rental status, finalize triggers external call and transfers funds",
+      "order": [
+        "status check",
+        "status update",
+        "external call if finalize",
+        "balance update"
+      ]
+    },
+    {
+      "flow": "Bid/Sell listing",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 0,
+      "description": "SetListForSell updates sell state, SetBidToBuy updates bids vec",
+      "order": [
+        "ownership check",
+        "state update"
+      ]
+    },
+    {
+      "flow": "Withdrawal",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 0,
+      "description": "Withdraw subtracts from balance and sends funds",
+      "order": [
+        "balance check",
+        "balance decrease",
+        "send funds"
+      ]
+    },
+    {
+      "file": "contracts/codedestate/src/query.rs",
+      "line": 68,
+      "flow": "token ownership read from storage (info.owner)",
+      "order_note": "Read-only query, no state change."
+    },
+    {
+      "file": "contracts/codedestate/src/query.rs",
+      "line": 185,
+      "flow": "all token IDs read from storage (token idx by owner, then all tokens)",
+      "order_note": "Read-only query, no state change."
+    },
+    {
+      "file": "packages/cw721/src/traits.rs",
+      "line": 31,
+      "flow": "token ownership transferred from sender to recipient (transfer_nft)",
+      "order_note": "Requires ownership or approval, then updates storage."
+    },
+    {
+      "file": "packages/cw721/src/traits.rs",
+      "line": 39,
+      "flow": "token ownership sent to contract, triggers Cw721ReceiveMsg (send_nft)",
+      "order_note": "Requires ownership or approval, then updates storage and sends external message."
+    },
+    {
+      "file": "packages/cw721/src/traits.rs",
+      "line": 47,
+      "flow": "approval granted for spender on specific token (approve)",
+      "order_note": "Requires ownership or approval, then stores approval."
+    },
+    {
+      "file": "packages/cw721/src/traits.rs",
+      "line": 63,
+      "flow": "operator approval granted for all tokens (approve_all)",
+      "order_note": "Requires ownership, then stores operator mapping."
+    },
+    {
+      "file": "packages/cw721/src/traits.rs",
+      "line": 79,
+      "flow": "token burned, ownership destroyed (burn)",
+      "order_note": "Requires ownership or approval, then removes token from storage."
+    },
+    {
+      "description": "Token creation and minting: tokens are minted to an owner, establishing initial ownership and value.",
+      "file": "contracts/codedestate/src/execute.rs",
+      "lines": [
+        0
+      ],
+      "order": "Creation"
+    },
+    {
+      "description": "Token transfers via cross-contract calls to external token contracts (e.g., cw721), moving ownership.",
+      "file": "contracts/codedestate/src/execute.rs",
+      "lines": [
+        375,
+        531,
+        561
+      ],
+      "order": "Movement"
+    },
+    {
+      "description": "Rental deposits: value locked in the contract via deposit_amount in rental structures.",
+      "file": "contracts/codedestate/src/query.rs",
+      "lines": [
+        0
+      ],
+      "order": "Storage"
+    },
+    {
+      "description": "Rental cancellations and refunds: value released or refunded based on cancellation percentages and deadlines.",
+      "file": "contracts/codedestate/src/execute.rs",
+      "lines": [
+        0
+      ],
+      "order": "Destruction/Release"
+    },
+    {
+      "description": "Fee collection: fees taken from transactions, moving value to contract or owner.",
+      "file": "contracts/codedestate/src/execute.rs",
+      "lines": [
+        0
+      ],
+      "order": "Movement"
+    }
+  ],
+  "call_graph_summary": {
+    "entry::instantiate": [
+      "Cw721Contract::instantiate"
+    ],
+    "entry::execute": {
+      "TransferNft": [
+        "state::Cw721Contract::tokens::update",
+        "state::Cw721Contract::tokens::save"
+      ],
+      "SendNft": [
+        "state::Cw721Contract::tokens::update",
+        "cosmwasm_std::BankMsg::Send (external call)"
+      ],
+      "Approve": [
+        "state::Cw721Contract::tokens::update"
+      ],
+      "Revoke": [
+        "state::Cw721Contract::tokens::update"
+      ],
+      "ApproveAll": [
+        "state::Cw721Contract::operators::save"
+      ],
+      "RevokeAll": [
+        "state::Cw721Contract::operators::remove"
+      ],
+      "Withdraw": [
+        "state::Cw721Contract::get_balance",
+        "state::Cw721Contract::decrease_balance",
+        "cosmwasm_std::BankMsg::Send"
+      ],
+      "Mint": [
+        "state::Cw721Contract::increment_tokens",
+        "state::Cw721Contract::tokens::save"
+      ],
+      "SetExtension": [
+        "state::Cw721Contract::tokens::update",
+        "state::Cw721Contract::tokens::save"
+      ],
+      "SetFeeValue": [
+        "state::Cw721Contract::set_fee"
+      ],
+      "SetMetadata": [
+        "state::Cw721Contract::tokens::update",
+        "state::Cw721Contract::tokens::save"
+      ],
+      "SetListForSell": [
+        "state::Cw721Contract::tokens::update",
+        "state::Cw721Contract::tokens::save"
+      ],
+      "SetBidToBuy": [
+        "state::Cw721Contract::tokens::update",
+        "state::Cw721Contract::tokens::save"
+      ],
+      "SetListForShortTermRental": [
+        "state::Cw721Contract::tokens::update",
+        "state::Cw721Contract::tokens::save"
+      ],
+      "SetUnlistForShorttermRental": [
+        "state::Cw721Contract::tokens::update",
+        "state::Cw721Contract::tokens::save"
+      ],
+      "SetReservationForShortTerm": [
+        "state::Cw721Contract::tokens::update",
+        "state::Cw721Contract::tokens::save"
+      ],
+      "CancelReservationForShortterm": [
+        "state::Cw721Contract::tokens::update",
+        "state::Cw721Contract::tokens::save"
+      ],
+      "CancelRentalForShortterm": [
+        "state::Cw721Contract::tokens::update",
+        "state::Cw721Contract::tokens::save"
+      ],
+      "RejectReservationForShortterm": [
+        "state::Cw721Contract::tokens::update",
+        "state::Cw721Contract::tokens::save"
+      ],
+      "SetApproveForShortTerm": [
+        "state::Cw721Contract::tokens::update",
+        "state::Cw721Contract::tokens::save"
+      ],
+      "FinalizeShortTermRental": [
+        "state::Cw721Contract::tokens::update",
+        "cosmwasm_std::WasmMsg::Execute (external call)",
+        "state::Cw721Contract::tokens::save"
+      ],
+      "WithdrawToLandlord": [
+        "state::Cw721Contract::get_balance",
+        "state::Cw721Contract::decrease_balance",
+        "cosmwasm_std::BankMsg::Send"
+      ],
+      "SetListForLongTermRental": [
+        "state::Cw721Contract::tokens::update",
+        "state::Cw721Contract::tokens::save"
+      ],
+      "SetUnlistForLongtermRental": [
+        "state::Cw721Contract::tokens::update",
+        "state::Cw721Contract::tokens::save"
+      ],
+      "SetReservationForLongTerm": [
+        "state::Cw721Contract::tokens::update",
+        "state::Cw721Contract::tokens::save"
+      ],
+      "RejectReservationForLongterm": [
+        "state::Cw721Contract::tokens::update",
+        "state::Cw721Contract::tokens::save"
+      ],
+      "CancelReservationForLongterm": [
+        "state::Cw721Contract::tokens::update",
+        "state::Cw721Contract::tokens::save"
+      ],
+      "CancelRentalForLongterm": [
+        "state::Cw721Contract::tokens::update",
+        "state::Cw721Contract::tokens::save"
+      ],
+      "DepositForLongTermRental": [
+        "state::Cw721Contract::increase_balance",
+        "state::Cw721Contract::tokens::update",
+        "state::Cw721Contract::tokens::save"
+      ],
+      "SetApproveForLongTerm": [
+        "state::Cw721Contract::tokens::update",
+        "state::Cw721Contract::tokens::save"
+      ],
+      "FinalizeLongTermRental": [
+        "state::Cw721Contract::tokens::update",
+        "cosmwasm_std::WasmMsg::Execute (external call)",
+        "state::Cw721Contract::tokens::save"
+      ],
+      "Burn": [
+        "state::Cw721Contract::tokens::update",
+        "state::Cw721Contract::decrement_tokens",
+        "state::Cw721Contract::tokens::remove"
+      ]
+    },
+    "entry::query": {
+      "OwnerOf": [
+        "state::Cw721Contract::tokens::load"
+      ],
+      "Approval": [
+        "state::Cw721Contract::tokens::load"
+      ],
+      "Approvals": [
+        "state::Cw721Contract::tokens::load"
+      ],
+      "Operator": [
+        "state::Cw721Contract::operators::may_load"
+      ],
+      "AllOperators": [
+        "state::Cw721Contract::operators::range"
+      ],
+      "NumTokens": [
+        "state::Cw721Contract::token_count"
+      ],
+      "GetFee": [
+        "state::Cw721Contract::get_fee"
+      ],
+      "GetBalance": [
+        "state::Cw721Contract::get_balance"
+      ],
+      "ContractInfo": [
+        "state::Cw721Contract::contract_info::load"
+      ],
+      "NftInfo": [
+        "state::Cw721Contract::tokens::load"
+      ],
+      "NftInfoLongTermRental": [
+        "state::Cw721Contract::tokens::load"
+      ],
+      "NftInfoShortTermRental": [
+        "state::Cw721Contract::tokens::load"
+      ],
+      "NftInfoSell": [
+        "state::Cw721Contract::tokens::load"
+      ],
+      "NftRentals": [
+        "state::Cw721Contract::tokens::load"
+      ],
+      "NftBids": [
+        "state::Cw721Contract::tokens::load"
+      ],
+      "AllNftInfo": [
+        "state::Cw721Contract::tokens::load"
+      ],
+      "Tokens": [
+        "state::Cw721Contract::tokens::idx::owner::prefix",
+        "state::Cw721Contract::tokens::range"
+      ],
+      "AllTokens": [
+        "state::Cw721Contract::tokens::range"
+      ],
+      "Minter": [
+        "state::Cw721Contract::contract_info::load"
+      ]
+    },
+    "entry_point": "query (contracts/codedestate/src/query.rs:161)",
+    "internal_calls": [
+      "self.minter(deps) -> cw_ownable::get_ownership(deps.storage)",
+      "self.contract_info(deps) -> self.contract_info.load(deps.storage)",
+      "self.nft_info(deps, token_id) -> self.tokens.load(deps.storage, &token_id)",
+      "self.nft_longtermrental_info(deps, token_id) -> self.tokens.load(deps.storage, &token_id)",
+      "self.nft_shorttermrental_info(deps, token_id) -> self.tokens.load(deps.storage, &token_id)",
+      "self.nft_sell_info(deps, token_id) -> self.tokens.load(deps.storage, &token_id)",
+      "self.nft_rentals_info(deps, token_id) -> self.tokens.load(deps.storage, &token_id)",
+      "self.nft_bids_info(deps, token_id) -> self.tokens.load(deps.storage, &token_id)",
+      "self.owner_of(deps, env, token_id, include_expired) -> self.tokens.load(deps.storage, &token_id) + humanize_approvals()",
+      "self.operator(deps, env, owner, operator, include_expired) -> deps.api.addr_validate() + self.operators.may_load()",
+      "self.operators(deps, env, owner, include_expired, start_after, limit) -> deps.api.addr_validate() + self.operators.prefix().range() + parse_approval()",
+      "self.approval(deps, env, token_id, spender, include_expired) -> self.tokens.load() + filter",
+      "self.approvals(deps, env, token_id, include_expired) -> self.tokens.load() + filter",
+      "self.tokens(deps, owner, start_after, limit) -> deps.api.addr_validate() + self.tokens.idx.owner.prefix().keys()",
+      "self.all_tokens(deps, owner, start_after, limit) -> self.tokens.range()",
+      "self.all_nft_info(deps, env, token_id, include_expired) -> self.tokens.load() + humanize_approvals()",
+      "self.get_fee(deps.storage)",
+      "self.get_balance(deps.storage, denom)"
+    ],
+    "recursive_or_circular_paths": "None observed in provided files."
+  },
+  "static_findings_context": [
+    {
+      "finding": "unchecked_external_call at execute.rs:375",
+      "reachable_from_entry": "execute",
+      "context": "External call to Cw721Contract::call for transfer; return value not checked, but transfer may succeed silently",
+      "likely_real": false
+    },
+    {
+      "finding": "unchecked_external_call at execute.rs:531",
+      "reachable_from_entry": "execute",
+      "context": "External call to Cw721Contract::call for approval; return value not checked",
+      "likely_real": false
+    },
+    {
+      "finding": "unchecked_external_call at execute.rs:561",
+      "reachable_from_entry": "execute",
+      "context": "External call to Cw721Contract::call for revocation; return value not checked",
+      "likely_real": false
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 375,
+      "entry_point_reachable": [
+        "approve"
+      ],
+      "is_likely_real": false,
+      "context": "Line 375 is inside the approve_all function and appears to be a comment or attribute line, not an actual external call. The regex likely triggered on string matching rather than actual code logic."
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 531,
+      "entry_point_reachable": [
+        "setreservationforshortterm"
+      ],
+      "is_likely_real": true,
+      "context": "Line 531 corresponds to the start of the setreservationforshortterm function. The function calls increase_balance which is an internal storage operation, but the overall function handles external funds and could be considered an external call context. The actual external call risk is in the funds handling and balance updates."
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 561,
+      "entry_point_reachable": [
+        "setapproveforshortterm"
+      ],
+      "is_likely_real": false,
+      "context": "Line 561 appears to be in the middle of the setapproveforshortterm function, possibly within a comment or attribute section. The function modifies token state but doesn't make external calls that need return value checking."
+    },
+    {
+      "finding_id": 1,
+      "detector": "unchecked_external_call",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 375,
+      "description": "External call at line 375 \u2014 check return value",
+      "mapped_entry_point": "entry::execute",
+      "mapped_variant": "SendNft",
+      "likely_real": false,
+      "reasoning": "In CosmWasm, BankMsg::Send is a message, not a direct call; its execution is deferred and failures revert the entire transaction. The return value is not available in the same execution context."
+    },
+    {
+      "finding_id": 2,
+      "detector": "unchecked_external_call",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 531,
+      "description": "External call at line 531 \u2014 check return value",
+      "mapped_entry_point": "entry::execute",
+      "mapped_variant": "FinalizeShortTermRental",
+      "likely_real": true,
+      "reasoning": "WasmMsg::Execute is an external contract call; if the receiving contract fails, the entire transaction reverts, but the contract should ensure the call is necessary and handle potential reentrancy via state ordering."
+    },
+    {
+      "finding_id": 3,
+      "detector": "unchecked_external_call",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 561,
+      "description": "External call at line 561 \u2014 check return value",
+      "mapped_entry_point": "entry::execute",
+      "mapped_variant": "FinalizeLongTermRental",
+      "likely_real": true,
+      "reasoning": "Same as above; WasmMsg::Execute is an external contract call with reentrancy considerations. The contract should validate all state changes before the external call."
+    },
+    {
+      "finding": "unchecked_external_call",
+      "file": "contracts/codedestate/src/execute.rs",
+      "lines": [
+        375,
+        531,
+        561
+      ],
+      "reachable_via_entry_point": "query (contracts/codedestate/src/query.rs:161) does NOT reach execute.rs; these findings are in execute functions not included in the provided query.rs file. If execute functions are entry points (not shown), they would be reachable via ExecuteMsg dispatch.",
+      "likely_real": "Low confidence per tool; cannot assess without execute.rs code. If external calls are made to untrusted contracts, return value should be checked for success."
+    },
+    {
+      "finding": "unchecked_external_call",
+      "file": "contracts/codedestate/src/execute.rs",
+      "lines": [
+        375
+      ],
+      "reachable_entry_points": [
+        "execute"
+      ],
+      "likely_real": true,
+      "context": "External call to token contract at line 375 for transfer; return value not checked, could lead to silent failure."
+    },
+    {
+      "finding": "unchecked_external_call",
+      "file": "contracts/codedestate/src/execute.rs",
+      "lines": [
+        531
+      ],
+      "reachable_entry_points": [
+        "execute"
+      ],
+      "likely_real": true,
+      "context": "External call to token contract at line 531 for transfer; return value not checked, could lead to silent failure."
+    },
+    {
+      "finding": "unchecked_external_call",
+      "file": "contracts/codedestate/src/execute.rs",
+      "lines": [
+        561
+      ],
+      "reachable_entry_points": [
+        "execute"
+      ],
+      "likely_real": true,
+      "context": "External call to token contract at line 561 for transfer; return value not checked, could lead to silent failure."
+    }
+  ]
+}

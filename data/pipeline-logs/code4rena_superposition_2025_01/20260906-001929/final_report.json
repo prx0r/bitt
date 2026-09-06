@@ -1,0 +1,74 @@
+{
+  "project": "code4rena_superposition_2025_01",
+  "timestamp": "2026-09-06T00:40:52",
+  "files_analyzed": 57,
+  "files_skipped": 0,
+  "total_vulnerabilities": 6,
+  "vulnerabilities": [
+    {
+      "title": "Unknown vulnerability",
+      "description": "",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "pkg/sol/Faucet.sol",
+      "file": "pkg/sol/Faucet.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "pkg/sol/Faucet.sol",
+      "file": "pkg/sol/Faucet.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "",
+      "vulnerability_type": "other",
+      "severity": "low",
+      "confidence": 0.7,
+      "location": "pkg/sol/OwnershipNFTs.sol",
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "",
+      "vulnerability_type": "other",
+      "severity": "low",
+      "confidence": 0.7,
+      "location": "pkg/sol/OwnershipNFTs.sol",
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "pkg/sol/OwnershipNFTs.sol",
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "pkg/leo/src/main.rs",
+      "file": "pkg/leo/src/main.rs",
+      "reported_by_model": "mimo-v2.5"
+    }
+  ],
+  "token_usage": {
+    "total_input": 0,
+    "total_output": 0
+  },
+  "duration_seconds": 1283.8
+}

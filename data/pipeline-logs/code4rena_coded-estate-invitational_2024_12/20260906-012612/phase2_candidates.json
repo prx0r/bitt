@@ -1,0 +1,164 @@
+[
+  {
+    "file": "contracts/codedestate/src/execute.rs",
+    "lines": [
+      375
+    ],
+    "category": "reentrancy/check-after-external-call",
+    "attack_sequence": [
+      "1. Attacker is an NFT owner who lists their token for short-term rental with auto_approve enabled.",
+      "2. Attacker deploys a malicious contract that, when receiving a WasmMsg/Receive hook, calls back into this contract to withdraw funds or modify state.",
+      "3. When the reservation/approval flow reaches line ~375, an external message dispatch (Response::new().add_message(...)) occurs. Depending on the exact message content, a reentrancy vector may exist if state is mutated after this point.",
+      "4. However, in CosmWasm the VM enforces message ordering \u2014 all sub-messages execute atomically before any state commit \u2014 so reentrancy in the Ethereum sense is not directly applicable. The real risk is if the code updates state AFTER the external call within the same transaction, allowing a follow-up execute call in the same block to observe stale state.",
+      "5. Review shows that state changes (e.g., clearing reservation lists, updating rental status) happen before the final Response is returned, meaning any sub-messages would see pre-update state, mitigating standard reentrancy.",
+      "6. LOW confidence: The regex flagged the external call but in CosmWasm's execution model this is not a true reentrancy bug. Still flagging for manual review of the ordering."
+    ],
+    "confidence": 0.2,
+    "reasoning": "CosmWasm's message execution model prevents classic reentrancy. The flagged external calls are sub-messages appended to the Response. State mutations appear to occur before the external call in most flows. Low risk but worth confirming the exact ordering in each rental finalization path.",
+    "trace_region": "contracts/codedestate/src/execute.rs"
+  },
+  {
+    "file": "contracts/codedestate/src/execute.rs",
+    "lines": [
+      207
+    ],
+    "category": "arithmetic/overflow-or-unbounded-fee",
+    "attack_sequence": [
+      "1. The owner calls SetFeeValue with an extremely large fee value (e.g., u128::MAX or a value exceeding 100%).",
+      "2. If fee is stored as a percentage basis (e.g., parts per 10000) but there is no upper-bound check, the fee could be set to 100% or more.",
+      "3. Later, when a rental is finalized and fees are deducted, the arithmetic fee = price * fee / divisor could yield a fee equal to or exceeding the total payment.",
+      "4. This could drain all funds from tenants/landlords, or cause underflow in balance calculations if fee > price.",
+      "5. The attacker must be the contract owner to set the fee, so this is a privilege-escalation or self-harm scenario. If the owner is a DAO or multi-sig, a compromised key could be used to extract all funds."
+    ],
+    "confidence": 0.4,
+    "reasoning": "Without seeing the set_fee_value implementation or fee application logic in full, it's unclear whether there is an upper-bound check. If fee is unchecked, arithmetic issues in fee deduction are likely. The owner-only restriction limits the attack surface.",
+    "trace_region": "contracts/codedestate/src/execute.rs"
+  },
+  {
+    "file": "contracts/codedestate/src/execute.rs",
+    "lines": [
+      214
+    ],
+    "category": "missing-access-control/withdraw-to-arbitrary-address",
+    "attack_sequence": [
+      "1. The owner calls Withdraw with an arbitrary target address and amount.",
+      "2. If the contract balance is checked via bank::Balance but the target is not validated (e.g., could be any arbitrary address), the owner can drain all contract-held funds to any destination.",
+      "3. If the contract holds funds from multiple tenants/landlords (escrow for rentals), a compromised owner can steal escrowed deposits.",
+      "4. This is a design concern more than a bug \u2014 the owner is trusted, but in a rental escrow system the owner should not have unilateral withdrawal rights over tenant deposits.",
+      "5. Check whether WithdrawToLandlord properly validates that the address matches the tenant's registered address. If not, the landlord could redirect funds."
+    ],
+    "confidence": 0.5,
+    "reasoning": "The Withdraw function with an arbitrary target is dangerous in an escrow context. The owner can drain funds that belong to tenants or landlords. This is a significant trust issue in a rental platform.",
+    "trace_region": "contracts/codedestate/src/execute.rs"
+  },
+  {
+    "file": "contracts/codedestate/src/execute.rs",
+    "lines": [
+      531,
+      561
+    ],
+    "category": "reentrancy/external-call-with-state-dependency",
+    "attack_sequence": [
+      "1. During long-term rental finalization or withdrawal flows, external messages are dispatched at lines ~531 and ~561.",
+      "2. If these external calls trigger a receive hook (e.g., via Cw721ReceiveMsg or BankMsg), and state hasn't been fully committed, there could be a window for manipulation.",
+      "3. In CosmWasm, sub-messages execute before the transaction commits, so a nested call back into this contract via execute would see the same state (not yet committed). This prevents reentrancy within the same transaction.",
+      "4. However, if the external call sends funds via BankMsg to an attacker-controlled address, and the amount is computed from a state variable that was just updated, the attacker cannot exploit this within the same tx but could front-run the next block.",
+      "5. The real risk: if these external calls are for rental fund disbursement and the amounts are calculated from reservation state, any error in the calculation could lead to incorrect fund transfers."
+    ],
+    "confidence": 0.25,
+    "reasoning": "CosmWasm's execution model mitigates reentrancy. The flagged lines are likely sub-messages for fund transfers. The main concern would be arithmetic errors in the amounts being sent, not reentrancy itself.",
+    "trace_region": "contracts/codedestate/src/execute.rs"
+  },
+  {
+    "file": "contracts/codedestate/src/execute.rs",
+    "lines": [
+      148,
+      207,
+      214
+    ],
+    "category": "business-logic/owner-privilege-abuse-in-escrow",
+    "attack_sequence": [
+      "1. The contract acts as an escrow for short-term and long-term rentals, holding deposits and rental payments.",
+      "2. The owner (set via cw_ownable) has unilateral rights to: mint NFTs (line 148), set fees (line 207), and withdraw funds (line 214).",
+      "3. A compromised or malicious owner can: (a) mint NFTs for themselves and list them to create fake listings, (b) set fees to extract value from all transactions, (c) withdraw all escrowed funds.",
+      "4. Additionally, the owner can call transfer_nft to move any token, effectively stealing NFTs from users.",
+      "5. The update_ownership function (line 232) could be used to transfer ownership, but if there's no timelock or multi-sig requirement, a single compromised key gives full control.",
+      "6. Attack sequence: Owner sets fee to maximum, waits for rentals to finalize, withdraws all accumulated fees plus escrowed deposits."
+    ],
+    "confidence": 0.6,
+    "reasoning": "This is the most significant finding. The contract grants the owner excessive privileges that are incompatible with a trustless rental platform. The owner can drain escrowed funds, steal NFTs, and manipulate fees. While this requires the owner to be malicious or compromised, it represents a critical design flaw for a decentralized rental platform.",
+    "trace_region": "contracts/codedestate/src/execute.rs"
+  },
+  {
+    "file": "contracts/codedestate/src/execute.rs",
+    "lines": [
+      17
+    ],
+    "category": "access-control/initialization",
+    "attack_sequence": [
+      "1. The instantiate function at line 17 accepts an InstantiateMsg containing a 'minter' field.",
+      "2. The minter is set as the initial owner via cw_ownable::initialize_owner.",
+      "3. If there's no validation on the minter address (e.g., checking it's not a contract that could be exploited, or checking it matches info.sender), the deployer could set anyone as the owner.",
+      "4. In practice, the deployer controls who becomes the owner, so this is by design. However, if the deployer is a frontend or factory contract that doesn't properly validate the minter, an attacker could become the owner.",
+      "5. After initialization, the minter has full owner privileges as described in the owner-privilege-abuse finding above."
+    ],
+    "confidence": 0.35,
+    "reasoning": "The initialization is a one-time event. The risk depends on whether the deployer properly validates the minter address. If the contract is deployed via a factory that doesn't check, an attacker could gain owner privileges.",
+    "trace_region": "contracts/codedestate/src/execute.rs"
+  },
+  {
+    "file": "contracts/codedestate/src/query.rs",
+    "lines": "14-15",
+    "category": "Resource Exhaustion / DoS",
+    "attack_sequence": [
+      "1. Attacker calls the `query` entry point with a message that triggers any of the paginated query functions (e.g., `Operators`, `Tokens`, `AllTokens`) with `limit` set to None.",
+      "2. DEFAULT_LIMIT is 4294967295 (u32::MAX) and MAX_LIMIT is also 4294967295, so the effective limit defaults to the full u32 range.",
+      "3. The `.min(MAX_LIMIT)` clamp is a no-op since DEFAULT_LIMIT == MAX_LIMIT == u32::MAX.",
+      "4. `.take(limit)` on the iterator will attempt to yield up to ~4 billion items, causing massive gas consumption or OOM in the query VM.",
+      "5. Even if the chain's gas meter catches this, a single query call can consume enormous resources, potentially DoS-ing the node or at minimum making queries expensive."
+    ],
+    "confidence": "high",
+    "reasoning": "DEFAULT_LIMIT and MAX_LIMIT are both set to u32::MAX (4294967295), which means pagination effectively has no upper bound. In CosmWasm, queries are still gas-metered, but this means a caller can request an astronomically large page size. The clamping logic `.min(MAX_LIMIT)` provides no protection since both values are identical. This is a clear denial-of-service vector where a single query can force the node to iterate over the entire dataset without limit. The correct fix is to set MAX_LIMIT to a reasonable value (e.g., 100 or 500) and DEFAULT_LIMIT to a smaller value (e.g., 10-50).",
+    "trace_region": "contracts/codedestate/src/query.rs"
+  },
+  {
+    "file": "contracts/codedestate/src/query.rs",
+    "lines": "14-15",
+    "category": "Configuration Error / Pagination Bypass",
+    "attack_sequence": [
+      "1. Any external consumer (frontend, indexer, bridge) that relies on DEFAULT_LIMIT for paginating through all tokens or operators will discover that the default page size is u32::MAX.",
+      "2. This means pagination is effectively disabled \u2014 all results are returned in one call, or the call fails if there are more than u32::MAX items.",
+      "3. An attacker who controls a large number of NFTs can bloat state such that a legitimate paginated query with the 'default' limit tries to return an enormous result set, causing the RPC node to OOM or timeout."
+    ],
+    "confidence": "medium",
+    "reasoning": "While this is related to the same root cause as the above finding, it specifically targets the practical impact: the pagination system is broken because DEFAULT_LIMIT equals MAX_LIMIT equals u32::MAX. Any caller expecting sane default pagination behavior will be affected.",
+    "trace_region": "contracts/codedestate/src/query.rs"
+  },
+  {
+    "file": "contracts/codedestate/src/lib.rs",
+    "lines": "1-100",
+    "category": "Missing Access Control / Trust Boundary Issue",
+    "attack_sequence": "1. The lib.rs file defines the entry points that delegate to Cw721Contract. The entry::execute function at line ~87 creates a default Cw721Contract and calls tract.execute(). This is a standard delegation pattern - no vulnerabilities in lib.rs itself. The actual execute logic lives in execute.rs which is analyzed separately.",
+    "confidence": 0.1,
+    "reasoning": "lib.rs is primarily a module organization file that re-exports types and defines thin entry point wrappers. The wrappers simply instantiate Cw721Contract and delegate. There is no business logic, no state changes, no checks, and no arithmetic in this file. The entry points are properly guarded by cosmwasm's entry_point attribute. All meaningful attack surface is in the delegated files (execute.rs, query.rs, instantiate.rs, migrate.rs).",
+    "trace_region": "contracts/codedestate/src/lib.rs"
+  },
+  {
+    "file": "contracts/codedestate/src/lib.rs",
+    "lines": "30-42",
+    "category": "Type Confusion / Deserialization Issue",
+    "attack_sequence": "1. The Metadata struct and Extension type are defined here with #[cw_serde] derive. 2. The image field is defined as Option<Vec<Trait>> where Trait has key/value String fields. This is an unusual choice - 'image' being a Vec<Trait> rather than a URL string could indicate either intentional flexibility or a design quirk. 3. An attacker could provide arbitrarily large Vec<Trait> entries in image or attributes fields during minting, potentially causing out-of-gas situations or storage bloat. 4. However, this is bounded by gas limits and the actual mint function would need to be examined for proper size validation.",
+    "confidence": 0.15,
+    "reasoning": "While the unusual type definition (Vec<Trait> for image instead of a simple String) could theoretically be exploited for storage bloat, this is a design consideration rather than a clear vulnerability. The gas mechanism provides natural protection against unbounded input. The real validation question is whether mint() in execute.rs validates Metadata size limits.",
+    "trace_region": "contracts/codedestate/src/lib.rs"
+  },
+  {
+    "file": "contracts/codedestate/src/lib.rs",
+    "lines": "50-55",
+    "category": "Insufficient Migration Version Check",
+    "attack_sequence": "1. The EXPECTED_FROM_VERSION constant is set to '0.16.0' with a comment noting it only supports migrating from this exact version. 2. The TODO comment explicitly acknowledges this should parse semver for any 0.16.x version. 3. If migrate.rs hardcodes this exact version check, it could block legitimate migrations from 0.16.1, 0.16.2, etc. This is more of a usability/flexibility issue than a security vulnerability. 4. The inverse concern: if the version check is not strict enough, unauthorized migrations could occur - but this would need to be verified in migrate.rs.",
+    "confidence": 0.1,
+    "reasoning": "This is a noted TODO/technical debt item rather than an exploitable vulnerability. The rigid version string check is actually more restrictive (not less) than what's needed. To be a security issue, the migration code would need to be too permissive, which is the opposite of what's described here.",
+    "trace_region": "contracts/codedestate/src/lib.rs"
+  }
+]

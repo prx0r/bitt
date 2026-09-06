@@ -1,0 +1,9 @@
+{
+  "generations": 2,
+  "pop_size": 4,
+  "test_projects": [
+    "code4rena_superposition_2025_01"
+  ],
+  "model": "mimo-v2.5",
+  "timestamp": "2026-09-05 21:13:57"
+}

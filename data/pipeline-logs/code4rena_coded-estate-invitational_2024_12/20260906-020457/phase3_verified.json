@@ -1,0 +1,81 @@
+[
+  {
+    "status": "confirmed",
+    "severity": "high",
+    "exploit_description": "The code allows setting a token for sale, short-term rental, and long-term rental simultaneously without mutual exclusion checks. An owner could list a property for sale and rent it out at the same time. A buyer could purchase the property while a rental is active, leading to conflicting ownership states. Similarly, a renter could finalize a rental while the property is being sold, causing disputes over possession and ownership. This could result in financial losses and legal conflicts.",
+    "file": "contracts/codedestate/src/execute.rs",
+    "lines": "36-175",
+    "candidate_original": {
+      "file": "contracts/codedestate/src/execute.rs",
+      "lines": "36-175",
+      "category": "business_logic",
+      "attack_sequence": [
+        "1. The execute dispatcher at line 36 routes to numerous rental, sale, and NFT management functions. 2. Several operations like CreateSale/BuyNft and rental reservations may have race conditions. For example, an owner could simultaneously list for sell AND create a rental, potentially double-spending the same property rights. 3. If the SetListForSell and SetListForShortTermRental/LongTermRental functions do not check whether the token is already listed under another mode, a token could be in multiple listing states simultaneously. 4. A buyer might complete a purchase while a rental is active, or a renter might finalize a rental while the property is being sold, leading to conflicting ownership/possession states."
+      ],
+      "confidence": "medium",
+      "reasoning": "The contract supports multiple listing modes (sell, short-term rental, long-term rental) for the same token. Without mutual exclusion checks across listing types, conflicting states could arise. The architecture shows separate unlist functions for each rental type but no global 'is_listed' check that prevents cross-listing.",
+      "trace_region": "contracts/codedestate/src/execute.rs"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The Tokens and AllTokens queries in Cw721QueryMsg are publicly accessible without any authentication or authorization checks. An attacker can call these queries to enumerate all token IDs and map them to owner addresses. In the context of a real-estate NFT platform where token extensions contain sensitive property listing data (e.g., rental prices, availability periods, deposit amounts, cancellation policies), this allows an attacker to scrape all listings and ownership information, enabling competitive undercutting, targeted phishing of owners, or denial-of-service on specific listings.",
+    "file": "packages/cw721/src/query.rs",
+    "lines": "108-120",
+    "candidate_original": {
+      "file": "packages/cw721/src/query.rs",
+      "lines": "108-120",
+      "category": "missing_validation",
+      "attack_sequence": [
+        "1. Attacker queries Tokens { owner: <arbitrary_addr>, limit: None }",
+        "2. Contract returns all tokens owned by any address without authentication",
+        "3. Attacker queries AllTokens { start_after: None, limit: None } to enumerate entire token set"
+      ],
+      "confidence": 0.35,
+      "reasoning": "The Tokens and AllTokens queries have no access control, allowing anyone to enumerate all token owners and token IDs. While this is typical for on-chain NFTs, the real-estate context (codedestate) with rental/sale data stored in extensions means an attacker can discover all property listings, their owners, pricing, availability periods, and rental history. This information asymmetry could be exploited to target specific owners or undercut listings.",
+      "trace_region": "packages/cw721/src/query.rs"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "An attacker can query the NftInfo endpoint for any token_id without authentication. The response includes the full extension data, which for codedestate contains sensitive rental information such as deposit amounts, tenant addresses (if set), approval dates, cancellation schedules, and guest counts. This information could be used for competitive intelligence or targeted attacks, such as knowing when a property is available or the financial details of rental agreements.",
+    "file": "packages/cw721/src/query.rs",
+    "lines": "130-155",
+    "candidate_original": {
+      "file": "packages/cw721/src/query.rs",
+      "lines": "130-155",
+      "category": "information_disclosure",
+      "attack_sequence": [
+        "1. Attacker queries NftInfo { token_id } for any token",
+        "2. Contract returns full extension data including Rental/LongTermRental/ShortTermRental structs",
+        "3. Attacker extracts: deposit_amount, price_per_month/day, available_period, cancellation terms, approved dates, guest counts, addresses of renters"
+      ],
+      "confidence": 0.55,
+      "reasoning": "The NftInfo response includes the full extension data, which for codedestate contains sensitive rental information: deposit amounts (Uint128), tenant addresses (Option<Addr>), approval dates, cancellation percentage schedules, and guest counts. An attacker can query any token_id and extract this PII/business-sensitive data. The Landlord, Host, Rental, LongTermRental, and ShortTermRental structs all contain fields that could be used for competitive intelligence or targeted attacks.",
+      "trace_region": "packages/cw721/src/query.rs"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The CancellationItem struct uses a raw u64 for percentage without enforced upper bound validation in the query definition. If the execute path (not shown) allows setting cancellation percentages without validating they are <= 100, an attacker could create a listing with percentage=200 (or any value >100). When cancellation is processed, the contract would calculate a refund amount greater than the original deposit, potentially over-refunding from the contract's balance. This could lead to unintended loss of funds from the contract treasury or other renters' deposits.",
+    "file": "packages/cw721/src/query.rs",
+    "lines": "160-180",
+    "candidate_original": {
+      "file": "packages/cw721/src/query.rs",
+      "lines": "160-180",
+      "category": "arithmetic_overflow",
+      "attack_sequence": [
+        "1. LongTermRental has withdrawn_amount (Uint128) and deposit_amount (Uint128) as separate fields",
+        "2. CancellationItem.percentage is u64 \u2014 if percentage > 100, the cancellation calculation could yield incorrect refund amounts",
+        "3. No on-chain validation is visible in the query struct that percentage <= 100",
+        "4. Attacker (if they can set cancellation terms via execute) sets percentage: 200, causing the contract to over-refund from deposit_amount"
+      ],
+      "confidence": 0.4,
+      "reasoning": "The CancellationItem struct stores percentage as a raw u64 with no enforced upper bound visible in the query definitions. If the execute path allows setting cancellation percentages without validating they are <= 100, an attacker who controls listing creation could set a percentage like 200 to receive double their deposit back upon cancellation. The query struct faithfully reflects whatever is stored, so if the write path lacks validation, the query will expose and confirm the exploit. Cross-referencing with execute::CreateSale or rental listing functions would confirm.",
+      "trace_region": "packages/cw721/src/query.rs"
+    }
+  }
+]

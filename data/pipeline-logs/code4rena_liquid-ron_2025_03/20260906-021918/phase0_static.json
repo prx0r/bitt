@@ -1,0 +1,118 @@
+{
+  "findings": [
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/LiquidRon.operator.t.sol",
+      "lines": [
+        27
+      ],
+      "raw_message": "External call at line 27 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/LiquidRon.operator.t.sol",
+      "lines": [
+        27,
+        28
+      ],
+      "raw_message": "State change at line 28 after external call at line 27",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/LiquidRon.t.sol",
+      "lines": [
+        26
+      ],
+      "raw_message": "External call at line 26 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/LiquidRon.t.sol",
+      "lines": [
+        42
+      ],
+      "raw_message": "External call at line 42 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/LiquidRon.t.sol",
+      "lines": [
+        26,
+        27
+      ],
+      "raw_message": "State change at line 27 after external call at line 26",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/LiquidRon.admin.t.sol",
+      "lines": [
+        28
+      ],
+      "raw_message": "External call at line 28 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "test/LiquidRon.admin.t.sol",
+      "lines": [
+        28,
+        29
+      ],
+      "raw_message": "State change at line 29 after external call at line 28",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "src/LiquidRon.sol",
+      "lines": [
+        355
+      ],
+      "raw_message": "External call at line 355 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "src/RonHelper.sol",
+      "lines": [
+        13
+      ],
+      "raw_message": "External call at line 13 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "src/RonHelper.sol",
+      "lines": [
+        32
+      ],
+      "raw_message": "External call at line 32 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "potential_reentrancy",
+      "file": "src/RonHelper.sol",
+      "lines": [
+        32,
+        40
+      ],
+      "raw_message": "State change at line 40 after external call at line 32",
+      "confidence": "low"
+    }
+  ]
+}

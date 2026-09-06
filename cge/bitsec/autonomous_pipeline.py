@@ -333,30 +333,45 @@ def mutate_strategy(strategy, rng):
 # ── Main Loop ──────────────────────────────────────────────────────
 
 def run_agent_on_project(strategy, project_id):
-    """Run one strategy on one project."""
+    """Run one strategy on one project using full pipeline-v1."""
+    import subprocess
+    import importlib.util
+
     source_dir = REPOS_DIR / project_id
     if not source_dir.exists():
         return None
 
-    # Phase 0
-    static = static_analysis(source_dir)
+    # Use the full pipeline-v1 agent
+    agent_path = Path("/root/bitt/mining/sn60/candidates/pipeline-v1/agent.py")
+    if not agent_path.exists():
+        print("    ERROR: pipeline-v1/agent.py not found", flush=True)
+        return []
 
-    # Phase 1
-    arch_map = phase1_arch_map(source_dir, project_id, static)
+    # Set env
+    env = os.environ.copy()
+    env["INFERENCE_API"] = PROXY
+    env["INFERENCE_API_KEY"] = API_KEY
+    env["AGENT_ID"] = "cge"
+    env["OPENAI_MODEL"] = MODEL
 
-    # Phase 2
-    candidates = phase2_trace(source_dir, arch_map, static)
+    # Run with timeout
+    try:
+        result = subprocess.run(
+            [sys.executable, str(agent_path), str(source_dir)],
+            capture_output=True, text=True, timeout=600,
+            env=env
+        )
+    except subprocess.TimeoutExpired:
+        print("    TIMEOUT", flush=True)
+        return []
 
-    # Phase 3
-    verified = phase3_verify(candidates, source_dir)
+    # Read report
+    report_path = source_dir / "agent_report.json"
+    if report_path.exists():
+        report = json.load(open(report_path))
+        return report.get("vulnerabilities", [])
 
-    # Normalize
-    for v in verified:
-        sev = v.get("severity", "medium").lower()
-        if sev not in ("critical", "high", "medium", "low"):
-            v["severity"] = "medium"
-
-    return verified
+    return []
 
 
 def run_generation(strategies, generation, log_dir):

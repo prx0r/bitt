@@ -1,0 +1,12 @@
+{
+  "project": "code4rena_loopfi_2025_02",
+  "timestamp": "2026-09-05T22:21:27",
+  "files_analyzed": 78,
+  "files_skipped": 0,
+  "total_vulnerabilities": 0,
+  "vulnerabilities": [],
+  "token_usage": {
+    "total_input": 0,
+    "total_output": 0
+  }
+}

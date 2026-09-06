@@ -1,0 +1,24 @@
+[
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "An attacker can call the `tokens`, `operators`, or `all_tokens` query endpoints with `limit: Some(4294967295)` (u32::MAX). Since `DEFAULT_LIMIT` and `MAX_LIMIT` are both set to `u32::MAX`, the limit is not effectively bounded. If the contract has a large number of tokens or operators, the query will iterate over all entries, consuming excessive gas. This can lead to out-of-gas errors for legitimate queries, denial of service for the contract's query interface, and potential resource exhaustion on blockchain nodes, affecting availability.",
+    "file": "contracts/codedestate/src/query.rs",
+    "lines": "13-14",
+    "candidate_original": {
+      "file": "contracts/codedestate/src/query.rs",
+      "lines": "13-14",
+      "category": "denial-of-service",
+      "attack_sequence": [
+        "1. Attacker calls the `tokens` query (line 244) with `limit: Some(4294967295)` (no explicit upper bound enforcement beyond default/max).",
+        "2. Attacker calls `operators` query (line 136) with `limit: Some(4294967295)`.",
+        "3. Attacker calls `all_tokens` query (line 263) with `limit: Some(4294967295)`.",
+        "4. Since `MAX_LIMIT = 4294967295` (u32::MAX), any limit value the caller provides (even 4294967295) passes `.min(MAX_LIMIT)` which is still 4294967295, effectively imposing no meaningful cap.",
+        "5. A large number of tokens/approvals stored on-chain causes the query to iterate over all entries, consuming excessive gas and potentially causing out-of-gas errors or blockchain node resource exhaustion."
+      ],
+      "confidence": 0.8,
+      "reasoning": "DEFAULT_LIMIT and MAX_LIMIT are both set to u32::MAX (4294967295), meaning there is no practical upper bound on pagination. The caller can set `limit` to any value up to u32::MAX and it will be honored. Standard practice is to have MAX_LIMIT around 30-100 to prevent gas griefing. While this is a query and doesn't change state, repeated large queries can DoS the node or cause OOG errors that impact availability.",
+      "trace_region": "contracts/codedestate/src/query.rs"
+    }
+  }
+]

@@ -1,0 +1,74 @@
+{
+  "project": "code4rena_coded-estate-invitational_2024_12",
+  "timestamp": "2026-09-06T02:09:17",
+  "files_analyzed": 12,
+  "files_skipped": 0,
+  "total_vulnerabilities": 6,
+  "vulnerabilities": [
+    {
+      "title": "Unknown vulnerability",
+      "description": "The code allows setting a token for sale, short-term rental, and long-term rental simultaneously without mutual exclusion checks. An owner could list a property for sale and rent it out at the same time. A buyer could purchase the property while a rental is active, leading to conflicting ownership states. Similarly, a renter could finalize a rental while the property is being sold, causing disputes over possession and ownership. This could result in financial losses and legal conflicts.",
+      "vulnerability_type": "other",
+      "severity": "high",
+      "confidence": 0.7,
+      "location": "contracts/codedestate/src/execute.rs",
+      "file": "contracts/codedestate/src/execute.rs",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "The Tokens and AllTokens queries in Cw721QueryMsg are publicly accessible without any authentication or authorization checks. An attacker can call these queries to enumerate all token IDs and map them to owner addresses. In the context of a real-estate NFT platform where token extensions contain sensitive property listing data (e.g., rental prices, availability periods, deposit amounts, cancellation policies), this allows an attacker to scrape all listings and ownership information, enabling competitive undercutting, targeted phishing of owners, or denial-of-service on specific listings.",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "packages/cw721/src/query.rs",
+      "file": "packages/cw721/src/query.rs",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "An attacker can query the NftInfo endpoint for any token_id without authentication. The response includes the full extension data, which for codedestate contains sensitive rental information such as deposit amounts, tenant addresses (if set), approval dates, cancellation schedules, and guest counts. This information could be used for competitive intelligence or targeted attacks, such as knowing when a property is available or the financial details of rental agreements.",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "packages/cw721/src/query.rs",
+      "file": "packages/cw721/src/query.rs",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "The CancellationItem struct uses a raw u64 for percentage without enforced upper bound validation in the query definition. If the execute path (not shown) allows setting cancellation percentages without validating they are <= 100, an attacker could create a listing with percentage=200 (or any value >100). When cancellation is processed, the contract would calculate a refund amount greater than the original deposit, potentially over-refunding from the contract's balance. This could lead to unintended loss of funds from the contract treasury or other renters' deposits.",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "packages/cw721/src/query.rs",
+      "file": "packages/cw721/src/query.rs",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "Combining the mutual exclusion flaw (listing property for sale and rent simultaneously) with the information disclosure from NftInfo query allows an attacker to identify and target properties in conflicting states. By querying all tokens and their detailed extension data, an attacker can find properties listed for both sale and active rental. The attacker can then initiate a purchase while a rental is active, exploiting the lack of mutual exclusion to create a double-spending scenario: the seller receives both rental income and sale proceeds, while the buyer and renter have conflicting claims. This could lead to financial loss for the renter (loss of deposit and possession) and legal/ownership disputes for the buyer.",
+      "vulnerability_type": "other",
+      "severity": "high",
+      "confidence": 0.7,
+      "location": "",
+      "file": "",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "Combining the public enumeration of all tokens (via Tokens/AllTokens queries) with the mutual exclusion flaw allows an attacker to systematically scan for all properties in the contract, identify which ones are simultaneously listed for sale and rental, and execute targeted purchases that disrupt active rentals. This amplifies the impact of the mutual exclusion flaw from a single-instance issue to a scalable attack affecting multiple properties, potentially causing widespread financial harm and legal conflicts across the platform.",
+      "vulnerability_type": "other",
+      "severity": "high",
+      "confidence": 0.7,
+      "location": "",
+      "file": "",
+      "reported_by_model": "mimo-v2.5"
+    }
+  ],
+  "token_usage": {
+    "total_input": 0,
+    "total_output": 0
+  },
+  "duration_seconds": 259.6
+}

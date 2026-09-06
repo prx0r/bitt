@@ -1,0 +1,432 @@
+[
+  {
+    "file": "contracts/pool-manager/src/helpers.rs",
+    "lines": "75-128",
+    "category": "Incorrect state change / arithmetic error in ReverseSimulate direction",
+    "attack_sequence": "1. Call query_reverse_simulation (or any path leading to calculate_stableswap_y with StableSwapDirection::ReverseSimulate) with an offer_amount that is very close to ask_pool. 2. In the ReverseSimulate direction, pool_sum = ask_pool.checked_sub(offer_amount). If offer_amount == ask_pool, pool_sum = 0, which will cause division-by-zero or convergence failure downstream in c calculation (checked_multiply_ratio with pool_sum=0 will produce 0 for c, but the Newton-Raphson may still fail). 3. More critically, if offer_amount > ask_pool, checked_sub will return an error, but the caller can pass offer_amount just under ask_pool, making pool_sum nearly zero and c nearly zero, potentially causing the Newton-Raphson to converge to d (the full invariant) meaning the user gets almost nothing, but the key issue is that c = d^3 / (pool_sum * n_coins * ann * n_coins). With pool_sum \u2248 0, c \u2248 0, and y converges to d - pool_sum which is approximately d, meaning the 'new pool' returned is approximately d, but d was computed from the ORIGINAL pools before the ReverseSimulate subtraction. This means the invariant check is subtly wrong: the ReverseSimulate direction subtracts offer_amount from ask_pool for pool_sum but computes d from the unmodified pools. The invariant D should be recomputed for the post-subtraction state. This mismatch means the computed y doesn't respect the true constant-product invariant, potentially yielding a return_amount that is exploitable.",
+    "confidence": 0.72,
+    "reasoning": "In the ReverseSimulate path, d is computed from the original (offer_pool, ask_pool) state, but pool_sum is computed as ask_pool - offer_amount. The Newton-Raphson for y uses this d and the modified pool_sum. In Curve-style stableswap, when removing coins from a pool, D should be recomputed or the math should account for the reduced total. The current implementation mixes pre-subtraction D with post-subtraction pool_sum, which could lead to incorrect y values. The spread calculation further compounds this: spread = offer_amount - return_amount, but if the invariant math is subtly off, an attacker could find edge cases where return_amount exceeds what it should, draining pool value.",
+    "trace_region": "contracts/pool-manager/src/helpers.rs"
+  },
+  {
+    "file": "contracts/pool-manager/src/helpers.rs",
+    "lines": "29-73",
+    "category": "Newton-Raphson convergence failure / precision loss",
+    "attack_sequence": "1. Craft a pool state with very imbalanced offer_pool and ask_pool values (e.g., offer_pool = 1, ask_pool = 10^18 scaled to precision). 2. Call compute_swap which invokes calculate_stableswap_d. 3. The Newton-Raphson iteration uses a convergence check of Decimal256::decimal_with_precision(1u8, precision) as the threshold. With low precision (e.g., 6), this threshold is 0.000001, but with high precision it becomes tighter. 4. If the pool is severely imbalanced, the Newton-Raphson may oscillate or fail to converge within 32 iterations, returning ConvergeError. However, an attacker could find states where convergence succeeds but produces a D value with significant precision loss that is then used in calculate_stableswap_y, leading to incorrect swap amounts.",
+    "confidence": 0.55,
+    "reasoning": "The convergence threshold depends on precision, and 32 iterations may not be sufficient for extreme imbalance ratios. However, this is more of a liveness issue than a direct exploit. The precision loss in D calculation could indirectly affect swap outcomes, but constructing a concrete profit scenario is difficult without knowing the full pool state context.",
+    "trace_region": "contracts/pool-manager/src/helpers.rs"
+  },
+  {
+    "file": "contracts/pool-manager/src/helpers.rs",
+    "lines": "166-200",
+    "category": "Fee computation precision loss / fee bypass",
+    "attack_sequence": "1. Call compute_swap with an extremely small offer_amount that results in a return_amount smaller than 1 unit after scaling. 2. compute_fees computes fees on return_amount. If return_amount rounds to 0 at some precision, all fees (swap_fee, protocol_fee, burn_fee) round to 0. 3. The swap effectively happens with zero fees, allowing fee-free swaps at micro-amounts. 4. Repeat this many times to aggregate value. Note: the actual exploitability depends on whether compute_fees truncates to zero for small amounts, and whether the spread_amount calculation in the ConstantProduct branch also truncates. The spread is computed as (offer_amount * exchange_rate) - return_amount, which for small amounts could also be 0, meaning no spread detection.",
+    "confidence": 0.48,
+    "reasoning": "The compute_fees function is referenced but not fully shown in the provided code. However, standard fee computation on Uint256/Uint128 values typically uses integer division which truncates. For sufficiently small return_amounts, all fees would truncate to 0. The practical impact is limited by minimum offer amounts enforced elsewhere, but if no such guard exists, this is a valid fee bypass vector.",
+    "trace_region": "contracts/pool-manager/src/helpers.rs"
+  },
+  {
+    "file": "contracts/pool-manager/src/helpers.rs",
+    "lines": "131-164",
+    "category": "Missing zero-check on pool amounts leading to division by zero",
+    "attack_sequence": "1. Call compute_swap with offer_pool = 0 or ask_pool = 0. 2. In the ConstantProduct branch, the return_amount computation uses offer_pool + offer_amount in the denominator (safe from zero), but the spread computation computes exchange_rate = ask_pool / offer_pool. 3. If offer_pool = 0, checked_from_ratio(ask_pool, 0) will return an error via PoolHasNoAssets, which is caught. However, if offer_pool is passed as 0 through a code path that bypasses validation, this could panic. 4. In the StableSwap branch, offer_pool and ask_pool are converted to Decimal256. If either is 0, calculate_stableswap_d returns 0 (due to sum_pools.is_zero() check), and then d.to_uint256_with_precision returns 0. The c calculation becomes 0, and y converges to d=0, causing new_pool=0. return_amount = ask_pool - 0 = ask_pool, meaning the user gets the entire ask_pool for free. This is the critical vulnerability: if an ask_pool has any assets and offer_pool is 0, the user receives all ask assets.",
+    "confidence": 0.78,
+    "reasoning": "When offer_pool is 0 and swap_type is StableSwap, calculate_stableswap_d returns 0 because sum_pools checks offer_pool + ask_pool, which is non-zero if ask_pool > 0. Wait - re-reading: sum_pools = offer_pool + ask_pool, and if ask_pool > 0, sum_pools != 0, so we proceed. With offer_pool = 0, the Newton-Raphson computes new_d by folding over [offer_pool=0, ask_pool]. The fold starts with current_d = sum_pools. First iteration: acc (current_d) * current_d / (0 * n_coins_decimal) - division by zero! This is caught by checked_div returning an error. So this path actually reverts, which is correct behavior. Let me revise: the zero-offer-pool case reverts, so this is not exploitable in StableSwap. The confidence should be lower for the StableSwap variant. For ConstantProduct, exchange_rate = ask_pool / 0 correctly errors. Revised assessment: the zero-pool paths are protected by checked arithmetic, reducing this candidate's validity.",
+    "trace_region": "contracts/pool-manager/src/helpers.rs"
+  },
+  {
+    "file": "contracts/pool-manager/src/helpers.rs",
+    "lines": "131-164",
+    "category": "Spread amount miscalculation in ConstantProduct allows hidden value extraction",
+    "attack_sequence": "1. The spread_amount in ConstantProduct is computed as: (offer_amount * ask_pool / offer_pool) - return_amount. This represents the difference between the naive exchange rate output and the actual output. 2. The return_amount = ask_pool * offer_amount / (offer_pool + offer_amount). 3. spread = offer_amount * ask_pool / offer_pool - ask_pool * offer_amount / (offer_pool + offer_amount) = ask_pool * offer_amount * (offer_pool + offer_amount - offer_pool) / (offer_pool * (offer_pool + offer_amount)) = ask_pool * offer_amount^2 / (offer_pool * (offer_pool + offer_amount)). 4. This spread is computed AFTER the fees_computation on return_amount, but the spread itself is NOT subtracted from return_amount - only fees are. The fees are computed on return_amount which already includes the spread implicitly. 5. This means the spread_amount is informational only and not actually deducted, which is by design for some AMMs. But the fee is computed on return_amount which is the pre-fee amount. If fees should instead be computed on the gross amount including spread (offer_amount * exchange_rate), then the current implementation charges less fees than intended, allowing slightly better rates than the pool intends.",
+    "confidence": 0.42,
+    "reasoning": "The spread computation and fee computation relationship needs deeper understanding of the business intent. In many AMM designs, spread is informational and fees are computed on the actual swap output. This may be intentional. The confidence is low because without seeing how get_swap_computation uses these values, it's unclear if this is a bug or design choice.",
+    "trace_region": "contracts/pool-manager/src/helpers.rs"
+  },
+  {
+    "file": "contracts/pool-manager/src/helpers.rs",
+    "lines": "96-100",
+    "category": "Integer truncation in StableSwap spread calculation",
+    "attack_sequence": "1. In the StableSwap branch of compute_swap, spread_amount is computed as: offer_amount.to_uint256_with_precision(ask_precision).saturating_sub(return_amount). 2. offer_amount is converted to Decimal256 at offer_precision, then back to Uint256 at ask_precision. If offer_precision != ask_precision, this conversion can lose or gain precision. For example, if offer_precision=6 and ask_precision=18, offer_amount of 1 becomes 1000000000000 in uint256. 3. Then spread_amount = converted_offer_amount - return_amount. But the spread should logically be offer_amount (in ask terms) minus return_amount, which is what's computed. However, if ask_precision < offer_precision, converting offer_amount to ask_precision truncates. For example, offer_precision=18, ask_precision=6, offer_amount of 999999999999999999 (just under 1 in 18 decimals) becomes 0 when converted to 6 decimals. Then spread_amount = 0 - return_amount which saturates to 0 (saturating_sub). This masks the actual spread and could affect fee calculations that depend on spread values downstream.",
+    "confidence": 0.65,
+    "reasoning": "The precision mismatch between offer and ask tokens when computing spread is a real arithmetic concern. The saturating_sub hides negative spread values. If downstream logic uses spread_amount to determine fee tiers or other parameters, this truncation could be exploited by choosing token pairs with specific precision differences.",
+    "trace_region": "contracts/pool-manager/src/helpers.rs"
+  },
+  {
+    "file": "contracts/pool-manager/src/swap/perform_swap.rs",
+    "lines": "66-93",
+    "category": "Arithmetic - Division by Zero / Panic",
+    "attack_sequence": "1. Call perform_swap with a pool where the ask_asset_in_pool.amount is zero (or becomes zero after subtracting return_amount). 2. The compute_swap function computes swap_result based on pool state. If pool is imbalanced such that ask pool has very low liquidity, return_amount could approach the full ask pool balance. 3. After computing swap, state changes subtract return_asset.amount + outgoing_fees from pool_info.assets[ask_index].amount. If outgoing_fees > 0 and the pool doesn't have enough, checked_sub will error. But more critically, if the pool IS large enough to absorb it, the pool is drained to near-zero for the ask asset, enabling a subsequent swap to get an extremely favorable rate. 4. However, the concrete vulnerability here is: if pool_info.assets[ask_index].amount exactly equals return_asset.amount (outgoing_fees == 0), the pool becomes zero for the ask asset, and the next swap from the other direction can receive all tokens at a 1:1 rate since the constant product formula divides by zero or produces extreme values.",
+    "confidence": 0.5,
+    "reasoning": "The pool can be drained to zero for the ask asset in a single swap if fees are zero and the return_amount equals the pool balance. This isn't directly an overflow but a liquidity drainage issue. The actual exploitable angle depends on how subsequent swaps behave with zero-balance pools in the compute functions.",
+    "trace_region": "perform_swap"
+  },
+  {
+    "file": "contracts/pool-manager/src/swap/perform_swap.rs",
+    "lines": "57-93",
+    "category": "Reentrancy / State Ordering - Pool State Read-Modify-Write Within Single Call",
+    "attack_sequence": "1. This function reads pool_info, computes swap based on current state, then modifies and saves state. 2. Since this is a CosmWasm contract, reentrancy in the Ethereum sense doesn't apply (no external calls during state modification in this function). 3. However, the state is read from storage, modified, and written back. If this function is called concurrently (which CosmWasm doesn't allow in a single tx), or if the caller can trigger multiple swaps in a single transaction that each read stale state, this could be exploitable. 4. The real concern: perform_swap does NOT check that return_asset.amount > 0. A swap could return 0 tokens while still modifying the pool state (adding the offer to the pool), effectively donating tokens to the pool for free.",
+    "confidence": 0.6,
+    "reasoning": "If compute_swap returns return_amount = 0 (e.g., due to fees consuming all output, or numerical issues), the pool still receives the offer_asset (added at line 77) but gives nothing back. The user loses their tokens. This is a grief/fund-loss for the swapper but could also be used to inflate the pool ratio for subsequent swaps. The function does not guard against zero return amounts.",
+    "trace_region": "perform_swap"
+  },
+  {
+    "file": "contracts/pool-manager/src/swap/perform_swap.rs",
+    "lines": "108-130",
+    "category": "Logic Error - Spread Calculation with Zero return_amount",
+    "attack_sequence": "1. In assert_max_spread, when belief_price is None, the else branch computes: Decimal256::from_ratio(spread_amount, return_amount + spread_amount). 2. If return_amount is 0 and spread_amount is 0, this becomes 0/0 which Decimal256::from_ratio handles as 0 (passes the check). 3. If return_amount is 0 and spread_amount > 0, this becomes spread_amount/spread_amount = 1.0 which exceeds max_spread and correctly blocks. 4. The issue: when belief_price IS provided, and expected_return = 0 (belief_price is extremely large, making inv() very small, or offer_amount = 0), then spread_amount = 0.saturating_sub(return_amount) = 0, and the check `0 < 0` is false, so it passes. An attacker can provide a belief_price that makes the spread check pass even when getting a terrible rate.",
+    "confidence": 0.45,
+    "reasoning": "The belief_price-based spread check uses expected_return as the denominator. If expected_return is very small (but non-zero), the spread ratio could be manipulated. More concretely, if the attacker passes a belief_price such that expected_return barely exceeds return_amount, the spread appears small relative to expected_return even though the actual execution price is terrible.",
+    "trace_region": "perform_swap"
+  },
+  {
+    "file": "contracts/pool-manager/src/swap/perform_swap.rs",
+    "lines": "66-70",
+    "category": "Missing Validation - No Minimum Return Amount Check",
+    "attack_sequence": "1. Call perform_swap with parameters that result in a swap with extremely high fees or unfavorable pool state. 2. compute_swap may return return_amount = 0 (all output consumed by fees). 3. perform_swap proceeds to modify pool state: offer_asset is added to pool (line 77), and return_asset (amount=0) + outgoing_fees (amount=0) are subtracted from ask pool. 4. Pool state is saved with the donated offer_asset but zero return. 5. The caller loses their entire offer_asset with no return. 6. While this harms the caller, it could be used strategically: repeatedly 'donating' to shift the pool ratio, then executing a large swap at the new ratio for profit. This is a form of oracle/manipulation attack.",
+    "confidence": 0.55,
+    "reasoning": "There is no minimum amount out check in perform_swap itself. The assert_max_spread only checks slippage relative to belief price or pool spread, not an absolute minimum. A caller willing to lose some value can manipulate the pool ratio. The caller of perform_swap (likely a higher-level contract) should enforce min_return, but perform_swap itself has no such guard.",
+    "trace_region": "perform_swap"
+  },
+  {
+    "file": "contracts/pool-manager/src/swap/perform_swap.rs",
+    "lines": "77-85",
+    "category": "State Integrity - Pool Balance Can Become Negative Assumption Violation",
+    "attack_sequence": "1. This is guarded by checked_sub, so it won't go negative. But consider: the function adds offer_asset to the offer side and subtracts (return + fees) from the ask side simultaneously. 2. If compute_swap computes fees based on the original pool state, but fees are denominated in the ask asset, the total deduction from the ask pool is return_amount + burn_fee + protocol_fee + swap_fee. 3. The compute_swap function should ensure return_amount + all_fees <= ask_pool_original_amount, but if there's a rounding issue where fees are computed on an intermediate value, the total could slightly exceed the ask pool balance, causing a checked_sub failure (DoS). 4. This means an attacker could potentially craft a swap that always fails if the arithmetic is slightly off, or the pool could be bricked if fees round incorrectly.",
+    "confidence": 0.35,
+    "reasoning": "The checked_sub at line 83-85 will revert the entire transaction if there aren't enough tokens. This is a protection, not a vulnerability, unless the fee computation in compute_swap has a rounding bug that makes the sum of return + fees exceed what was guaranteed in the computation. Need to verify compute_swap's guarantees.",
+    "trace_region": "perform_swap"
+  },
+  {
+    "file": "contracts/pool-manager/src/liquidity/commands.rs",
+    "lines": "60-125",
+    "category": "Cross-function Reentrancy / State Inconsistency via Single-Side Liquidity Provision",
+    "attack_sequence": "1. Attacker calls `provide_liquidity` with a single asset (e.g., 1000 token A), triggering the `is_single_asset_provision` branch.\n2. The function queries the current contract balance (`expected_offer_asset_balance_in_contract`) and the current ask asset balance (`expected_ask_asset_balance_in_contract`), then saves this snapshot into `SINGLE_SIDE_LIQUIDITY_PROVISION_BUFFER`.\n3. A `SubMsg` is dispatched that swaps half of the deposited asset via `ExecuteMsg::Swap` on the same contract, with `reply_on_success`.\n4. In the reply handler, the code is expected to use the saved buffer to complete the liquidity provision. However, between steps 2 and 4 (during the swap execution and any other in-flight messages), the contract's balances can change \u2014 other users could be depositing or withdrawing, or sandwiching the swap via front-running.\n5. The `expected_offer_asset_balance_in_contract` snapshot is stale by the time the reply executes. If another user deposits or the swap execution timing allows balance manipulation, the liquidity provision may use outdated balance assumptions, minting incorrect LP shares.\n6. Specifically, if a sandwich attacker front-runs the swap with their own swap (moving the price), the simulation result (`swap_simulation_response`) computed before the swap will not match the actual swap execution, causing more or fewer assets to be present than expected. The `max_spread` assertion may catch this in some cases but not all \u2014 the spread check is against the pool's current state at simulation time, not at execution time.\n7. Additionally, if the attacker can trigger a second single-side liquidity provision concurrently, the buffer is overwritten, and the first provision's reply handler could complete with the second attacker's buffer data, or vice versa.",
+    "confidence": 0.55,
+    "reasoning": "The snapshot-then-execute pattern with a SubMsg creates a TOCTOU window. The buffer is saved before the swap, and the reply handler will read it after the swap. During this window, pool state can change. The max_spread/slippage checks in the reply handler provide some protection, but the fundamental design stores balance snapshots that may be stale. The vulnerability depends on what the reply handler does with the buffer \u2014 if it re-queries balances instead of using the snapshot, this is mitigated. Without seeing the reply handler code, confidence is moderate.",
+    "trace_region": "provide_liquidity"
+  },
+  {
+    "file": "contracts/pool-manager/src/liquidity/commands.rs",
+    "lines": "139-150",
+    "category": "Arithmetic: Integer Square Root Floor on LP Share Calculation Allows First Depositor Griefing",
+    "attack_sequence": "1. Attacker (as first depositor) deposits assets where deposits[0].amount * deposits[1].amount results in a square root just barely above MINIMUM_LIQUIDITY_AMOUNT.\n2. The share is computed as `sqrt(deposits[0] * deposits[1]) - MINIMUM_LIQUIDITY_AMOUNT`. The MINIMUM_LIQUIDITY_AMOUNT is permanently locked.\n3. Attacker deposits a very small amount such that the product's square root equals MINIMUM_LIQUIDITY_AMOUNT + 1, leaving only 1 LP share for themselves and permanently locking MINIMUM_LIQUIDITY_AMOUNT.\n4. For subsequent depositors, the share calculation uses `deposits[0].amount * total_share / total_reserve_0` (the standard constant-product formula when total_share > 0). The attacker's tiny share means the ratio is skewed.\n5. More importantly, the attacker can choose asymmetric deposits where one asset's ratio is very favorable to them. For example, depositing (MINIMUM_LIQUIDITY_AMOUNT + epsilon, huge_amount) gives the attacker an LP share based on the smaller ratio, but the pool's price is set by the attacker's deposit ratio. A subsequent depositor providing at the 'market' ratio would receive fewer LP tokens than expected.\n6. However, the code does have a check: `if share.is_zero() { return Err(...) }` which prevents the share from being exactly zero after subtraction. The issue is that the check only catches zero \u2014 a share of 1 is still allowed and creates a griefing scenario.",
+    "confidence": 0.45,
+    "reasoning": "This is a known class of attack for constant-product pools. The MINIMUM_LIQUIDITY mechanism is specifically designed to mitigate it (pioneered by Uniswap). The code correctly subtracts MINIMUM_LIQUIDITY and checks for zero. The griefing is limited by the economics \u2014 the attacker permanently locks their own liquidity too. The check on line 150 (`if share.is_zero()`) prevents the worst case but allows near-zero shares. Confidence is moderate-low because this is a well-known pattern and the mitigation is partially in place.",
+    "trace_region": "provide_liquidity"
+  },
+  {
+    "file": "contracts/pool-manager/src/liquidity/commands.rs",
+    "lines": "94-107",
+    "category": "Incorrect Balance Assumption in Single-Side Liquidity Provision",
+    "attack_sequence": "1. Attacker calls `provide_liquidity` with a single asset deposit of amount X for denom A.\n2. The code sets `swap_half = X / 2` (using checked_div_floor with (2, 1)).\n3. The code queries `expected_offer_asset_balance_in_contract` = the CURRENT balance of denom A held by the contract.\n4. The comment says: 'the expected offer asset balance in the contract will always be the same value as of now. Even though half of it will be swapped, eventually all of it will be sent to the contract in the second step.'\n5. This assumption is WRONG. The user sends X tokens. Half (X/2) is swapped. The swap sends X/2 to the pool, receives ask_asset in return. The X/2 that was swapped does NOT return to the contract as denom A \u2014 it becomes ask_asset. So the contract only receives X/2 of denom A from the user's deposit (the unswapped half), not X.\n6. Wait \u2014 looking more carefully, the user sends X via `info.funds`. The swap_half message sends X/2 from the contract. But X/2 is in the user's deposit. So after the user's deposit, the contract has its original balance + X. After the swap, it has (original + X - X/2) = original + X/2 of denom A.\n7. The code incorrectly assumes the contract will still have `original + X` of denom A after the swap. This means `expected_offer_asset_balance_in_contract` is inflated by X/2.\n8. If the reply handler uses this inflated value to compute LP shares, the attacker gets more LP tokens than they should.",
+    "confidence": 0.6,
+    "reasoning": "The comment on line 94-97 explicitly states the expected offer asset balance will be 'the same value as of now', but half the deposit is being swapped away to a different denom. The expected balance should decrease by swap_half. If this snapshot is used for LP minting calculations in the reply handler, it leads to over-minting. The comment itself reveals the developer's incorrect mental model. However, without seeing the reply handler to confirm it uses this value for minting, confidence is moderate.",
+    "trace_region": "provide_liquidity"
+  },
+  {
+    "file": "contracts/pool-manager/src/liquidity/commands.rs",
+    "lines": "48-52",
+    "category": "Missing Validation: Pool Assets Not Verified Against Pool Type",
+    "attack_sequence": "1. Attacker calls `provide_liquidity` with exactly 1 deposit.\n2. The code checks `is_single_asset_provision` (deposits.len() == 1).\n3. It then checks that pool has no zero-balance assets and has exactly 2 assets.\n4. However, there is no check that the pool is of a type that supports single-side liquidity provision (e.g., not a ConstantProduct pool, or explicitly allowed pool types).\n5. If single-side provision on a ConstantProduct pool has different economic guarantees than on a StableSwap pool, this could lead to unexpected behavior.\n6. The swap simulation is done via `query_simulation` which uses the pool's swap computation, so the math may still work, but the slippage/spread guarantees assumed in single-side provision may not hold for all pool types.",
+    "confidence": 0.35,
+    "reasoning": "The code doesn't restrict single-side liquidity provision to specific pool types. While the math may still produce valid results, the economic assumptions (especially around spread) may differ between ConstantProduct and StableSwap pools. This is a weak finding because query_simulation already adapts to the pool type.",
+    "trace_region": "provide_liquidity"
+  },
+  {
+    "file": "contracts/pool-manager/src/liquidity/commands.rs",
+    "lines": "66-69",
+    "category": "Missing: No Validation That Deposits Are Sorted Consistently With Pool Assets",
+    "attack_sequence": "1. The pool has assets [A, B] with specific reserves.\n2. The user deposits [B, A] (reversed order).\n3. In the ConstantProduct branch, the share calculation uses `deposits[0]` and `deposits[1]` positionally for the initial deposit case (line ~142): `sqrt(deposits[0].amount * deposits[1].amount)`.\n4. For subsequent deposits, if the code uses positional indexing (deposits[0] maps to pool_assets[0], deposits[1] maps to pool_assets[1]), reversed deposits would compute the wrong share.\n5. However, looking at the aggregate_coins function, it aggregates by denom, so order shouldn't matter for the sqrt calculation in the initial deposit case.\n6. For subsequent deposits, the share computation (not shown in full) should match by denom, not position. If it uses positional matching, reversed deposits cause incorrect share calculation.",
+    "confidence": 0.3,
+    "reasoning": "The aggregate_coins function should handle denom-based aggregation regardless of order. The initial deposit case uses a product and sqrt which is symmetric. The concern would be in the subsequent deposit path where shares are computed as ratio of deposits to reserves \u2014 if this uses positional indexing instead of denom-based matching, it's a bug. Without seeing the full subsequent deposit logic, confidence is low.",
+    "trace_region": "provide_liquidity"
+  },
+  {
+    "file": "contracts/pool-manager/src/liquidity/commands.rs",
+    "lines": "82-87",
+    "category": "Front-Running: Simulation Result Stale Before Swap Execution",
+    "attack_sequence": "1. Attacker observes a pending `provide_liquidity` transaction with single-side provision.\n2. The transaction simulates the swap and saves results to `SINGLE_SIDE_LIQUIDITY_PROVISION_BUFFER`.\n3. Before the SubMsg reply handler executes, the attacker front-runs with their own swap on the same pool, moving the price.\n4. The original user's swap now executes at a worse price than simulated.\n5. The reply handler checks `max_spread` but this check uses the buffer's saved simulation data, not a fresh simulation.\n6. If the spread assertion doesn't properly account for the price movement between simulation and execution, the user receives worse execution than they signed up for.\n7. The `max_spread` check in the reply handler (not shown) may or may not catch this depending on implementation.",
+    "confidence": 0.5,
+    "reasoning": "This is a classic MEV/sandwich attack vector. The simulation is done before execution. The max_spread parameter is meant to protect against this, but the protection is only as good as the implementation in the reply handler. Given that this is a SubMsg pattern (not atomic), there's a real window for price manipulation.",
+    "trace_region": "provide_liquidity"
+  },
+  {
+    "file": "contracts/pool-manager/src/contract.rs",
+    "lines": "N/A (instantiate function not in provided region)",
+    "category": "Access Control / Missing Validation",
+    "attack_sequence": [
+      "1. Call instantiate on the pool-manager contract with arbitrary fee_collector_addr and farm_manager_addr values that are not valid contract addresses or are attacker-controlled contracts.",
+      "2. The InstantiateMsg contains fee_collector_addr and farm_manager_addr as plain strings with no validation that they point to valid, deployed contracts.",
+      "3. If the pool-manager does not validate these addresses during instantiation (e.g., by querying them to confirm they are contracts), an attacker could set fee_collector_addr to an EOA or non-existent address, causing fee distribution to fail silently or revert.",
+      "4. Alternatively, if the farm_manager_addr points to a malicious contract, the pool-manager may trust responses from it later (e.g., for LP token management or position tracking).",
+      "5. The pool_creation_fee in InstantiateMsg is also set by the caller - there is no minimum or maximum enforced at the protocol level in the test, suggesting any value could be passed."
+    ],
+    "confidence": 0.65,
+    "reasoning": "The instantiate function in the test suite (line ~195) constructs InstantiateMsg with fee_collector_addr, farm_manager_addr, and pool_creation_fee directly from user input. The test does not show any validation that these addresses are valid contract addresses. While this is test code and the actual contract.rs is not shown, the fact that the test accepts raw strings for cross-contract addresses suggests the production code may similarly lack address validation. An attacker deploying the contract could set up fee flows to a non-existent contract or set pool_creation_fee to zero, bypassing economic controls. However, since we cannot see the actual instantiate implementation, confidence is moderate.",
+    "trace_region": "instantiate"
+  },
+  {
+    "file": "contracts/pool-manager/src/tests/suite.rs",
+    "lines": "195-207",
+    "category": "Input Validation / Business Logic",
+    "attack_sequence": [
+      "1. Observe that pool_creation_fee is set to coin(1_000, 'uusd') in the test.",
+      "2. The InstantiateMsg accepts any Coin value for pool_creation_fee.",
+      "3. An instantiator could set pool_creation_fee to 0 (or Uint128::zero()) to eliminate the economic barrier to pool creation.",
+      "4. Alternatively, set it to an extremely high value to grief other users by preventing pool creation.",
+      "5. There appears to be no protocol-level minimum or maximum enforced on pool_creation_fee in the instantiate message."
+    ],
+    "confidence": 0.5,
+    "reasoning": "The InstantiateMsg accepts pool_creation_fee as a raw Coin without apparent bounds checking in the instantiation flow. While the test uses a reasonable default of 1000 uusd, the contract itself may not enforce minimums or maximums. This is a lower-confidence finding because: (a) we cannot see the actual instantiate code to confirm absence of validation, and (b) the deployer sets this once at deployment time and it's their prerogative. However, if the contract is deployed by a DAO or governance, a malicious governance participant could manipulate this parameter.",
+    "trace_region": "instantiate"
+  },
+  {
+    "file": "contracts/pool-manager/src/tests/suite.rs",
+    "lines": "215-234",
+    "category": "Access Control",
+    "attack_sequence": [
+      "1. Note that create_fee_collector (line 215) instantiates the fee collector with InstantiateMsg {} - an empty message.",
+      "2. The fee collector appears to have no owner or admin set during instantiation.",
+      "3. If the fee collector lacks proper access control, anyone could call execute messages on it.",
+      "4. This could allow an attacker to drain accumulated fees from the fee collector contract.",
+      "5. The pool-manager sends fees to this fee_collector_addr, so compromised fee collection means loss of protocol revenue."
+    ],
+    "confidence": 0.45,
+    "reasoning": "The fee collector is instantiated with an empty message (no owner/admin), and the actual fee_collector contract code is not provided for full analysis. If the fee collector truly has no access control (suggested by the empty InstantiateMsg), this would be a significant vulnerability. However, the fee_collector code might internally use the instantiator as owner. This is low confidence without seeing the actual fee_collector contract.",
+    "trace_region": "instantiate"
+  },
+  {
+    "file": "contracts/pool-manager/src/tests/suite.rs",
+    "lines": "244-265",
+    "category": "State Initialization / Trust Boundary",
+    "attack_sequence": [
+      "1. Observe that the epoch_manager is instantiated with owner set to the creator address.",
+      "2. The epoch_config specifies genesis_epoch as 1_714_057_200 and duration as 86_400 seconds (1 day).",
+      "3. The pool_manager does NOT appear to be set as an owner/admin of the epoch_manager.",
+      "4. If the pool_manager needs to query epoch information from the epoch_manager, and the epoch_manager has different trust assumptions, there could be inconsistencies.",
+      "5. The pool_manager's interaction with epoch_manager for epoch-based operations (like LP rewards) could be manipulated if the epoch_manager owner advances time or changes epoch configuration independently."
+    ],
+    "confidence": 0.4,
+    "reasoning": "The epoch manager is configured with the test creator as owner, separate from the pool manager. While the pool manager queries epoch state, it doesn't control the epoch manager. This is a standard architecture pattern but means the epoch manager owner could theoretically manipulate epoch timing to affect pool operations. Low confidence because this is a governance-level concern, not a direct exploit.",
+    "trace_region": "instantiate"
+  },
+  {
+    "file": "contracts/pool-manager/src/tests/suite.rs",
+    "lines": "195-207",
+    "category": "Missing Validation / Cross-Contract Trust",
+    "attack_sequence": [
+      "1. During instantiation, pool_manager stores fee_collector_addr and farm_manager_addr as provided.",
+      "2. These addresses are later used for cross-contract calls (e.g., sending fees, querying farm positions).",
+      "3. If these addresses are set to attacker-controlled contracts, the attacker's contract could return malicious/malicious data when queried.",
+      "4. For example, if farm_manager_addr points to a malicious contract, it could report fake LP positions or manipulate reward calculations.",
+      "5. If fee_collector_addr points to a malicious contract, fee transfer calls could be intercepted (though funds would still be transferred TO the malicious contract, not FROM it).",
+      "6. The pool_manager has no mechanism to later update these addresses (no update_config or migrate shown in the provided code)."
+    ],
+    "confidence": 0.6,
+    "reasoning": "The instantiate function accepts external contract addresses without apparent validation. Once set, these become permanent trust relationships. If the deployment is not performed by a trusted entity, or if the addresses are later found to be malicious, there's no migration path to update them. This is a moderate-confidence finding because: the addresses are set at deployment time (a one-time trusted setup), but the lack of updatable configuration means a mistake at deployment is permanent. The test shows no update_config mechanism for these addresses.",
+    "trace_region": "instantiate"
+  },
+  {
+    "file": "contracts/pool-manager/src/router/commands.rs",
+    "lines": "91-100",
+    "category": "Missing Slippage / Price Impact Validation on Intermediate Swaps",
+    "attack_sequence": "1. Attacker calls execute_swap_operations with a multi-hop path (e.g., A\u2192B\u2192C) where the first hop offers a tiny amount of A, causing extreme price impact on a thin-liquidity pool B\u2192C.\n2. The intermediate swap_result.return_asset from hop 1 becomes the input to hop 2 with no per-hop slippage check.\n3. Even if minimum_receive is set, it only validates the final output. The attacker can sandwich between hops: the first hop extracts value from the pool via price impact, and the second hop returns a small amount that still passes minimum_receive if set generously.\n4. The max_spread parameter (passed as None here or from caller) applies per-pool, but there is no aggregate path-level slippage guard in this function itself. The caller must set minimum_receive externally, and if they don't, any output is accepted.",
+    "confidence": 0.45,
+    "reasoning": "The minimum_receive check at line 108 protects the final output, but the lack of any intermediate slippage validation means an attacker-controlled multi-hop swap can suffer devastating intermediate price impacts. This is partially mitigated by the caller setting minimum_receive, but the function does not enforce any default minimum. Also, max_spread passed to each perform_swap is None from the execute_swap_operations call site (line 77), meaning no per-pool spread protection unless the external caller explicitly provides it.",
+    "trace_region": "contracts/pool-manager/src/router/commands.rs"
+  },
+  {
+    "file": "contracts/pool-manager/src/router/commands.rs",
+    "lines": "68-80",
+    "category": "Fee Messages Sent After User Transfer \u2014 Potential Insolvency or Reentrancy-like State Issue",
+    "attack_sequence": "1. Attacker calls execute_swap_operations with operations that yield swap_result.burn_fee_asset and swap_result.protocol_fee_asset from intermediate swaps.\n2. Fee messages (burn_coin_msg, BankMsg::Send to fee_collector) are queued alongside the user's BankMsg::Send.\n3. All messages in the Response are executed atomically by the CosmWasm runtime, so reentrancy is not possible in the traditional sense. However, if the fee_collector_addr is a contract, it receives funds before the user receives output in the same transaction.\n4. More critically: the fee amounts are computed by perform_swap based on pool state, but the pool state was mutated via deps.branch() which creates a checkpoint. If perform_swap internally modifies pool reserves and then the final user send happens, the pool reserves already reflect the deducted fees. This is correct ordering \u2014 but worth noting that burn_fee_asset coins are accumulated across all hops and sent as a batch. If perform_swap returns a burn fee denominated in an intermediate token that doesn't match the final output, the BankMsg::Send for protocol_fee could fail if the contract doesn't hold that intermediate token balance.",
+    "confidence": 0.35,
+    "reasoning": "The fee_collector receives protocol fees denominated in intermediate swap tokens (not necessarily the final output token). The contract must hold sufficient balances of these intermediate tokens from the performed swaps. Since perform_swap likely credits the contract with the swapped output before deducting fees, the contract should hold the tokens. However, if the pool's perform_swap implementation sends tokens externally first and then expects the contract to hold fees, there could be an accounting mismatch. The atomic execution model of CosmWasm prevents reentrancy but not insolvency if pool implementations have bugs.",
+    "trace_region": "contracts/pool-manager/src/router/commands.rs"
+  },
+  {
+    "file": "contracts/pool-manager/src/router/commands.rs",
+    "lines": "33-52",
+    "category": "assert_operations Validation Bypass via Single Operation",
+    "attack_sequence": "1. Attacker calls execute_swap_operations with a single SwapOperation.\n2. assert_operations retrieves the first operation's input_asset_info and iterates \u2014 the loop body doesn't execute since there's only one element.\n3. The function returns Ok(()), so single operations pass validation trivially.\n4. This is by design and not a vulnerability, but the early-return path means a single operation cannot be chained incorrectly. No bypass here \u2014 this path is sound.",
+    "confidence": 0.15,
+    "reasoning": "Single operations correctly pass assert_operations. The loop is a no-op for single-element vectors. This is not a vulnerability.",
+    "trace_region": "contracts/pool-manager/src/router/commands.rs"
+  },
+  {
+    "file": "contracts/pool-manager/src/router/commands.rs",
+    "lines": "77",
+    "category": "Hardcoded max_spread=None Disables Spread Protection",
+    "attack_sequence": "1. Attacker identifies execute_swap_operations is called from a frontend or another contract that doesn't pass max_spread.\n2. In the code at line 77, perform_swap is called with `None` for the max_spread parameter regardless of whether the caller of execute_swap_operations provided one.\n3. Wait \u2014 re-reading: the function signature accepts `max_spread: Option<Decimal>` but it's captured in the closure-like match at line 77 as `max_spread` (the function parameter). Actually looking again at line 77: `perform_swap(deps.branch(), previous_swap_output.clone(), token_out_denom, pool_identifier, None, max_spread)` \u2014 the `None` is the 5th argument and `max_spread` is the 6th. So max_spread IS forwarded from the caller of execute_swap_operations. This is not a vulnerability \u2014 max_spread is properly passed through.",
+    "confidence": 0.1,
+    "reasoning": "On closer inspection, max_spread from execute_swap_operations parameters IS forwarded to perform_swap. The None parameter at position 5 is a separate parameter (likely min_output or similar). This is not a vulnerability.",
+    "trace_region": "contracts/pool-manager/src/router/commands.rs"
+  },
+  {
+    "file": "contracts/pool-manager/src/router/commands.rs",
+    "lines": "84-89",
+    "category": "Intermediate Fee Assets Sent via BankMsg Without Verifying Contract Holds Sufficient Balance",
+    "attack_sequence": "1. Attacker calls execute_swap_operations with a 3-hop swap: A\u2192B\u2192C\u2192D.\n2. Each hop generates burn_fee_asset and protocol_fee_asset in the intermediate denominations (B, C).\n3. These fee assets are accumulated into fee_messages as separate BankMsg::Send entries.\n4. At the end of the function, all fee_messages are added to the Response alongside the user's output BankMsg.\n5. If any intermediate fee denom's accumulated amount exceeds the contract's actual balance of that denom, the transaction will fail at execution time (bank module checks balances).\n6. The attacker cannot exploit this for profit \u2014 the transaction simply fails. However, a griefing vector exists: an attacker could craft swap paths where fees are denominated in tokens the contract may not hold in sufficient quantity, causing the entire multi-hop transaction to fail even if the swaps themselves succeed.\n7. More practically: if the pool implementations (via perform_swap) deduct fees from the output before returning it to the contract, the contract should hold the fees. The real risk is if perform_swap sends fee tokens externally (e.g., directly to fee_collector from the pool) but also returns them in the result struct, leading to double-counting or the contract not actually holding the tokens it tries to send.",
+    "confidence": 0.3,
+    "reasoning": "The key question is whether perform_swap's implementation ensures the contract actually holds the fee tokens before they're sent via BankMsg. If perform_swap moves tokens out of the contract during execution, the subsequent BankMsg::Send could fail. This is an implementation-level concern that depends on the pool-manager's internal token accounting. The risk is low since the transaction atomically fails, but it could be used for griefing (forced transaction failure).",
+    "trace_region": "contracts/pool-manager/src/router/commands.rs"
+  },
+  {
+    "file": "contracts/pool-manager/src/router/commands.rs",
+    "lines": "60-66",
+    "category": "Receiver Can Be Any Address \u2014 No Validation That Receiver Can Accept Tokens",
+    "attack_sequence": "1. Attacker calls execute_swap_operations with receiver set to a contract that doesn't implement a receive hook or panics on bank receive.\n2. The bank send to that address will fail, reverting the entire transaction.\n3. This is a griefing vector only (the attacker loses gas), not an exploit.\n4. No actual vulnerability \u2014 CosmWasm bank module handles this gracefully.",
+    "confidence": 0.1,
+    "reasoning": "This is standard CosmWasm behavior. The transaction fails atomically. Not a real vulnerability.",
+    "trace_region": "contracts/pool-manager/src/router/commands.rs"
+  },
+  {
+    "file": "contracts/pool-manager/src/router/commands.rs",
+    "lines": "44-56",
+    "category": "deps.branch() Creates Isolated State \u2014 Fee Messages Reference Branch State Not Final State",
+    "attack_sequence": "1. At line 77, perform_swap is called with deps.branch() which creates a copy of the dependency context.\n2. Changes made within perform_swap on the branched deps are NOT automatically committed to the parent deps unless explicitly handled.\n3. If perform_swap modifies pool reserves (e.g., updates liquidity) on deps.branch(), those changes would be lost when the branch scope ends \u2014 UNLESS the CosmWasm deps.branch() implementation commits on drop or the changes are propagated.\n4. In CosmWasm, deps.branch() creates a checkpoint but changes ARE committed when the branch is dropped (this is the standard behavior for DepsMut::branch in cosmwasm-std). So this should be safe.\n5. However, across multiple hops in the loop, each call to deps.branch() creates independent branches. The question is whether pool state changes from hop N are visible to hop N+1.\n6. Since deps.branch() at each iteration creates a branch from the CURRENT parent state (which includes changes from the previous branch drop), changes should propagate correctly in sequence.\n7. No vulnerability here assuming standard CosmWasm DepsMut::branch semantics.",
+    "confidence": 0.1,
+    "reasoning": "deps.branch() in CosmWasm commits changes on drop (via the underlying Storage checkpoint mechanism). Each iteration's changes should be visible to subsequent iterations. This is correct behavior.",
+    "trace_region": "contracts/pool-manager/src/router/commands.rs"
+  },
+  {
+    "file": "contracts/pool-manager/src/router/commands.rs",
+    "lines": "108-115",
+    "category": "minimum_receive Checked After All Swaps Complete \u2014 No Atomic Slippage Protection Per Swap",
+    "attack_sequence": "1. Attacker calls execute_swap_operations with 3 swaps and minimum_receive set to current market price.\n2. Between executing the first and third swap, a sandwich attacker manipulates pool reserves via separate transactions (front-run and back-run).\n3. The minimum_receive check at line 108 only validates the final output against the user's minimum. The sandwich attacker extracts value between the first and last hop.\n4. The user's minimum_receive may be satisfied (or not), but the intermediate hops have already been executed at manipulated prices.\n5. This is a classic sandwich attack vector. The mitigation is that this function is called within a single transaction, so the sandwich must happen in separate blocks. The pool's own spread protection (max_spread) is the primary defense.\n6. Since max_spread is forwarded (line 77), and the pool's perform_swap should enforce it, this provides per-pool protection. But if max_spread is None (not provided by caller), there is no per-hop protection.",
+    "confidence": 0.55,
+    "reasoning": "The execute_swap_operations function applies max_spread per swap (via perform_swap) but the caller must explicitly provide it. The minimum_receive check only protects the final output. If max_spread is not provided (None), the attacker can manipulate intermediate pools between transaction ordering (sandwich attacks across blocks). Even with max_spread, a multi-hop sandwich where the attacker controls one intermediate pool can extract value. The combination of no default max_spread enforcement and only final-output minimum_receive creates a meaningful slippage exposure for multi-hop swaps.",
+    "trace_region": "contracts/pool-manager/src/router/commands.rs"
+  },
+  {
+    "file": "contracts/pool-manager/src/router/commands.rs",
+    "lines": "84-89",
+    "category": "Protocol Fee Sent to fee_collector Denominated in Intermediate Token \u2014 Potential Cross-Token Accounting Issue",
+    "attack_sequence": "1. Attacker constructs a multi-hop swap: USDC\u2192TOKEN_X\u2192TOKEN_Y.\n2. First hop (USDC\u2192TOKEN_X) generates protocol_fee_asset in TOKEN_X denomination.\n3. Second hop (TOKEN_X\u2192TOKEN_Y) generates protocol_fee_asset in TOKEN_Y denomination.\n4. Both fee assets are collected into fee_messages as separate BankMsg::Send entries to fee_collector_addr.\n5. The contract must hold sufficient TOKEN_X and TOKEN_Y balances from the swap proceeds to fulfill these sends.\n6. If perform_swap returns the fee amounts but the actual tokens were already sent to the pool (not held by the contract), the BankMsg::Send will fail.\n7. This depends entirely on perform_swap's internal implementation \u2014 if it keeps swapped output (minus fees) in the contract and the fees are deducted from the contract's balance, this works. If perform_swap sends output tokens directly to an intermediate destination, the contract won't have the fee tokens.\n8. The attack is to force transaction failure by causing the contract to not hold intermediate fee tokens, griefing the user.",
+    "confidence": 0.35,
+    "reasoning": "This is implementation-dependent on perform_swap. If the contract accounting is correct, fees are held by the contract after each swap. If not, the transaction fails atomically. The risk is transaction failure (griefing) rather than fund theft. The actual severity depends on whether perform_swap properly credits fee tokens to the contract before they're returned in the result struct.",
+    "trace_region": "contracts/pool-manager/src/router/commands.rs"
+  },
+  {
+    "file": "contracts/pool-manager/src/manager/update_config.rs",
+    "lines": "16-18",
+    "category": "Access Control Bypass / Missing Validation",
+    "attack_sequence": "1. Attacker gains ownership of the contract (e.g., via ownership transfer race or misconfigured transfer). 2. Attacker calls update_config with a malicious farm_manager_addr. 3. The new address is validated as a valid CosmWasm address but no check ensures it is a legitimate contract or that the pool manager is authorized to send funds to it. 4. The farm_manager_addr is stored and later used in swap/reward distribution logic, allowing the attacker to redirect farm rewards to an arbitrary contract they control.",
+    "confidence": 0.4,
+    "reasoning": "The function validates the address format via addr_validate but does not verify that the target contract is a legitimate farm manager. This is a minor issue since the attacker must first own the contract, but if ownership is compromised (e.g., via a weak or absent transfer-to-accept pattern), this becomes the escalation point for fund redirection.",
+    "trace_region": "contracts/pool-manager/src/manager/update_config.rs"
+  },
+  {
+    "file": "contracts/pool-manager/src/manager/update_config.rs",
+    "lines": "20-22",
+    "category": "Missing Validation / Unbounded Fee Setting",
+    "attack_sequence": "1. Attacker (as owner) calls update_config with pool_creation_fee set to an extremely large Coin amount. 2. No upper bound check exists on pool_creation_fee. 3. This could make pool creation prohibitively expensive, effectively DoS-ing pool creation. 4. Alternatively, setting pool_creation_fee to {amount: 0, denom: \"any\"} could allow fee-free pool creation, bypassing intended economic controls.",
+    "confidence": 0.55,
+    "reasoning": "The pool_creation_fee is directly stored without any bounds checking. An owner could set it to 0 to disable pool creation fees entirely, or set it to an absurdly large value. The code has no invariant enforcement on this value. This is a business logic gap where the update mechanism doesn't enforce invariants that other code likely assumes.",
+    "trace_region": "contracts/pool-manager/src/manager/update_config.rs"
+  },
+  {
+    "file": "contracts/pool-manager/src/manager/update_config.rs",
+    "lines": "24-26",
+    "category": "Missing Validation / Incomplete Feature Toggle Control",
+    "attack_sequence": "1. Attacker (as owner) calls update_config with feature_toggle set to a value that disables critical safety features. 2. No validation ensures certain features cannot be disabled simultaneously or that minimum features remain enabled. 3. If the feature_toggle controls critical safety mechanisms (e.g., pausing swaps), disabling them could expose other contracts to exploitation. 4. The FeatureToggle enum's possible states are not validated here for completeness or correctness.",
+    "confidence": 0.35,
+    "reasoning": "Without seeing the FeatureToggle enum definition, it's unclear whether the update allows dangerous combinations. The concern is that the config update is permissive\u2014it accepts any valid FeatureToggle without checking business invariants. This is a moderate finding contingent on what FeatureToggle controls.",
+    "trace_region": "contracts/pool-manager/src/manager/update_config.rs"
+  },
+  {
+    "file": "contracts/pool-manager/src/manager/update_config.rs",
+    "lines": "10-28",
+    "category": "Missing Event Emission / Partial Update Transparency",
+    "attack_sequence": "1. Owner calls update_config with all four parameters set to new values. 2. The response only emits a single 'action: update_config' attribute. 3. No attributes are emitted for which fields were changed or what the new values are. 4. Off-chain monitoring systems and governance watchers cannot detect what was changed. 5. A malicious owner could make subtle changes (e.g., changing fee_collector_addr by one character) and it would not be logged in the on-chain event data.",
+    "confidence": 0.65,
+    "reasoning": "The response only has a generic action attribute with no detail about what was changed. This makes it harder to detect malicious config changes via event monitoring. While not directly exploitable on-chain, it severely weakens off-chain governance oversight, which is a real operational security concern for a DeFi protocol managing funds.",
+    "trace_region": "contracts/pool-manager/src/manager/update_config.rs"
+  },
+  {
+    "file": "contracts/pool-manager/src/manager/update_config.rs",
+    "lines": "16-18",
+    "category": "State Manipulation / Fee Collector Redirect",
+    "attack_sequence": "1. Compromised owner calls update_config with fee_collector_addr pointing to attacker's contract. 2. All future pool creation fees and protocol fees would be redirected to the attacker-controlled address. 3. The existing fee_collector_addr's funds are not affected, but all future fee collection is stolen. 4. No timelock or multi-sig check exists on this critical parameter change.",
+    "confidence": 0.5,
+    "reasoning": "The fee_collector_addr change is immediate with no timelock, delay, or confirmation mechanism. For a contract managing pool fees in a DeFi protocol, changing where fees go should have additional safeguards. The lack of any governance delay is a design concern that amplifies the impact of ownership compromise.",
+    "trace_region": "contracts/pool-manager/src/manager/update_config.rs"
+  },
+  {
+    "file": "contracts/farm-manager/tests/common/suite.rs",
+    "lines": "62-63",
+    "category": "Missing Input Validation / Trust Boundary Violation",
+    "attack_sequence": [
+      "The `senders` array contains hardcoded `Addr::unchecked(...)` addresses that follow a predictable `mantra1...` pattern.",
+      "In test infrastructure, `senders` are used as the primary actors for all test operations (creator, senders for farm creation, etc.).",
+      "While this is test code, the pattern of using `Addr::unchecked` without validation mirrors a potential production pattern where sender addresses might not be properly validated against expected formats.",
+      "If production code follows this same pattern of accepting unchecked addresses, an attacker could supply crafted addresses that bypass expected validation."
+    ],
+    "confidence": 0.15,
+    "reasoning": "This is test infrastructure code, so the `Addr::unchecked` is expected in a testing context. However, the pattern establishes how addresses flow through the system and could indicate a testing blind spot if production code mirrors this behavior.",
+    "trace_region": "contracts/farm-manager/tests/common/suite.rs"
+  },
+  {
+    "file": "contracts/farm-manager/tests/common/suite.rs",
+    "lines": "174-195",
+    "category": "Incorrect State Change Ordering / Initialization Vulnerability",
+    "attack_sequence": [
+      "In `instantiate_default()`, the code first creates the epoch_manager (line 188) and fee_collector (line 189).",
+      "Then it sets time to a specific timestamp (line 196-197).",
+      "Then it instantiates the farm_manager (line 200-210).",
+      "The `instantiate` function accepts `epoch_manager_addr`, `fee_collector_addr`, and `pool_manager_addr` as plain strings without on-chain verification that these contracts actually exist or are functional at those addresses.",
+      "In the `TestingSuite`, `pool_manager_addr` is set to `MOCK_CONTRACT_ADDR_1` (line 46) which is just a string constant, not a real contract.",
+      "If production code similarly accepts contract addresses without verification during instantiation, an attacker could point the farm_manager to a malicious contract by providing a controlled address for pool_manager_addr."
+    ],
+    "confidence": 0.45,
+    "reasoning": "The test suite reveals that pool_manager_addr is set to a mock address constant without any on-chain existence check. If the farm_manager contract doesn't verify that the pool_manager contract exists and responds correctly during instantiation or subsequent operations, this creates a trust boundary violation where the farm_manager trusts external contracts that could be malicious.",
+    "trace_region": "contracts/farm-manager/tests/common/suite.rs"
+  },
+  {
+    "file": "contracts/farm-manager/tests/common/suite.rs",
+    "lines": "158-172",
+    "category": "Missing Validation / Parameter Manipulation",
+    "attack_sequence": [
+      "The `create_epoch_manager` function instantiates with `genesis_epoch: Uint64::new(1_712_242_800u64)` and `duration: Uint64::new(86_400u64)`.",
+      "These values are passed directly without overflow checks on the genesis_epoch + duration computation.",
+      "An attacker who controls the epoch_manager instantiation parameters (in a less controlled environment) could set genesis_epoch to a very large value, causing timestamp arithmetic overflows when the farm_manager computes epoch boundaries.",
+      "The `max_farm_epoch_buffer` of 14 and `farm_expiration_time` of `MONTH_IN_SECONDS` are passed without range validation visible in this test setup.",
+      "If min_unlocking_duration (86400) > max_unlocking_duration (31556926), the farm_manager would accept an invalid configuration where minimum is greater than maximum."
+    ],
+    "confidence": 0.3,
+    "reasoning": "While the test values chosen are valid (86400 < 31556926), the test infrastructure doesn't validate that these invariants hold. If the farm_manager contract doesn't enforce min_unlocking_duration <= max_unlocking_duration during instantiation, an attacker could create a farm with impossible unlock parameters, potentially locking funds indefinitely or bypassing unlock constraints.",
+    "trace_region": "contracts/farm-manager/tests/common/suite.rs"
+  },
+  {
+    "file": "contracts/farm-manager/tests/common/suite.rs",
+    "lines": "82-88",
+    "category": "Insufficient Balance Initialization / State Consistency",
+    "attack_sequence": [
+      "In `default_with_balances`, all four senders are initialized with the same `initial_balance`.",
+      "Each sender gets the full `initial_balance.clone()` - this means the total balance is 4x the initial_balance.",
+      "The `instantiate_default` function sets a `create_farm_fee` of `Coin { denom: \"uom\", amount: Uint128::new(1_000) }`.",
+      "If an attacker controls multiple addresses (which is trivial in CosmWasm if address validation is weak), they could create multiple farms draining the system's fee structure.",
+      "The test suite doesn't test scenarios where senders have insufficient balances for the create_farm_fee, which could mask vulnerabilities in how the contract handles fee payment failures."
+    ],
+    "confidence": 0.25,
+    "reasoning": "The test setup gives all actors equal balances without testing edge cases around fee payment. If the farm_manager doesn't properly handle or revert on insufficient fee payments, or if there's a race condition in fee collection via the fee_collector contract, funds could be misappropriated.",
+    "trace_region": "contracts/farm-manager/tests/common/suite.rs"
+  },
+  {
+    "file": "contracts/farm-manager/tests/common/suite.rs",
+    "lines": "44-46",
+    "category": "Hardcoded Mock Address / Trust Boundary Bypass",
+    "attack_sequence": [
+      "The `pool_manager_addr` is initialized to `Addr::unchecked(MOCK_CONTRACT_ADDR_1)` on line 46.",
+      "This address is used in `instantiate_default()` and passed to the farm_manager as a trusted contract address.",
+      "The test never verifies that the pool_manager at this address actually implements the expected interface.",
+      "In production, if the farm_manager contract performs callbacks to pool_manager (e.g., for LP token verification, weight queries via `query_lp_weight`), a malicious contract deployed at the pool_manager address could return arbitrary data.",
+      "If the farm_manager trusts pool_manager responses for critical operations like reward distribution weight calculations (`LpWeightResponse`), an attacker controlling a fake pool_manager could manipulate reward distributions."
+    ],
+    "confidence": 0.55,
+    "reasoning": "This is the most significant finding. The test suite reveals that the farm_manager accepts a pool_manager address without verifying its code hash or interface. The farm_manager types show it interacts with pool_manager for LP weight queries. If an attacker can influence which contract is registered as pool_manager (through upgrade mechanisms, governance, or instantiation parameter manipulation), they can manipulate the LpWeightResponse to redirect rewards. The fact that tests use a mock constant for this critical trust boundary suggests the production contract may also lack proper verification.",
+    "trace_region": "contracts/farm-manager/tests/common/suite.rs"
+  }
+]

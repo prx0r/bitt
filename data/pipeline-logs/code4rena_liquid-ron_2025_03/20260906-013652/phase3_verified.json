@@ -1,0 +1,115 @@
+[
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The LiquidRon contract inherits from OpenZeppelin's ERC4626, but the full deposit() function is not shown. However, if the contract overrides deposit() in a way that mints shares before completing the asset transfer (or before updating accounting), a reentrancy attack could be possible. The attacker could use a malicious ERC20 token with transfer hooks (like WRON) to call back into deposit() during the asset transfer, minting additional shares without fully depositing assets. This would allow share inflation and subsequent redemption for more RON than deposited. Since the code is truncated, we cannot confirm the exact implementation, but the vulnerability pattern described is plausible if the ERC4626 override follows the risky order.",
+    "file": "src/LiquidRon.sol",
+    "lines": "78-100",
+    "candidate_original": {
+      "file": "src/LiquidRon.sol",
+      "lines": "78-100",
+      "category": "Missing Reentrancy Guard on deposit / State update ordering",
+      "attack_sequence": [
+        "1. Attacker creates a malicious ERC20 token (WRON) that calls back into deposit() during the transferFrom.",
+        "2. Attacker calls deposit() with msg.value = X.",
+        "3. Inside deposit(), _mint(msg.sender, shares) is called BEFORE the corresponding _withdrawRONTo or balance update completes, or during the _transfer of assets from msg.sender to the vault.",
+        "4. On the reentrant call, the attacker's share balance has already been credited but the full asset accounting hasn't settled, allowing share inflation.",
+        "5. Attacker redeems inflated shares for more RON than deposited."
+      ],
+      "confidence": "low",
+      "reasoning": "The provided code is truncated and does not show the full deposit() implementation at line 78 or 169. ERC4626's standard deposit typically does _transfer assets then _mint shares, but without seeing the override we cannot confirm whether reentrancy is possible or whether there's a nonReentrant modifier. The reentrancy risk depends on whether the asset token is WRON (which the contract itself issues). Since WRON is the asset and it's a standard ERC20, a reentrancy callback is unlikely unless WRON has a hook. However, the contract's own receive() and fallback() could theoretically be targets. Low confidence because ERC4626 standard flow is generally safe, but truncation prevents full verification.",
+      "trace_region": "deposit"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The vulnerability is a classic first-depositor inflation attack on ERC4626 vaults. The contract inherits from ERC4626 without overriding _decimalsOffset(), which defaults to 0, meaning share price starts at 1:1. The contract's receive() function (line 469) accepts arbitrary RON deposits, allowing an attacker to: 1) Deposit 1 wei to become first depositor with 1 share, 2) Donate large RON directly to inflate asset-to-share ratio, 3) Front-run a large deposit from another user, causing their deposit to round down to 0 shares due to extreme inflation, 4) Attacker holds 1 share representing nearly all assets, then withdraws to drain others' deposits.",
+    "file": "src/LiquidRon.sol",
+    "lines": "78-100",
+    "candidate_original": {
+      "file": "src/LiquidRon.sol",
+      "lines": "78-100",
+      "category": "Inconsistent share/asset accounting via rounding manipulation",
+      "attack_sequence": [
+        "1. Attacker front-runs a large deposit by another user.",
+        "2. Attacker deposits 1 wei of RON first, receiving 1 share (first depositor gets 1:1).",
+        "3. Attacker donates a large amount of RON directly to the contract via receive() or a helper, inflating the asset-to-share ratio dramatically.",
+        "4. Next depositor deposits X RON and receives approximately X/(inflated_ratio) shares, which rounds to 0 if the ratio is extreme enough.",
+        "5. The attacker now holds 1 share representing nearly all assets in the vault.",
+        "6. Attacker redeems/withdraws and drains all deposited RON from other users."
+      ],
+      "confidence": "medium",
+      "reasoning": "This is the classic first-depositor inflation attack on ERC4626 vaults. The contract's receive() function (line 469) accepts arbitrary RON deposits, which amplifies this attack vector. OZ's ERC4626 includes _decimalsOffset() which defaults to 0 \u2014 if not overridden, the share price starts at 1:1 and rounding can zero out subsequent depositors' shares. The code inherits from ERC4626 without showing an override of _decimalsOffset, making this a plausible attack. However, we cannot confirm the absence of such an override from the truncated code.",
+      "trace_region": "deposit"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The getValidators() and _getValidators() functions return the entire unbounded validators array. If an attacker can repeatedly call _tryPushValidator (e.g., via deposit/delegate flows) to grow the array to hundreds of entries, then external contracts or off-chain services calling getValidators() will face extremely high gas costs or out-of-gas errors when trying to iterate over the returned array, effectively causing a denial-of-service for those read operations. The lack of pagination or length limits makes this a griefing vector.",
+    "file": "src/ValidatorTracker.sol",
+    "lines": "36-38",
+    "candidate_original": {
+      "file": "src/ValidatorTracker.sol",
+      "lines": "36-38",
+      "category": "missing validation / unbounded array return",
+      "attack_sequence": [
+        "1. Any external caller invokes getValidators() or _getValidators().",
+        "2. The function returns the entire `validators` array in memory with no length limit.",
+        "3. If the validator list grows very large (e.g. hundreds of entries pushed over time), each call allocates a large memory array.",
+        "4. A griefing strategy: an operator or anyone who can trigger _tryPushValidator repeatedly (e.g. via LiquidRon.deposit/delegate flows) can push many distinct validator addresses into the list.",
+        "5. Downstream external contracts that read getValidators() may face out-of-gas when trying to iterate or copy the returned array, or the gas cost of the call itself becomes very high, effectively DoS-ing read operations.",
+        "6. On-chain consumers (e.g. governance, dashboards) that loop over the returned array may exceed block gas limits."
+      ],
+      "confidence": "low",
+      "reasoning": "This is a low-severity informational finding. The array is unbounded, but the practical impact depends on how many validators can actually be added, which is bounded by real Ronin validators. It could cause griefing or high gas costs for consumers, but is unlikely to be exploitable for direct fund theft.",
+      "trace_region": "getValidators() external view returns (address[] memory)"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The _removeValidator function uses a swap-and-pop pattern where the last validator is moved to the index of the removed validator, and validatorIndex[lastValidator] is updated to the new index. However, the validatorIndex mapping for the removed validator (_validator) is never set to a sentinel value (like type(uint256).max) or removed. This leaves stale index data in the mapping. While validatorStakeActive[_validator] is set to false, any downstream code that reads validatorIndex[_validator] without first checking validatorStakeActive[_validator] could use the stale index to access the wrong validator (the one that was moved into that slot). This is a plausible state inconsistency that could lead to incorrect operations on validators, such as double-counting or misassigning stakes, depending on how LiquidRon.sol consumes this data.",
+    "file": "src/ValidatorTracker.sol",
+    "lines": "56-64",
+    "candidate_original": {
+      "file": "src/ValidatorTracker.sol",
+      "lines": "56-64",
+      "category": "state inconsistency / stale index after removal",
+      "attack_sequence": [
+        "1. _removeValidator is called for address A which is at index i in the array.",
+        "2. The last validator (address B) is moved to index i, and validatorIndex[B] is updated to i.",
+        "3. However, if any external reader or concurrent internal call cached validatorIndex[A] before the removal completes, that cached index is now stale and points to validator B's new position.",
+        "4. More importantly, the public `validatorIndex` mapping is stale for A (still holds the old index) \u2014 but since validatorStakeActive[A] is set to false, this stale value is somewhat harmless as long as every caller checks validatorStakeActive first.",
+        "5. The real risk: if any code path in LiquidRon uses `validatorIndex[addr]` without first checking `validatorStakeActive[addr]`, it would access the wrong validator. A concrete scenario would require tracing into LiquidRon.sol, which is outside this region, so the exact exploitable path is uncertain.",
+        "6. Additionally, `validatorCount` is decremented but never checked for underflow (though Solidity 0.8+ protects against this). The pop() call removes the last element."
+      ],
+      "confidence": "medium",
+      "reasoning": "The swap-and-pop pattern is standard, but the risk of stale index usage depends on downstream consumers. Since this is an abstract contract mixed into LiquidRon, any function in LiquidRon that reads validatorIndex without checking validatorStakeActive first would be vulnerable to operating on the wrong validator. This is a plausible bug class even if we can't trace the exact path here.",
+      "trace_region": "getValidators() external view returns (address[] memory)"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "low",
+    "exploit_description": "The vulnerability allows a validator to be repeatedly removed and re-added via _removeValidator and _tryPushValidator, causing the validators array to grow unbounded and wasting gas. While this doesn't lead to fund theft, it can be exploited to grief the system by increasing array size and gas costs for future operations that iterate over the array (e.g., getValidators). The lack of a cooldown or permanent removal mechanism enables this abuse.",
+    "file": "src/ValidatorTracker.sol",
+    "lines": "45-53",
+    "candidate_original": {
+      "file": "src/ValidatorTracker.sol",
+      "lines": "45-53",
+      "category": "missing validation / double-push guard relies on external state",
+      "attack_sequence": [
+        "1. _tryPushValidator checks validatorStakeActive[_validator] to decide whether to add.",
+        "2. If a validator is removed via _removeValidator (which sets validatorStakeActive to false), _tryPushValidator will re-add it.",
+        "3. This means a validator can be removed and re-added, getting a new index each time. If any external system relied on the validator's index being stable, this causes inconsistency.",
+        "4. More critically, each re-push increments validatorCount and appends to the array, potentially causing the array to grow without bound if remove+add cycles occur repeatedly.",
+        "5. The practical impact is limited to gas waste and array bloat, not direct fund theft."
+      ],
+      "confidence": "low",
+      "reasoning": "This is a design choice rather than a bug \u2014 the contract explicitly allows re-adding removed validators. The concern is mainly about unbounded array growth and gas griefing, which are low severity.",
+      "trace_region": "getValidators() external view returns (address[] memory)"
+    }
+  }
+]

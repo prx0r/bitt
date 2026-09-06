@@ -1,0 +1,1253 @@
+[
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "11-18",
+    "category": "business_logic",
+    "attack_sequence": [
+      "1. Call swap904369BE with pool=address(0) or arbitrary non-existent pool",
+      "2. The function accepts any address as pool with no validation that it is a valid seawater pool",
+      "3. If implementation delegates to pool with a fallback/malicious contract, unexpected behavior could occur"
+    ],
+    "confidence": 0.35,
+    "reasoning": "The interface allows arbitrary pool addresses. If the implementation does not validate pool addresses against an approved registry, an attacker could pass a malicious contract address as the pool. This is an interface-level observation; the actual validation depends on implementation. Low confidence since this is purely an interface file.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "84-88",
+    "category": "business_logic",
+    "attack_sequence": [
+      "1. Call burnPositionAE401070 with a position id that the caller does not own",
+      "2. If the implementation does not verify msg.sender is the position owner before burning, any user could burn anyone else's position",
+      "3. Liquidity becomes permanently inaccessible",
+      "4. The interface provides no indication that ownership is checked internally"
+    ],
+    "confidence": 0.45,
+    "reasoning": "burnPositionAE401070 takes only a position id with no explicit from/owner parameter. The implementation must verify ownership, but the interface signature provides no constraint. If implementation relies solely on msg.sender checks and there's any authorization bug, positions can be burned by non-owners. Medium-low confidence as this depends on implementation.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "89-93",
+    "category": "business_logic",
+    "attack_sequence": [
+      "1. Call transferPositionEEC7A3CD with from=address of position owner, to=attacker's address",
+      "2. The function takes explicit from/to parameters rather than relying on msg.sender as from",
+      "3. If the implementation uses the 'from' parameter as the transfer source instead of verifying msg.sender==owner, an attacker could transfer any position",
+      "4. Even if msg.sender==from is checked, the explicit 'from' parameter is unusual and suggests potential authorization confusion"
+    ],
+    "confidence": 0.55,
+    "reasoning": "transferPositionEEC7A3CD accepts explicit 'from' and 'to' addresses. In a well-designed system, transfers should use msg.sender as the source. The presence of an explicit 'from' parameter suggests the implementation might use it as the transfer source, potentially bypassing ownership checks. The NatSpec says 'usable only by the NFT manager' suggesting it may be called by a contract rather than directly by users, which could introduce its own trust issues if the NFT manager has any vulnerabilities.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "109-116",
+    "category": "business_logic",
+    "attack_sequence": [
+      "1. Call collectSingleTo6D76575F with recipient=attacker address and id=victim's position id",
+      "2. The function takes an explicit recipient parameter separate from the caller",
+      "3. If the implementation does not verify that msg.sender is the position owner before collecting fees to the specified recipient, an attacker could redirect fees from any position to themselves",
+      "4. This could drain accumulated fees from all positions if there's no ownership check in the implementation"
+    ],
+    "confidence": 0.5,
+    "reasoning": "collectSingleTo6D76575F accepts an arbitrary recipient address. The implementation must verify the caller owns the position, but the interface provides no such constraint. If there's any authorization gap, fees from any position could be redirected. The collect7F21947C function similarly takes arrays of pools/ids with no explicit caller verification at the interface level.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "21-28",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "1. Call swap2ExactIn41203F1D with from=to=someToken (same address for both)",
+      "2. The function accepts arbitrary from/to addresses with no validation they are different or valid pool tokens",
+      "3. If the implementation doesn't check from != to, a self-swap could consume gas and potentially manipulate internal state depending on implementation"
+    ],
+    "confidence": 0.3,
+    "reasoning": "The two-stage swap function accepts arbitrary token addresses. If from==to or if either is not a valid token in the pool registry, the implementation behavior depends on internal validation not visible in this interface.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "47-55",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "1. Call swap2ExactInPermit236B2FDD8 with minOut=0",
+      "2. Set deadline to a very far future timestamp or past timestamp depending on implementation",
+      "3. The NatSpec says 'permit2's max amount must be set to amount' but this is a documentation-only constraint",
+      "4. If the implementation doesn't enforce maxAmount==amount, the permit2 signature could allow a larger transfer than the swap uses, with excess tokens going to a chooser contract"
+    ],
+    "confidence": 0.4,
+    "reasoning": "The NatSpec comment states 'permit2's max amount must be set to amount' but this is not enforced by the interface. If the implementation relies on callers respecting this constraint rather than verifying it, the permit2 maxAmount could exceed the actual swap amount. However, this depends on how permit2 transferFrom works with the excess.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "76-82",
+    "category": "business_logic",
+    "attack_sequence": [
+      "1. Call mintPositionBC5B086D with lower >= upper or with extreme tick values",
+      "2. The interface accepts arbitrary int32 values for lower and upper ticks",
+      "3. If the implementation doesn't validate lower < upper or that ticks are within valid tick spacing bounds, invalid positions could be created"
+    ],
+    "confidence": 0.4,
+    "reasoning": "mintPosition accepts raw tick values with no interface-level constraints. The implementation should validate tick ordering and spacing, but this is purely an interface observation.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "117-122",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "1. Call collect7F21947C with mismatched arrays (pools.length != ids.length)",
+      "2. Pass empty arrays to potentially bypass checks",
+      "3. Pass duplicate pool/id combinations to collect fees multiple times if implementation iterates without deduplication"
+    ],
+    "confidence": 0.4,
+    "reasoning": "The batch collect function takes two separate arrays. If pools and ids have different lengths, the implementation could access out-of-bounds. Additionally, if the implementation collects for each pair sequentially without checking for duplicates, fees could potentially be collected multiple times from the same position in a single call.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": [
+      84,
+      89
+    ],
+    "category": "access_control",
+    "attack_sequence": [
+      "1. Call burnPositionAE401070(id) with any position id",
+      "2. The interface defines no access control parameter (no 'from' or owner parameter)",
+      "3. If the implementation follows the interface signature, any caller can burn any position",
+      "4. Compare with transferPositionEEC7A3CD which takes (id, from, to) - the presence of 'from' parameter suggests ownership checks are done against caller or a parameter",
+      "5. burnPositionAE401070 takes only (id) - if the implementation checks msg.sender==owner internally this is fine, but the interface does not enforce it",
+      "6. However, burnPositionAE401070 taking only id is a potential issue if the implementation trusts caller blindly vs the pattern used elsewhere"
+    ],
+    "reasoning": "burnPositionAE401070 accepts only an id with no 'from' address parameter, unlike transferPositionEEC7A3CD which explicitly includes 'from' and 'to'. If the implementation does not properly check msg.sender against position owner, any caller could burn any position. This is a signature-level concern that warrants implementation review. Confidence is moderate since this is an interface-only view and the implementation may check ownership internally via msg.sender.",
+    "confidence": 0.45,
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": [
+      11,
+      21,
+      31,
+      47
+    ],
+    "category": "missing_parameter_validation",
+    "attack_sequence": [
+      "1. swap904369BE accepts any address as 'pool' parameter with no validation hint in the interface",
+      "2. swap2ExactIn41203F1D accepts any 'from' and 'to' addresses",
+      "3. A caller could pass arbitrary pool addresses or token addresses",
+      "4. If the implementation does not validate that pool is a registered/whitelisted pool, an attacker could point swaps at malicious contract addresses",
+      "5. Similarly, arbitrary 'from'/'to' tokens in swap2ExactIn could be used to manipulate routing",
+      "6. The interface provides no constraint that 'from' and 'to' are valid tokens in the system"
+    ],
+    "reasoning": "All swap functions accept arbitrary address parameters for pools and tokens without any interface-level documentation or guarantee that these are validated. The implementation must validate these, but the interface design provides no safety net. If any implementation trusts these addresses without validation, it could lead to interactions with malicious contracts.",
+    "confidence": 0.4,
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": [
+      109,
+      117
+    ],
+    "category": "inconsistent_access_control",
+    "attack_sequence": [
+      "1. collectSingleTo6D76575F accepts (pool, id, recipient) - recipient is arbitrary",
+      "2. collect7F21947C accepts (pools[], ids[]) - no recipient parameter, likely sends to msg.sender",
+      "3. An attacker could call collectSingleTo6D76575F with someone else's position id and redirect fees to themselves",
+      "4. If the implementation checks position ownership of msg.sender against id, this is safe. But the explicit 'recipient' parameter suggests it might bypass msg.sender check",
+      "5. The inconsistency between the two collect functions (one has recipient, one doesn't) suggests different security models"
+    ],
+    "reasoning": "collectSingleTo6D76575F allows specifying an arbitrary recipient for fee collection from a position identified by id. If the implementation only checks that the caller owns the position but allows redirecting to a different recipient, this is by design. However, if the implementation does NOT check ownership before sending to the arbitrary recipient, any caller could drain fees from any position to their own address.",
+    "confidence": 0.5,
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": [
+      31,
+      47
+    ],
+    "category": "permit2_signature_validation",
+    "attack_sequence": [
+      "1. swapPermit2EE84AD91 accepts a permit2 signature (sig parameter) along with nonce, deadline, maxAmount",
+      "2. swap2ExactInPermit236B2FDD8 accepts (from, to, amount, minOut, nonce, deadline, sig) - no maxAmount parameter",
+      "3. In swap2ExactInPermit236B2FDD8, the comment says 'permit2 max amount must be set to amount' - this is an assumption about the permit2 allowance",
+      "4. If the implementation uses amount as the transfer amount but the permit2 signature authorizes a larger maxAmount, and the implementation does not verify they match, an attacker could replay or misuse the signature",
+      "5. The asymmetry between swapPermit2EE84AD91 (explicit maxAmount) and swap2ExactInPermit236B2FDD8 (implicit) creates a potential mismatch"
+    ],
+    "reasoning": "swap2ExactInPermit236B2FDD8 relies on the assumption that the permit2 max amount equals the swap amount, documented only as a comment. If the implementation does not strictly verify this invariant, a signature authorizing a larger amount could be exploited. The first function explicitly takes maxAmount as a parameter suggesting it's important for safety, while the second function omits it and relies on an assumption.",
+    "confidence": 0.55,
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": [
+      58,
+      68
+    ],
+    "category": "state_manipulation_via_view",
+    "attack_sequence": [
+      "1. quote72E2ADE7 and quote2CD06B86E are documented as 'always revert with Error(string(amountOut))'",
+      "2. If a MEV bot or front-runner observes these quotes in the mempool, they can extract exact swap parameters",
+      "3. The quote functions appear to be view functions that return data via reverts, but if they have side effects (state changes) this could be problematic",
+      "4. More importantly, an attacker could use these to get exact pricing information for sandwich attacks"
+    ],
+    "reasoning": "The quote functions return swap amounts by reverting. While this is a common pattern for getting return values from external calls in Solidity, if the implementation has any state-changing side effects during the quote (even accidentally through delegatecall or staticcall misuse), this could be exploitable. Additionally, the revert-with-data pattern exposes exact pricing to mempool observers.",
+    "confidence": 0.35,
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "89-94",
+    "category": "access_control",
+    "attack_sequence": [
+      "1. Attacker calls transferPositionEEC7A3CD(id, victim, attacker) passing victim's address as `from` and attacker's as `to`",
+      "2. If the implementation trusts the `from` parameter instead of checking msg.sender or NFT ownership, the attacker can transfer positions they don't own",
+      "3. Attacker drains victim's position by transferring it to themselves"
+    ],
+    "confidence": 0.7,
+    "reasoning": "The transferPositionEEC7A3CD function accepts `from` and `to` as explicit parameters rather than deriving them from msg.sender or NFT ownership checks. This is a suspicious pattern \u2014 if the implementation validates `from` by comparing against the stored owner but doesn't verify msg.sender == owner (only msg.sender == from or similar), or worse, if it trusts the `from` parameter without proper authorization, this enables unauthorized position transfers. The function is on a user-permission entry point interface, meaning any user can call it. The key question is whether the implementation enforces that msg.sender is the owner of the position or the approved operator.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "76-83",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "1. Attacker calls mintPositionBC5B086D(pool, lower, upper) with arbitrary tick values",
+      "2. If the implementation doesn't validate that lower < upper, that they are valid tick spacing multiples, or that the pool exists, unexpected behavior may occur",
+      "3. If lower >= upper, minting may succeed with zero range and lock liquidity",
+      "4. If ticks aren't multiples of tick spacing, the position may be misaligned"
+    ],
+    "confidence": 0.5,
+    "reasoning": "The interface doesn't specify any validation requirements for lower/upper ticks. While this is just an interface and the implementation should enforce constraints, the entry point being user-permission with no specified preconditions means validation must happen in implementation. Common bugs include allowing lower >= upper (creating degenerate positions), allowing ticks that aren't aligned to tick spacing, or allowing positions in non-existent pools.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "109-114",
+    "category": "access_control",
+    "attack_sequence": [
+      "1. Attacker calls collectSingleTo6D76575F(pool, id, attacker_address) passing their own address as recipient",
+      "2. If the implementation doesn't verify that msg.sender owns position `id`, fees are sent to the attacker",
+      "3. Even if ownership is checked, verify that `recipient` parameter allows redirecting funds to any address"
+    ],
+    "confidence": 0.65,
+    "reasoning": "The collectSingleTo6D76575F function allows specifying an arbitrary `recipient` address. If the implementation only checks that the position exists but doesn't verify msg.sender ownership, or if it checks ownership incorrectly, an attacker can redirect collected fees to any address. The explicit `recipient` parameter is a trust boundary \u2014 it should only be usable by the position owner.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "21-29",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "1. Attacker calls swap2ExactIn41203F1D(from, to, amount, minOut) where from == to",
+      "2. If the implementation doesn't validate that from != to, a self-swap could manipulate pool state or extract fees in unexpected ways",
+      "3. Additionally, if from/to aren't validated against known pool tokens, the function may interact with arbitrary contracts"
+    ],
+    "confidence": 0.55,
+    "reasoning": "The two-token swap function takes arbitrary from/to token addresses. If the implementation doesn't validate these are actual pool tokens and that from != to, it could be used to interact with arbitrary contracts via the swap router's token transfer approvals, potentially enabling token approval exploitation or oracle manipulation if the intermediate pool lookup is exploitable.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "84-88",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "1. Attacker calls burnPositionAE401070(id) on a position they don't own",
+      "2. If the implementation doesn't verify msg.sender == position owner, the attacker burns someone else's position",
+      "3. The liquidity becomes permanently inaccessible per the function documentation",
+      "4. This is a denial-of-service attack against the position owner's funds"
+    ],
+    "confidence": 0.65,
+    "reasoning": "Burning a position makes its liquidity permanently inaccessible. This is a destructive operation that should strictly require position ownership. The interface specifies only `id` as parameter \u2014 there's no explicit indication of authorization check. If the implementation fails to verify msg.sender owns the position (or is approved), any user can destroy any position's liquidity.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "31-44",
+    "category": "replay_attack",
+    "attack_sequence": [
+      "1. Attacker obtains a signed permit2 message from a victim for one swap",
+      "2. Attacker calls swapPermit2EE84AD91 with the victim's signature but modified parameters (different pool, different amount, etc.)",
+      "3. If the implementation doesn't strictly validate that the signature covers the exact parameters being used, the permit2 can be replayed with different swap parameters",
+      "4. Even with nonce tracking, the signature may not bind to specific swap parameters (pool, zeroForOne, amount, priceLimit)"
+    ],
+    "confidence": 0.6,
+    "reasoning": "The permit2 swap function passes nonce, deadline, maxAmount, and sig as separate parameters. The critical question is whether the permit2 signature commits to the specific swap parameters (pool, zeroForOne, amount, priceLimit) or only to the token transfer amount. If it only authorizes a transfer of maxAmount tokens without binding to specific swap parameters, the attacker could use one victim's permit2 to execute swaps at unfavorable prices or in different pools.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "58-66",
+    "category": "side_channel",
+    "attack_sequence": [
+      "1. Attacker calls quote72E2ADE7 with various parameters to extract oracle/price information",
+      "2. The function reverts with the quoted amount encoded in the error message (Error(string(amountOut)))",
+      "3. This read-only oracle is accessible to any caller, potentially enabling MEV extraction or sandwich attacks",
+      "4. Combined with other entry points, attacker can front-run swaps using precise quote data"
+    ],
+    "confidence": 0.45,
+    "reasoning": "The quote functions return exact swap output amounts via revert messages. While this is by design for read access, it provides a free oracle that can be used to plan MEV attacks. This is more of a design observation than a vulnerability \u2014 the information is meant to be public. However, if other functions don't have slippage protection (e.g., swap904369BE has no minOut parameter), this enables efficient sandwich attacks.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "11-19",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "1. Attacker calls swap904369BE(pool, zeroForOne, amount, priceLimit) with priceLimit set to 0 or type(uint256).max",
+      "2. A priceLimit of 0 or max effectively removes price protection, allowing the swap to execute at any price",
+      "3. If the caller is a contract without proper slippage checks, the MEV searcher can sandwich this swap",
+      "4. The signed integer `amount` being negative means exactOut \u2014 verify no overflow in conversion to uint256 internally"
+    ],
+    "confidence": 0.55,
+    "reasoning": "The swap904369BE function accepts a signed integer amount (negative for exactOut) and a priceLimit. Key risks: 1) priceLimit of 0 or type(uint256).max removes all price protection, enabling sandwich attacks; 2) The signed-to-unsigned conversion for exactOut swaps could overflow if not handled properly; 3) No minimum output parameter means the caller must trust the priceLimit alone for slippage protection, which is insufficient if priceLimit is poorly chosen.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "76-84",
+    "category": "missing_validation",
+    "attack_sequence": "1. Call mintPositionBC5B086D with a pool address and lower/upper tick values where lower >= upper or where ticks are not multiples of the pool's tick spacing.\n2. The interface does not constrain tick validity; the implementation must enforce tick spacing and lower < upper, but if the implementation trusts these values without validation, positions with invalid ranges or misaligned ticks could be created, leading to zero-liquidity positions that can be burned to extract fees or grief pool state.",
+    "confidence": 0.4,
+    "reasoning": "The interface accepts raw int32 tick values without documenting constraints. If the implementing contract does not validate that lower < upper and both are multiples of the pool's tick spacing, invalid positions could be minted. This is a lower-confidence finding since we only see the interface, not the implementation, and typical AMM implementations do validate ticks.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "89-93",
+    "category": "broken_access_control",
+    "attack_sequence": "1. Call transferPositionEEC7A3CD with the id of a position owned by another user, passing the victim's address as 'from' and the attacker's address as 'to'.\n2. If the implementation only checks that msg.sender matches 'from' (or worse, does not verify ownership at all), the attacker can reposition another user's tokens.\n3. If the implementation checks msg.sender against the position owner (not the 'from' parameter), the 'from' parameter is misleading but not exploitable \u2014 the 'from' parameter could be used to bypass a naive check like require(from == msg.sender).",
+    "confidence": 0.55,
+    "reasoning": "The function takes explicit 'from' and 'to' parameters for a transfer, which is unusual. The critical question is whether the implementation checks msg.sender == positionOwner(id) or msg.sender == from. If it checks the 'from' parameter directly against the position owner without also verifying msg.sender == from, an attacker who knows the owner address could call with from=owner, to=attacker. The NatSpec says 'usable only by the NFT manager' which suggests access control exists, but the parameter design is suspicious.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "109-114",
+    "category": "missing_validation",
+    "attack_sequence": "1. Call collectSingleTo6D76575F with a pool address and id of a position not owned by the caller, and recipient set to the attacker's address.\n2. If the implementation does not verify that msg.sender owns the position (id), the attacker can redirect accrued fees from any position to themselves.\n3. The 'recipient' parameter adds an additional indirection \u2014 even if ownership is checked against msg.sender, the fees could potentially be sent to an arbitrary recipient rather than the position owner, which may not match intended behavior.",
+    "confidence": 0.45,
+    "reasoning": "The function allows specifying an arbitrary 'recipient' for fee collection. If the implementation checks that msg.sender owns the position but doesn't require recipient == msg.sender, fees go to an arbitrary address (which could be by design). More critically, if ownership isn't checked, anyone can claim anyone's fees. The interface design suggests this may be intentional for composability, but warrants verification.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "31-44",
+    "category": "insufficient_input_validation",
+    "attack_sequence": "1. Call swapPermit2EE84AD91 with maxAmount set much higher than the actual 'amount' parameter.\n2. If the permit2 signature was signed with a higher maxAmount (e.g., from a previous transaction or a malicious frontend), the contract could potentially drain more tokens than the user intended via a front-running or signature replay attack.\n3. The NatSpec for swap2ExactInPermit236B2FDD8 says 'permit2's max amount must be set to amount' \u2014 if this constraint is not enforced in code, the swap2 variant allows Permit2 signatures with higher max amounts to be exploited.",
+    "confidence": 0.5,
+    "reasoning": "The swapPermit2 function accepts a separate maxAmount parameter, while swap2ExactInPermit2 documents that max amount must equal amount but provides no parameter for it (implying enforcement elsewhere). If the implementation of swapPermit2 does not verify maxAmount == abs(amount), a Permit2 signature with a higher allowance could be used with a smaller swap, leaving remaining allowance for future exploitation. This is a common Permit2 integration issue.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "58-66",
+    "category": "missing_validation",
+    "attack_sequence": "1. Call quote72E2ADE7 or quote2CD06B86E with extreme priceLimit values (e.g., 0 or type(uint256).max) to manipulate the quote output.\n2. If external systems (off-chain or on-chain) rely on these quotes for price oracle purposes, manipulated quotes could lead to incorrect trading decisions.\n3. Since quotes always revert with the result (used as an oracle pattern), reverts are expensive and could be used for griefing or oracle manipulation if consumed by other contracts.",
+    "confidence": 0.35,
+    "reasoning": "Quote functions that revert with results are an oracle pattern. While this is a known design pattern (similar to Uniswap V3's uniswapV3Pool().observe()), the priceLimit parameter allows the caller to influence the quoted price. If another contract consumes these quotes without validating the priceLimit parameter, it could receive manipulated price data. This is more of a design concern than a direct vulnerability.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "11-18",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "Attacker calls swap904369BE with an arbitrary pool address that the executor has no approval to use",
+      "If the executor implementation doesn't validate the pool address against a whitelist, an attacker could direct swaps through malicious pool contracts that reenter or manipulate state",
+      "The priceLimit parameter is attacker-controlled - setting it to extreme values could lead to unfavorable swaps or exploited slippage if the implementation doesn't enforce bounds"
+    ],
+    "confidence": 0.35,
+    "reasoning": "This is an interface file, so we cannot confirm missing validation in the implementation. However, the interface exposes pool, zeroForOne, amount, and priceLimit as fully untrusted inputs with no documented constraints. If the implementation trusts the pool address without validation, this could be exploited.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "21-30",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "Attacker calls swap2ExactIn41203F1D with from/to addresses pointing to attacker-controlled tokens",
+      "If the implementation routes through arbitrary token contracts, malicious tokens could perform callbacks/reentrancy during transfer",
+      "Setting minOut to 0 removes any slippage protection, though this only harms the caller themselves"
+    ],
+    "confidence": 0.3,
+    "reasoning": "The from/to parameters are completely untrusted. If the implementation doesn't validate these against known tokens, arbitrary token interactions could be exploited. This is an interface so implementation details are unavailable.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "76-83",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "Attacker calls mintPositionBC5B086D with an arbitrary pool address",
+      "Attacker passes lower >= upper tick values, creating an invalid position range",
+      "If the implementation doesn't validate tick ordering or that ticks are multiples of the pool's tick spacing, this could create positions in invalid states",
+      "Creating positions on non-existent or malicious pools could lead to unexpected behavior"
+    ],
+    "confidence": 0.35,
+    "reasoning": "The pool, lower, and upper tick values are all untrusted. If the implementation doesn't enforce lower < upper, valid tick spacing, and pool existence, invalid positions could be created. This is interface-level analysis only.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "84-86",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "Attacker calls burnPositionAE401070 with a position id they do not own",
+      "If the implementation doesn't properly check msg.sender or delegated authority owns the position, any position could be burned",
+      "Burning a position permanently removes the liquidity, causing loss of funds to the legitimate owner"
+    ],
+    "confidence": 0.3,
+    "reasoning": "The interface does not show any access control mechanism in the signature. If the implementation relies solely on the caller being the NFT owner without proper verification, unauthorized burning could occur.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "89-93",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "Attacker calls transferPositionEEC7A3CD with id of a victim's position, their own address as 'from', and their address as 'to'",
+      "If the implementation trusts the caller-supplied 'from' parameter instead of checking actual ownership, any position could be transferred",
+      "Alternatively, if the 'to' parameter is not validated, positions could be sent to zero address causing loss"
+    ],
+    "confidence": 0.45,
+    "reasoning": "The transferPosition function takes user-supplied 'from' and 'to' parameters. If the implementation validates ownership against the 'from' parameter provided by the caller rather than msg.sender, an attacker could claim to be any address. The interface comment says 'usable only by the NFT manager' suggesting this may be privileged, but the trust boundary analysis shows it as user-level permission.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "109-116",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "Attacker calls collectSingleTo6D76575F with a pool they don't have a position in and an id they don't own",
+      "If the implementation doesn't verify caller owns the position, fees could be collected to the attacker-specified recipient",
+      "The recipient parameter is arbitrary - if ownership is not checked, fees from any position could be redirected"
+    ],
+    "confidence": 0.4,
+    "reasoning": "The recipient parameter is fully attacker-controlled. If the implementation doesn't verify that msg.sender owns the position 'id' in the given 'pool', an attacker could collect fees from any position and redirect them to any address.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "117-125",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "Attacker calls collect7F21947C with arrays of pools and ids belonging to other users",
+      "If ownership is not verified per-position, an attacker could batch-collect fees from multiple positions",
+      "The parallel arrays pools[] and ids[] could have mismatched lengths, potentially causing out-of-bounds access in the implementation"
+    ],
+    "confidence": 0.35,
+    "reasoning": "Two dynamic arrays are passed without length validation at the interface level. If the implementation doesn't check array length consistency, array index out-of-bounds could occur. Fee collection without ownership verification would be a critical vulnerability.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "11-19, 89-95",
+    "category": "access_control_bypass",
+    "attack_sequence": [
+      "1. Call transferPositionEEC7A3CD with id=X, from=victimAddress, to=attackerAddress.",
+      "2. The function is declared as 'external' with no access modifier indicating it requires specific authorization beyond what's shown in the interface.",
+      "3. If the implementation does not properly validate that msg.sender is the position owner or authorized by the owner, an attacker can transfer any position to themselves."
+    ],
+    "confidence": 0.55,
+    "reasoning": "The interface declares transferPositionEEC7A3CD as a public external function with from/to parameters but no visibility restriction is evident in the interface. The comment says 'usable only by the NFT manager' but the interface provides no enforcement of this. The critical question is whether the implementation enforces ownership checks. Since we only see the interface, the parameter `from` could allow an impersonation attack if the implementation trusts the caller-provided `from` parameter rather than verifying msg.sender matches the owner.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "21-29",
+    "category": "missing_slippage_protection_in_base_function",
+    "attack_sequence": [
+      "1. The swap904369BE function accepts a priceLimit parameter but there is no explicit minimum output amount parameter.",
+      "2. An attacker or MEV bot can sandwich a user calling swap904369BE by front-running to move the price, letting the user swap at a terrible rate up to the priceLimit boundary.",
+      "3. The two-hop swap2ExactIn41203F1D has minOut protection, but the single-pool swap does not."
+    ],
+    "confidence": 0.5,
+    "reasoning": "swap904369BE only uses priceLimit as slippage protection, which may be too coarse. A priceLimit provides a boundary but the actual output could still be significantly worse than expected between the current price and the limit. This is a design-level concern rather than a code bug. The priceLimit mechanism itself could be manipulated if an attacker can influence what the pool considers the 'price' at execution time.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "47-56",
+    "category": "missing_maxAmount_in_permit2_swap",
+    "attack_sequence": [
+      "1. swap2ExactInPermit236B2FDD8 accepts nonce, deadline, sig for permit2 authorization but notably does NOT accept a maxAmount parameter (unlike swapPermit2EE84AD91 which does).",
+      "2. The NatSpec says 'permit2's max amount must be set to amount' but this is advisory, not enforced.",
+      "3. If a user pre-approves a large maxAmount in permit2 for convenience, the swap2 function will use whatever was set in the permit2 allowance rather than limiting to the `amount` parameter.",
+      "4. An attacker who can front-run or replay the signature with a modified `amount` could drain up to the full permit2 allowance."
+    ],
+    "confidence": 0.65,
+    "reasoning": "The asymmetry between swapPermit2EE84AD91 (which has maxAmount) and swap2ExactInPermit236B2FDD8 (which lacks it) is notable. The NatSpec comment is a soft guarantee that relies on correct off-chain behavior. If a user creates a permit2 signature with maxAmount > amount, and the implementation doesn't enforce maxAmount == amount, the function could be abused to extract more tokens than intended.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "76-78, 84-85",
+    "category": "missing_validation_parameters",
+    "attack_sequence": [
+      "1. mintPositionBC5B086D accepts pool, lower, upper with no validation visible in the interface.",
+      "2. An attacker could pass lower == upper, creating a zero-liquidity position.",
+      "3. More critically, if lower > upper (inverted tick range), the resulting position behavior depends on implementation; it could create an illogical position that accumulates fees incorrectly or traps tokens.",
+      "4. burnPositionAE401070 accepts any id - if the implementation doesn't verify ownership, anyone could burn anyone's position."
+    ],
+    "confidence": 0.55,
+    "reasoning": "The interface shows no constraints on tick ordering (lower < upper) or tick alignment to tick spacing. While the implementation likely validates these, the interface exposes a wide attack surface for parameter manipulation. The burn function is especially concerning if it doesn't enforce ownership checks.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "109-116, 117-124",
+    "category": "fee_theft_via_recipient_manipulation",
+    "attack_sequence": [
+      "1. collectSingleTo6D76575F allows specifying an arbitrary `recipient` parameter.",
+      "2. If the implementation checks that msg.sender owns position `id` but sends fees to the caller-specified `recipient`, this is correct behavior (owner decides where fees go).",
+      "3. However, if collect7F21947C (batch collect) does not properly verify that ALL positions in the ids array belong to the caller, an attacker could include victim positions in their batch collect call.",
+      "4. Fees from victim positions would then be sent to the attacker (assuming collect7F21947C sends to msg.sender)."
+    ],
+    "confidence": 0.6,
+    "reasoning": "The batch collect function collect7F21947C takes parallel arrays of pools and ids but has no recipient parameter (unlike collectSingleTo6D76575F). This suggests fees go to msg.sender. If the implementation iterates over positions and collects from each without verifying ownership of each, an attacker could include positions they don't own in the batch, extracting their fees.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "58-66",
+    "category": "quote_manipulation_via_reentrancy",
+    "attack_sequence": [
+      "1. quote72E2ADE7 reverts with the quote amount as the revert message (a known pattern for extracting return values from view-like calls in non-view functions).",
+      "2. If this function actually modifies state (makes a swap) before reverting, it could be used as a reentrancy vector.",
+      "3. An attacker contract calls quote72E2ADE7, catches the revert, and reads the quoted amount. If the state was modified during the quote, subsequent legitimate swaps could be affected.",
+      "4. More practically, if multiple quote calls can be chained before a state-changing swap, the attacker could use stale or manipulated state."
+    ],
+    "confidence": 0.45,
+    "reasoning": "The quote functions use revert-as-return-value pattern which is unconventional. If the implementation actually executes the swap logic before reverting (to compute the output), any state changes during execution could be problematic. However, this is likely a view-like simulation that reverts all state changes. The risk is low if properly implemented as a full revert, but the pattern is error-prone.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "89-95",
+    "category": "unauthorized_position_transfer",
+    "attack_sequence": [
+      "1. Call transferPositionEEC7A3CD(id, victimAddress, attackerAddress).",
+      "2. If the implementation checks `msg.sender == ownerOf(id)` and then uses the provided `from` parameter as the source of the transfer without verifying `from == ownerOf(id)`, an attacker cannot exploit this.",
+      "3. BUT if the implementation trusts the `from` parameter for balance/ownership accounting rather than msg.sender, and the NFT transfer isn't atomic with the position tracking, an attacker could transfer the NFT away from the victim and then call this function to move the position's underlying liquidity.",
+      "4. The separation of the `from` parameter from msg.sender suggests the implementation might use from for state updates rather than msg.sender, creating a potential bypass."
+    ],
+    "confidence": 0.5,
+    "reasoning": "The presence of explicit `from` and `to` address parameters in a transfer function is suspicious. Typically, position transfers would use msg.sender as the source. By providing `from` as a parameter, the implementation might be doing double-dispatch where it transfers the NFT AND updates internal accounting. If the NFT transfer happens but the internal accounting doesn't properly verify ownership, or if there's a gap between NFT ownership check and position state update, an attacker could exploit the inconsistency.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "11-18",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "1. Attacker calls swap904369BE with a pool address they control or a malicious contract that implements the pool interface",
+      "2. The function accepts any address as pool without validation",
+      "3. The priceLimit parameter has no bounds checking - could be set to extreme values",
+      "4. The amount can be negative (exactOut) potentially causing unexpected behavior if pool implementation doesn't properly handle signed integers"
+    ],
+    "confidence": 0.3,
+    "reasoning": "The interface itself defines the function signature but the actual validation would be in the implementation. Without seeing the implementation, we cannot confirm whether pool addresses are validated. However, the interface design suggests the caller controls all parameters freely.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "21-27",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "1. Attacker calls swap2ExactIn41203F1D with arbitrary from/to token addresses",
+      "2. No validation is evident in the interface that from/to are legitimate tokens in the system",
+      "3. An attacker could potentially specify a malicious contract as either from or to token",
+      "4. minOut of 0 would accept any output amount, potentially enabling sandwich attacks on users who forget to set proper minOut"
+    ],
+    "confidence": 0.25,
+    "reasoning": "The two-stage swap function takes arbitrary token addresses. If the implementation routes through multiple pools, invalid token addresses could cause unexpected behavior. A minOut of 0 is valid per the interface but dangerous.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "84-88",
+    "category": "missing_authorization_in_interface",
+    "attack_sequence": [
+      "1. Attacker calls burnPositionAE401070 with any position id",
+      "2. The interface shows no sender verification parameter - authorization must be checked in implementation",
+      "3. If implementation has an authorization bug, an attacker could burn any position making liquidity inaccessible permanently",
+      "4. The comment says leaving liquidity inaccessible which is a permanent loss - highest severity if authorization is bypassed"
+    ],
+    "confidence": 0.35,
+    "reasoning": "The burn function permanently locks liquidity. The trust boundary depends entirely on implementation-level authorization checks that are not visible in this interface. If the implementation relies on msg.sender correctly, this is fine, but any bug in authorization would be catastrophic.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "89-93",
+    "category": "missing_authorization",
+    "attack_sequence": [
+      "1. Attacker calls transferPositionEEC7A3CD with arbitrary id, from, and to addresses",
+      "2. The function accepts from/to as parameters rather than using msg.sender, which is unusual",
+      "3. If authorization checks are insufficient, an attacker could transfer positions they do not own",
+      "4. An attacker could set from=legitimate_owner and to=attacker_address to steal positions"
+    ],
+    "confidence": 0.45,
+    "reasoning": "The transferPosition function takes from and to as explicit parameters rather than using msg.sender for the source. This is a significant design concern as it means authorization must explicitly check that msg.sender matches the position owner. If any such check is missing or flawed, any user's position can be transferred to an attacker.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "109-115",
+    "category": "missing_authorization",
+    "attack_sequence": [
+      "1. Attacker calls collectSingleTo6D76575F with a pool and id they do not own, and recipient=attacker",
+      "2. If the implementation does not verify that msg.sender owns position id, fees would be stolen",
+      "3. The recipient parameter being explicit means even if owner check exists, fees could be redirected"
+    ],
+    "confidence": 0.4,
+    "reasoning": "The collectSingleTo function accepts a recipient parameter separate from the caller. If the implementation only checks that the position exists but not that msg.sender owns it, fees can be stolen. Even with ownership checks, if the recipient can be arbitrary, this is fine by design but worth verifying.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "117-122",
+    "category": "array_manipulation",
+    "attack_sequence": [
+      "1. Attacker calls collect7F21947C with mismatched pools and ids array lengths",
+      "2. No interface-level validation that pools.length equals ids.length",
+      "3. This could cause index out of bounds errors or collect from wrong positions if implementation is buggy",
+      "4. Attacker could also include duplicate entries to attempt double-collection of fees"
+    ],
+    "confidence": 0.35,
+    "reasoning": "The collect function takes parallel arrays of pools and ids. Without seeing the implementation, it is unclear whether length mismatch protection exists. Duplicate entries could potentially allow double-claiming of fees if not handled.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "76-82",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "1. Attacker calls mintPositionBC5B086D with invalid tick ranges (lower >= upper)",
+      "2. The interface imposes no tick ordering constraints",
+      "3. Attacker could specify ticks outside valid range for the pool",
+      "4. If pool implementation doesn't validate tick spacing alignment, positions could be created at invalid ticks"
+    ],
+    "confidence": 0.3,
+    "reasoning": "Position creation with arbitrary tick values could create invalid positions if the implementation doesn't enforce tick ordering, spacing, or range constraints.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "76-82",
+    "category": "missing access control",
+    "attack_sequence": "1. Call mintPositionBC5B086D with a valid pool, lower, and upper tick. 2. The interface provides no indication that the caller must own tokens or deposit liquidity. 3. A position can be minted without any upfront liquidity deposit, potentially creating empty positions that dilute position ID space or interact unexpectedly with later updatePosition calls.",
+    "confidence": 0.3,
+    "reasoning": "The interface only accepts pool, lower, upper with no amount0/amount1 parameters. This could mean positions are minted empty (with zero liquidity), which is by design in some concentrated liquidity systems, but the lack of input validation parameters for tick ordering (lower < upper, both valid multiples of tickSpacing) at this layer could allow invalid ranges. However, without implementation code, it is possible the executor implementation validates these internally. Low confidence due to lack of implementation.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "84-86",
+    "category": "missing access control / unauthorized burning",
+    "attack_sequence": "1. Call burnPositionAE401070 with an arbitrary position id. 2. If the executor does not verify msg.sender is the owner of the position, any user could burn any position, destroying liquidity belonging to other users. 3. The burned position's liquidity becomes permanently inaccessible, causing loss of funds.",
+    "confidence": 0.55,
+    "reasoning": "The burn function only takes an id parameter with no from/owner parameter, unlike transferPosition which explicitly takes from/to. This suggests either (a) the implementation enforces ownership via msg.sender, or (b) ownership is not checked. The asymmetric design between burn (no owner param) and transfer (explicit from param) is suspicious \u2014 if transfer requires an explicit from to verify authorization, why doesn't burn? This could mean burn trusts the caller is the owner (which is fine), or it could be a gap. The fact that collectSingleTo6D76575F also lacks an owner parameter and uses a recipient param suggests the pattern is that the implementation checks msg.sender ownership internally. Moderate confidence that this is properly handled but worth verifying.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "89-93",
+    "category": "unauthorized position transfer / front-running",
+    "attack_sequence": "1. Call transferPositionEEC7A3CD with id, from (victim address), to (attacker address). 2. If the implementation only checks that from owns the position but doesn't verify msg.sender == from or msg.sender == approved operator, an attacker could transfer positions belonging to other users. 3. Even if msg.sender is verified, the explicit 'from' parameter introduces ambiguity \u2014 if the implementation uses 'from' as the authorization check instead of msg.sender, a compromised or malicious from address could be used. 4. Front-running: If a user submits a transfer transaction, an attacker could frontrun it by calling with the same parameters, potentially disrupting the intended transfer.",
+    "confidence": 0.45,
+    "reasoning": "The transfer function uniquely accepts explicit from/to parameters among all position functions. This design is unusual for an NFT-like position system where transfers typically derive the 'from' address from msg.sender. If the implementation checks `from == msg.sender`, the explicit parameter is redundant but safe. If it doesn't, this is a critical vulnerability allowing unauthorized position theft. The comment says 'usable only by the NFT manager' which suggests this is a privileged pathway, but the interface doesn't enforce this \u2014 any user can call it. Need implementation to verify.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "109-115",
+    "category": "fee theft via arbitrary recipient",
+    "attack_sequence": "1. A user with a position that has accrued fees calls collectSingleTo6D76575F specifying any arbitrary address as recipient. 2. This is expected behavior (users direct their fees where they want). 3. However, if the implementation doesn't verify msg.sender owns position id, any user could collect fees from any position to their own address. 4. The recipient parameter means collected fees go directly to the attacker's address, not back to the legitimate owner.",
+    "confidence": 0.5,
+    "reasoning": "The function accepts both pool and id as parameters plus a recipient. If ownership verification is missing, an attacker can drain all accumulated fees from any position. Even with ownership checks, the explicit recipient parameter combined with a separate collect7F21947C batch function suggests different authorization models may apply. The batch collect function notably lacks a recipient parameter entirely, suggesting fees may go to msg.sender there, creating an inconsistency.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "117-125",
+    "category": "array length mismatch / unchecked parallel array",
+    "attack_sequence": "1. Call collect7F21947C with pools array of length 3 and ids array of length 5 (mismatched lengths). 2. If the implementation doesn't validate that pools.length == ids.length, this could cause out-of-bounds access, incorrect fee collection, or reverts with unhelpful error messages. 3. Even if lengths match, an attacker could specify the same pool/id pair multiple times in the arrays to potentially collect fees multiple times in a single transaction if the implementation processes arrays sequentially and updates state incrementally.",
+    "confidence": 0.65,
+    "reasoning": "Solidity 0.8.16 will revert on out-of-bounds array access, so the mismatch would cause a revert rather than silent corruption. However, the duplicate entry possibility is more interesting \u2014 if fee accounting uses a running total that isn't updated until after the loop, duplicate entries could yield more fees than entitled. The batch collect function returns CollectResult[] memory which would also have mismatched length if inputs mismatch. This is a common pattern for bugs in parallel array processing.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "11-18",
+    "category": "arbitrary pool call / price manipulation",
+    "attack_sequence": "1. Call swap904369BE with an arbitrary pool address that the attacker controls. 2. The priceLimit parameter is untrusted and could be set to an extreme value. 3. For exactOut swaps (negative amount), the priceLimit could be set to a value that results in the protocol paying out more than expected. 4. If the pool address validation is insufficient, an attacker could point to a malicious contract that returns manipulated prices, draining other pools through cross-pool arbitrage.",
+    "confidence": 0.4,
+    "reasoning": "The pool parameter is completely untrusted. If the executor doesn't validate that pool is a legitimate Seawater pool, an attacker could pass a malicious contract. The priceLimit as a sqrtX96 value could also be manipulated if bounds checking is insufficient (e.g., set to 0 or type(uint256).max to force worst-case execution). The amount being int256 allows both positive (exactIn) and negative (exactOut) values, and a very large negative amount combined with an extreme priceLimit could exploit price impact calculations.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "21-27",
+    "category": "slippage / sandwich attack surface",
+    "attack_sequence": "1. Call swap2ExactIn41203F1D with from/to tokens and a very low minOut value (or minOut=0). 2. Front-runner detects this transaction in the mempool. 3. Attacker frontruns with a large swap to move the price against the victim. 4. Victim's swap executes at the worse price. 5. Attacker backruns to restore the price, capturing the difference. 6. With minOut=0, the victim accepts any output amount, guaranteeing the attack succeeds.",
+    "confidence": 0.55,
+    "reasoning": "This is a standard MEV/sandwich vulnerability inherent to any AMM interface with slippage parameters. The minOut parameter exists specifically to mitigate this, but the interface allows minOut=0 with no minimum enforced at this layer. The two-stage swap via intermediate pools may compound slippage. While this is somewhat expected behavior (users should set appropriate minOut), the lack of any protocol-enforced minimum slippage is a design consideration worth flagging.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "47-55",
+    "category": "permit2 signature replay / deadline bypass",
+    "attack_sequence": "1. Observe a user's swap2ExactInPermit236B2FDD8 transaction in the mempool. 2. The permit2 signature includes a nonce, deadline, and sig. 3. If the deadline check is not properly enforced (e.g., block.timestamp >= deadline instead of <=), signatures could be valid after their intended expiry. 4. If the nonce is not properly incremented after use, the same signature could be replayed for additional swaps. 5. The maxAmount parameter in the non-permit2 variant (swapPermit2EE84AD91) is absent from this function, meaning the permit2 approval amount defaults to the swap amount \u2014 but if the actual swap requires less due to rounding, the difference is still approved and potentially exploitable.",
+    "confidence": 0.45,
+    "reasoning": "Permit2 integration introduces several trust boundaries: deadline validation, nonce management, and signature verification. The interface doesn't specify whether these are checked in the executor or delegated to a Permit2 contract. The absence of maxAmount in swap2ExactInPermit2 (compared to swapPermit2EE84AD91 which has it) is noted in the NatSpec as 'permit2's max amount must be set to amount' \u2014 this off-chain requirement could be violated by users, but the executor should enforce it.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "76-82",
+    "category": "tick validation bypass",
+    "attack_sequence": "1. Call mintPositionBC5B086D with lower=upper (zero-width range) or lower > upper. 2. If the executor doesn't validate tick ordering, a zero-width position could be created that earns no fees but still occupies a position slot. 3. More critically, if lower > upper, the liquidity math could underflow or behave unexpectedly depending on how ticks are processed internally. 4. Call with ticks that are not multiples of the pool's tickSpacing to create positions at invalid price points.",
+    "confidence": 0.5,
+    "reasoning": "The mint function accepts raw int32 tick values with no indication of validation at this layer. Standard concentrated liquidity pools (like Uniswap V3) require: lower < upper, both are valid ticks, and both are multiples of tickSpacing. If the executor doesn't enforce these, invalid positions could cause issues in the pool's tick accounting. However, the pool contract itself likely validates these, so this may be caught downstream. The severity depends on whether the executor or pool enforces tick validity.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "58-65",
+    "category": "quote function revert abuse / oracle manipulation",
+    "attack_sequence": "1. Call quote72E2ADE7 with manipulable parameters to cause the function to revert with a specific Error(string(amountOut)) value. 2. If other contracts use this quote function to determine swap parameters off-chain or via try/catch, the revert-based return mechanism could be exploited. 3. The priceLimit parameter could be set to cause the quote to return an inflated amountOut, which a victim contract might use as a basis for a swap, leading to sandwich-like exploitation at the contract level.",
+    "confidence": "0.35",
+    "reasoning": "The quote functions use revert to return data (revert with Error(string(amountOut))), which is an unusual pattern. This means the quote is not a view function and cannot be used in static calls without catching the revert. If any contract uses these quotes for on-chain price feeds, the manipulable priceLimit parameter becomes a vector for price oracle manipulation. This is speculative without seeing the implementation or downstream consumers.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "84-85",
+    "category": "access_control",
+    "attack_sequence": [
+      "1. Call burnPositionAE401070 with any position id",
+      "2. The interface shows no authorization parameter \u2014 ownership check must happen in implementation",
+      "3. If implementation trusts msg.sender instead of checking position owner, any user could burn another user's position, making liquidity permanently inaccessible"
+    ],
+    "confidence": 0.5,
+    "reasoning": "The burnPositionAE401070 function signature takes only an id parameter with no explicit owner/authority parameter. If the implementation does not properly verify that msg.sender owns the position, or if there is a race condition between check and state change, an attacker could burn someone else's position. Without the implementation, this is a hypothesis based on the interface surface.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "89-91",
+    "category": "access_control",
+    "attack_sequence": [
+      "1. Call transferPositionEEC7A3CD with id, from, and to addresses",
+      "2. The function accepts from/to as parameters rather than deriving from msg.sender",
+      "3. If the implementation doesn't properly verify that from == msg.sender (or from == position owner), an attacker could transfer positions belonging to other users",
+      "4. The NatSpec says 'usable only by the NFT manager' suggesting this may be an admin-gated function, but the interface exposes it as external"
+    ],
+    "confidence": 0.6,
+    "reasoning": "The transferPositionEEC7A3CD function accepts arbitrary from/to addresses. The NatSpec mentions 'usable only by the NFT manager' but the interface doesn't enforce this at the signature level. If the implementation relies on msg.sender matching the NFT manager but the check is insufficient or the NFT manager is a contract that can be called by anyone, positions could be transferred without owner consent.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "76-83",
+    "category": "business_logic",
+    "attack_sequence": [
+      "1. Call mintPositionBC5B086D with pool, lower, upper parameters",
+      "2. No minLiquidity parameter is visible in the interface",
+      "3. An attacker could create positions with very narrow tick ranges that result in near-zero liquidity",
+      "4. These positions could be used grief-style to inflate position counts or consume gas in batch operations",
+      "5. If collect/quote operations iterate over all positions, this becomes a griefing vector"
+    ],
+    "confidence": 0.35,
+    "reasoning": "The mint position interface doesn't show minimum liquidity constraints. Narrow tick ranges could result in economically meaningless positions. This is a lower-confidence finding since the implementation may enforce tick spacing or minimum ranges.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "109-115",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "1. Call collectSingleTo6D76575F with pool, id, and recipient parameters",
+      "2. The recipient is user-controlled \u2014 an attacker who owns a position could set recipient to any address",
+      "3. More critically, if the implementation doesn't verify msg.sender == position owner, an attacker could collect fees from positions they don't own",
+      "4. The recipient parameter allows forwarding collected fees to arbitrary addresses"
+    ],
+    "confidence": 0.45,
+    "reasoning": "The collectSingleTo6D76575F function accepts an arbitrary recipient. While the owner should always be able to send their fees anywhere, the key risk is whether the implementation checks that msg.sender is the position owner before allowing fee collection. The interface provides no such guarantee.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "117-120",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "1. Call collect7F21947C with arrays of pools and ids",
+      "2. No length validation visible \u2014 if pools.length != ids.length, undefined behavior could occur",
+      "3. If implementation trusts these arrays without checking alignment, out-of-bounds access or incorrect fee collection could result",
+      "4. Empty arrays could potentially bypass internal checks if not handled"
+    ],
+    "confidence": 0.4,
+    "reasoning": "The collect7F21947C function takes two separate arrays (pools and ids) with no visible constraint that they must have equal length. If the implementation assumes equal length without enforcing it, this could lead to misaligned pool-id pairings and incorrect fee collection.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "11-18",
+    "category": "price_manipulation",
+    "attack_sequence": [
+      "1. Call swap904369BE with a controlled pool, zeroForOne flag, amount, and priceLimit",
+      "2. The priceLimit parameter is user-controlled \u2014 if the implementation doesn't enforce that priceLimit is within a valid range relative to current price",
+      "3. An attacker could set priceLimit to 0 or type(uint256).max to potentially bypass slippage protections",
+      "4. For exactOut swaps (negative amount), an attacker could manipulate the priceLimit to extract more tokens than fair value"
+    ],
+    "confidence": 0.5,
+    "reasoning": "The swap interface allows user-supplied priceLimit. If the implementation doesn't constrain this to be within a reasonable range of the current pool price, it could allow sandwich attacks or price manipulation within the pool. The amount being int256 allows exactOut swaps which combined with unconstrained priceLimit could be exploitable.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "21-28",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "1. Call swap2ExactIn41203F1D with from=address(0) or to=address(0)",
+      "2. If from or to is address(0), the implementation might not handle this correctly",
+      "3. If from==to, the swap would be a no-op but could potentially still trigger fee collection or state changes",
+      "4. The minOut parameter provides slippage protection but if set to 0, the caller accepts any output amount"
+    ],
+    "confidence": 0.3,
+    "reasoning": "The two-token swap function takes from/to token addresses with no visible validation that they are different, non-zero, or registered in the system. Edge cases with address(0) or identical tokens could lead to unexpected behavior in the implementation.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "31-44",
+    "category": "signature_replay",
+    "attack_sequence": [
+      "1. Call swapPermit2EE84AD91 with a previously valid permit2 signature",
+      "2. If the nonce is not properly incremented after execution, the same permit2 signature could be replayed",
+      "3. The implementation must ensure atomic nonce consumption \u2014 signature verification and state update must happen in the same transaction",
+      "4. If there is a reentrancy vector through the callback mechanisms, the permit2 nonce might not be consumed before re-entering"
+    ],
+    "confidence": 0.45,
+    "reasoning": "The permit2 interface includes nonce and deadline parameters. While permit2 itself handles nonce management, the executor implementation must ensure it doesn't create conditions where the permit2 transfer succeeds but the swap reverts, allowing signature reuse. The interaction between permit2 and pool swap callbacks creates a complex trust boundary.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "121-140",
+    "category": "missing_validation",
+    "attack_sequence": [
+      "1. Call updatePositionC7F1F740 with a large negative delta to remove all liquidity",
+      "2. The int128 delta allows negative values for liquidity removal",
+      "3. If the implementation processes fee collection before liquidity removal, an attacker could frontrun to extract fees",
+      "4. State ordering between fee refresh, fee collection, and liquidity modification is critical"
+    ],
+    "confidence": 0.4,
+    "reasoning": "The updatePosition function combines fee refresh with liquidity modification in a single call. The order of operations (fees first then liquidity change, or vice versa) matters significantly. If fees are calculated on pre-modification state but applied post-modification, there could be accounting discrepancies. Without implementation code, the exact vulnerability depends on ordering.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "11-16",
+    "category": "unchecked_price_limit_slippage",
+    "attack_sequence": [
+      "1. Attacker calls swap904369BE with a pool, zeroForOne=true, a large amount, and priceLimit set to an extreme value (e.g., 0 or type(uint256).max).",
+      "2. The priceLimit parameter is user-controlled and the interface gives no guarantee that the implementation validates it against reasonable bounds.",
+      "3. If the implementation does not enforce that priceLimit is within a valid range (between current price and the boundary), the swap could execute at an adversarially chosen price, enabling sandwich attacks or extracting value via unfavorable execution prices.",
+      "4. The function returns deltas but the caller receives no confirmation that priceLimit was respected beyond the pool's internal logic."
+    ],
+    "confidence": 0.45,
+    "reasoning": "This is an interface-only file. The function accepts priceLimit as untrusted input. If the implementation delegates to a pool contract that doesn't enforce priceLimit bounds, this is exploitable. The concern is valid but depends on implementation details not visible here. A priceLimit of 0 would always allow zeroForOne swaps at the worst possible price, and type(uint256).max would do the same for oneForZero.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "89-93",
+    "category": "missing_authorization_check",
+    "attack_sequence": [
+      "1. Attacker calls transferPositionEEC7A3CD with an arbitrary position id, specifying from=victim_address, to=attacker_address.",
+      "2. If the implementation does not verify that msg.sender owns the position (or is approved by from), the attacker could transfer any position to themselves.",
+      "3. The interface says 'usable only by the NFT manager' but the function is declared as a user-callable external function with no restriction visible in the interface.",
+      "4. If any caller can invoke this (not restricted to NFT manager only), positions could be stolen."
+    ],
+    "confidence": 0.6,
+    "reasoning": "The NatSpec comment says 'usable only by the NFT manager' but the function is on a public external interface with no access control modifier visible. The from parameter is caller-controlled, not derived from msg.sender. If the implementation doesn't enforce msg.sender == position owner or msg.sender == approved, this is a direct theft vector. This is a classic authorization bypass pattern.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "84-87",
+    "category": "irreversible_destruction_without_owner_check",
+    "attack_sequence": [
+      "1. Attacker calls burnPositionAE401070 with a victim's position id.",
+      "2. If the implementation doesn't check that msg.sender is the position owner, the attacker can permanently destroy any position's liquidity.",
+      "3. The position's liquidity becomes 'inaccessible' per the NatSpec, meaning it's a permanent loss.",
+      "4. This is denial-of-service / destruction attack on other users' capital."
+    ],
+    "confidence": 0.5,
+    "reasoning": "The burn function accepts only an id parameter with no from/owner parameter. If the implementation doesn't verify msg.sender ownership, anyone can burn anyone's position. This is a critical vulnerability but depends on implementation. The interface design is suspicious - no ownership verification parameter.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "109-115",
+    "category": "fee_theft_via_recipient_manipulation",
+    "attack_sequence": [
+      "1. Attacker calls collectSingleTo6D76575F with pool=valid_pool, id=victim_position_id, recipient=attacker_address.",
+      "2. If the implementation only checks position existence but not msg.sender authorization, the attacker redirects all accumulated fees to themselves.",
+      "3. The recipient is fully attacker-controlled with no authorization gate visible in the interface.",
+      "4. Even if owner checks exist, if they verify against 'from' parameter or pool rather than msg.sender, this is bypassable."
+    ],
+    "confidence": 0.5,
+    "reasoning": "The recipient is caller-controlled. While implementations typically check msg.sender == position owner before collecting, the interface shows no such constraint. If the implementation mistakenly uses a different authorization mechanism (e.g., checking 'from' parameter from another function), fees can be stolen.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "117-122",
+    "category": "array_length_mismatch_unchecked",
+    "attack_sequence": [
+      "1. Attacker calls collect7F21947C with pools array of length 3 and ids array of length 5.",
+      "2. If the implementation doesn't validate that pools.length == ids.length, it could read out-of-bounds or process mismatched pool-id pairs.",
+      "3. This could lead to claiming fees from the wrong pool or a revert due to index out of bounds.",
+      "4. Alternatively, if bounds checking is lenient, fees from one position could be claimed against the wrong pool context."
+    ],
+    "confidence": 0.55,
+    "reasoning": "Two dynamic arrays are passed with no visible constraint that they must be equal length. This is a common source of bugs in batch operations. Even if Solidity's ABI decoding prevents true out-of-bounds reads, semantic mismatches between pool-id pairs are possible if the implementation iterates independently.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "21-27",
+    "category": "arbitrary_token_address_swap",
+    "attack_sequence": [
+      "1. Attacker calls swap2ExactIn41203F1D with from and to set to arbitrary token addresses (not registered pool tokens).",
+      "2. If the implementation doesn't validate that from/to are valid pool tokens or that an intermediate pool exists for the swap path, it could interact with malicious/illiquid token contracts.",
+      "3. The attacker could set from=malicious_token, to=legitimate_token, tricking the system into accepting worthless tokens.",
+      "4. Or the attacker could exploit the routing logic if it doesn't validate pool existence for intermediate hops."
+    ],
+    "confidence": 0.4,
+    "reasoning": "The two-hop swap uses arbitrary from/to addresses. If the implementation uses CREATE2 or deterministic routing without validating intermediate pool existence, it could route through non-existent or malicious pools. The minOut parameter provides some protection but doesn't prevent all routing exploits.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "76-82",
+    "category": "invalid_tick_range_mint",
+    "attack_sequence": [
+      "1. Attacker calls mintPositionBC5B086D with lower > upper, or with ticks that are not aligned to tick spacing.",
+      "2. If the implementation doesn't validate tick ordering or tick spacing alignment, the position could be created with invalid parameters.",
+      "3. A position with lower > upper or misaligned ticks could have unexpected liquidity distribution.",
+      "4. This could also be used to grief pool state if invalid positions affect accounting."
+    ],
+    "confidence": 0.35,
+    "reasoning": "The interface accepts arbitrary int32 values for lower and upper ticks. While Uniswap V3-style pools typically validate tick spacing and ordering, the interface doesn't guarantee this. The risk is moderate since the pool contract likely has its own validation.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "76-83",
+    "category": "Missing validation / access control",
+    "attack_sequence": [
+      "1. Attacker calls mintPositionBC5B086D(pool, lower, upper) with arbitrary pool, lower, upper parameters.",
+      "2. The interface shows no constraints on pool address, lower/upper tick values, or caller identity.",
+      "3. The attacker can pass a zero address or non-existent pool, tick values outside valid ranges (e.g., lower >= upper), or values that overflow int32.",
+      "4. If the implementation doesn't validate these, it could create positions in invalid states, or the pool contract could be a malicious contract that returns unexpected values.",
+      "5. Additionally, since there is no 'minLiquidity' or fee parameters, the attacker could exploit sandwich-like MEV on the mint by front-running with a large swap to move the price, causing the mint to receive minimal liquidity, then back-running to profit."
+    ],
+    "confidence": 0.35,
+    "reasoning": "This is an interface file, so the actual validation logic resides in the implementation. The interface itself does not specify constraints. The real risk depends entirely on the implementation. However, the absence of slippage protection parameters (like minLiquidityOut) in mintPositionBC5B086D is a concrete design concern visible from the interface \u2014 there's no way for the caller to protect against sandwich attacks on position creation. The position will accept whatever liquidity the pool gives at the current price with no minimum enforcement.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "84-86",
+    "category": "Missing access control / burn without collection",
+    "attack_sequence": [
+      "1. Attacker calls burnPositionAE401070(id) to burn a position.",
+      "2. The function description says 'leaving the liquidity in it inaccessible' \u2014 this implies burned positions lose their liquidity permanently.",
+      "3. If the caller is not the position owner (and the implementation doesn't check), any attacker could burn anyone's position, destroying their liquidity.",
+      "4. Even if access-controlled, the burn does not collect fees first \u2014 if the implementation doesn't auto-collect, users lose accumulated fees when burning."
+    ],
+    "confidence": 0.4,
+    "reasoning": "The interface does not indicate any access control parameter or modifier. If the implementation doesn't verify msg.sender == positionOwner(id), any user could burn another user's position. The NatSpec explicitly says liquidity becomes 'inaccessible', making this a high-impact issue if access control is missing. The design also appears to not force fee collection before burning, which is a user-funds-loss concern.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "11-19",
+    "category": "Arbitrary price limit / slippage manipulation",
+    "attack_sequence": [
+      "1. Attacker calls swap904369BE(pool, zeroForOne, amount, priceLimit) with priceLimit set to an extreme value (e.g., 0 or type(uint256).max).",
+      "2. priceLimit is described as a sqrtX96 price. If the implementation doesn't clamp this to valid ranges, a priceLimit of 0 for zeroForOne=true would mean swapping at price 0, potentially extracting maximum token1 for minimum token0.",
+      "3. Alternatively, setting priceLimit to a very favorable value could cause the swap to execute at a terrible rate for the caller (no protection), or if the pool's price is already beyond the limit, the swap could execute for 0 tokens.",
+      "4. For exactOut swaps (negative amount), the combination of extreme priceLimit with negative amount could potentially be exploited to extract more tokens than expected."
+    ],
+    "confidence": 0.45,
+    "reasoning": "The priceLimit parameter with no enforced bounds visible in the interface is a significant concern. In many DEX implementations, extreme priceLimit values can cause swaps to execute at 0 or near-infinite prices. While the pool implementation may enforce bounds, the executor interface doesn't indicate any such protection. Combined with the signed amount (negative for exactOut), this creates a broad attack surface.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "89-97",
+    "category": "Position transfer with from/to parameters \u2014 potential unauthorized transfer",
+    "attack_sequence": [
+      "1. Attacker calls transferPositionEEC7A3CD(id, from, to) where 'from' is a victim address and 'to' is the attacker's address.",
+      "2. The function takes 'from' and 'to' as parameters rather than deriving 'from' from msg.sender or position ownership check.",
+      "3. If the implementation trusts the 'from' parameter instead of verifying msg.sender == positionOwner(id), an attacker could transfer any position by specifying arbitrary from/to addresses.",
+      "4. Even if there is an authorization check, the interface design suggests the caller specifies who they are transferring 'from', which is an unusual and risky pattern compared to the standard NFT transferFrom model."
+    ],
+    "confidence": 0.5,
+    "reasoning": "The function signature transferPositionEEC7A3CD(id, from, to) is highly unusual \u2014 it accepts 'from' as a parameter. In standard token transfer patterns, msg.sender is the source of authority. If the implementation checks `authorization[from]` or similar but doesn't verify that `msg.sender == from` or has an approved delegation, this allows position theft. The NatSpec says 'usable only by the NFT manager' which suggests this is intended for a specific authorized caller, but any user can call this external function.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "109-115",
+    "category": "Fee collection to arbitrary recipient",
+    "attack_sequence": [
+      "1. Attacker calls collectSingleTo6D76575F(pool, id, recipient) with their own address as recipient.",
+      "2. If the implementation doesn't verify that the caller is the position owner or that recipient == positionOwner(id), the attacker can redirect fees to any address.",
+      "3. Even if there is an authorization check on the caller, the recipient parameter allows fee redirection \u2014 the implementation must verify recipient == caller or recipient == positionOwner.",
+      "4. The collect7F21947C function (line 117) takes pools and ids arrays but has no recipient parameter, suggesting fees go to msg.sender \u2014 this inconsistency could indicate the collectSingleTo function is more dangerous."
+    ],
+    "confidence": 0.45,
+    "reasoning": "The combination of arbitrary 'recipient' parameter with a position 'id' that the caller specifies creates a fee-stealing vector if authorization is weak. The interface allows collecting fees from a position and sending them to any address. If the implementation only checks that the position exists (and not that the caller owns it), fees can be stolen. The inconsistency between collectSingleTo (has recipient) and collect (no recipient, presumably uses msg.sender) also suggests potential confusion in the authorization model.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "21-30",
+    "category": "Two-hop swap without intermediate price validation",
+    "attack_sequence": [
+      "1. Attacker calls swap2ExactIn41203F1D(from, to, amount, minOut).",
+      "2. This performs a two-stage swap across two pools, but the only slippage protection is minOut for the final output.",
+      "3. There is no intermediate price check \u2014 the two pools could have very different prices, allowing the implementation to route through a pool where the attacker's position is front-running.",
+      "4. If the pool selection is deterministic and predictable, an MEV searcher can sandwich the two-hop swap by manipulating both intermediate pool prices.",
+      "5. The attacker has full control over which pools are used (by choosing from/to tokens), and can potentially create thin pools that are easily manipulated."
+    ],
+    "confidence": 0.3,
+    "reasoning": "The two-hop swap only has final minOut protection, with no intermediate price validation or routing flexibility parameters. This is a standard MEV/sandwich vulnerability in fixed-routing DEXes. The impact is limited by the minOut parameter, but the attacker can optimize the sandwich to extract maximum value from both pool hops. This is a known class of vulnerability rather than a novel finding.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "76-83",
+    "category": "Missing slippage protection on position minting",
+    "attack_sequence": [
+      "1. Attacker observes a pending mintPositionBC5B086D transaction in the mempool.",
+      "2. Attacker front-runs with a large swap in the target pool to move the price.",
+      "3. The victim's mint executes at the manipulated price, receiving less liquidity than expected.",
+      "4. Attacker back-runs with a reverse swap to profit from the price movement.",
+      "5. The victim is left with a position that has suboptimal liquidity-to-capital ratio.",
+      "6. Unlike the swap functions which have priceLimit, the mint function has no price protection parameter at all \u2014 not even a minimum liquidity output."
+    ],
+    "confidence": 0.55,
+    "reasoning": "This is the most concrete and actionable finding. The mintPositionBC5B086D function interface has zero slippage protection \u2014 no priceLimit, no minLiquidity, no minAmount0/minAmount1 parameters. The swap functions have priceLimit for protection, but the mint function has nothing. This means any position mint is fully vulnerable to sandwich attacks with no way for the caller to protect themselves. In concentrated liquidity DEXes, the liquidity-to-token ratio is extremely sensitive to the current price, making sandwich attacks on minting very profitable.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "84-86",
+    "category": "Permanent liquidity destruction via burn",
+    "attack_sequence": [
+      "1. If a user accidentally calls burnPositionAE401070 on a position with significant liquidity.",
+      "2. The NatSpec says liquidity becomes 'inaccessible' \u2014 this is a one-way operation with no recovery mechanism.",
+      "3. Unlike standard Uniswap v3 position NFTs where you can remove liquidity before burning, this function appears to directly destroy the position.",
+      "4. An attacker who gains access to a user's signing key (or exploits weak access control) could irreversibly destroy their liquidity position.",
+      "5. Even the legitimate owner has no way to test or confirm the burn will do what they expect \u2014 there's no preview or confirmation step."
+    ],
+    "confidence": 0.35,
+    "reasoning": "The permanent, irreversible nature of the burn function combined with potential access control weaknesses makes this a high-impact concern. While this may be intentional design, the lack of a safety mechanism (e.g., requiring liquidity removal first, or a timelock) amplifies any access control bug from a recoverable situation to a permanent loss.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "84-86",
+    "category": "Missing Access Control / State Inconsistency",
+    "attack_sequence": [
+      "1. Attacker obtains position ID (via enumeration or front-running a mint).",
+      "2. Attacker calls burnPositionAE401070(id) with a position they do not own.",
+      "3. The interface does not show any modifier or require(msg.sender == owner). If the implementation blindly burns without ownership check, the attacker can destroy anyone's position, permanently locking the liquidity inside it (the docstring says 'leaving the liquidity in it inaccessible').",
+      "4. The victim loses their concentrated liquidity position and any accrued fees."
+    ],
+    "confidence": 0.75,
+    "reasoning": "The interface exposes burnPositionAE401070 with only an `id` parameter and no visible `from`/owner parameter (unlike transferPositionEEC7A3CD which explicitly takes from/to). If the implementation doesn't enforce ownership internally, this is a critical vulnerability. The docstring explicitly says burning 'leaves the liquidity inaccessible', making this an irreversible loss-of-funds vector.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "89-93",
+    "category": "Missing Access Control on Transfer",
+    "attack_sequence": [
+      "1. Attacker knows or guesses a position ID owned by victim.",
+      "2. Attacker calls transferPositionEEC7A3CD(id, victimAddress, attackerAddress).",
+      "3. If the implementation relies on the `from` parameter for authorization (i.e. requires msg.sender == from), this is safe. But if the implementation instead trusts an NFT manager (as the NatSpec says 'usable only by the NFT manager'), the question is whether the executor contract itself is authorized as the NFT manager. If the executor is an approved caller, any user can invoke this to steal any position."
+    ],
+    "confidence": 0.65,
+    "reasoning": "The NatSpec says 'usable only by the NFT manager', but the executor contract is the caller. If the executor is set as the NFT manager or has approval, any external caller can transfer any position. The from/to parameters could be spoofed if the implementation only checks that executor is the NFT manager without verifying msg.sender is the owner.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "76-80",
+    "category": "Invalid Pool / Price Manipulation via Tick Range",
+    "attack_sequence": [
+      "1. Attacker calls mintPositionBC5B086D with a pool address and arbitrary lower/upper ticks that may be outside the pool's valid tick range or violate tick spacing constraints.",
+      "2. If the implementation doesn't validate that lower < upper, that ticks are aligned to tick spacing, or that the pool exists, this could create a degenerate or invalid position.",
+      "3. Subsequent operations (update, collect) on this invalid position may behave unexpectedly, potentially enabling fee extraction or liquidity manipulation."
+    ],
+    "confidence": 0.55,
+    "reasoning": "The interface doesn't show tick validation. However, well-designed concentrated liquidity pools typically validate ticks internally, so this is likely handled at the pool level. Confidence is moderate.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "11-18",
+    "category": "Unbounded Price Limit / Sandwich Attack Surface",
+    "attack_sequence": [
+      "1. Attacker observes a pending swap904369BE call in the mempool.",
+      "2. Attacker front-runs with a large swap to move the pool price.",
+      "3. The victim's swap executes at a worse price due to the moved price.",
+      "4. Attacker back-runs to restore the price and profit from the difference.",
+      "5. The priceLimit parameter could be set to 0 or uint256.max by the caller, but the real issue is that if the implementation doesn't enforce slippage protection (priceLimit as a tight bound), the swap is sandwichable."
+    ],
+    "confidence": 0.7,
+    "reasoning": "The priceLimit parameter exists to provide slippage protection, but if callers set it too loosely (e.g., 0 or type(uint256).max), the swap is fully sandwichable. This is more of a design consideration than a bug, but the interface provides no guidance on safe priceLimit values. The quote functions exist to help but aren't mandatory.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "31-43",
+    "category": "Permit2 Signature Replay / Deadline Bypass",
+    "attack_sequence": [
+      "1. Attacker obtains a valid permit2 signature from a victim (e.g., from a failed or reverted transaction).",
+      "2. If the implementation doesn't properly increment the permit2 nonce after use, the signature can be replayed.",
+      "3. If the deadline check is missing or incorrectly implemented, an expired signature could still be accepted.",
+      "4. The maxAmount parameter could be higher than the actual swap amount, allowing the attacker to extract more value than intended."
+    ],
+    "confidence": 0.45,
+    "reasoning": "Permit2 is a well-audited standard, so nonce handling and deadline checks are likely correct at the permit2 contract level. However, the executor must properly forward these parameters. The maxAmount != amount discrepancy (noted in swap2ExactInPermit2's comment that 'max amount must be set to amount') could be exploited if the implementation doesn't enforce this invariant.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "109-115",
+    "category": "Fee Collection to Arbitrary Recipient",
+    "attack_sequence": [
+      "1. Attacker calls collectSingleTo6D76575F(pool, victimId, attackerAddress).",
+      "2. If the implementation doesn't verify that the caller is the position owner, fees accrued by the victim's position are sent to the attacker.",
+      "3. This is distinct from the burn attack - fees are drained without destroying the position, making it less detectable."
+    ],
+    "confidence": 0.7,
+    "reasoning": "The recipient parameter is caller-controlled. If the implementation uses a fee collector role (like Uniswap V3's collect) that bypasses ownership, or if ownership isn't checked, this is a direct theft of accumulated fees. The interface shows no ownership parameter, similar to the burn issue.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "84-86",
+    "category": "Front-running Burn for Liquidity Lock",
+    "attack_sequence": [
+      "1. Victim calls mintPositionBC5B086D to create a position.",
+      "2. Attacker front-runs the mint transaction to learn the position ID (if deterministic/sequential).",
+      "3. Immediately after mint, attacker calls burnPositionAE401070(newId) to burn the position before the victim can add liquidity.",
+      "4. The position now has zero liquidity but is burned, so the victim's subsequent updatePosition call fails or is a no-op, and any tokens sent are locked."
+    ],
+    "confidence": 0.6,
+    "reasoning": "If position IDs are sequential and predictable, an attacker can observe a pending mint, predict the ID, and burn it immediately. This griefing attack permanently locks any tokens the victim sends. The timing window is narrow but feasible with MEV infrastructure.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "84-85",
+    "category": "Missing access control on burnPositionAE401070",
+    "attack_sequence": [
+      "1. Call burnPositionAE401070 with a position ID that the caller does not own.",
+      "2. If the implementation does not check ownership before burning, any user can burn any position.",
+      "3. The position's liquidity becomes permanently inaccessible.",
+      "4. The attacker can grief any position holder by burning their positions."
+    ],
+    "confidence": "medium",
+    "reasoning": "The interface signature for burnPositionAE401070 only takes a uint256 id with no caller authentication parameters. If the implementation relies solely on msg.sender not being passed or checked (the function signature has no 'from' parameter unlike transferPositionEEC7A3CD), there is a risk that burning proceeds without proper ownership verification. This is an interface-level observation - the implementation must enforce ownership, but the interface design suggests the caller's identity is not part of the function's data flow.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "89-93",
+    "category": "transferPositionEEC7A3CD caller-specified from/to bypass",
+    "attack_sequence": [
+      "1. Call transferPositionEEC7A3CD with any position id, any 'from' address, and any 'to' address.",
+      "2. If the implementation uses the 'from' parameter to determine the source rather than msg.sender, an attacker can specify an arbitrary 'from' address.",
+      "3. This allows transferring any position from any user to any destination, including the attacker's own address.",
+      "4. The attacker steals the position entirely."
+    ],
+    "confidence": "high",
+    "reasoning": "The function signature allows the caller to specify both 'from' and 'to' as parameters rather than using msg.sender as the source. If the implementation trusts the 'from' parameter instead of verifying it against msg.sender (or if the NFT manager just calls this without checking that from == msg.sender), an attacker could transfer positions they do not own. The NatSpec says 'usable only by the NFT manager', suggesting the NFT manager is the intended caller, but if the access control is missing at this interface boundary, arbitrary callers could invoke it.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "76-78",
+    "category": "mintPositionBC5B086D with invalid tick range",
+    "attack_sequence": [
+      "1. Call mintPositionBC5B086D with a pool address and a tick range where lower >= upper, or where the range does not align with the pool's tick spacing.",
+      "2. If the implementation does not validate tick ordering and tick spacing alignment, it may create a position with zero or invalid liquidity.",
+      "3. This could corrupt pool state or create positions that behave unexpectedly.",
+      "4. Alternatively, minting a position at ticks that span the entire price range could be used to sandwich or manipulate fee collection."
+    ],
+    "confidence": "low",
+    "reasoning": "The function takes raw int32 lower and upper ticks without any apparent validation constraints in the interface. While the implementation likely validates these, the interface design exposes tick parameters that could be misused if validation is insufficient (e.g., tick spacing not enforced, inverted ranges not caught).",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "109-115",
+    "category": "collectSingleTo6D76575F arbitrary recipient",
+    "attack_sequence": [
+      "1. Call collectSingleTo6D76575F with a pool, a position id, and an arbitrary recipient address.",
+      "2. If the implementation does not verify that msg.sender owns the position OR that the recipient is msg.sender, fees can be collected to any address.",
+      "3. If ownership is checked but recipient is not restricted, the attacker who owns the position can redirect fees to any address (less severe but still a consideration).",
+      "4. If ownership is NOT checked, anyone can collect fees from any position to any address."
+    ],
+    "confidence": "medium",
+    "reasoning": "The function allows specifying an arbitrary 'recipient' for fee collection. The key question is whether the implementation checks that the caller owns the position. The NatSpec says 'collect a single position's yield' but does not mention any access restriction. If the implementation checks position ownership via the caller, the arbitrary recipient is benign (just directing one's own fees elsewhere). But if ownership checking is missing, this is a direct theft vector.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "11-16",
+    "category": "swap904369BE unchecked priceLimit manipulation",
+    "attack_sequence": [
+      "1. Call swap904369BE with a priceLimit that is extremely far from the current price (e.g., 0 or type(uint256).max).",
+      "2. If the implementation does not bound priceLimit to a reasonable range around the current price, the swap could execute at an extreme price.",
+      "3. For exactIn swaps, this could result in the user receiving far fewer tokens than expected (sandwich-style loss).",
+      "4. For exactOut swaps (negative amount), an extreme priceLimit could allow the swap to execute at a price highly favorable to the caller if the pool's slippage protection is bypassed."
+    ],
+    "confidence": "medium",
+    "reasoning": "The priceLimit parameter is an unchecked uint256 that could be set to 0 or max uint256. If the pool implementation allows swaps with arbitrary price limits, it could lead to unfavorable execution for the user (self-grief) or potentially enable manipulation depending on how the pool handles exact-out swaps with extreme price limits. The interface provides no documentation of expected bounds.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  },
+  {
+    "file": "pkg/sol/ISeawaterExecutors.sol",
+    "lines": "21-27",
+    "category": "swap2ExactIn41203F1D router permission escalation",
+    "attack_sequence": [
+      "1. Call swap2ExactIn41203F1D with from/to addresses that represent tokens, and an amount/minOut chosen by the attacker.",
+      "2. This performs a two-stage swap - the intermediate pool is determined by the router's internal routing logic based on from/to.",
+      "3. If the router does not validate that 'from' and 'to' are valid registered tokens in the system, it could swap on unauthorized pools.",
+      "4. The minOut parameter provides slippage protection, but if the routing logic has edge cases for certain token pairs, unexpected behavior could occur."
+    ],
+    "confidence": "low",
+    "reasoning": "The two-pool swap router takes arbitrary token addresses and routes through an intermediate. While this is standard DEX router functionality, the security depends heavily on the implementation's routing logic and token validation. The interface itself is well-parameterized with minOut for slippage protection.",
+    "trace_region": "pkg/sol/ISeawaterExecutors.sol"
+  }
+]

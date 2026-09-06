@@ -1,0 +1,1661 @@
+{
+  "entry_points": [
+    {
+      "file": "test/LiquidRon.operator.t.sol",
+      "function": "test_delegate",
+      "line": 25,
+      "untrusted_input": [
+        "_amount (fuzz)"
+      ],
+      "permission_level": "user"
+    },
+    {
+      "file": "test/LiquidRon.operator.t.sol",
+      "function": "test_revert_delegate",
+      "line": 40,
+      "untrusted_input": [
+        "_amount (fuzz)"
+      ],
+      "permission_level": "user"
+    },
+    {
+      "file": "test/LiquidRon.operator.t.sol",
+      "function": "test_revert_delegate_bad_proxy",
+      "line": 49,
+      "untrusted_input": [
+        "_amount (fuzz)"
+      ],
+      "permission_level": "user"
+    },
+    {
+      "file": "test/LiquidRon.operator.t.sol",
+      "function": "test_revert_insufficient_delegate",
+      "line": 58,
+      "untrusted_input": [
+        "_amount (fuzz)"
+      ],
+      "permission_level": "user"
+    },
+    {
+      "file": "test/LiquidRon.operator.t.sol",
+      "function": "test_harvest",
+      "line": 68,
+      "untrusted_input": [
+        "_amount (fuzz)"
+      ],
+      "permission_level": "operator"
+    },
+    {
+      "file": "test/LiquidRon.operator.t.sol",
+      "function": "test_harvest_duration",
+      "line": 90,
+      "untrusted_input": [
+        "_duration (fuzz)"
+      ],
+      "permission_level": "operator"
+    },
+    {
+      "file": "test/LiquidRon.operator.t.sol",
+      "function": "test_harvest_and_delegate",
+      "line": 108,
+      "untrusted_input": [
+        "_amount (fuzz)"
+      ],
+      "permission_level": "operator"
+    },
+    {
+      "file": "test/LiquidRon.operator.t.sol",
+      "function": "test_revert_3days_redelegate",
+      "line": 130,
+      "untrusted_input": [
+        "_amount (fuzz)"
+      ],
+      "permission_level": "operator"
+    },
+    {
+      "file": "test/LiquidRon.operator.t.sol",
+      "function": "test_redelegate",
+      "line": 152,
+      "untrusted_input": [
+        "_amount (fuzz)"
+      ],
+      "permission_level": "operator"
+    },
+    {
+      "file": "test/LiquidRon.operator.t.sol",
+      "function": "test_revert_redelegate",
+      "line": 174,
+      "untrusted_input": [
+        "_amount (fuzz)"
+      ],
+      "permission_level": "operator"
+    },
+    {
+      "file": "test/LiquidRon.operator.t.sol",
+      "function": "test_revert_undelegate",
+      "line": 194,
+      "untrusted_input": [
+        "_amount (fuzz)"
+      ],
+      "permission_level": "operator"
+    },
+    {
+      "file": "test/LiquidRon.operator.t.sol",
+      "function": "test_undelegate",
+      "line": 213,
+      "untrusted_input": [
+        "_amount (fuzz)"
+      ],
+      "permission_level": "operator"
+    },
+    {
+      "file": "test/LiquidRon.operator.t.sol",
+      "function": "test_operator_start_withdraw_process",
+      "line": 231,
+      "untrusted_input": [],
+      "permission_level": "operator"
+    },
+    {
+      "file": "test/LiquidRon.operator.t.sol",
+      "function": "test_validator_array",
+      "line": 248,
+      "untrusted_input": [],
+      "permission_level": "operator"
+    },
+    {
+      "file": "test/LiquidRon.operator.t.sol",
+      "function": "test_validator_array_prune_no_change",
+      "line": 259,
+      "untrusted_input": [],
+      "permission_level": "operator"
+    },
+    {
+      "file": "test/LiquidRon.operator.t.sol",
+      "function": "test_validator_array_prune",
+      "line": 288,
+      "untrusted_input": [],
+      "permission_level": "operator"
+    },
+    {
+      "file": "test/LiquidRon.operator.t.sol",
+      "function": "test_revert_only_operator",
+      "line": 317,
+      "untrusted_input": [],
+      "permission_level": "user"
+    },
+    {
+      "file": "test/LiquidRon.t.sol",
+      "function": "test_deposit",
+      "line": 24,
+      "untrusted_input": [
+        "_amount (fuzz)"
+      ],
+      "permission_level": "user"
+    },
+    {
+      "file": "test/LiquidRon.t.sol",
+      "function": "test_deposit_no_func_call",
+      "line": 31,
+      "untrusted_input": [
+        "_amount (fuzz)"
+      ],
+      "permission_level": "user"
+    },
+    {
+      "file": "test/LiquidRon.t.sol",
+      "function": "test_withdraw_init",
+      "line": 39,
+      "untrusted_input": [
+        "_amount (fuzz)"
+      ],
+      "permission_level": "user"
+    },
+    {
+      "file": "test/LiquidRon.t.sol",
+      "function": "test_revert_start_withdraw_process_user",
+      "line": 48,
+      "untrusted_input": [],
+      "permission_level": "user"
+    },
+    {
+      "file": "test/LiquidRon.t.sol",
+      "function": "test_withdraw_process_user",
+      "line": 59,
+      "untrusted_input": [],
+      "permission_level": "user"
+    },
+    {
+      "file": "test/LiquidRon.t.sol",
+      "function": "test_revert_receiver_ron",
+      "line": 79,
+      "untrusted_input": [],
+      "permission_level": "user"
+    },
+    {
+      "file": "test/LiquidRon.t.sol",
+      "function": "test_withdraw_vault_function",
+      "line": 86,
+      "untrusted_input": [],
+      "permission_level": "user"
+    },
+    {
+      "file": "test/LiquidRon.t.sol",
+      "function": "test_redeem_vault_function",
+      "line": 104,
+      "untrusted_input": [],
+      "permission_level": "user"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function_name": "deposit",
+      "line": 114,
+      "untrusted_input": "msg.value (ETH)",
+      "permission_level": "public"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function_name": "delegateAmount",
+      "line": 134,
+      "untrusted_input": "proxyId, amounts[], consensusAddrs[]",
+      "permission_level": "public"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function_name": "harvest",
+      "line": 168,
+      "untrusted_input": "proxyId, consensusAddrs[]",
+      "permission_level": "public"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function_name": "fetchOperatorFee",
+      "line": 194,
+      "untrusted_input": "none (only feeRecipient can call)",
+      "permission_level": "feeRecipient only"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function_name": "pause",
+      "line": 234,
+      "untrusted_input": "none",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function_name": "unpause",
+      "line": 240,
+      "untrusted_input": "none",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function_name": "updateFeeRecipient",
+      "line": 246,
+      "untrusted_input": "newFeeRecipient",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function_name": "updateOperator",
+      "line": 252,
+      "untrusted_input": "operator, status",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function_name": "setOperatorFee",
+      "line": 258,
+      "untrusted_input": "newFee (uint256)",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function_name": "deployStakingProxy",
+      "line": 264,
+      "untrusted_input": "none",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/LiquidProxy.sol",
+      "function_name": "harvest",
+      "line": 22,
+      "untrusted_input": "consensusAddrs[]",
+      "permission_level": "onlyVault"
+    },
+    {
+      "file": "src/Escrow.sol",
+      "function_name": "deposit",
+      "line": 14,
+      "untrusted_input": "amount, vault",
+      "permission_level": "onlyVault"
+    },
+    {
+      "file": "src/Escrow.sol",
+      "function_name": "withdraw",
+      "line": 20,
+      "untrusted_input": "amount, to",
+      "permission_level": "onlyVault"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function": "updateFeeRecipient",
+      "line": 72,
+      "untrusted_input": "_feeRecipient (address)",
+      "permission_level": "owner"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function": "updateOperator",
+      "line": 79,
+      "untrusted_input": "_operator (address), _value (bool)",
+      "permission_level": "owner"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function": "setOperatorFee",
+      "line": 87,
+      "untrusted_input": "_fee (uint256)",
+      "permission_level": "owner"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function": "deployStakingProxy",
+      "line": 94,
+      "untrusted_input": "none",
+      "permission_level": "owner"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function": "fetchOperatorFee",
+      "line": 101,
+      "untrusted_input": "none",
+      "permission_level": "feeRecipient"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function": "harvest",
+      "line": 115,
+      "untrusted_input": "_proxyIndex (uint256), _consensusAddrs (address[])",
+      "permission_level": "operator"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function": "harvestAndDelegateRewards",
+      "line": 127,
+      "untrusted_input": "_proxyIndex (uint256), _consensusAddrs (address[]), _consensusAddrDst (address)",
+      "permission_level": "operator"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function": "delegateAmount",
+      "line": 143,
+      "untrusted_input": "_proxyIndex (uint256), _amounts (uint256[]), _consensusAddrs (address[])",
+      "permission_level": "operator"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function": "redelegateAmount",
+      "line": 164,
+      "untrusted_input": "_proxyIndex (uint256), _amounts (uint256[]), _consensusAddrsSrc (address[]), _consensusAddrsDst (address[])",
+      "permission_level": "operator"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function": "undelegateAmount",
+      "line": 185,
+      "untrusted_input": "_proxyIndex (uint256), _amounts (uint256[]), _consensusAddrs (address[])",
+      "permission_level": "operator"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function": "pruneValidatorList",
+      "line": 193,
+      "untrusted_input": "none",
+      "permission_level": "public"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function": "finaliseRonRewardsForEpoch",
+      "line": 215,
+      "untrusted_input": "none",
+      "permission_level": "operator"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function": "getTotalStaked",
+      "line": 230,
+      "untrusted_input": "none",
+      "permission_level": "public view"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function": "getTotalRewards",
+      "line": 243,
+      "untrusted_input": "none",
+      "permission_level": "public view"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function": "getAssetsInVault",
+      "line": 256,
+      "untrusted_input": "none",
+      "permission_level": "public view"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function": "totalAssets",
+      "line": 261,
+      "untrusted_input": "none",
+      "permission_level": "public view"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function": "withdraw",
+      "line": 269,
+      "untrusted_input": "_assets (uint256), _receiver (address), _owner (address)",
+      "permission_level": "public"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function": "redeem",
+      "line": 283,
+      "untrusted_input": "_shares (uint256), _receiver (address), _owner (address)",
+      "permission_level": "public"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function": "deposit(uint256, address)",
+      "line": 297,
+      "untrusted_input": "_assets (uint256), _receiver (address)",
+      "permission_level": "public"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function": "mint",
+      "line": 303,
+      "untrusted_input": "_assets (uint256), _receiver (address)",
+      "permission_level": "public"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function": "deposit()",
+      "line": 309,
+      "untrusted_input": "msg.value (uint256)",
+      "permission_level": "public payable"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function": "requestWithdrawal",
+      "line": 321,
+      "untrusted_input": "_shares (uint256)",
+      "permission_level": "public"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function": "redeem(uint256)",
+      "line": 336,
+      "untrusted_input": "_epoch (uint256)",
+      "permission_level": "public"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "function": "receive",
+      "line": 422,
+      "untrusted_input": "msg.value (uint256)",
+      "permission_level": "public payable"
+    },
+    {
+      "file": "src/LiquidProxy.sol",
+      "function_name": "harvest",
+      "line": 32,
+      "untrusted_input": "_consensusAddrs (array of addresses)",
+      "permission_level": "onlyVault"
+    },
+    {
+      "file": "src/LiquidProxy.sol",
+      "function_name": "harvestAndDelegateRewards",
+      "line": 42,
+      "untrusted_input": "_consensusAddrs (array of addresses), _consensusAddrDst (address)",
+      "permission_level": "onlyVault"
+    },
+    {
+      "file": "src/LiquidProxy.sol",
+      "function_name": "delegateAmount",
+      "line": 53,
+      "untrusted_input": "_amounts (array of uint256), _consensusAddrs (array of addresses)",
+      "permission_level": "onlyVault"
+    },
+    {
+      "file": "src/LiquidProxy.sol",
+      "function_name": "redelegateAmount",
+      "line": 64,
+      "untrusted_input": "_amounts (array of uint256), _consensusAddrsSrc (array of addresses), _consensusAddrsDst (array of addresses)",
+      "permission_level": "onlyVault"
+    },
+    {
+      "file": "src/LiquidProxy.sol",
+      "function_name": "undelegateAmount",
+      "line": 79,
+      "untrusted_input": "_amounts (array of uint256), _consensusAddrs (array of addresses)",
+      "permission_level": "onlyVault"
+    },
+    {
+      "file": "src/LiquidProxy.sol",
+      "function_name": "receive",
+      "line": 91,
+      "untrusted_input": "ETH transfer",
+      "permission_level": "public"
+    },
+    {
+      "file": "src/Escrow.sol",
+      "function_name": "deposit",
+      "line": 24,
+      "untrusted_input": "_amount (uint256), _receiver (address)",
+      "permission_level": "onlyVault"
+    },
+    {
+      "file": "src/Pausable.sol",
+      "function_name": "pause",
+      "line": 18,
+      "untrusted_input": "none",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/Pausable.sol",
+      "function_name": "unpause",
+      "line": 22,
+      "untrusted_input": "none",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/mock/MockRonStaking.sol",
+      "function_name": "delegate",
+      "line": 30,
+      "untrusted_input": "_consensusAddr (address), msg.value (ETH)",
+      "permission_level": "public"
+    },
+    {
+      "file": "src/mock/MockRonStaking.sol",
+      "function_name": "undelegate",
+      "line": 37,
+      "untrusted_input": "_consensusAddr (address), _amount (uint256)",
+      "permission_level": "public"
+    },
+    {
+      "file": "src/mock/MockRonStaking.sol",
+      "function_name": "redelegate",
+      "line": 50,
+      "untrusted_input": "_consensusAddrSrc (address), _consensusAddrDst (address), amount (uint256)",
+      "permission_level": "public"
+    },
+    {
+      "file": "src/mock/MockRonStaking.sol",
+      "function_name": "bulkUndelegate",
+      "line": 63,
+      "untrusted_input": "_consensusAddrs (array of addresses), _amounts (array of uint256)",
+      "permission_level": "public"
+    },
+    {
+      "file": "src/mock/MockRonStaking.sol",
+      "function_name": "claimRewards",
+      "line": 73,
+      "untrusted_input": "_consensusAddrs (array of addresses)",
+      "permission_level": "public"
+    },
+    {
+      "file": "src/mock/MockRonStaking.sol",
+      "function_name": "delegateRewards",
+      "line": 81,
+      "untrusted_input": "_consensusAddrs (array of addresses), _consensusAddrDst (address)",
+      "permission_level": "public"
+    },
+    {
+      "file": "src/mock/MockRonStaking.sol",
+      "function_name": "getRewards",
+      "line": 92,
+      "untrusted_input": "_user (address), _consensusAddrs (array of addresses)",
+      "permission_level": "public view"
+    },
+    {
+      "file": "src/mock/MockRonStaking.sol",
+      "function_name": "getReward",
+      "line": 103,
+      "untrusted_input": "_user (address), _consensusAddr (address)",
+      "permission_level": "public view"
+    },
+    {
+      "file": "src/mock/MockRonStaking.sol",
+      "function_name": "getStakingTotal",
+      "line": 110,
+      "untrusted_input": "_consensusAddr (address)",
+      "permission_level": "public view"
+    },
+    {
+      "file": "src/mock/MockRonStaking.sol",
+      "function_name": "getManyStakingTotals",
+      "line": 114,
+      "untrusted_input": "_consensusAddrs (array of addresses)",
+      "permission_level": "public view"
+    },
+    {
+      "file": "src/mock/MockRonStaking.sol",
+      "function_name": "getStakingAmount",
+      "line": 120,
+      "untrusted_input": "_consensusAddr (address), user (address)",
+      "permission_level": "public view"
+    },
+    {
+      "file": "src/mock/MockRonStaking.sol",
+      "function_name": "getManyStakingAmounts",
+      "line": 125,
+      "untrusted_input": "_consensusAddrs (array of addresses), userList (array of addresses)",
+      "permission_level": "public view"
+    },
+    {
+      "file": "src/mock/MockRonStaking.sol",
+      "function_name": "receive",
+      "line": 133,
+      "untrusted_input": "ETH transfer",
+      "permission_level": "public"
+    },
+    {
+      "file": "src/mock/WrappedRon.sol",
+      "function_name": "deposit",
+      "line": 9,
+      "untrusted_input": "msg.value (ETH)",
+      "permission_level": "public"
+    },
+    {
+      "file": "src/mock/WrappedRon.sol",
+      "function_name": "withdraw",
+      "line": 14,
+      "untrusted_input": "_amount (uint256)",
+      "permission_level": "public"
+    }
+  ],
+  "trust_boundaries": [
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 355,
+      "what_crossing": "External call to WrappedRon (ERC20) for token transfers",
+      "should_be_validated": "Return value of transferFrom (ERC20 compliance)"
+    },
+    {
+      "file": "src/RonHelper.sol",
+      "line": 13,
+      "what_crossing": "External call to Ron native transfer (payable)",
+      "should_be_validated": "Return value of low-level call (success)"
+    },
+    {
+      "file": "src/RonHelper.sol",
+      "line": 32,
+      "what_crossing": "External call to RonStaking for delegation/harvest operations",
+      "should_be_validated": "Return value and state changes after external call"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 250,
+      "what_crossing": "Admin/operator check for withdraw/delegate operations",
+      "should_be_validated": "Caller authorization (operator vs. user)"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 355,
+      "what_crossing": "Token minting/burning (mintLRT, burnLRT) crosses trust boundary from Vault to ERC20",
+      "should_be_validated": "Amount validation and proper accounting"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 150,
+      "what_crossing": "Cross-contract call to RonStaking for delegation (delegations, undelegations, redelegations)",
+      "should_be_validated": "Proxy address validation and amount validation"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 200,
+      "what_crossing": "Admin function deployStakingProxy creates new proxy contract",
+      "should_be_validated": "Only owner can deploy"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 114,
+      "crossing": "External ETH deposit into vault",
+      "should_validate": "Deposit amount > 0, contract not paused, no zero-value attack"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 134,
+      "crossing": "User-provided arrays (amounts[], consensusAddrs[]) to delegate staking",
+      "should_validate": "Array lengths match, amounts sum correct, consensus addresses valid, proxyId valid"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 168,
+      "crossing": "User-provided consensusAddrs[] for harvest",
+      "should_validate": "Array non-empty, addresses valid, proxyId valid"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 194,
+      "crossing": "Fee withdrawal to feeRecipient",
+      "should_validate": "Caller is feeRecipient, operatorFeeAmount > 0"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 234,
+      "crossing": "Owner-only pause",
+      "should_validate": "msg.sender == owner"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 240,
+      "crossing": "Owner-only unpause",
+      "should_validate": "msg.sender == owner"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 246,
+      "crossing": "Owner sets feeRecipient",
+      "should_validate": "msg.sender == owner, newFeeRecipient != address(0)"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 252,
+      "crossing": "Owner grants/revokes operator role",
+      "should_validate": "msg.sender == owner, operator != address(0)"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 258,
+      "crossing": "Owner sets operator fee",
+      "should_validate": "msg.sender == owner, newFee <= MAX_FEE"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 264,
+      "crossing": "Owner deploys new staking proxy",
+      "should_validate": "msg.sender == owner"
+    },
+    {
+      "file": "src/LiquidProxy.sol",
+      "line": 22,
+      "crossing": "Vault calls proxy for harvest",
+      "should_validate": "msg.sender == vault"
+    },
+    {
+      "file": "src/Escrow.sol",
+      "line": 14,
+      "crossing": "Vault deposits into escrow",
+      "should_validate": "msg.sender == vault"
+    },
+    {
+      "file": "src/Escrow.sol",
+      "line": 20,
+      "crossing": "Vault withdraws from escrow",
+      "should_validate": "msg.sender == vault"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 355,
+      "crossing": "External call to RonHelper.withdrawForStaking",
+      "should_validate": "Return value checked (ReentrancyGuard), staking contract trusted"
+    },
+    {
+      "file": "src/RonHelper.sol",
+      "line": 13,
+      "crossing": "External call to RonStaking.withdraw",
+      "should_validate": "Return value checked, staking contract trusted"
+    },
+    {
+      "file": "src/RonHelper.sol",
+      "line": 32,
+      "crossing": "External call to RonStaking.deposit",
+      "should_validate": "Return value checked, staking contract trusted"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 72,
+      "crossing": "Fee recipient address update from external actor (owner)",
+      "should_validate": "Address validity, non-zero, not contract that cannot receive RON"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 79,
+      "crossing": "Operator status change from external actor (owner)",
+      "should_validate": "Address validity"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 87,
+      "crossing": "Operator fee value change from external actor (owner)",
+      "should_validate": "Value within allowed bounds"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 94,
+      "crossing": "Deployment of new staking proxy from external actor (owner)",
+      "should_validate": "None - factory pattern"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 101,
+      "crossing": "Operator fee withdrawal from fee recipient",
+      "should_validate": "msg.sender == feeRecipient (already done)"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 115,
+      "crossing": "Harvest call to LiquidProxy from operator",
+      "should_validate": "proxyIndex valid, consensusAddrs valid"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 127,
+      "crossing": "Harvest and delegate call to LiquidProxy from operator",
+      "should_validate": "proxyIndex valid, consensusAddrs valid, consensusAddrDst valid"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 143,
+      "crossing": "Delegate RON from LiquidRon to staking proxy, then to Ronin staking from operator",
+      "should_validate": "proxyIndex valid, amounts non-zero, consensusAddrs valid"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 164,
+      "crossing": "Redelegate RON within Ronin staking from operator",
+      "should_validate": "proxyIndex valid, amounts non-zero, consensusAddrs valid"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 185,
+      "crossing": "Undelegate RON within Ronin staking from operator",
+      "should_validate": "proxyIndex valid, amounts non-zero, consensusAddrs valid"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 215,
+      "crossing": "Finalise epoch rewards and move assets to escrow from operator",
+      "should_validate": "Epoch status, locked shares"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 269,
+      "crossing": "Withdraw RON from vault to receiver from any user (with authorization)",
+      "should_validate": "Receiver can receive RON"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 283,
+      "crossing": "Redeem RON from vault to receiver from any user (with authorization)",
+      "should_validate": "Receiver can receive RON"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 309,
+      "crossing": "Deposit native RON into escrow from any external actor",
+      "should_validate": "msg.value > 0, sender can receive RON shares"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 321,
+      "crossing": "Request withdrawal, lock shares and move to contract from any user",
+      "should_validate": "Shares balance, user can receive RON"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 336,
+      "crossing": "Redeem withdrawn assets from escrow to user from any user",
+      "should_validate": "Epoch finalised, request not fulfilled"
+    },
+    {
+      "file": "src/LiquidRon.sol",
+      "line": 422,
+      "crossing": "Receive native RON from any external actor",
+      "should_validate": "Sender is not WRON (to avoid double deposit)"
+    },
+    {
+      "file": "src/RonHelper.sol",
+      "line": 13,
+      "crossing": "Deposit RON to WRON and transfer to recipient",
+      "should_validate": "Return value of deposit and transfer"
+    },
+    {
+      "file": "src/RonHelper.sol",
+      "line": 32,
+      "crossing": "Withdraw WRON and send native RON to recipient",
+      "should_validate": "Return value of withdraw, success of native RON transfer"
+    },
+    {
+      "file": "src/LiquidProxy.sol",
+      "line": 22,
+      "crossing": "Vault (msg.sender) authority to call functions on LiquidProxy",
+      "should_validate": "msg.sender == vault is sufficient; vault is set once in constructor"
+    },
+    {
+      "file": "src/LiquidProxy.sol",
+      "line": 34,
+      "crossing": "LiquidProxy calls external IRoninValidator(roninStaking).claimRewards() with user-provided consensus addresses",
+      "should_validate": "Consensus addresses should be validated (e.g., against known list or not zero)"
+    },
+    {
+      "file": "src/LiquidProxy.sol",
+      "line": 44,
+      "crossing": "LiquidProxy calls external IRoninValidator(roninStaking).delegateRewards() with user-provided consensus addresses and destination",
+      "should_validate": "Consensus addresses and destination should be validated"
+    },
+    {
+      "file": "src/LiquidProxy.sol",
+      "line": 56,
+      "crossing": "LiquidProxy sends ETH value to IRoninValidator(roninStaking).delegate() with user-provided amounts and addresses",
+      "should_validate": "Amounts and consensus addresses should be validated; total delegated amount should not exceed contract balance"
+    },
+    {
+      "file": "src/LiquidProxy.sol",
+      "line": 68,
+      "crossing": "LiquidProxy calls external IRoninValidator(roninStaking).redelegate() with user-provided amounts and addresses",
+      "should_validate": "Amounts and consensus addresses should be validated"
+    },
+    {
+      "file": "src/LiquidProxy.sol",
+      "line": 83,
+      "crossing": "LiquidProxy calls external IRoninValidator(roninStaking).bulkUndelegate() with user-provided amounts and addresses, then sends ETH to vault",
+      "should_validate": "Amounts and consensus addresses should be validated; total undelegated amount should not exceed contract balance"
+    },
+    {
+      "file": "src/Escrow.sol",
+      "line": 16,
+      "crossing": "Constructor grants max approval to deployer (msg.sender, expected to be vault)",
+      "should_validate": "Deployer should be the vault address; approval limit is intended but could be risky if vault is malicious"
+    },
+    {
+      "file": "src/Escrow.sol",
+      "line": 25,
+      "crossing": "Vault calls Escrow.deposit() with untrusted _amount and _receiver, which then calls IVault(payable(_vault)).deposit()",
+      "should_validate": "Vault should validate _amount and _receiver before calling Escrow; Escrow trusts vault entirely"
+    },
+    {
+      "file": "src/Pausable.sol",
+      "line": 18,
+      "crossing": "Owner can pause contract, affecting all whenNotPaused modifiers",
+      "should_validate": "Owner should be trusted; pause state is critical for emergency stop"
+    },
+    {
+      "file": "src/mock/WrappedRon.sol",
+      "line": 10,
+      "crossing": "User deposits ETH to receive WRON, mints ERC20 tokens",
+      "should_validate": "msg.value is trusted; no validation needed on minting"
+    },
+    {
+      "file": "src/mock/WrappedRon.sol",
+      "line": 15,
+      "crossing": "User withdraws WRON to receive ETH, burns ERC20 tokens and sends ETH",
+      "should_validate": "_amount should not exceed user balance; ETH transfer success is checked"
+    },
+    {
+      "file": "src/mock/MockRonStaking.sol",
+      "line": 30,
+      "crossing": "User delegates ETH to a validator, staking state updated",
+      "should_validate": "_consensusAddr should be validated; msg.value is trusted"
+    },
+    {
+      "file": "src/mock/MockRonStaking.sol",
+      "line": 37,
+      "crossing": "User undelegates ETH, triggering ETH transfer to user",
+      "should_validate": "_amount and _consensusAddr should be validated; ETH transfer success is checked"
+    },
+    {
+      "file": "src/mock/MockRonStaking.sol",
+      "line": 50,
+      "crossing": "User re-delegates ETH between validators, state updated",
+      "should_validate": "_consensusAddrSrc, _consensusAddrDst, and amount should be validated"
+    },
+    {
+      "file": "src/mock/MockRonStaking.sol",
+      "line": 63,
+      "crossing": "Bulk undelegate triggers multiple ETH transfers to user",
+      "should_validate": "Array lengths should match; amounts and addresses should be validated"
+    },
+    {
+      "file": "src/mock/MockRonStaking.sol",
+      "line": 73,
+      "crossing": "User claims rewards, triggering ETH transfer to user",
+      "should_validate": "_consensusAddrs should be validated; ETH transfer success is checked"
+    },
+    {
+      "file": "src/mock/MockRonStaking.sol",
+      "line": 81,
+      "crossing": "User delegates rewards to a validator, staking state updated",
+      "should_validate": "_consensusAddrs and _consensusAddrDst should be validated"
+    }
+  ],
+  "value_flows": [
+    {
+      "description": "User deposits RON -> receives wrappedRon (ERC20) -> mints LRT shares",
+      "file": "src/LiquidRon.sol",
+      "function": "deposit",
+      "line": 150,
+      "order_of_operations": [
+        "Transfer RON to contract",
+        "Wrap RON to wRon via RonStaking",
+        "Mint LRT shares proportional to wRon balance"
+      ]
+    },
+    {
+      "description": "User requests withdrawal -> LRT shares burned -> pending withdrawal added to epoch queue",
+      "file": "src/LiquidRon.sol",
+      "function": "requestWithdrawal",
+      "line": 180,
+      "order_of_operations": [
+        "Burn user's LRT shares",
+        "Calculate withdrawal amount",
+        "Add to pending withdrawal for current epoch"
+      ]
+    },
+    {
+      "description": "Operator delegates delegated RON to consensus nodes via RonStaking",
+      "file": "src/LiquidRon.sol",
+      "function": "delegateAmount",
+      "line": 150,
+      "order_of_operations": [
+        "Validate proxy index",
+        "Validate amounts",
+        "Call RonStaking.delegations"
+      ]
+    },
+    {
+      "description": "Operator harvests rewards -> increases totalAssets -> fees taken -> rewards re-delegated or kept in vault",
+      "file": "src/LiquidRon.sol",
+      "function": "harvest",
+      "line": 200,
+      "order_of_operations": [
+        "Call RonStaking.harvest for validator",
+        "Calculate fees",
+        "Transfer fees to operator",
+        "Redelegate rewards if specified"
+      ]
+    },
+    {
+      "description": "Operator undelegates RON from consensus nodes -> RON returns to proxy",
+      "file": "src/LiquidRon.sol",
+      "function": "undelegateAmount",
+      "line": 170,
+      "order_of_operations": [
+        "Call RonStaking.undelegations",
+        "Update validator list if needed"
+      ]
+    },
+    {
+      "description": "Operator redelegates between consensus nodes",
+      "file": "src/LiquidRon.sol",
+      "function": "redelegateAmount",
+      "line": 165,
+      "order_of_operations": [
+        "Call RonStaking.redelegations",
+        "Update validator list if needed"
+      ]
+    },
+    {
+      "description": "Operator finalizes withdrawal epoch -> moves pending withdrawals to ready-for-redeem state",
+      "file": "src/LiquidRon.sol",
+      "function": "finaliseRonRewardsForEpoch",
+      "line": 190,
+      "order_of_operations": [
+        "Validate epoch is ready",
+        "Mark epoch as FINALISED",
+        "Update totalAssets with rewards"
+      ]
+    },
+    {
+      "description": "User redeems -> burns LRT -> withdraws RON from escrow",
+      "file": "src/LiquidRon.sol",
+      "function": "redeem",
+      "line": 210,
+      "order_of_operations": [
+        "Check withdrawal status is FINALISED",
+        "Validate user has pending withdrawal",
+        "Transfer RON from escrow to user",
+        "Update withdrawal record"
+      ]
+    },
+    {
+      "type": "create",
+      "description": "User sends ETH via deposit(), mints LiquidRon tokens (ERC20) to user",
+      "file": "src/LiquidRon.sol",
+      "line": 114,
+      "order": 1
+    },
+    {
+      "type": "move",
+      "description": "Vault transfers ETH to escrow via escrow.deposit()",
+      "file": "src/LiquidRon.sol",
+      "line": 124,
+      "order": 2
+    },
+    {
+      "type": "move",
+      "description": "Vault calls proxy.deposit() to deposit ETH into Ron staking via RonHelper",
+      "file": "src/LiquidRon.sol",
+      "line": 127,
+      "order": 3
+    },
+    {
+      "type": "move",
+      "description": "delegateAmount: moves ETH from escrow to proxy and into Ron staking",
+      "file": "src/LiquidRon.sol",
+      "line": 148,
+      "order": 4
+    },
+    {
+      "type": "move",
+      "description": "harvest: collects staking rewards from Ron staking via RonHelper.withdrawForStaking",
+      "file": "src/LiquidRon.sol",
+      "line": 180,
+      "order": 5
+    },
+    {
+      "type": "move",
+      "description": "fetchOperatorFee: transfers operatorFeeAmount ETH to feeRecipient",
+      "file": "src/LiquidRon.sol",
+      "line": 200,
+      "order": 6
+    },
+    {
+      "type": "destroy",
+      "description": "Implicit: LiquidRon tokens represent claim on totalAssets(), value destroyed when burned",
+      "file": "src/LiquidRon.sol",
+      "line": "N/A",
+      "order": 7
+    },
+    {
+      "description": "Native RON deposit via deposit() or receive()",
+      "file": "src/LiquidRon.sol",
+      "start_line": 309,
+      "path": "msg.value -> WRON deposit -> transfer to escrow -> Escrow.deposit -> shares minted to sender"
+    },
+    {
+      "description": "WRON deposit via ERC4626 deposit/mint",
+      "file": "src/LiquidRon.sol",
+      "start_line": 297,
+      "path": "WRON transfer to vault -> super.deposit -> shares minted to receiver"
+    },
+    {
+      "description": "Harvest rewards from staking",
+      "file": "src/LiquidRon.sol",
+      "start_line": 115,
+      "path": "LiquidProxy.harvest -> rewards in WRON -> operatorFeeAmount incremented"
+    },
+    {
+      "description": "Delegate RON to validators",
+      "file": "src/LiquidRon.sol",
+      "start_line": 143,
+      "path": "vault WRON -> withdraw to staking proxy -> ILiquidProxy.delegateAmount -> Ronin staking"
+    },
+    {
+      "description": "Redelegate RON between validators",
+      "file": "src/LiquidRon.sol",
+      "start_line": 164,
+      "path": "ILiquidProxy.redelegateAmount -> Ronin staking internal transfer"
+    },
+    {
+      "description": "Undelegate RON from validators",
+      "file": "src/LiquidRon.sol",
+      "start_line": 185,
+      "path": "ILiquidProxy.undelegateAmount -> Ronin staking returns WRON to proxy"
+    },
+    {
+      "description": "Withdrawal request locking shares",
+      "file": "src/LiquidRon.sol",
+      "start_line": 321,
+      "path": "User shares burned/transferred to contract -> lockedSharesPerEpoch incremented"
+    },
+    {
+      "description": "Finalise epoch rewards and move assets to escrow",
+      "file": "src/LiquidRon.sol",
+      "start_line": 215,
+      "path": "previewRedeem -> assets calculated -> _withdraw (burn shares, transfer WRON) -> WRON to escrow"
+    },
+    {
+      "description": "Redeem withdrawn assets",
+      "file": "src/LiquidRon.sol",
+      "start_line": 336,
+      "path": "ERC20.transferFrom escrow to vault -> _withdrawRONTo (unwrapped to native) to user"
+    },
+    {
+      "description": "Withdraw/redeem from vault directly",
+      "file": "src/LiquidRon.sol",
+      "start_line": 269,
+      "path": "super.withdraw/redeem -> burns shares, transfers WRON to vault -> _withdrawRONTo (unwrapped) to receiver"
+    },
+    {
+      "description": "Operator fee collection",
+      "file": "src/LiquidRon.sol",
+      "start_line": 101,
+      "path": "fetchOperatorFee -> _withdrawRONTo (unwrapped) to feeRecipient"
+    },
+    {
+      "file": "src/LiquidProxy.sol",
+      "line": 32,
+      "operation": "harvest: Claims rewards from RoninStaking (external call), then sends entire contract balance to vault via _depositRONTo",
+      "order": "1. claimRewards (external call), 2. _depositRONTo (ETH transfer)"
+    },
+    {
+      "file": "src/LiquidProxy.sol",
+      "line": 42,
+      "operation": "harvestAndDelegateRewards: Calls delegateRewards on RoninStaking, which internally claims rewards and delegates to destination",
+      "order": "1. delegateRewards (external call), no ETH movement from contract"
+    },
+    {
+      "file": "src/LiquidProxy.sol",
+      "line": 53,
+      "operation": "delegateAmount: Sends ETH to RoninStaking.delegate for each amount/address pair",
+      "order": "1. delegate (external call with ETH value) for each i"
+    },
+    {
+      "file": "src/LiquidProxy.sol",
+      "line": 64,
+      "operation": "redelegateAmount: Calls redelegate on RoninStaking for each src/dst/amount triplet",
+      "order": "1. redelegate (external call) for each i"
+    },
+    {
+      "file": "src/LiquidProxy.sol",
+      "line": 79,
+      "operation": "undelegateAmount: Calls bulkUndelegate on RoninStaking, then sends total undelegated ETH to vault",
+      "order": "1. bulkUndelegate (external call), 2. _depositRONTo (ETH transfer)"
+    },
+    {
+      "file": "src/Escrow.sol",
+      "line": 24,
+      "operation": "deposit: Vault calls Escrow with amount/receiver, Escrow calls vault.deposit with same args (ERC20 transfer via approval)",
+      "order": "1. IVault(_vault).deposit (external call)"
+    },
+    {
+      "file": "src/mock/MockRonStaking.sol",
+      "line": 30,
+      "operation": "delegate: User sends ETH, staking amount increased, reward sync updated",
+      "order": "1. _sync (internal), 2. update stakingAmounts and totalStakingAmounts"
+    },
+    {
+      "file": "src/mock/MockRonStaking.sol",
+      "line": 37,
+      "operation": "undelegate: User withdraws ETH, staking amount decreased, reward sync updated",
+      "order": "1. _sync (internal), 2. update stakingAmounts and totalStakingAmounts, 3. ETH transfer to user"
+    },
+    {
+      "file": "src/mock/MockRonStaking.sol",
+      "line": 50,
+      "operation": "redelegate: User moves ETH between validators, staking amounts adjusted",
+      "order": "1. _sync for src, 2. _sync for dst, 3. update stakingAmounts and totalStakingAmounts for both"
+    },
+    {
+      "file": "src/mock/MockRonStaking.sol",
+      "line": 63,
+      "operation": "bulkUndelegate: Calls undelegate for each pair, multiple ETH transfers",
+      "order": "1. undelegate (which includes _sync and ETH transfer) for each i"
+    },
+    {
+      "file": "src/mock/MockRonStaking.sol",
+      "line": 73,
+      "operation": "claimRewards: Calculates pending rewards, syncs, then sends ETH to user",
+      "order": "1. _claimRewards (internal), 2. ETH transfer to user"
+    },
+    {
+      "file": "src/mock/MockRonStaking.sol",
+      "line": 81,
+      "operation": "delegateRewards: Claims rewards and immediately delegates to destination",
+      "order": "1. _claimRewards (internal), 2. _sync for dst, 3. update stakingAmounts and totalStakingAmounts"
+    },
+    {
+      "file": "src/mock/WrappedRon.sol",
+      "line": 9,
+      "operation": "deposit: User sends ETH, mints WRON ERC20 tokens to msg.sender",
+      "order": "1. _mint (ERC20 internal)"
+    },
+    {
+      "file": "src/mock/WrappedRon.sol",
+      "line": 14,
+      "operation": "withdraw: User burns WRON, receives ETH",
+      "order": "1. _burn (ERC20 internal), 2. ETH transfer to user"
+    }
+  ],
+  "call_graph_summary": {
+    "deposit": [
+      "LiquidRon.deposit() -> RonHelper.depositForStaking()",
+      "LiquidRon.deposit() -> RonHelper.depositForStaking() -> RonStaking.deposit()",
+      "LiquidRon.deposit() -> LiquidProxy.deposit()",
+      "LiquidRon.deposit() -> Escrow.deposit()"
+    ],
+    "delegateAmount": [
+      "LiquidRon.delegateAmount() -> RonHelper.withdrawForStaking()",
+      "LiquidRon.delegateAmount() -> RonHelper.withdrawForStaking() -> RonStaking.withdraw()",
+      "LiquidRon.delegateAmount() -> RonHelper.depositForStaking()",
+      "LiquidRon.delegateAmount() -> RonHelper.depositForStaking() -> RonStaking.deposit()",
+      "LiquidRon.delegateAmount() -> LiquidProxy.deposit()"
+    ],
+    "harvest": [
+      "LiquidRon.harvest() -> LiquidProxy.harvest()",
+      "LiquidRon.harvest() -> LiquidProxy.harvest() -> RonHelper.withdrawForStaking()",
+      "LiquidRon.harvest() -> LiquidProxy.harvest() -> RonHelper.withdrawForStaking() -> RonStaking.withdraw()",
+      "LiquidRon.harvest() -> RonHelper.depositForStaking()",
+      "LiquidRon.harvest() -> RonHelper.depositForStaking() -> RonStaking.deposit()"
+    ],
+    "fetchOperatorFee": [
+      "LiquidRon.fetchOperatorFee() -> RonHelper.withdrawForStaking()",
+      "LiquidRon.fetchOperatorFee() -> RonHelper.withdrawForStaking() -> RonStaking.withdraw()"
+    ],
+    "pause": [],
+    "unpause": [],
+    "updateFeeRecipient": [],
+    "updateOperator": [],
+    "setOperatorFee": [],
+    "deployStakingProxy": [],
+    "deposit()": [
+      "_depositRONTo (RonHelper)",
+      "Escrow.deposit (external)"
+    ],
+    "receive()": [
+      "_depositRONTo (RonHelper)",
+      "Escrow.deposit (external)"
+    ],
+    "deposit(uint256, address)": [
+      "ERC4626.deposit (internal)"
+    ],
+    "mint(uint256, address)": [
+      "ERC4626.mint (internal)"
+    ],
+    "withdraw(uint256, address, address)": [
+      "ERC4626.withdraw (internal)",
+      "_withdrawRONTo (RonHelper)"
+    ],
+    "redeem(uint256, address, address)": [
+      "ERC4626.redeem (internal)",
+      "_withdrawRONTo (RonHelper)"
+    ],
+    "redeem(uint256)": [
+      "IERC20.transferFrom (external)",
+      "_withdrawRONTo (RonHelper)"
+    ],
+    "requestWithdrawal(uint256)": [
+      "_checkUserCanReceiveRon (internal)",
+      "ERC20._transfer (internal)"
+    ],
+    "harvest(uint256, address[])": [
+      "ILiquidProxy.harvest (external)",
+      "IRoninValidator.getReward (external, via proxy)"
+    ],
+    "harvestAndDelegateRewards(uint256, address[], address)": [
+      "_tryPushValidator (ValidatorTracker)",
+      "ILiquidProxy.harvestAndDelegateRewards (external)",
+      "IRoninValidator.getReward (external, via proxy)"
+    ],
+    "delegateAmount(uint256, uint256[], address[])": [
+      "_tryPushValidator (ValidatorTracker)",
+      "_withdrawRONTo (RonHelper)",
+      "ILiquidProxy.delegateAmount (external)",
+      "IRoninValidator (external, via proxy)"
+    ],
+    "redelegateAmount(uint256, uint256[], address[], address[])": [
+      "_tryPushValidator (ValidatorTracker)",
+      "ILiquidProxy.redelegateAmount (external)",
+      "IRoninValidator (external, via proxy)"
+    ],
+    "undelegateAmount(uint256, uint256[], address[])": [
+      "ILiquidProxy.undelegateAmount (external)",
+      "IRoninValidator (external, via proxy)"
+    ],
+    "pruneValidatorList()": [
+      "IRoninValidator.getReward (external)",
+      "IRoninValidator.getManyStakingAmounts (external)",
+      "_removeValidator (ValidatorTracker)"
+    ],
+    "finaliseRonRewardsForEpoch()": [
+      "previewRedeem (ERC4626)",
+      "_withdraw (internal override)",
+      "SafeERC20.safeTransfer (external)"
+    ],
+    "fetchOperatorFee()": [
+      "_withdrawRONTo (RonHelper)"
+    ],
+    "updateFeeRecipient(address)": [],
+    "updateOperator(address, bool)": [],
+    "setOperatorFee(uint256)": [],
+    "deployStakingProxy()": [
+      "LiquidProxy constructor (external)"
+    ],
+    "src/LiquidProxy.sol::harvest": [
+      "IRoninValidator(roninStaking).claimRewards(_consensusAddrs) (external call)",
+      "RonHelper._depositRONTo(vault, claimedAmount) (internal -> external ETH transfer)"
+    ],
+    "src/LiquidProxy.sol::harvestAndDelegateRewards": [
+      "IRoninValidator(roninStaking).delegateRewards(_consensusAddrs, _consensusAddrDst) (external call)"
+    ],
+    "src/LiquidProxy.sol::delegateAmount": [
+      "IRoninValidator(roninStaking).delegate{value: _amounts[i]}(_consensusAddrs[i]) (external call with ETH) for each i"
+    ],
+    "src/LiquidProxy.sol::redelegateAmount": [
+      "IRoninValidator(roninStaking).redelegate(_consensusAddrsSrc[i], _consensusAddrsDst[i], _amounts[i]) (external call) for each i"
+    ],
+    "src/LiquidProxy.sol::undelegateAmount": [
+      "IRoninValidator(roninStaking).bulkUndelegate(_consensusAddrs, _amounts) (external call)",
+      "RonHelper._depositRONTo(vault, totalUndelegated) (internal -> external ETH transfer)"
+    ],
+    "src/Escrow.sol::deposit": [
+      "IVault(payable(_vault)).deposit(_amount, _receiver) (external call)"
+    ],
+    "src/mock/MockRonStaking.sol::delegate": [
+      "_sync(_consensusAddr, msg.sender) (internal)"
+    ],
+    "src/mock/MockRonStaking.sol::undelegate": [
+      "_sync(_consensusAddr, msg.sender) (internal)",
+      "msg.sender.call{value: _amount}(\"\") (external ETH transfer)"
+    ],
+    "src/mock/MockRonStaking.sol::redelegate": [
+      "_sync(_consensusAddrSrc, msg.sender) (internal)",
+      "_sync(_consensusAddrDst, msg.sender) (internal)"
+    ],
+    "src/mock/MockRonStaking.sol::bulkUndelegate": [
+      "undelegate(_consensusAddrs[i], _amounts[i]) (internal) for each i"
+    ],
+    "src/mock/MockRonStaking.sol::claimRewards": [
+      "_claimRewards(_consensusAddrs) (internal)",
+      "msg.sender.call{value: rewards}(\"\") (external ETH transfer)"
+    ],
+    "src/mock/MockRonStaking.sol::delegateRewards": [
+      "_claimRewards(_consensusAddrs) (internal)",
+      "_sync(_consensusAddrDst, msg.sender) (internal)"
+    ],
+    "src/mock/WrappedRon.sol::withdraw": [
+      "_burn(msg.sender, _amount) (internal ERC20)",
+      "msg.sender.call{value: _amount}(\"\") (external ETH transfer)"
+    ]
+  },
+  "static_findings_context": [
+    {
+      "finding": "unchecked_external_call at test/LiquidRon.operator.t.sol line 27",
+      "file": "test/LiquidRon.operator.t.sol",
+      "line": 27,
+      "entry_point_reachable": "test_deposit_no_func_call",
+      "analysis": "Low confidence. This is in test code, not production. The external call is to LiquidRon.deposit via low-level call, return value checked via assertTrue(res). False positive for production audit."
+    },
+    {
+      "finding": "potential_reentrancy at test/LiquidRon.operator.t.sol lines 27-28",
+      "file": "test/LiquidRon.operator.t.sol",
+      "line": 27,
+      "entry_point_reachable": "test_deposit_no_func_call",
+      "analysis": "Low confidence. Test code only. State change after external call, but in test context. False positive."
+    },
+    {
+      "finding": "unchecked_external_call at src/LiquidRon.sol line 355",
+      "file": "src/LiquidRon.sol",
+      "line": 355,
+      "entry_point_reachable": "deposit, withdraw, redeem, harvest",
+      "analysis": "Low confidence. This is ERC20 transferFrom call. Should check return value per ERC20 standard. However, many ERC20 implementations revert on failure. Likely real but low risk if using compliant tokens."
+    },
+    {
+      "finding": "unchecked_external_call at src/RonHelper.sol line 13",
+      "file": "src/RonHelper.sol",
+      "line": 13,
+      "entry_point_reachable": "deposit, withdraw, redeem",
+      "analysis": "Low confidence. This is native Ron transfer (payable). Return value not checked. If transfer fails, state not updated. Could be real vulnerability if low-level call fails silently."
+    },
+    {
+      "finding": "unchecked_external_call at src/RonHelper.sol line 32",
+      "file": "src/RonHelper.sol",
+      "line": 32,
+      "entry_point_reachable": "delegateAmount, undelegateAmount, redelegateAmount, harvest",
+      "analysis": "Low confidence. External call to RonStaking. Return value not checked. If RonStaking call fails, state not updated. Could be real vulnerability if staking operations fail silently."
+    },
+    {
+      "finding": "potential_reentrancy at src/RonHelper.sol lines 32-40",
+      "file": "src/RonHelper.sol",
+      "line": 32,
+      "entry_point_reachable": "delegateAmount, undelegateAmount, redelegateAmount, harvest",
+      "analysis": "Low confidence. State change after external call to RonStaking. Could be real if RonStaking is malicious, but RonStaking is trusted. Low risk."
+    },
+    {
+      "finding": "unchecked_external_call",
+      "file": "src/LiquidRon.sol",
+      "line": 355,
+      "likely_entry_point": "fetchOperatorFee",
+      "assessment": "Low confidence - RonHelper.withdrawForStaking uses low-level call but result is checked via require(success)"
+    },
+    {
+      "finding": "unchecked_external_call",
+      "file": "src/RonHelper.sol",
+      "line": 13,
+      "likely_entry_point": "fetchOperatorFee, harvest",
+      "assessment": "Low confidence - RonStaking.withdraw return value is checked via require(success)"
+    },
+    {
+      "finding": "unchecked_external_call",
+      "file": "src/RonHelper.sol",
+      "line": 32,
+      "likely_entry_point": "deposit, delegateAmount, harvest",
+      "assessment": "Low confidence - RonStaking.deposit return value is checked via require(success)"
+    },
+    {
+      "finding": "potential_reentrancy",
+      "file": "src/RonHelper.sol",
+      "lines": [
+        32,
+        40
+      ],
+      "likely_entry_point": "deposit, delegateAmount, harvest",
+      "assessment": "Low confidence - ReentrancyGuard is used, state changes after external call are safe"
+    },
+    {
+      "finding": "unchecked_external_call",
+      "file": "test/LiquidRon.admin.t.sol",
+      "line": 28,
+      "likely_entry_point": "test_admin_pause",
+      "assessment": "False positive - test file, line 28 is transfer to mockRonStaking"
+    },
+    {
+      "finding": "potential_reentrancy",
+      "file": "test/LiquidRon.admin.t.sol",
+      "lines": [
+        28,
+        29
+      ],
+      "likely_entry_point": "test_admin_pause",
+      "assessment": "False positive - test file, no state change after transfer"
+    },
+    {
+      "finding": "unchecked_external_call",
+      "file": "test/LiquidRon.t.sol",
+      "line": 26,
+      "likely_entry_point": "test_deposit",
+      "assessment": "False positive - test file, external call to wrappedRon"
+    },
+    {
+      "finding": "potential_reentrancy",
+      "file": "test/LiquidRon.t.sol",
+      "lines": [
+        26,
+        27
+      ],
+      "likely_entry_point": "test_deposit",
+      "assessment": "False positive - test file, no state change after external call"
+    },
+    {
+      "finding": "unchecked_external_call",
+      "file": "test/LiquidRon.t.sol",
+      "line": 42,
+      "likely_entry_point": "test_delegateAmount",
+      "assessment": "False positive - test file, external call to wrappedRon"
+    },
+    {
+      "finding": "unchecked_external_call",
+      "file": "test/LiquidRon.operator.t.sol",
+      "line": 27,
+      "likely_entry_point": "test_set_operator",
+      "assessment": "False positive - test file, external call to wrappedRon"
+    },
+    {
+      "finding": "potential_reentrancy",
+      "file": "test/LiquidRon.operator.t.sol",
+      "lines": [
+        27,
+        28
+      ],
+      "likely_entry_point": "test_set_operator",
+      "assessment": "False positive - test file, no state change after external call"
+    },
+    {
+      "finding": "unchecked_external_call in src/LiquidRon.sol line 355",
+      "entry_point_reachable": "redeem(uint256) (line 336)",
+      "analysis": "Line 355 is IERC20.transferFrom call. This is an external call to a trusted asset contract (WRON). Return value is handled by SafeERC20.safeTransfer in other places, but here it uses raw transferFrom. If WRON returns false on failure, this would not revert. Likely real issue if WRON can fail silently."
+    },
+    {
+      "finding": "unchecked_external_call in src/RonHelper.sol line 13",
+      "entry_point_reachable": "deposit(), receive(), delegateAmount(), fetchOperatorFee(), withdraw(), redeem(), redeem(uint256)",
+      "analysis": "Line 13 is IWRON.deposit() call. Return value not checked. If WRON deposit fails silently, funds could be lost. Likely real issue."
+    },
+    {
+      "finding": "unchecked_external_call in src/RonHelper.sol line 32",
+      "entry_point_reachable": "withdraw(), redeem(), redeem(uint256), fetchOperatorFee(), delegateAmount()",
+      "analysis": "Line 32 is IWRON.withdraw() call. Return value not checked. If WRON withdraw fails silently, native RON transfer at line 40 would still occur, potentially sending 0 value or reverts. Likely real issue."
+    },
+    {
+      "finding": "potential_reentrancy in src/RonHelper.sol lines 32 and 40",
+      "entry_point_reachable": "withdraw(), redeem(), redeem(uint256), fetchOperatorFee(), delegateAmount()",
+      "analysis": "External call at line 32 (IWRON.withdraw) followed by native RON transfer at line 40 (to.call{value}). This is a cross-contract reentrancy vector if recipient is malicious. However, the recipient is typically user-controlled. Could be exploitable if receiver is a contract with fallback."
+    },
+    {
+      "finding": "unchecked_external_call in test files (LiquidRon.operator.t.sol, LiquidRon.t.sol, LiquidRon.admin.t.sol)",
+      "entry_point_reachable": "None (test files)",
+      "analysis": "These are test contracts, not production code. False positive for architecture mapping."
+    },
+    {
+      "finding": "potential_reentrancy in test files",
+      "entry_point_reachable": "None (test files)",
+      "analysis": "Test contracts. False positive for architecture mapping."
+    },
+    {
+      "finding": "unchecked_external_call at test/LiquidRon.operator.t.sol:27",
+      "related_entry_point": null,
+      "context": "Test file only, not part of deployed contracts. Likely false positive for production audit.",
+      "likely_real": false
+    },
+    {
+      "finding": "potential_reentrancy at test/LiquidRon.operator.t.sol:27-28",
+      "related_entry_point": null,
+      "context": "Test file only, not part of deployed contracts. Likely false positive for production audit.",
+      "likely_real": false
+    },
+    {
+      "finding": "unchecked_external_call at test/LiquidRon.t.sol:26",
+      "related_entry_point": null,
+      "context": "Test file only, not part of deployed contracts. Likely false positive for production audit.",
+      "likely_real": false
+    },
+    {
+      "finding": "unchecked_external_call at test/LiquidRon.t.sol:42",
+      "related_entry_point": null,
+      "context": "Test file only, not part of deployed contracts. Likely false positive for production audit.",
+      "likely_real": false
+    },
+    {
+      "finding": "potential_reentrancy at test/LiquidRon.t.sol:26-27",
+      "related_entry_point": null,
+      "context": "Test file only, not part of deployed contracts. Likely false positive for production audit.",
+      "likely_real": false
+    },
+    {
+      "finding": "unchecked_external_call at test/LiquidRon.admin.t.sol:28",
+      "related_entry_point": null,
+      "context": "Test file only, not part of deployed contracts. Likely false positive for production audit.",
+      "likely_real": false
+    },
+    {
+      "finding": "potential_reentrancy at test/LiquidRon.admin.t.sol:28-29",
+      "related_entry_point": null,
+      "context": "Test file only, not part of deployed contracts. Likely false positive for production audit.",
+      "likely_real": false
+    },
+    {
+      "finding": "unchecked_external_call at src/LiquidRon.sol:355",
+      "related_entry_point": "src/LiquidRon.sol (not provided in codebase, but likely a vault contract)",
+      "context": "External call at line 355. Without full code, cannot determine if return value is needed. Likely a call to RoninStaking or similar. Could be real if return value matters.",
+      "likely_real": "unknown"
+    },
+    {
+      "finding": "unchecked_external_call at src/RonHelper.sol:13",
+      "related_entry_point": "src/LiquidProxy.sol functions that call _depositRONTo (harvest, undelegateAmount)",
+      "context": "RonHelper line 13 is likely an external call to WETH or similar. Return value not checked. Could be real if call should succeed.",
+      "likely_real": "unknown"
+    },
+    {
+      "finding": "unchecked_external_call at src/RonHelper.sol:32",
+      "related_entry_point": "src/LiquidProxy.sol functions that call _depositRONTo (harvest, undelegateAmount)",
+      "context": "RonHelper line 32 is likely an external call to WETH deposit/withdraw. Return value not checked. Could be real if call should succeed.",
+      "likely_real": "unknown"
+    },
+    {
+      "finding": "potential_reentrancy at src/RonHelper.sol:32-40",
+      "related_entry_point": "src/LiquidProxy.sol functions that call _depositRONTo (harvest, undelegateAmount)",
+      "context": "External call at line 32 (likely WETH interaction) followed by state change at line 40. If WETH call re-enters, state change could be vulnerable. Could be real depending on WETH implementation.",
+      "likely_real": "unknown"
+    }
+  ]
+}

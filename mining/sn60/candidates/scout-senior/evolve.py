@@ -75,10 +75,6 @@ Return JSON: {{"found": true/false, "confidence": 0.0-1.0}}"""
 
 def evaluate_strategy(scout_prompt, senior_prompt, test_projects):
     """Evaluate a strategy pair on test projects."""
-    import mining.sn60.candidates.scout_senior_agent as agent_module
-    # Monkey-patch the prompts
-    import mining.sn60.candidates.scoutsenior_agent as _
-    
     results = []
     for pid in test_projects:
         source_dir = Path(f"/root/bitt/data/scabench-repos/{pid}")

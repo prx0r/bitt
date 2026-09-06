@@ -1,0 +1,1067 @@
+{
+  "entry_points": [
+    {
+      "file": "src/AgentRouter.sol",
+      "function_name": "buy(address, uint256, uint256)",
+      "line": 52,
+      "untrusted_input": [
+        "_agentToken",
+        "_amountIn",
+        "_minAmountOut"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/AgentRouter.sol",
+      "function_name": "buy(address, uint256, uint256, address)",
+      "line": 59,
+      "untrusted_input": [
+        "_agentToken",
+        "_amountIn",
+        "_minAmountOut",
+        "_recipient"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/AgentRouter.sol",
+      "function_name": "sell(address, uint256, uint256)",
+      "line": 101,
+      "untrusted_input": [
+        "_agentToken",
+        "_amountIn",
+        "_minAmountOut"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/AgentRouter.sol",
+      "function_name": "sell(address, uint256, uint256, address)",
+      "line": 108,
+      "untrusted_input": [
+        "_agentToken",
+        "_amountIn",
+        "_minAmountOut",
+        "_recipient"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/AgentRouter.sol",
+      "function_name": "getAmountOut(address, address, uint256)",
+      "line": 154,
+      "untrusted_input": [
+        "_tokenIn",
+        "_tokenOut",
+        "_amountIn"
+      ],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/Agent.sol",
+      "function_name": "initializeToken(AIToken)",
+      "line": 73,
+      "untrusted_input": [
+        "_token"
+      ],
+      "permission_level": "owner"
+    },
+    {
+      "file": "src/Agent.sol",
+      "function_name": "setProxyImplementation(address)",
+      "line": 91,
+      "untrusted_input": [
+        "_proxyImplementation"
+      ],
+      "permission_level": "owner"
+    },
+    {
+      "file": "src/Agent.sol",
+      "function_name": "setStage(uint256)",
+      "line": 100,
+      "untrusted_input": [
+        "_stage"
+      ],
+      "permission_level": "factory"
+    },
+    {
+      "file": "src/Agent.sol",
+      "function_name": "setTokenURI(uint256, string)",
+      "line": 107,
+      "untrusted_input": [
+        "tokenId",
+        "_tokenURI"
+      ],
+      "permission_level": "owner"
+    },
+    {
+      "file": "src/AIToken.sol",
+      "function_name": "mint(address, uint256)",
+      "line": 55,
+      "untrusted_input": [
+        "to",
+        "amount"
+      ],
+      "permission_level": "owner"
+    },
+    {
+      "file": "src/AIToken.sol",
+      "function_name": "burn(address, uint256)",
+      "line": 62,
+      "untrusted_input": [
+        "from",
+        "amount"
+      ],
+      "permission_level": "owner"
+    },
+    {
+      "file": "src/TokenGovernor.sol",
+      "function": "setProposalThresholdPercentage",
+      "line": 100,
+      "untrusted_input": "_proposalThresholdPercentage (uint32)",
+      "permission_level": "self_only (msg.sender must be address(this))"
+    },
+    {
+      "file": "src/TokenGovernor.sol",
+      "function": "setVotingPeriod",
+      "line": 110,
+      "untrusted_input": "_votingPeriodInSeconds (uint32)",
+      "permission_level": "self_only (msg.sender must be address(this))"
+    },
+    {
+      "file": "src/TokenGovernor.sol",
+      "function": "setVotingDelay",
+      "line": 119,
+      "untrusted_input": "_votingDelayInSeconds (uint32)",
+      "permission_level": "self_only (msg.sender must be address(this))"
+    },
+    {
+      "file": "src/BootstrapPool.sol",
+      "function": "buy(uint256)",
+      "line": 85,
+      "untrusted_input": "_amountIn (uint256)",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/BootstrapPool.sol",
+      "function": "buy(uint256, address)",
+      "line": 92,
+      "untrusted_input": "_amountIn (uint256), _recipient (address)",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/BootstrapPool.sol",
+      "function": "sell(uint256)",
+      "line": 102,
+      "untrusted_input": "_amountIn (uint256)",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/BootstrapPool.sol",
+      "function": "sell(uint256, address)",
+      "line": 109,
+      "untrusted_input": "_amountIn (uint256), _recipient (address)",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/BootstrapPool.sol",
+      "function": "kill",
+      "line": 119,
+      "untrusted_input": "none",
+      "permission_level": "owner_only"
+    },
+    {
+      "file": "src/BootstrapPool.sol",
+      "function": "getPrice",
+      "line": 124,
+      "untrusted_input": "none",
+      "permission_level": "external_view"
+    },
+    {
+      "file": "src/BootstrapPool.sol",
+      "function": "getReserves",
+      "line": 131,
+      "untrusted_input": "none",
+      "permission_level": "external_view"
+    },
+    {
+      "file": "src/BootstrapPool.sol",
+      "function": "getAmountOut",
+      "line": 140,
+      "untrusted_input": "_amountIn (uint256), _tokenIn (address)",
+      "permission_level": "external_view"
+    },
+    {
+      "file": "src/BootstrapPool.sol",
+      "function": "getAmountIn",
+      "line": 153,
+      "untrusted_input": "_amountOut (uint256), _tokenOut (address)",
+      "permission_level": "external_view"
+    },
+    {
+      "file": "src/BootstrapPool.sol",
+      "function": "maxSwapAmount",
+      "line": 167,
+      "untrusted_input": "_tokenIn (address)",
+      "permission_level": "external_view"
+    },
+    {
+      "file": "src/BootstrapPool.sol",
+      "function": "sweepFees",
+      "line": 175,
+      "untrusted_input": "none",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/BootstrapPool.sol",
+      "function": "token0",
+      "line": 181,
+      "untrusted_input": "none",
+      "permission_level": "external_view"
+    },
+    {
+      "file": "src/BootstrapPool.sol",
+      "function": "token1",
+      "line": 186,
+      "untrusted_input": "none",
+      "permission_level": "external_view"
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "function_name": "createAgent",
+      "line": 56,
+      "untrusted_input_flows_in": "_name, _symbol, _url, _amountToBuy",
+      "permission_level": "external"
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "function_name": "setGovenerBytecode",
+      "line": 164,
+      "untrusted_input_flows_in": "_newBytecode",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "function_name": "setAgentBytecode",
+      "line": 171,
+      "untrusted_input_flows_in": "_newBytecode",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "function_name": "setLiquidityManagerBytecode",
+      "line": 178,
+      "untrusted_input_flows_in": "_newBytecode",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "function_name": "setCreationFee",
+      "line": 184,
+      "untrusted_input_flows_in": "_creationFee",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "function_name": "setCurrencyToken",
+      "line": 191,
+      "untrusted_input_flows_in": "_currencyToken",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "function_name": "setTradingFee",
+      "line": 197,
+      "untrusted_input_flows_in": "_tradingFee",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "function_name": "setTargetCCYLiquidity",
+      "line": 205,
+      "untrusted_input_flows_in": "_targetCCYLiquidity",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "function_name": "setInitialPrice",
+      "line": 211,
+      "untrusted_input_flows_in": "_initialPrice",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "function_name": "setShareToBamm",
+      "line": 217,
+      "untrusted_input_flows_in": "_shareToBamm",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "function_name": "setMintToDAO",
+      "line": 225,
+      "untrusted_input_flows_in": "_mintToDAO",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "function_name": "setMintToAgent",
+      "line": 233,
+      "untrusted_input_flows_in": "_mintToAgent",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "function_name": "setDefaultProxyImplementation",
+      "line": 240,
+      "untrusted_input_flows_in": "_defaultProxyImplementation",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "function_name": "setAllowedProxyImplementation",
+      "line": 246,
+      "untrusted_input_flows_in": "_proxyImplementation, _allowed",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "function_name": "setAgentStage",
+      "line": 253,
+      "untrusted_input_flows_in": "_agent, _stage",
+      "permission_level": "owner or agentManager[agent]"
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "function_name": "recoverERC20",
+      "line": 261,
+      "untrusted_input_flows_in": "_tokenAddress, _tokenAmount",
+      "permission_level": "onlyOwner"
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "function_name": "numberOfAgents",
+      "line": 267,
+      "untrusted_input_flows_in": "none",
+      "permission_level": "view"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "function_name": "initializeBootstrapPool",
+      "line": 80,
+      "untrusted_input_flows": [],
+      "permission_level": "external"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "function_name": "moveLiquidity",
+      "line": 89,
+      "untrusted_input_flows": [],
+      "permission_level": "external"
+    }
+  ],
+  "trust_boundaries": [
+    {
+      "file": "src/AgentRouter.sol",
+      "line": 63,
+      "crossing": "External user funds (currencyToken) to AgentRouter contract",
+      "should_validate": "Ensure _amountIn > 0, validate _agentToken is registered, check _recipient is not address(0)"
+    },
+    {
+      "file": "src/AgentRouter.sol",
+      "line": 68,
+      "crossing": "AgentRouter to BootstrapPool via safeTransferFrom and forceApprove",
+      "should_validate": "BootstrapPool is trusted component; ensure allowance is only for intended amount"
+    },
+    {
+      "file": "src/AgentRouter.sol",
+      "line": 78,
+      "crossing": "AgentRouter to FraxswapPair external calls (sync, swap)",
+      "should_validate": "Validate fraxswapPair address is correct via factory; ensure _amountOut meets minimum"
+    },
+    {
+      "file": "src/AgentRouter.sol",
+      "line": 112,
+      "crossing": "External user agent tokens to AgentRouter contract",
+      "should_validate": "Ensure _amountIn > 0, validate _agentToken is registered, check _recipient is not address(0)"
+    },
+    {
+      "file": "src/AgentRouter.sol",
+      "line": 117,
+      "crossing": "AgentRouter to BootstrapPool via safeTransferFrom and forceApprove",
+      "should_validate": "BootstrapPool is trusted component; ensure allowance is only for intended amount"
+    },
+    {
+      "file": "src/AgentRouter.sol",
+      "line": 127,
+      "crossing": "AgentRouter to FraxswapPair external calls (sync, swap)",
+      "should_validate": "Validate fraxswapPair address is correct via factory; ensure _amountOut meets minimum"
+    },
+    {
+      "file": "src/Agent.sol",
+      "line": 74,
+      "crossing": "Owner can set token address (only once)",
+      "should_validate": "Ensure _token is not address(0) and is a valid AIToken; check token is not already set"
+    },
+    {
+      "file": "src/Agent.sol",
+      "line": 94,
+      "crossing": "Owner sets proxy implementation (external contract)",
+      "should_validate": "Validate _proxyImplementation against factory whitelist or address(0)"
+    },
+    {
+      "file": "src/Agent.sol",
+      "line": 101,
+      "crossing": "Factory can set stage (increase only)",
+      "should_validate": "Ensure _stage > current stage (already enforced)"
+    },
+    {
+      "file": "src/AIToken.sol",
+      "line": 56,
+      "crossing": "Owner (Agent) mints tokens to arbitrary address",
+      "should_validate": "Ensure minter is trusted (Agent contract)"
+    },
+    {
+      "file": "src/AIToken.sol",
+      "line": 63,
+      "crossing": "Owner (Agent) burns tokens from arbitrary address",
+      "should_validate": "Ensure burn is authorized by token holder"
+    },
+    {
+      "file": "src/TokenGovernor.sol",
+      "line": 100,
+      "crossing": "Governor configuration parameters (proposalThresholdPercentage, votingPeriodInSeconds, votingDelayInSeconds) are set via self-call, meaning they can only be changed by passing a governance proposal that targets the governor itself.",
+      "should_validate": "These parameters have bounds checks (min/max) but are currently set to test values (e.g., 1% threshold, 5 minute period). Production deployment must ensure these are set appropriately."
+    },
+    {
+      "file": "src/TokenGovernor.sol",
+      "line": 50,
+      "crossing": "Governor interacts with Agent contract via agent.stage() to determine proposalThreshold(). This is a cross-contract call to a trusted component.",
+      "should_validate": "Agent contract's stage() function must be trusted and its return value reliable."
+    },
+    {
+      "file": "src/BootstrapPool.sol",
+      "line": 119,
+      "crossing": "kill() function transfers all tokens to owner, acting as a privilege boundary between pool operation and asset rescue.",
+      "should_validate": "Owner is LiquidityManager, and fee sweep goes to LiquidityManager.owner(). This creates a dependency on LiquidityManager's ownership model."
+    },
+    {
+      "file": "src/BootstrapPool.sol",
+      "line": 175,
+      "crossing": "sweepFees() calls LiquidityManager(owner).owner() to determine fee recipient. This is an external call to another contract to determine a privileged address.",
+      "should_validate": "The fee recipient is dynamically determined by LiquidityManager's ownership, which could change."
+    },
+    {
+      "file": "src/BootstrapPool.sol",
+      "line": 92,
+      "crossing": "buy() allows specifying a _recipient address, meaning value (agent tokens) can be sent to arbitrary addresses.",
+      "should_validate": "This is by design for swapping, but the recipient is untrusted input that flows into safeTransfer."
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "line": 60,
+      "what_is_crossing": "currencyToken.transferFrom(msg.sender, address(this), creationFee)",
+      "what_should_be_validated": "msg.sender address and creationFee amount; token transfer success"
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "line": 84,
+      "what_is_crossing": "token.safeTransfer(address(manager), initialLiquidity)",
+      "what_should_be_validated": "manager address is valid and initialized; initialLiquidity is correctly calculated"
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "line": 87,
+      "what_is_crossing": "currencyToken.safeTransferFrom(msg.sender, address(this), _amountToBuy)",
+      "what_should_be_validated": "msg.sender address and _amountToBuy amount; token transfer success"
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "line": 88,
+      "what_is_crossing": "currencyToken.approve(address(manager.bootstrapPool()), _amountToBuy)",
+      "what_should_be_validated": "manager.bootstrapPool() is a valid contract address"
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "line": 89,
+      "what_is_crossing": "manager.bootstrapPool().buy(_amountToBuy, msg.sender)",
+      "what_should_be_validated": "msg.sender is the intended recipient; _amountToBuy is valid"
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "line": 253,
+      "what_is_crossing": "msg.sender == agentManager[_agent] && _stage == 1",
+      "what_should_be_validated": "_agent is a valid agent address; _stage is within allowed range"
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "line": 261,
+      "what_is_crossing": "SafeERC20.safeTransfer(IERC20(_tokenAddress), owner(), _tokenAmount)",
+      "what_should_be_validated": "_tokenAddress is a valid token; _tokenAmount does not exceed balance"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "line": 91,
+      "what_crossing": "External call to BootstrapPool.killed() (view function)",
+      "what_should_be_validated": "Return value from external contract call"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "line": 92,
+      "what_crossing": "External call to BootstrapPool.getPrice()",
+      "what_should_be_validated": "Return value correctness and price manipulation"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "line": 93,
+      "what_crossing": "External call to BootstrapPool.getReserves()",
+      "what_should_be_validated": "Reserve values correctness and consistency"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "line": 96,
+      "what_crossing": "External call to AgentFactory.owner().targetCCYLiquidity()",
+      "what_should_be_validated": "Return value and owner relationship"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "line": 133,
+      "what_crossing": "External call to FraxswapFactory.getPair()",
+      "what_should_be_validated": "Return value and pair existence"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "line": 136,
+      "what_crossing": "External call to FraxswapFactory.createPair()",
+      "what_should_be_validated": "Return value and creation success"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "line": 149,
+      "what_crossing": "External call to FraxswapPair.mint()",
+      "what_should_be_validated": "Return value and LP token minting"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "line": 173,
+      "what_crossing": "External call to FraxswapPair.getAmountOut()",
+      "what_should_be_validated": "Return value and price calculation"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "line": 185,
+      "what_crossing": "External call to FraxswapPair.swap()",
+      "what_should_be_validated": "Return value and swap execution"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "line": 196,
+      "what_crossing": "External call to FraxswapPair.getAmountOut()",
+      "what_should_be_validated": "Return value and price calculation"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "line": 208,
+      "what_crossing": "External call to FraxswapPair.swap()",
+      "what_should_be_validated": "Return value and swap execution"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "line": 220,
+      "what_crossing": "External call to FraxswapPair.transfer()",
+      "what_should_be_validated": "Return value and token transfer"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "line": 225,
+      "what_crossing": "External call to AgentFactory.owner().shareToBamm()",
+      "what_should_be_validated": "Return value and share percentage"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "line": 228,
+      "what_crossing": "External call to BAMMFactory.pairToBamm()",
+      "what_should_be_validated": "Return value and BAMM existence"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "line": 229,
+      "what_crossing": "External call to BAMMFactory.createBamm()",
+      "what_should_be_validated": "Return value and BAMM creation"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "line": 232,
+      "what_crossing": "External call to BAMM.mint()",
+      "what_should_be_validated": "Return value and BAMM LP minting"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "line": 116,
+      "what_crossing": "Admin function call: AgentFactory(owner).setAgentStage()",
+      "what_should_be_validated": "Caller authorization and stage value"
+    }
+  ],
+  "value_flows": [
+    {
+      "flow_type": "token_transfer",
+      "description": "User spends currencyToken to buy agentToken via AgentRouter.buy()",
+      "created": null,
+      "moved": "currencyToken: user -> AgentRouter -> BootstrapPool or FraxswapPair",
+      "destroyed": null,
+      "order": [
+        "safeTransferFrom user to AgentRouter",
+        "forceApprove BootstrapPool or transfer to FraxswapPair",
+        "receive agentToken to _recipient"
+      ]
+    },
+    {
+      "flow_type": "token_transfer",
+      "description": "User sells agentToken to receive currencyToken via AgentRouter.sell()",
+      "created": null,
+      "moved": "agentToken: user -> AgentRouter -> BootstrapPool or FraxswapPair",
+      "destroyed": null,
+      "order": [
+        "safeTransferFrom user to AgentRouter",
+        "forceApprove BootstrapPool or transfer to FraxswapPair",
+        "receive currencyToken to _recipient"
+      ]
+    },
+    {
+      "flow_type": "token_minting",
+      "description": "Initial supply of AIToken minted to AgentFactory during construction",
+      "created": "100,000,000 AIToken",
+      "moved": "AIToken: AgentFactory",
+      "destroyed": null,
+      "order": [
+        "constructor mints to factory"
+      ]
+    },
+    {
+      "flow_type": "token_minting",
+      "description": "Owner (Agent) can mint additional AIToken supply",
+      "created": "arbitrary amount",
+      "moved": "AIToken: to arbitrary address",
+      "destroyed": null,
+      "order": [
+        "owner calls mint"
+      ]
+    },
+    {
+      "flow_type": "token_burning",
+      "description": "Owner (Agent) can burn AIToken supply",
+      "created": null,
+      "moved": null,
+      "destroyed": "arbitrary amount",
+      "order": [
+        "owner calls burn"
+      ]
+    },
+    {
+      "flow_type": "nft_ownership",
+      "description": "Agent NFT minted to factory (tokenId 0) at construction",
+      "created": "Agent NFT tokenId 0",
+      "moved": "Agent: AgentFactory",
+      "destroyed": null,
+      "order": [
+        "constructor mints tokenId 0 to factory"
+      ]
+    },
+    {
+      "flow_type": "permission_transfer",
+      "description": "Agent owner (AgentFactory) can transfer ownership of Agent NFT",
+      "created": null,
+      "moved": "ownership: AgentFactory -> any address",
+      "destroyed": null,
+      "order": [
+        "factory transfers NFT"
+      ]
+    },
+    {
+      "file": "src/BootstrapPool.sol",
+      "line": 92,
+      "description": "Value creation/movement: User provides currencyToken, receives agentToken via buy(). Order: 1) Calculate amountOut, 2) Accumulate fee, 3) Transfer currencyToken from msg.sender, 4) Transfer agentToken to recipient."
+    },
+    {
+      "file": "src/BootstrapPool.sol",
+      "line": 109,
+      "description": "Value creation/movement: User provides agentToken, receives currencyToken via sell(). Order: 1) Calculate amountOut, 2) Accumulate fee, 3) Transfer agentToken from msg.sender, 4) Transfer currencyToken to recipient, 5) Check reserve sufficiency."
+    },
+    {
+      "file": "src/BootstrapPool.sol",
+      "line": 119,
+      "description": "Value destruction: kill() sweeps fees to LiquidityManager owner, then transfers all remaining tokens to pool owner (LiquidityManager). Pool becomes inactive."
+    },
+    {
+      "file": "src/BootstrapPool.sol",
+      "line": 175,
+      "description": "Value movement: sweepFees() transfers accumulated fees from pool to LiquidityManager owner."
+    },
+    {
+      "file": "src/TokenGovernor.sol",
+      "line": 135,
+      "description": "Value read: proposalThreshold() calculates required votes based on token supply and agent stage, affecting governance participation."
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "operation": "creationFee transfer from msg.sender to factory",
+      "line": 61,
+      "order": 1
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "operation": "AIToken deployment and token distribution",
+      "line": 72,
+      "order": 2
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "operation": "mintToDAOAmount and mintToAgentAmount calculation from totalSupply",
+      "line": 79,
+      "order": 3
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "operation": "token.safeTransfer to DAO (factory)",
+      "line": 81,
+      "order": 4
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "operation": "token.safeTransfer to Agent",
+      "line": 82,
+      "order": 5
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "operation": "token.safeTransfer to LiquidityManager",
+      "line": 83,
+      "order": 6
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "operation": "initialLiquidity calculation",
+      "line": 80,
+      "order": 7
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "operation": "currencyToken.transferFrom for initial buy",
+      "line": 87,
+      "order": 8
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "operation": "currencyToken.approve for bootstrap pool",
+      "line": 88,
+      "order": 9
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "operation": "bootstrapPool.buy execution",
+      "line": 89,
+      "order": 10
+    },
+    {
+      "file": "src/AgentFactory.sol",
+      "operation": "ownership transfer to governance",
+      "line": 75,
+      "order": 11
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "line": 87,
+      "description": "Initial agentToken transfer from owner to LiquidityManager to BootstrapPool"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "line": 134,
+      "description": "agentToken transferred to Fraxswap pair for initial mint"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "line": 135,
+      "description": "currencyToken transferred to Fraxswap pair for initial mint"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "line": 148,
+      "description": "LP tokens minted to LiquidityManager"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "lines": [
+        160,
+        162,
+        164,
+        166,
+        168
+      ],
+      "description": "Mini-mint tokens transferred to Fraxswap pair for price adjustment"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "lines": [
+        176,
+        179
+      ],
+      "description": "Swap currencyToken for agentToken to adjust price ratio"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "lines": [
+        199,
+        202
+      ],
+      "description": "Swap agentToken for currencyToken to adjust price ratio"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "lines": [
+        215,
+        216
+      ],
+      "description": "Final token transfers to Fraxswap pair"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "line": 217,
+      "description": "LP tokens minted to LiquidityManager"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "line": 220,
+      "description": "Remaining Fraxswap LP tokens transferred to agent"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "lines": [
+        112,
+        113
+      ],
+      "description": "Remaining agentToken and currencyToken transferred to agent"
+    },
+    {
+      "file": "src/LiquidityManager.sol",
+      "line": 233,
+      "description": "BAMM LP tokens minted to agent"
+    }
+  ],
+  "call_graph_summary": {
+    "createAgent": [
+      {
+        "call_depth": 1,
+        "target": "currencyToken.transferFrom",
+        "file": "src/AgentFactory.sol",
+        "line": 61
+      },
+      {
+        "call_depth": 2,
+        "target": "deployAgent",
+        "file": "src/AgentFactory.sol",
+        "line": 63
+      },
+      {
+        "call_depth": 2,
+        "target": "new AIToken",
+        "file": "src/AgentFactory.sol",
+        "line": 72
+      },
+      {
+        "call_depth": 2,
+        "target": "agent.initializeToken",
+        "file": "src/AgentFactory.sol",
+        "line": 73
+      },
+      {
+        "call_depth": 2,
+        "target": "deployGovernor",
+        "file": "src/AgentFactory.sol",
+        "line": 75
+      },
+      {
+        "call_depth": 2,
+        "target": "agent.transferOwnership",
+        "file": "src/AgentFactory.sol",
+        "line": 76
+      },
+      {
+        "call_depth": 2,
+        "target": "agent.transferFrom",
+        "file": "src/AgentFactory.sol",
+        "line": 77
+      },
+      {
+        "call_depth": 2,
+        "target": "token.totalSupply",
+        "file": "src/AgentFactory.sol",
+        "line": 79
+      },
+      {
+        "call_depth": 2,
+        "target": "deployLiquidityManager",
+        "file": "src/AgentFactory.sol",
+        "line": 84
+      },
+      {
+        "call_depth": 2,
+        "target": "token.safeTransfer",
+        "file": "src/AgentFactory.sol",
+        "line": 81
+      },
+      {
+        "call_depth": 2,
+        "target": "token.safeTransfer",
+        "file": "src/AgentFactory.sol",
+        "line": 82
+      },
+      {
+        "call_depth": 2,
+        "target": "token.safeTransfer",
+        "file": "src/AgentFactory.sol",
+        "line": 83
+      },
+      {
+        "call_depth": 2,
+        "target": "manager.initializeBootstrapPool",
+        "file": "src/AgentFactory.sol",
+        "line": 84
+      },
+      {
+        "call_depth": 2,
+        "target": "currencyToken.safeTransferFrom",
+        "file": "src/AgentFactory.sol",
+        "line": 87
+      },
+      {
+        "call_depth": 2,
+        "target": "currencyToken.approve",
+        "file": "src/AgentFactory.sol",
+        "line": 88
+      },
+      {
+        "call_depth": 2,
+        "target": "manager.bootstrapPool().buy",
+        "file": "src/AgentFactory.sol",
+        "line": 89
+      }
+    ],
+    "deployLiquidityManager": [
+      {
+        "call_depth": 1,
+        "target": "create2 assembly",
+        "file": "src/AgentFactory.sol",
+        "line": 127
+      }
+    ],
+    "deployGovernor": [
+      {
+        "call_depth": 1,
+        "target": "create2 assembly",
+        "file": "src/AgentFactory.sol",
+        "line": 140
+      }
+    ],
+    "deployAgent": [
+      {
+        "call_depth": 1,
+        "target": "create2 assembly",
+        "file": "src/AgentFactory.sol",
+        "line": 152
+      }
+    ],
+    "setAgentStage": [
+      {
+        "call_depth": 1,
+        "target": "Agent(payable(_agent)).setStage",
+        "file": "src/AgentFactory.sol",
+        "line": 255
+      }
+    ],
+    "recoverERC20": [
+      {
+        "call_depth": 1,
+        "target": "SafeERC20.safeTransfer",
+        "file": "src/AgentFactory.sol",
+        "line": 261
+      }
+    ],
+    "initializeBootstrapPool": [
+      "new BootstrapPool()",
+      "agentToken.safeTransfer(bootstrapPool, initialLiquidity)"
+    ],
+    "moveLiquidity": [
+      "bootstrapPool.killed()",
+      "bootstrapPool.getPrice()",
+      "bootstrapPool.getReserves()",
+      "bootstrapPool.phantomAmount()",
+      "AgentFactory(owner).targetCCYLiquidity()",
+      "bootstrapPool.kill()",
+      "addLiquidityToFraxswap(liquidityAmount, currencyAmount)",
+      "AgentFactory(owner).setAgentStage(agent, 1)"
+    ],
+    "addLiquidityToFraxswap": [
+      "fraxswapFactory.getPair()",
+      "fraxswapFactory.createPair()",
+      "fraxswapPair.mint()",
+      "fraxswapPair.getReserves()",
+      "fraxswapPair.token0()",
+      "getMaxSell()",
+      "fraxswapPair.getAmountOut()",
+      "fraxswapPair.swap()",
+      "fraxswapPair.mint()",
+      "AgentFactory(owner).shareToBamm()",
+      "bammFactory.pairToBamm()",
+      "bammFactory.createBamm()",
+      "bamm.mint()",
+      "fraxswapPair.transfer()"
+    ],
+    "getMaxSell": []
+  },
+  "static_findings_context": [
+    {
+      "finding": "External call at line 220 in src/LiquidityManager.sol \u2014 check return value",
+      "entry_points_reachable": [
+        "AgentRouter.buy(address, uint256, uint256, address)",
+        "AgentRouter.sell(address, uint256, uint256, address)",
+        "AgentRouter.getAmountOut(address, address, uint256)"
+      ],
+      "likely_real": false,
+      "reason": "LiquidityManager is not provided in the codebase, but the finding indicates an unchecked external call. Given that AgentRouter uses SafeERC20 for transfers, and LiquidityManager is likely an internal contract called from bootstrap pools or Fraxswap pairs, the external call might be part of a trusted flow. However, without the full context of LiquidityManager.sol, it's uncertain. The confidence is low, so it's likely a false positive or low-risk."
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "src/LiquidityManager.sol",
+      "line": 220,
+      "finding": "External call at line 220 \u2014 check return value",
+      "context": "LiquidityManager.sol is not in the provided files, but the finding is referenced. Assuming LiquidityManager is part of the codebase and interacts with BootstrapPool (as owner), this could be relevant to the fee sweep path. The external call might be LiquidityManager.owner() or similar. This is a low-confidence finding and may be a false positive if the call uses SafeERC20 or the return value is checked elsewhere."
+    },
+    {
+      "finding": "unchecked_external_call",
+      "file": "src/LiquidityManager.sol",
+      "line": 220,
+      "confidence": "low",
+      "reachable_from_entry_point": false,
+      "likely_real": false,
+      "notes": "Finding not directly reachable from AgentFactory entry points; requires LiquidityManager to be deployed and interacted with. LiquidityManager is deployed internally, but the external call at line 220 is within LiquidityManager's own functions, not AgentFactory. The unchecked call might be within LiquidityManager's internal logic, potentially reachable only via governance or liquidity operations. False positive for AgentFactory mapping, but could be real for LiquidityManager if it doesn't check return value of a critical external call."
+    },
+    {
+      "finding": {
+        "tool": "regex",
+        "detector": "unchecked_external_call",
+        "file": "src/LiquidityManager.sol",
+        "lines": [
+          220
+        ],
+        "raw_message": "External call at line 220 \u2014 check return value",
+        "confidence": "low"
+      },
+      "reachable_by_entry_points": [
+        "moveLiquidity"
+      ],
+      "likely_real": false,
+      "notes": "Line 220 is a SafeERC20.safeTransfer call which handles the return value internally. This is a false positive from the static analysis tool."
+    }
+  ]
+}

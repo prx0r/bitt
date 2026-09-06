@@ -1,0 +1,180 @@
+[
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The getTokenPrice function reads spot prices from Uniswap V2 reserves via getAmountsOut, which is trivially manipulable within a single block. An attacker can: (1) Flash-borrow a large amount of sourceToken, (2) Swap a large amount of destToken into the Uniswap V2 pair, temporarily moving the price, (3) Have any downstream contract call getTokenPrice to read the manipulated price, (4) Exploit the downstream contract based on the manipulated price (e.g., for unfair liquidations, minting/unstaking at incorrect valuations), (5) Swap back and repay the flash loan, all in one transaction. The contract has no TWAP protection, staleness check, deviation bounds, or oracle fallback. While the contract itself is a passive reader, any protocol component that depends on its output inherits this vulnerability.",
+    "file": "contracts/readers/PriceReader.sol",
+    "lines": "23-38",
+    "candidate_original": {
+      "file": "contracts/readers/PriceReader.sol",
+      "lines": "23-38",
+      "category": "Trust Assumption / Price Oracle Manipulation",
+      "attack_sequence": "1. The getTokenPrice function is a public view function that reads prices from Uniswap V2 AMM reserves via the router's getAmountsOut. 2. An attacker does not need to call this contract directly for exploitation \u2014 rather, any contract that relies on this price reader is vulnerable. 3. An attacker can: (a) Flash-borrow a large amount of sourceToken, (b) Swap a large amount of destToken into sourceToken on the Uniswap V2 pair in a single transaction (moving the price), (c) Have a downstream contract call getTokenPrice which now returns the manipulated price, (d) Exploit the downstream contract based on the manipulated price, (e) Swap back and repay the flash loan, all in one transaction. 4. The price returned by getTokenPrice has no TWAP protection, no staleness check, no deviation bound, and no direct oracle fallback. 5. The Uniswap V2 pair is a spot price oracle trivially manipulable within a single block.",
+      "confidence": "high",
+      "reasoning": "This is the textbook Uniswap V2 spot price oracle manipulation vulnerability. The contract reads price via getAmountsOut which is just reserves-based and can be manipulated within a single block. Any downstream consumer of this price (e.g., liquidation decisions, NAV calculations, debt pricing in the Cork protocol) inherits this vulnerability. There are zero mitigations in the contract: no TWAP, no circuit breaker, no multi-block averaging, no chainlink fallback.",
+      "trace_region": "contracts/readers/PriceReader.sol"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "An attacker can create a Uniswap V2 pair with minimal liquidity (e.g., 1 wei of each token) for the target tokens. The pair will exist and pass the address(0) check. When getTokenPrice is called with 1e18 amount, getAmountsOut will return an extremely large price due to the thin liquidity (e.g., 1e18 * reserve_out / reserve_in with tiny reserve_in). If this price is used for financial calculations like collateral valuation or profit/loss determination, it could lead to incorrect liquidations, unfair trade execution, or other financial losses. The vulnerability is theoretical but plausible since Uniswap V2 factories are permissionless.",
+    "file": "contracts/readers/PriceReader.sol",
+    "lines": "27-30",
+    "candidate_original": {
+      "file": "contracts/readers/PriceReader.sol",
+      "lines": "27-30",
+      "category": "Pair Existence Check is Insufficient Protection",
+      "attack_sequence": "1. The contract checks if the Uniswap V2 pair exists (line 27: pair != address(0)). 2. However, this only confirms that a pair has been deployed \u2014 it does not confirm the pair has meaningful liquidity. 3. An attacker can create a Uniswap V2 pair with a very small amount of liquidity (dust). 4. A single small swap would massively move the price in this thin-liquidity pair. 5. The getTokenPrice function would return an extreme price value. 6. If the caller uses this price for financial calculations (e.g., valuing collateral), the extreme price could cause incorrect behavior.",
+      "confidence": "medium",
+      "reasoning": "The pair existence check is necessary but not sufficient. While the Uniswap factory being used likely only has established pairs, the contract itself imposes no liquidity minimum. Any pair registered in the factory is treated as valid regardless of TVL. This is a lower-confidence finding because the practical impact depends on whether the factory is permissioned (unlikely for Uniswap V2) and whether downstream consumers set their own minimums.",
+      "trace_region": "contracts/readers/PriceReader.sol"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "low",
+    "exploit_description": "The function returns a spot price without any metadata (timestamp, block number, or reserve data) indicating freshness. While the function itself is view-only and cannot be directly exploited, downstream contracts that use this price for critical decisions (e.g., liquidations, oracles, swaps) may not be able to detect stale prices. On L2s or during network congestion, this could lead to decisions based on outdated market conditions. However, exploitation requires a specific pattern where the caller relies solely on this reader without additional checks.",
+    "file": "contracts/readers/PriceReader.sol",
+    "lines": "20-38",
+    "candidate_original": {
+      "file": "contracts/readers/PriceReader.sol",
+      "lines": "20-38",
+      "category": "Missing Deadline / Staleness Protection",
+      "attack_sequence": "1. getTokenPrice is a pure spot-price read with no timestamp or block number attached to the returned value. 2. There is no way for callers to know WHEN the price was last updated or whether the pair reserves are stale. 3. On L2/sidechain deployments where blocks may be delayed, prices could reflect old market conditions. 4. More critically, the absence of a staleness parameter means downstream contracts cannot implement their own circuit breakers based on this reader alone \u2014 they would need to fetch the pair's reserves and timestamp separately.",
+      "confidence": "low",
+      "reasoning": "This is a design limitation rather than a direct exploit. The function is view-only and returns current spot price, which is inherently 'fresh.' However, the lack of any metadata about the price (block number, reserve sizes) means callers cannot assess confidence in the price. Lower confidence because it requires a specific downstream caller pattern to become exploitable.",
+      "trace_region": "contracts/readers/PriceReader.sol"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "high",
+    "exploit_description": "The setRoleAdmin function in CorkConfig.sol allows any role holder (e.g., MANAGER_ROLE) to change the admin of any role, including DEFAULT_ADMIN_ROLE itself. A compromised or malicious MANAGER_ROLE holder can call setRoleAdmin(DEFAULT_ADMIN_ROLE, MANAGER_ROLE), making MANAGER_ROLE the admin of DEFAULT_ADMIN_ROLE. This grants the manager the ability to grant or revoke DEFAULT_ADMIN_ROLE to any address, effectively seizing full administrative control over the contract. The manager can then use transferAdmin to assign DEFAULT_ADMIN_ROLE to themselves and perform arbitrary privileged operations, leading to total compromise of the protocol's configuration and potentially loss of funds.",
+    "file": "contracts/core/CorkConfig.sol",
+    "lines": "119-125",
+    "candidate_original": {
+      "file": "contracts/core/CorkConfig.sol",
+      "lines": "119-125",
+      "category": "Privilege Escalation / Role Admin Misconfiguration",
+      "attack_sequence": "1. Attacker (or compromised manager) calls setRoleAdmin(BASE_LIQUIDATOR_ROLE, DEFAULT_ADMIN_ROLE). This changes the admin of BASE_LIQUIDATOR_ROLE from MANAGER_ROLE to DEFAULT_ADMIN_ROLE. 2. Since DEFAULT_ADMIN_ROLE holders can now manage liquidator role grants, but this also means DEFAULT_ADMIN_ROLE holders can now re-assign any role's admin. 3. More critically: MANAGER_ROLE calls setRoleAdmin(MANAGER_ROLE, DEFAULT_ADMIN_ROLE) \u2014 this is already the default, so harmless. But MANAGER_ROLE can call setRoleAdmin(RATE_UPDATERS_ROLE, DEFAULT_ADMIN_ROLE) to take control of rate updater grants away from managers. 4. The critical attack: DEFAULT_ADMIN calls setRoleAdmin(MANAGER_ROLE, some_role_X) where DEFAULT_ADMIN holds role_X. This would break the manager's ability to be administered. Actually \u2014 the real issue is simpler: MANAGER_ROLE can call setRoleAdmin to change the admin of DEFAULT_ADMIN_ROLE itself. If MANAGER_ROLE calls setRoleAdmin(DEFAULT_ADMIN_ROLE, MANAGER_ROLE), then the admin of DEFAULT_ADMIN_ROLE becomes MANAGER_ROLE. This means the manager can now grant/revoke DEFAULT_ADMIN_ROLE, effectively stealing admin. Then the manager can call transferAdmin to themselves.",
+      "confidence": 0.65,
+      "reasoning": "The setRoleAdmin function allows any role's admin to be changed. OpenZeppelin AccessControl's onlyRole(getRoleAdmin(role)) means the caller must have the current admin role of the target role. By default: DEFAULT_ADMIN_ROLE's admin is DEFAULT_ADMIN_ROLE (self-administered). A DEFAULT_ADMIN holder could call setRoleAdmin(DEFAULT_ADMIN_ROLE, MANAGER_ROLE), but they'd lose self-admin. The real danger: a MANAGER_ROLE holder calls setRoleAdmin(MANAGER_ROLE, RATE_UPDATERS_ROLE) \u2014 now RATE_UPDATERS can grant manager roles. Or setRoleAdmin(DEFAULT_ADMIN_ROLE, MANAGER_ROLE) \u2014 now the manager controls admin. Since manager is already less privileged than admin, this would be privilege escalation. The question is whether this is a design bug or intended emergency use. The comment says 'emergency use' but there's no timelock or multi-sig requirement, meaning a single compromised manager can hijack the entire admin hierarchy.",
+      "trace_region": "contracts/core/CorkConfig.sol"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "high",
+    "exploit_description": "The setRoleAdmin function allows the admin of a role to change the admin of that role to any other role. A holder of MANAGER_ROLE (which is the admin of both RATE_UPDATERS_ROLE and BASE_LIQUIDATOR_ROLE) can call setRoleAdmin(RATE_UPDATERS_ROLE, BASE_LIQUIDATOR_ROLE). This means that after this change, only holders of BASE_LIQUIDATOR_ROLE (not MANAGER_ROLE) would be able to grant/revoke RATE_UPDATERS_ROLE. Since MANAGER_ROLE is designed to manage rate updaters, this effectively removes the manager's ability to control rate updaters and transfers that authority to any liquidator contract or its assigned accounts. This is a privilege escalation that breaks the intended role hierarchy and could lead to unauthorized rate updates if a liquidator contract or its beneficiaries are compromised or malicious.",
+    "file": "contracts/core/CorkConfig.sol",
+    "lines": "119-125",
+    "candidate_original": {
+      "file": "contracts/core/CorkConfig.sol",
+      "lines": "119-125",
+      "category": "Role Admin Reassignment Attack",
+      "attack_sequence": "1. Attacker compromises or obtains MANAGER_ROLE. 2. Attacker calls setRoleAdmin(DEFAULT_ADMIN_ROLE, MANAGER_ROLE) \u2014 this succeeds because the current admin of DEFAULT_ADMIN_ROLE is DEFAULT_ADMIN_ROLE, and the attacker is... wait, the attacker has MANAGER_ROLE, not DEFAULT_ADMIN_ROLE. This would fail. The attacker needs DEFAULT_ADMIN_ROLE to call this. So if DEFAULT_ADMIN calls setRoleAdmin(DEFAULT_ADMIN_ROLE, MANAGER_ROLE), they would need MANAGER_ROLE as the new admin. But DEFAULT_ADMIN already has both roles typically. Let me reconsider: If DEFAULT_ADMIN calls grantRole(MANAGER_ROLE, Attacker), then attacker can call setRoleAdmin(RATE_UPDATERS_ROLE, BASE_LIQUIDATOR_ROLE) \u2014 changing who can manage rate updaters. This is still within manager's permissions though.",
+      "confidence": 0.35,
+      "reasoning": "Upon closer analysis, setRoleAdmin requires the caller to have the current admin role of the target role. Since DEFAULT_ADMIN_ROLE is self-administered, only DEFAULT_ADMIN holders can reassign its admin. A MANAGER_ROLE holder can reassign admin of MANAGER_ROLE (current admin is DEFAULT_ADMIN_ROLE), RATE_UPDATERS_ROLE (current admin is MANAGER_ROLE), and BASE_LIQUIDATOR_ROLE (current admin is MANAGER_ROLE). The manager could set RATE_UPDATERS_ROLE's admin to BASE_LIQUIDATOR_ROLE, meaning liquidators could now grant rate-updater permissions. This is a confusing but real privilege escalation path.",
+      "trace_region": "contracts/core/CorkConfig.sol"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The function `updateDecayDiscountRateInDays` in CorkConfig.sol (lines 95-96) has no validation on the input parameter `newDiscountRateInDays`. A manager can set this value to 0 (disabling decay discounts) or to an astronomically high value like type(uint256).max. While this requires MANAGER_ROLE, a compromised manager could cause arithmetic overflow/underflow or incorrect calculations in downstream contracts that use this value for NAV calculations or liquidation thresholds, potentially leading to incorrect price computations, reverts, or protocol malfunction. The lack of bounds checking is a deficiency that could be exploited to disrupt protocol invariants.",
+    "file": "contracts/core/CorkConfig.sol",
+    "lines": "95-96",
+    "candidate_original": {
+      "file": "contracts/core/CorkConfig.sol",
+      "lines": "95-96",
+      "category": "Zero Value / Unchecked Configuration",
+      "attack_sequence": "1. Manager calls updateDecayDiscountRateInDays(0). 2. The default is already 0, but this means the decay discount rate is zero. 3. Manager calls updateDecayDiscountRateInDays(type(uint256).max). 4. This sets an extremely high discount rate that could cause arithmetic issues in downstream contracts that use this value for NAV calculations or liquidation thresholds, potentially causing reverts or incorrect price computations.",
+      "confidence": 0.3,
+      "reasoning": "There is no validation on the discount rate value. Setting it to 0 or an astronomically high value could break invariants in downstream contracts. However, this requires MANAGER_ROLE, so the blast radius is limited to a compromised manager. The lack of bounds checking is still a deficiency.",
+      "trace_region": "contracts/core/CorkConfig.sol"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The `updateRolloverPeriodInBlocks` function has no validation, allowing a compromised manager to set it to 0. This could cause excessive gas consumption in liquidation/rollover contracts that depend on the rollover period, or break time-dependent logic that assumes a minimum period. The impact is conditional DoS and potential disruption of protocol operations, but requires a compromised manager role.",
+    "file": "contracts/core/CorkConfig.sol",
+    "lines": "99-101",
+    "candidate_original": {
+      "file": "contracts/core/CorkConfig.sol",
+      "lines": "99-101",
+      "category": "Zero Rollover Period / DoS",
+      "attack_sequence": "1. Manager calls updateRolloverPeriodInBlocks(0). 2. This sets rollover period to 0 blocks, meaning rollovers happen every block. 3. This could cause excessive gas consumption in liquidation/rollover contracts, or break time-dependent logic that assumes a minimum rollover period.",
+      "confidence": 0.3,
+      "reasoning": "No validation prevents setting rolloverPeriodInBlocks to 0 or an extremely small value. If downstream contracts assume a minimum rollover period, this could break business logic. Requires compromised manager.",
+      "trace_region": "contracts/core/CorkConfig.sol"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The `updateNavThreshold` function in CorkConfig.sol (lines 103-105) allows the MANAGER_ROLE to set an arbitrary NAV threshold for a specific pair without validation. This can be exploited in two ways: 1) Setting the threshold to 0 disables the NAV safety check entirely, allowing deposits regardless of the vault's health, which undermines the protocol's intended risk management. 2) Setting the threshold to type(uint256).max makes it impossible for the NAV to ever exceed the threshold, effectively blocking all deposits for that pair (a DoS condition). Both actions could be performed by a compromised manager or as a griefing vector if the manager role is mismanaged.",
+    "file": "contracts/core/CorkConfig.sol",
+    "lines": "103-105",
+    "candidate_original": {
+      "file": "contracts/core/CorkConfig.sol",
+      "lines": "103-105",
+      "category": "NAV Threshold Can Be Set To Unbounded Values",
+      "attack_sequence": "1. Manager calls updateNavThreshold(someId, type(uint256).max). 2. This effectively blocks all deposits for that pair, since NAV will never exceed uint256.max. 3. Alternatively, set to 0 to allow deposits regardless of NAV health, disabling the safety mechanism.",
+      "confidence": 0.4,
+      "reasoning": "updateNavThreshold forwards to moduleCore.updateVaultNavThreshold without any validation on the threshold value. Setting it to 0 disables the NAV safety check entirely, while setting to uint256.max blocks all deposits. This is a DoS vector if manager is compromised, or a griefing vector if the manager role is poorly managed.",
+      "trace_region": "contracts/core/CorkConfig.sol"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The `receiveLeftoverFunds` function in `Vault.sol` (lines 155-159) lacks any access control modifier. It directly calls `states[id].receiveLeftoverFunds(amount, _msgSender())` without verifying that `_msgSender()` is a trusted contract (e.g., a router or withdrawal contract). While the underlying `VaultLibrary.receiveLeftoverFunds` might enforce some checks, the exposed interface allows any external caller to invoke this state mutation. An attacker could call this function with any `id` and arbitrary `amount` to inject unwanted ERC20 tokens into the vault's accounting as 'leftover funds'. These funds could then affect NAV calculations, LP token valuations, or be swept, potentially distorting vault economics and causing indirect losses for legitimate users through diluted ownership or mispriced assets.",
+    "file": "contracts/core/Vault.sol",
+    "lines": [
+      155,
+      156,
+      157,
+      158,
+      159
+    ],
+    "candidate_original": {
+      "file": "contracts/core/Vault.sol",
+      "lines": [
+        155,
+        156,
+        157,
+        158,
+        159
+      ],
+      "category": "missing access control / trust boundary confusion",
+      "attack_sequence": [
+        "1. Attacker calls receiveLeftoverFunds(id, amount) from an arbitrary address.",
+        "2. The function has no access control \u2014 it calls states[id].receiveLeftoverFunds(amount, _msgSender()).",
+        "3. If VaultLibrary.receiveLeftoverFunds does not enforce that msg.sender is a trusted source (e.g., a router or withdrawal contract), anyone can deposit any ERC20 token into the vault state as 'leftover funds'.",
+        "4. These funds could then be sweepable or otherwise incorporated into vault accounting, potentially manipulating NAV calculations or LP token valuations.",
+        "5. This could be exploited to inflate vault assets, distort pricing, or grief real users by contaminating the vault with unwanted tokens."
+      ],
+      "confidence": 0.6,
+      "reasoning": "receiveLeftoverFunds accepts an amount and sender address with no visible access control at the Vault.sol level. While the library may perform checks, the interface exposes an unguarded state mutation. Combined with the fact that this contract manages LP token accounting and NAV, unauthorized fund injection could have downstream pricing effects.",
+      "trace_region": "contracts/core/Vault.sol"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "high",
+    "exploit_description": "If the Vault ever calls the add() function with owner = address(0) due to a bug or misconfiguration, the resulting withdrawal entry becomes unclaimable because the onlyOwner modifier checks if msg.sender matches the owner address. Since msg.sender can never be address(0), no external caller can satisfy this check, and the tokens transferred to the Withdrawal contract become permanently locked. There is no admin rescue function or recovery mechanism in the contract to recover these funds.",
+    "file": "contracts/core/Withdrawal.sol",
+    "lines": "46-57",
+    "candidate_original": {
+      "file": "contracts/core/Withdrawal.sol",
+      "lines": "46-57",
+      "category": "missing zero-address check / permanent fund lock",
+      "attack_sequence": "1. The add() function creates a withdrawal with an arbitrary owner address \u2014 no check for address(0). 2. The onlyOwner modifier checks withdrawals[withdrawalId].owner != msg.sender. Since msg.sender can never be address(0) in Solidity, no one can ever claim this withdrawal. 3. If the Vault ever calls add() with owner = address(0) (due to a bug in the Vault), the tokens would be permanently locked in this contract. 4. The tokens associated with this withdrawal become irrecoverable.",
+      "confidence": 0.65,
+      "reasoning": "This is a concrete missing validation. While it requires a Vault bug to trigger, the consequence is permanent fund loss with no recovery mechanism. The Withdrawal contract has no admin rescue function, no pausing capability, and no way to recover tokens from an unclaimable withdrawal. This is a defense-in-depth gap.",
+      "trace_region": "contracts/core/Withdrawal.sol"
+    }
+  }
+]

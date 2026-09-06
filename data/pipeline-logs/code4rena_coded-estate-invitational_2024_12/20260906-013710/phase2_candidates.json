@@ -1,0 +1,259 @@
+[
+  {
+    "file": "contracts/codedestate/src/execute.rs",
+    "lines": [
+      257,
+      258,
+      259,
+      260,
+      261
+    ],
+    "category": "access_control",
+    "attack_sequence": [
+      "1. Attacker calls InstantiateMsg with themselves as the minter and as the initial owner via cw_ownable::initialize_owner.",
+      "2. After instantiation, the attacker is both the minter and the contract owner.",
+      "3. Attacker calls SetFeeValue with an extremely high fee value (e.g., Uint128::MAX or any value they choose).",
+      "4. This allows the owner to arbitrarily set the fee, potentially griefing legitimate renters or manipulating economic invariants."
+    ],
+    "confidence": 0.3,
+    "reasoning": "The set_fee_value function only checks that info.sender is the owner (via cw_ownable). There is no upper bound on the fee value, no validation that fee is within a reasonable range, and no time-lock or governance mechanism. The owner can set an arbitrarily high fee at any time, breaking economic assumptions for renters who have already listed or booked.",
+    "trace_region": "contracts/codedestate/src/execute.rs"
+  },
+  {
+    "file": "contracts/codedestate/src/execute.rs",
+    "lines": [
+      262,
+      263,
+      264,
+      265,
+      266,
+      267,
+      268,
+      269,
+      270,
+      271,
+      272,
+      273,
+      274,
+      275,
+      276,
+      277,
+      278
+    ],
+    "category": "access_control",
+    "attack_sequence": [
+      "1. Attacker becomes the contract owner (either through instantiation or ownership transfer).",
+      "2. Attacker calls Withdraw with a target address and amount equal to or greater than the total contract balance.",
+      "3. The withdraw function sends native tokens (BankMsg::Send) to the target address.",
+      "4. If the withdraw does not properly check for sufficient funds or does not validate that the amount matches contract accounting, the owner can drain all funds including deposits held on behalf of renters or landlords."
+    ],
+    "confidence": 0.4,
+    "reasoning": "The withdraw function is owner-only and sends native tokens via BankMsg::Send. Without seeing the full implementation (file is truncated), there is a risk that the withdraw does not account for funds that are committed to active rental agreements or pending reservations. The owner could withdraw funds that belong to renters or landlords, breaking the financial invariants of the rental system.",
+    "trace_region": "contracts/codedestate/src/execute.rs"
+  },
+  {
+    "file": "contracts/codedestate/src/execute.rs",
+    "lines": [
+      375,
+      531,
+      561
+    ],
+    "category": "unchecked_external_call",
+    "attack_sequence": [
+      "1. Identify the external calls at lines 375, 531, and 561 (these are likely Cw721ReceiveMsg callbacks sent to other contracts via WasmMsg::Execute or similar).",
+      "2. If these external calls invoke a malicious contract, that contract could return an error or behave unexpectedly.",
+      "3. If the return value of these calls is not checked, state changes may have already been committed (e.g., a rental reservation approved) before the external call, allowing the calling contract to end up in an inconsistent state.",
+      "4. For example, if a send_nft or finalize function makes an external callback and doesn't handle failure, the NFT state could be updated while the recipient contract rejects or fails."
+    ],
+    "confidence": 0.35,
+    "reasoning": "The static analysis flagged unchecked external calls at lines 375, 531, and 561. In CosmWasm, if a WasmMsg or BankMsg is included in the Response but the called contract returns an error, the entire transaction rolls back. However, if the state was modified before the message is dispatched (which is the typical pattern), and the external call is part of a submessage or callback that could fail, the state may already be persisted. This needs verification against the actual call patterns at those lines.",
+    "trace_region": "contracts/codedestate/src/execute.rs"
+  },
+  {
+    "file": "contracts/codedestate/src/execute.rs",
+    "lines": [
+      184,
+      185,
+      186,
+      187,
+      188,
+      189,
+      190,
+      191,
+      192,
+      193,
+      194,
+      195,
+      196,
+      197,
+      198,
+      199,
+      200,
+      201,
+      202,
+      203,
+      204,
+      205,
+      206,
+      207,
+      208,
+      209,
+      210,
+      211,
+      212,
+      213,
+      214,
+      215,
+      216,
+      217,
+      218,
+      219,
+      220,
+      221,
+      222,
+      223,
+      224,
+      225,
+      226,
+      227,
+      228,
+      229,
+      230,
+      231,
+      232,
+      233,
+      234,
+      235,
+      236,
+      237,
+      238,
+      239,
+      240,
+      241,
+      242,
+      243,
+      244,
+      245,
+      246,
+      247,
+      248,
+      249,
+      250,
+      251,
+      252,
+      253,
+      254,
+      255,
+      256
+    ],
+    "category": "missing_validation",
+    "attack_sequence": [
+      "1. Attacker (who is also the minter, set during instantiation) calls Mint with an arbitrary token_id.",
+      "2. The token_id is not validated for uniqueness by format, length, or prefix \u2014 any string is accepted.",
+      "3. If a token_id with a special meaning or collision potential is used (e.g., empty string, very long string, or a token_id that overlaps with internal state keys), it could cause state corruption or unexpected behavior in queries and other operations.",
+      "4. Additionally, the owner is provided directly by the minter in the Mint call \u2014 the minter can set any owner, including addresses they don't control, potentially creating ghost NFTs or manipulating the token supply."
+    ],
+    "confidence": 0.3,
+    "reasoning": "The mint function accepts arbitrary token_id strings and arbitrary owner addresses from the minter. There is no validation on token_id format, length, or uniqueness at the execute level (uniqueness may be checked in state, but format is not). The minter can mint tokens to any address, which is by design for a minter role, but the lack of any token_id constraints could lead to edge cases.",
+    "trace_region": "contracts/codedestate/src/execute.rs"
+  },
+  {
+    "file": "contracts/codedestate/src/execute.rs",
+    "lines": [
+      279,
+      280,
+      281,
+      282,
+      283,
+      284,
+      285,
+      286,
+      287,
+      288,
+      289,
+      290,
+      291
+    ],
+    "category": "access_control",
+    "attack_sequence": [
+      "1. Owner calls update_ownership with a TransferOwnership action, specifying a new owner address.",
+      "2. If the new owner address is a contract that doesn't implement the required interface, or is a burned address, the ownership could be lost permanently.",
+      "3. If there's no two-step transfer process (pending \u2192 accept), a typo in the new owner address permanently locks the contract.",
+      "4. The update_ownership function delegates to cw_ownable which may or may not implement a two-step transfer."
+    ],
+    "confidence": 0.25,
+    "reasoning": "If cw_ownable::update_ownership is used directly with a single-step transfer, any mistake in the new owner address permanently bricks administrative functions (set_fee_value, withdraw, etc.). This depends on the cw_ownable version used \u2014 newer versions implement two-step transfer, older ones may not.",
+    "trace_region": "contracts/codedestate/src/execute.rs"
+  },
+  {
+    "file": "contracts/codedestate/src/query.rs",
+    "lines": "13-14",
+    "category": "denial-of-service",
+    "attack_sequence": [
+      "1. Attacker calls the `tokens` query (line 244) with `limit: Some(4294967295)` (no explicit upper bound enforcement beyond default/max).",
+      "2. Attacker calls `operators` query (line 136) with `limit: Some(4294967295)`.",
+      "3. Attacker calls `all_tokens` query (line 263) with `limit: Some(4294967295)`.",
+      "4. Since `MAX_LIMIT = 4294967295` (u32::MAX), any limit value the caller provides (even 4294967295) passes `.min(MAX_LIMIT)` which is still 4294967295, effectively imposing no meaningful cap.",
+      "5. A large number of tokens/approvals stored on-chain causes the query to iterate over all entries, consuming excessive gas and potentially causing out-of-gas errors or blockchain node resource exhaustion."
+    ],
+    "confidence": 0.8,
+    "reasoning": "DEFAULT_LIMIT and MAX_LIMIT are both set to u32::MAX (4294967295), meaning there is no practical upper bound on pagination. The caller can set `limit` to any value up to u32::MAX and it will be honored. Standard practice is to have MAX_LIMIT around 30-100 to prevent gas griefing. While this is a query and doesn't change state, repeated large queries can DoS the node or cause OOG errors that impact availability.",
+    "trace_region": "contracts/codedestate/src/query.rs"
+  },
+  {
+    "file": "contracts/codedestate/src/query.rs",
+    "lines": "13-14",
+    "category": "input-validation",
+    "attack_sequence": [
+      "1. The `limit` parameter in `tokens`, `operators`, and `all_tokens` accepts `Option<u32>`.",
+      "2. The caller passes `limit: Some(0)`.",
+      "3. `.unwrap_or(DEFAULT_LIMIT).min(MAX_LIMIT) as usize` \u2014 0 unwraps to 0, which becomes 0 items returned.",
+      "4. This returns an empty result set which is semantically valid but could be used to confuse integrators expecting a non-empty response when tokens exist, or could be exploited in off-chain logic that treats empty pagination results as 'no more data' to short-circuit iteration."
+    ],
+    "confidence": 0.35,
+    "reasoning": "A limit of 0 is valid from a pagination perspective (returns empty page), but some integrators may misinterpret this as end-of-data. This is a minor edge case rather than a vulnerability.",
+    "trace_region": "contracts/codedestate/src/query.rs"
+  },
+  {
+    "file": "contracts/codedestate/src/query.rs",
+    "lines": "81-110",
+    "category": "logic-error",
+    "attack_sequence": [
+      "1. Attacker queries `owner_of` with `include_expired: true` for a token whose approvals have all expired.",
+      "2. The `humanize_approvals` function returns all approvals (including expired ones) since `include_expired` is true.",
+      "3. Off-chain integration consumes the response and mistakenly treats expired approvals as active, potentially granting temporary access or executing actions based on stale approval data.",
+      "4. This is a design-level concern: `owner_of` returns approvals in the response, conflating ownership query with approval enumeration, and relying on the caller to filter."
+    ],
+    "confidence": 0.3,
+    "reasoning": "The `include_expired` flag is standard CW721 behavior. This is more of a design consideration than a vulnerability, as the API correctly communicates expiration status. Low confidence.",
+    "trace_region": "contracts/codedestate/src/query.rs"
+  },
+  {
+    "file": "contracts/codedestate/src/query.rs",
+    "lines": "176-200",
+    "category": "logic-error",
+    "attack_sequence": [
+      "1. The `approval` query (line 176) checks if `token.owner == spender` and returns an approval with `Expiration::Never {}` if true.",
+      "2. This means the owner is always reported as having an approval for the token, regardless of whether explicit approval was granted.",
+      "3. An off-chain system that calls `approval(token_id, owner)` and checks for existence could assume the owner has some special approved state, when in reality this is just the standard owner-has-access semantic.",
+      "4. While not directly exploitable on-chain (execute functions handle owner checks separately), this could confuse external protocol integrations."
+    ],
+    "confidence": 0.25,
+    "reasoning": "This is standard CW721 semantic \u2014 the owner always has implicit approval. The query correctly represents this. Very low exploitation potential.",
+    "trace_region": "contracts/codedestate/src/query.rs"
+  },
+  {
+    "file": "contracts/codedestate/src/query.rs",
+    "lines": "120-155",
+    "category": "information-disclosure",
+    "attack_sequence": [
+      "1. The `operators` query (line 136) accepts an `owner` parameter and returns all operators for that owner.",
+      "2. Any unauthenticated caller can enumerate all operator approvals for any owner address.",
+      "3. This reveals which addresses have been granted operator-level permissions for each owner, potentially enabling targeted social engineering or front-running of operator-based transactions.",
+      "4. Combined with the `approvals` query (line 207) which reveals per-token approvals, a comprehensive map of permission relationships can be extracted."
+    ],
+    "confidence": 0.45,
+    "reasoning": "While operator/approval enumeration is standard CW721 functionality, in the context of a real estate NFT contract, exposing the full permission graph could reveal business relationships between parties, property managers, and tenants. This is a privacy concern but is inherent to the CW721 standard design.",
+    "trace_region": "contracts/codedestate/src/query.rs"
+  }
+]

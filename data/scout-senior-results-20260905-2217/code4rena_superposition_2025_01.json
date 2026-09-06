@@ -1,0 +1,12 @@
+{
+  "project": "code4rena_superposition_2025_01",
+  "timestamp": "2026-09-05T22:18:52",
+  "files_analyzed": 57,
+  "files_skipped": 0,
+  "total_vulnerabilities": 0,
+  "vulnerabilities": [],
+  "token_usage": {
+    "total_input": 0,
+    "total_output": 0
+  }
+}

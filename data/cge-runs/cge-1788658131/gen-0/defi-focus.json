@@ -1,0 +1,57 @@
+{
+  "strategy_id": "defi-focus",
+  "analysis_prompt": "You are a security auditor. Analyze code for vulnerabilities. Focus on:\n1. Access control issues\n2. Reentrancy\n3. Integer overflow/underflow\n4. Business logic errors\n5. Cross-contract interactions\nReturn JSON array of findings with title, description, category, file, severity.\n\nFocus especially on: slippage protection, oracle manipulation, flash loans, economic invariants, fee calculations.",
+  "results": [
+    {
+      "project": "code4rena_coded-estate-invitational_2024_12",
+      "findings_count": 0,
+      "dr": 0,
+      "expected": 0,
+      "matched": 0,
+      "duration": 15.9
+    },
+    {
+      "project": "code4rena_iq-ai_2025_03",
+      "findings_count": 0,
+      "dr": 0,
+      "expected": 0,
+      "matched": 0,
+      "duration": 25.9
+    },
+    {
+      "project": "code4rena_liquid-ron_2025_03",
+      "findings_count": 0,
+      "dr": 0,
+      "expected": 0,
+      "matched": 0,
+      "duration": 20.9
+    },
+    {
+      "project": "code4rena_mantra-dex_2025_03",
+      "findings_count": 0,
+      "dr": 0,
+      "expected": 0,
+      "matched": 0,
+      "duration": 15.4
+    },
+    {
+      "project": "sherlock_cork-protocol_2025_01",
+      "findings_count": 0,
+      "dr": 0,
+      "expected": 0,
+      "matched": 0,
+      "duration": 24.1
+    },
+    {
+      "project": "sherlock_crestal-network_2025_03",
+      "findings_count": 0,
+      "dr": 0,
+      "expected": 0,
+      "matched": 0,
+      "duration": 20.3
+    }
+  ],
+  "avg_dr": 0.0,
+  "total_matched": 0,
+  "total_expected": 0
+}

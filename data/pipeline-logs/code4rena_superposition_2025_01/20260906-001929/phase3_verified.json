@@ -1,0 +1,123 @@
+[
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The `sendTo` function (lines 50-60) makes ERC20 token transfers (line 52) and ETH sends (line 57) without checking the return values. The IERC20 interface is missing the `bool` return type (common in older ERC20 standards), so the call is unchecked. If a token transfer returns `false` instead of reverting, the contract proceeds to send ETH and other tokens to the same recipient, potentially allowing an attacker to drain ETH or other tokens while failing to deliver the malicious token. Additionally, the ETH `send` at line 57 may fail silently (returning `false` if recipient rejects ETH), causing the faucet to lose gas without delivering funds. This could be exploited by an operator (or via compromised operator) to grief recipients or drain non-malicious tokens.",
+    "file": "pkg/sol/Faucet.sol",
+    "lines": "50-60",
+    "candidate_original": {
+      "file": "pkg/sol/Faucet.sol",
+      "lines": "50-60",
+      "category": "unchecked_external_call",
+      "attack_sequence": "1. Operator calls sendTo with a FaucetReq array containing multiple entries for the same recipient. 2. The contract loops through each request, transferring tokens and sending ETH to the same recipient multiple times. 3. Each ERC20 transfer call's return value is not checked; if a token's transfer silently fails (returns false), the contract proceeds as if the transfer succeeded, potentially draining the faucet of other tokens or ETH while failing to deliver the intended token.",
+      "confidence": "medium",
+      "reasoning": "The ERC20 transfer calls at line 52 do not check the return value (bool success). If a malicious token is added to the tokens array (or a legitimate token returns false instead of reverting), the faucet will continue processing, sending ETH and other tokens without the victim receiving the malicious token. This could be used to grief or drain resources. The unchecked send at line 57 for ETH also fails silently if the recipient is a contract that rejects ETH, meaning the faucet loses gas but the recipient gets nothing.",
+      "trace_region": "claim"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The sendTo function iterates over all entries in the _requests array and for each entry makes a loop over all configured tokens, performing external calls to transfer tokens. If the operator submits a batch with a large number of requests (thousands) and the token array is also large, the total gas cost could exceed the block gas limit. An attacker could influence this by submitting many valid requests to the frontend (if it allows batching), causing the operator's automated system to construct large batches that consistently fail due to gas limits. This disrupts service availability. Additionally, the lack of recipient validation means tokens can be sent to the zero address or non-existent contracts, effectively burning them, which is a loss of funds.",
+    "file": "pkg/sol/Faucet.sol",
+    "lines": "45-65",
+    "candidate_original": {
+      "file": "pkg/sol/Faucet.sol",
+      "lines": "45-65",
+      "category": "missing_input_validation",
+      "attack_sequence": "1. Operator calls sendTo with a large FaucetReq array (e.g., thousands of entries). 2. The nested loop (outer over requests, inner over tokens) results in O(n*m) external calls, where n is the number of requests and m is the number of tokens. 3. If n and m are large, the gas cost could exceed the block gas limit, causing all transactions to fail. This could be used to grief the operator by forcing them to send smaller batches, or if the operator is automated, it could cause service disruption. Additionally, no validation on recipient addresses means zero-address or contract recipients can be specified.",
+      "confidence": "low",
+      "reasoning": "The function does not limit the length of the _requests array, allowing arbitrarily large loops. While this is a resource exhaustion issue rather than a direct fund theft, it could cause denial of service if an attacker can influence the operator's calls (e.g., by submitting many valid requests to a frontend). The lack of recipient validation could also lead to tokens being sent to the zero address, effectively burning them.",
+      "trace_region": "claim"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "low",
+    "exploit_description": "The approve function (lines 117-129) calls _requireAuthorised(msg.sender, _tokenId), which allows any authorized party (owner, operator, or current approvee) to change the approval for a token to any other address. For example, if Alice (owner) approves Bob, Bob (as current approvee) can call approve(Eve, tokenId), redirecting the approval from Bob to Eve without Alice's consent. While this is actually compliant with the ERC-721 standard (an approved address can reassign approval), it may be unexpected behavior and could lead to unintended approval redirection. This is a low-severity informational issue as it does not directly cause loss of funds or assets, but rather represents a deviation from typical user expectations about approval control.",
+    "file": "pkg/sol/OwnershipNFTs.sol",
+    "lines": "117-129",
+    "candidate_original": {
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "lines": "117-129",
+      "category": "broken_approval_invariant",
+      "attack_sequence": [
+        "1. The approve function at line 119 calls _requireAuthorised(msg.sender, _tokenId) which verifies msg.sender is authorized.",
+        "2. The approval is then set: getApproved[_tokenId] = _approved.",
+        "3. There is no check that msg.sender actually owns or controls the position being approved.",
+        "4. Anyone who is authorized (owner, operator, or current approvee) can redirect approval to any address.",
+        "5. Specifically: Alice approves Bob. Bob (as current approvee) can call approve(Eve, 42), redirecting the approval from Bob to Eve without Alice's consent."
+      ],
+      "confidence": "medium",
+      "reasoning": "The approve function allows any authorized party to change who the approval points to. If Alice approves Bob, Bob can approve Eve instead, effectively hijacking Alice's intent. This is actually per ERC-721 spec behavior (an approved address can reassign approval), but it could be unexpected. Not a bug per se, but worth noting.",
+      "trace_region": "transferFrom"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "low",
+    "exploit_description": "The transfer functions (transferFrom, safeTransferFrom) do not validate that the recipient _to address is not the zero address. An authorized caller (owner or approved) could intentionally or accidentally call transferFrom(_from, address(0), tokenId), transferring the position to the zero address via SEAWATER.transferPositionEEC7A3CD. This would effectively burn or lock the position, as the zero address typically cannot interact with the contract. While this is self-destructive behavior by an authorized party, it lacks the standard zero-address check present in most ERC721 implementations, making it a best practice violation with potential for accidental loss.",
+    "file": "pkg/sol/OwnershipNFTs.sol",
+    "lines": "122-128",
+    "candidate_original": {
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "lines": "122-128",
+      "category": "missing_zero_address_check",
+      "attack_sequence": [
+        "1. Any authorized caller can call transferFrom(_from, address(0), tokenId).",
+        "2. This would transfer the position to the zero address on SEAWATER, effectively burning/locking it.",
+        "3. No recipient validation exists in any of the transfer functions."
+      ],
+      "confidence": "low",
+      "reasoning": "Transferring to address(0) is technically possible but only by authorized parties (owner or approved), so it's self-destructive behavior. SEAWATER may have its own checks. Low severity.",
+      "trace_region": "transferFrom"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The vulnerability is a reentrancy issue via the ERC-721 `_onTransferReceived` callback. In `safeTransferFrom`, the function calls `_transfer` which executes `SEAWATER.transferPosition` to change ownership state, then calls `_onTransferReceived` which invokes the `onERC721Received` callback on the recipient contract if it is a contract. During this callback, the attacker has control flow. Although the primary position transfer has already occurred, the attacker could re-enter the Seawater AMM contract (if it lacks reentrancy guards) to perform additional swaps, manipulate other positions, or perform other state-changing operations that could lead to financial loss. The reentrancy window exists and could be exploited depending on the reentrancy protections of the Seawater contract, which is outside the scope of this file.",
+    "file": "pkg/sol/OwnershipNFTs.sol",
+    "lines": "96-110",
+    "candidate_original": {
+      "file": "pkg/sol/OwnershipNFTs.sol",
+      "lines": "96-110",
+      "category": "reentrancy_via_transfer_callback",
+      "attack_sequence": [
+        "1. Attacker creates a malicious contract that implements ISeawaterAMM callback interfaces.",
+        "2. Attacker mints a position (receives tokenId).",
+        "3. Attacker calls safeTransferFrom(attacker, maliciousContract, tokenId).",
+        "4. _transfer executes, calling SEAWATER.transferPosition(tokenId, attacker, maliciousContract).",
+        "5. _onTransferReceived is called with maliciousContract as _to.",
+        "6. maliciousContract.onERC721Received is invoked. During this callback, attacker has control flow.",
+        "7. However, the position is already transferred on SEAWATER side. The attacker already owns nothing to steal. The callback is for validation, not for additional state changes that could be exploited.",
+        "8. If SEAWATER.transferPosition is not reentrancy-protected and the attacker re-enters through SEAWATER during this callback, additional positions could potentially be manipulated."
+      ],
+      "confidence": "low",
+      "reasoning": "The reentrancy window exists in _onTransferReceived, but the critical state change (SEAWATER.transferPosition) has already completed. The main risk would be if the attacker re-enters SEAWATER during the callback to perform additional swaps or position manipulations, but that depends on SEAWATER's own reentrancy protections which are outside this file's scope.",
+      "trace_region": "transferFrom"
+    }
+  },
+  {
+    "status": "confirmed",
+    "severity": "medium",
+    "exploit_description": "The `user_entrypoint` function in `pkg/leo/src/main.rs` passes the `len` parameter directly to `libleo::user_entrypoint` without any validation. A malicious WASM payload could call this function with an extremely large `len` value, potentially causing the downstream library to read out-of-bounds memory or allocate oversized buffers, leading to memory corruption, buffer overflow, or denial of service within the WASM sandbox.",
+    "file": "pkg/leo/src/main.rs",
+    "lines": "5-7",
+    "candidate_original": {
+      "file": "pkg/leo/src/main.rs",
+      "lines": "5-7",
+      "category": "Missing input validation at WASM entry point",
+      "attack_sequence": [
+        "1. Adversary constructs a malicious WASM payload with a malformed or oversized calldata.",
+        "2. The `user_entrypoint` function is called with `len` set to an arbitrarily large value.",
+        "3. `len` is passed directly to `libleo::user_entrypoint` without any sanity checks (e.g., upper bound, zero-check).",
+        "4. Inside `libleo::user_entrypoint`, if the length is used to index memory or allocate buffers without validation, this could lead to out-of-bounds memory access, buffer overflow, or incorrect data parsing.",
+        "5. Depending on the WASM runtime's memory isolation, this could potentially be used to corrupt adjacent memory or cause a denial of service."
+      ],
+      "confidence": 0.6,
+      "reasoning": "The entry point passes the `len` parameter directly to the library function without any validation. While the WASM runtime provides some memory isolation, the `len` parameter controls how much calldata is read, and a malicious value could lead to incorrect parsing or memory access within the contract's logic. However, without seeing `libleo::user_entrypoint`, it's unclear how `len` is used downstream.",
+      "trace_region": "pkg/leo/src/main.rs"
+    }
+  }
+]

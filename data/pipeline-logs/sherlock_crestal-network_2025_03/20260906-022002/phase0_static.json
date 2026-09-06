@@ -1,0 +1,24 @@
+{
+  "findings": [
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/BlueprintV5.t.sol",
+      "lines": [
+        119
+      ],
+      "raw_message": "External call at line 119 \u2014 check return value",
+      "confidence": "low"
+    },
+    {
+      "tool": "regex",
+      "detector": "unchecked_external_call",
+      "file": "test/MockERC20.sol",
+      "lines": [
+        38
+      ],
+      "raw_message": "External call at line 38 \u2014 check return value",
+      "confidence": "low"
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "project": "code4rena_iq-ai_2025_03",
+  "timestamp": "2026-09-06T01:36:51",
+  "files_analyzed": 10,
+  "files_skipped": 0,
+  "total_vulnerabilities": 11,
+  "vulnerabilities": [
+    {
+      "title": "Unknown vulnerability",
+      "description": "",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "src/AgentRouter.sol",
+      "file": "src/AgentRouter.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "src/Agent.sol",
+      "file": "src/Agent.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "src/Agent.sol",
+      "file": "src/Agent.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "src/Agent.sol",
+      "file": "src/Agent.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "",
+      "vulnerability_type": "other",
+      "severity": "low",
+      "confidence": 0.7,
+      "location": "src/Agent.sol",
+      "file": "src/Agent.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "src/Agent.sol",
+      "file": "src/Agent.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "",
+      "vulnerability_type": "other",
+      "severity": "high",
+      "confidence": 0.7,
+      "location": "src/TokenGovernor.sol",
+      "file": "src/TokenGovernor.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "",
+      "vulnerability_type": "other",
+      "severity": "high",
+      "confidence": 0.7,
+      "location": "src/TokenGovernor.sol",
+      "file": "src/TokenGovernor.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "src/TokenGovernor.sol",
+      "file": "src/TokenGovernor.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "src/BootstrapPool.sol",
+      "file": "src/BootstrapPool.sol",
+      "reported_by_model": "mimo-v2.5"
+    },
+    {
+      "title": "Unknown vulnerability",
+      "description": "",
+      "vulnerability_type": "other",
+      "severity": "medium",
+      "confidence": 0.7,
+      "location": "src/BootstrapPool.sol",
+      "file": "src/BootstrapPool.sol",
+      "reported_by_model": "mimo-v2.5"
+    }
+  ],
+  "token_usage": {
+    "total_input": 0,
+    "total_output": 0
+  },
+  "duration_seconds": 433.2
+}
