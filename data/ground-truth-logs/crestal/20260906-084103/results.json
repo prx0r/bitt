@@ -1,0 +1,13 @@
+{
+  "project": "crestal",
+  "project_id": "sherlock_crestal-network_2025_03",
+  "timestamp": "2026-09-06T08:41:03",
+  "duration_seconds": 7.3,
+  "expected": 1,
+  "found": 0,
+  "detection_rate": 0.0,
+  "ground_truth_targets": [
+    "Anyone who is approving Blueprint V5 can drain tokens via payWithERC20"
+  ],
+  "found_targets": []
+}

@@ -1,0 +1,137 @@
+{
+  "timestamp": "2026-09-06T09:01:11",
+  "results": [
+    {
+      "project": "crestal",
+      "project_id": "sherlock_crestal-network_2025_03",
+      "timestamp": "2026-09-06T08:58:13",
+      "duration_seconds": 10.2,
+      "expected": 1,
+      "found": 0,
+      "detection_rate": 0.0,
+      "ground_truth_targets": [
+        "Anyone who is approving Blueprint V5 can drain tokens via payWithERC20"
+      ],
+      "found_targets": []
+    },
+    {
+      "project": "coded-estate",
+      "project_id": "code4rena_coded-estate-invitational_2024_12",
+      "timestamp": "2026-09-06T08:59:23",
+      "duration_seconds": 70.6,
+      "expected": 9,
+      "found": 2,
+      "detection_rate": 0.2222222222222222,
+      "ground_truth_targets": [
+        "Attakers can steal the funds from long-term reservation",
+        "setbidtobuy allows token purchase even when sale is no longer listed",
+        "Insufficient price validation in transfer_nft enables theft",
+        "Lack of differentiation between rental types leads to loss of funds",
+        "Cancelling bid doesn't clear token approval of bidder",
+        "Lack of validation in setlistforsell allows changing denom",
+        "Logic flaw in check_can_edit_short",
+        "Adversary can use send_nft to bypass payment",
+        "Token owner can burn token with active rental"
+      ],
+      "found_targets": [
+        {
+          "found": true,
+          "title": "Attackers can steal the funds from long-term reservation",
+          "file": "contracts/codedestate/src/execute.rs",
+          "line": 280,
+          "evidence": "for (i, item) in token.bids.iter().enumerate() {\n            if item.address == recipient.to_string()\n            {\n                position = i as i32;\n                amount = item.offer.into();\n                break;  \n            }\n        }\n\n        if position != -1 && amount > Uint128::new(0) {\n            self.increase_balance(deps.storage, token.sell.denom.clone(), Uint128::new((u128::from(amount) * u128::from(fee_percentage)) / 10000))?;\n        }\n        let amount_after_fee = amount.checked_sub(Uint128::new((u128::from(amount) * u128::from(fee_percentage)) / 10000)).unwrap_or_default();\n        token.bids.retain(|bid| bid.address != recipient);\n        self.tokens.save(deps.storage, &token_id, &token)?;\n        if amount > Uint128::new(0) {\n            Ok(Response::new()\n            .add_attribute(\"action\", \"transfer_nft\")\n            .add_attribute(\"sender\", info.sender.clone())\n            .add_attribute(\"token_id\", token_id)\n            .add_message(BankMsg::Send {\n                to_address: prev_owner.to_string(),\n                amount: vec![Coin {\n                    denom: token.sell.denom,\n                    amount: amount_after_fee,\n                }],\n            }))",
+          "severity": "critical"
+        },
+        {
+          "found": true,
+          "title": "setbidtobuy allows token purchase even when sale is no longer listed",
+          "file": "contracts/codedestate/src/execute.rs",
+          "line": 248,
+          "evidence": "pub fn setlistforsell(&self, deps: DepsMut, env: Env, info: MessageInfo, islisted: bool, token_id: String, denom: String, price: u64, auto_approve: bool) -> Result<Response<C>, ContractError> {\n        let mut token = self.tokens.load(deps.storage, &token_id)?;\n        self.check_can_send(deps.as_ref(), &env, &info, &token)?;\n        token.sell = Sell {\n            islisted: Some(islisted),\n            auto_approve,\n            price,\n            denom,\n        };\n        self.tokens.save(deps.storage, &token_id, &token)?;\n        Ok(Response::new().add_attribute(\"action\", \"setlistforsell\"))\n    }\n\n    pub fn setbidtobuy(&self, deps: DepsMut, env: Env, info: MessageInfo, token_id: String) -> Result<Response<C>, ContractError> {\n        let mut token = self.tokens.load(deps.storage, &token_id)?;\n        if token.sell.islisted != Some(true) {\n            return Err(ContractError::Unauthorized {});\n        }\n        let new_bid = Bid {\n            address: info.sender.to_string(),\n            offer: token.sell.price.into(),\n        };\n        token.bids.push(new_bid);\n        self.tokens.save(deps.storage, &token_id, &token)?;\n        Ok(Response::new().add_attribute(\"action\", \"setbidtobuy\"))\n    }",
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "project": "liquid-ron",
+      "project_id": "code4rena_liquid-ron_2025_03",
+      "timestamp": "2026-09-06T08:59:27",
+      "duration_seconds": 3.4,
+      "expected": 1,
+      "found": 1,
+      "detection_rate": 1.0,
+      "ground_truth_targets": [
+        "The calculation of totalAssets() could be wrong if operatorFeeAmount > 0, this can cause potential loss for the new depositors"
+      ],
+      "found_targets": [
+        {
+          "found": true,
+          "title": "Calculation of totalAssets() could be wrong if operatorFeeAmount > 0, causing potential loss for new depositors",
+          "file": "src/LiquidRon.sol",
+          "line": 267,
+          "evidence": "function totalAssets() public view override returns (uint256) {\n        return super.totalAssets() + getTotalStaked() + getTotalRewards();\n    }",
+          "severity": "critical"
+        }
+      ]
+    },
+    {
+      "project": "cork",
+      "project_id": "sherlock_cork-protocol_2025_01",
+      "timestamp": "2026-09-06T09:00:18",
+      "duration_seconds": 51.2,
+      "expected": 5,
+      "found": 0,
+      "detection_rate": 0.0,
+      "ground_truth_targets": [
+        "Lack of slippage protection",
+        "Flash Swap Router empty Reserve",
+        "LV token holders receive proportional",
+        "Incorrect redeem Amount",
+        "Incoming Redemption Assets"
+      ],
+      "found_targets": []
+    },
+    {
+      "project": "iq-ai",
+      "project_id": "code4rena_iq-ai_2025_03",
+      "timestamp": "2026-09-06T09:00:20",
+      "duration_seconds": 2.3,
+      "expected": 1,
+      "found": 1,
+      "detection_rate": 1.0,
+      "ground_truth_targets": [
+        "Adversary can win proposals with voting power as low as 4%"
+      ],
+      "found_targets": [
+        {
+          "found": true,
+          "title": "Adversary can win proposals with voting power as low as 4%",
+          "file": "src/TokenGovernor.sol",
+          "line": "55",
+          "evidence": "GovernorVotesQuorumFraction(4) // quorum is 25% (1/4th) of supply",
+          "severity": "critical"
+        }
+      ]
+    },
+    {
+      "project": "mantra",
+      "project_id": "code4rena_mantra-dex_2025_03",
+      "timestamp": "2026-09-06T09:01:11",
+      "duration_seconds": 50.9,
+      "expected": 5,
+      "found": 0,
+      "detection_rate": 0.0,
+      "ground_truth_targets": [
+        "Protocol allows creating broken tri-crypto CPMM pools",
+        "Logical error in validate_fees_are_paid",
+        "Multi-token stableswap pools allow 0 liquidity",
+        "Block gas limit can be hit due to loop depth",
+        "Farms can be created to start in past epochs"
+      ],
+      "found_targets": []
+    }
+  ],
+  "total_expected": 22,
+  "total_found": 4,
+  "overall_dr": 0.18181818181818182
+}

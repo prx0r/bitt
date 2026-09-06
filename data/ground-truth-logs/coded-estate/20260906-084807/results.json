@@ -1,0 +1,46 @@
+{
+  "project": "coded-estate",
+  "project_id": "code4rena_coded-estate-invitational_2024_12",
+  "timestamp": "2026-09-06T08:48:07",
+  "duration_seconds": 82.4,
+  "expected": 9,
+  "found": 3,
+  "detection_rate": 0.3333333333333333,
+  "ground_truth_targets": [
+    "Attakers can steal the funds from long-term reservation",
+    "setbidtobuy allows token purchase even when sale is no longer listed",
+    "Insufficient price validation in transfer_nft enables theft",
+    "Lack of differentiation between rental types leads to loss of funds",
+    "Cancelling bid doesn't clear token approval of bidder",
+    "Lack of validation in setlistforsell allows changing denom",
+    "Logic flaw in check_can_edit_short",
+    "Adversary can use send_nft to bypass payment",
+    "Token owner can burn token with active rental"
+  ],
+  "found_targets": [
+    {
+      "found": true,
+      "title": "Lack of differentiation between rental types leads to loss of funds",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 502,
+      "evidence": "token.bids.retain(|bid| bid.address != recipient);",
+      "severity": "critical"
+    },
+    {
+      "found": true,
+      "title": "Adversary can use send_nft to bypass payment",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 213,
+      "evidence": "The send_nft function calls self._transfer_nft(deps, &env, &info, &contract, &token_id)?; without performing any payment checks or handling approvals like transfer_nft does. This allows a user to send an NFT to a contract, bypassing the payment mechanism implemented in transfer_nft.",
+      "severity": "critical"
+    },
+    {
+      "found": true,
+      "title": "Token owner can burn token with active rental",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 274,
+      "evidence": "fn transfer_nft(\n        &self,\n        deps: DepsMut,\n        env: Env,\n        info: MessageInfo,\n        recipient: String,\n        token_id: String,\n    ) -> Result<Response<C>, ContractError> {\n        let mut token = self.tokens.load(deps.storage, &token_id)?;\n        // ensure we have permissions\n        self.check_can_send(deps.as_ref(), &env, &info, &token)?;\n        // set owner and remove existing approvals\n        let prev_owner = token.owner;\n        token.owner = deps.api.addr_validate(&recipient)?;\n        token.approvals = vec![];\n        let fee_percentage = self.get_fee(deps.storage)?;\n\n        let mut position: i32 = -1;\n        let mut amount = Uint128::from(0u64);\n        for (i, item) in token.bids.iter().enumerate() {\n            if item.address == recipient.to_string()\n            {\n                position = i as i32;\n                amount = item.offer.into();\n                break;  \n            }\n        }\n\n        if position != -1 && amount > Uint128::new(0) {\n            self.increase_balance(deps.storage, token.sell.denom.clone(), Uint128::new((u128::from(amount) * u128::from(fee_percentage)) / 10000))?;\n        }\n        let amount_after_fee = amount.checked_sub(Uint128::new((u128::from(amount) * u128::from(fee_percentage)) / 10000)).unwrap_or_default();\n        token.bids.retain(|bid| bid.address != recipient);\n        self.tokens.save(deps.storage, &token_id, &token)?;\n        if amount > Uint128::new(0) {\n            Ok(Response::new()\n            .add_attribute(\"action\", \"transfer_nft\")\n            .add_attribute(\"sender\", info.sender.clone())\n            .add_attribute(\"token_id\", token_id)\n            .add_message(BankMsg::Send {\n                to_address: prev_owner.to_string(),\n                amount: vec![Coin {\n                    denom: token.sell.denom,\n                    amount: amount_after_fee,\n                }],\n            }))\n        } else {\n            Ok(Response::new()\n            .add_attribute(\"action\", \"transfer_nft\")\n            .add_attribute(\"sender\", info.sender.clone())\n            .add_attribute(\"token_id\", token_id))\n        }\n    }",
+      "severity": "critical"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "project": "crestal",
+  "project_id": "sherlock_crestal-network_2025_03",
+  "timestamp": "2026-09-06T08:35:53",
+  "duration_seconds": 2.8,
+  "expected": 1,
+  "found": 1,
+  "detection_rate": 1.0,
+  "ground_truth_targets": [
+    "Anyone who is approving Blueprint V5 can drain tokens via payWithERC20"
+  ],
+  "found_targets": [
+    {
+      "found": true,
+      "title": "Arbitrary ERC20 Transfer via Unvalidated 'fromAddress' Parameter",
+      "file": "src/Payment.sol",
+      "line": 28,
+      "evidence": "function payWithERC20(address erc20TokenAddress, uint256 amount, address fromAddress, address toAddress) internal { ... token.safeTransferFrom(fromAddress, toAddress, amount); }",
+      "severity": "critical"
+    }
+  ]
+}

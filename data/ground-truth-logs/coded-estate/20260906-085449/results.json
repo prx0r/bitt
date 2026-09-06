@@ -1,0 +1,46 @@
+{
+  "project": "coded-estate",
+  "project_id": "code4rena_coded-estate-invitational_2024_12",
+  "timestamp": "2026-09-06T08:54:49",
+  "duration_seconds": 92.5,
+  "expected": 9,
+  "found": 3,
+  "detection_rate": 0.3333333333333333,
+  "ground_truth_targets": [
+    "Attakers can steal the funds from long-term reservation",
+    "setbidtobuy allows token purchase even when sale is no longer listed",
+    "Insufficient price validation in transfer_nft enables theft",
+    "Lack of differentiation between rental types leads to loss of funds",
+    "Cancelling bid doesn't clear token approval of bidder",
+    "Lack of validation in setlistforsell allows changing denom",
+    "Logic flaw in check_can_edit_short",
+    "Adversary can use send_nft to bypass payment",
+    "Token owner can burn token with active rental"
+  ],
+  "found_targets": [
+    {
+      "found": true,
+      "title": "Long-term reservation funds theft due to missing deposit lock and improper state management",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 400,
+      "evidence": "The `withdrawtolandlord` function allows the landlord to withdraw funds without proper checks that the reservation is completed or that the funds are properly locked. Additionally, the `depositforlongtermrental` function does not properly lock funds or update state to prevent withdrawals before the reservation period ends.",
+      "severity": "critical"
+    },
+    {
+      "found": true,
+      "title": "setbidtobuy allows token purchase even when sale is no longer listed",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 152,
+      "evidence": "ExecuteMsg::SetBidToBuy { token_id } => self.setbidtobuy(deps, env, info, token_id),\n            ExecuteMsg::SetListForShortTermRental { ... } => self.setlistforshorttermrental(...),\n            ExecuteMsg::SetUnlistForShorttermRental { token_id } => {\n                self.setunlistforshorttermrental(deps, env, info, token_id)\n            }\n            ExecuteMsg::SetReservationForShortTerm { ... } => self.setreservationforshortterm(...),\n            ExecuteMsg::RejectReservationForShortterm { ... } => self.rejectreservationforshortterm(...),\n            ExecuteMsg::CancelRentalForShortterm { ... } => self.cancelreservationafterapprovalforshortterm(...),\n            ExecuteMsg::CancelReservationForShortterm { ... } => self.cancelreservationbeforeapprovalforshortterm(...),\n            ExecuteMsg::SetApproveForShortTerm { ... } => self.setapproveforshortterm(...),\n            ExecuteMsg::FinalizeShortTermRental { ... } => self.finalizeshorttermrental(...),\n            ExecuteMsg::SetListForLongTermRental { ... } => self.setlistforlongtermrental(...),\n            ExecuteMsg::SetUnlistForLongtermRental { token_id } => {\n                self.setunlistforlongtermrental(deps, env, info, token_id)\n            }\n            ExecuteMsg::SetReservationForLongTerm { ... } => self.setreservationforlongterm(...),\n            ExecuteMsg::CancelReservationForLongterm { ... } => self.cancelreservationbeforeapprovalforlongterm(...),\n            ExecuteMsg::CancelRentalForLongterm { ... } => self.cancelreservationafterapprovalforlongterm(...),\n            ExecuteMsg::RejectReservationForLongterm { ... } => self.rejectreservationforlongterm(...),\n            ExecuteMsg::DepositForLongTermRental { ... } => self.depositforlongtermrental(...),\n            ExecuteMsg::SetApproveForLongTerm { ... } => self.setapproveforlongterm(...),\n            ExecuteMsg::FinalizeLongTermRental { ... } => self.finalizelongtermrental(...),\n            ExecuteMsg::WithdrawToLandlord { ... } => self.withdrawtolandlord(...),\n            ExecuteMsg::Withdraw { ... } => self.withdraw(...),\n            ExecuteMsg::SetFeeValue { ... } => self.set_fee_value(...),\n            ExecuteMsg::Approve { ... } => self.approve(...),\n            ExecuteMsg::Revoke { ... } => self.revoke(...),\n            ExecuteMsg::ApproveAll { ... } => self.approve_all(...),\n            ExecuteMsg::RevokeAll { ... } => self.revoke_all(...),\n            ExecuteMsg::TransferNft { ... } => self.transfer_nft(...),\n            ExecuteMsg::SendNft { ... } => self.send_nft(...),\n            ExecuteMsg::Burn { ... } => self.burn(...),\n            ExecuteMsg::UpdateOwnership { ... } => Self::update_ownership(...),\n            ExecuteMsg::Extension { msg: _ } => Ok(Response::default()),\n        }\n    }\n}",
+      "severity": "critical"
+    },
+    {
+      "found": true,
+      "title": "Insufficient price validation in transfer_nft enables theft",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": "line number not provided in the code snippet, but the vulnerability is present in the transfer_nft function implementation",
+      "evidence": "In the transfer_nft function, the code checks for a bid from the recipient and transfers the token, then pays the previous owner using the bid amount without verifying if the payment was actually received or if the bid is still valid. This allows a malicious user to transfer the token without paying, or to manipulate bids to receive the token without proper payment. The code also clears all approvals and bids, but does not ensure that the payment is locked or that the state is consistent with the actual transaction. Specifically, the code does not validate that the bid amount is sufficient or that the payment has been received before transferring the token, leading to potential theft.",
+      "severity": "critical"
+    }
+  ]
+}

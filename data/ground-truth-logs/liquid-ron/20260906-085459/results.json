@@ -1,0 +1,13 @@
+{
+  "project": "liquid-ron",
+  "project_id": "code4rena_liquid-ron_2025_03",
+  "timestamp": "2026-09-06T08:54:59",
+  "duration_seconds": 9.9,
+  "expected": 1,
+  "found": 0,
+  "detection_rate": 0.0,
+  "ground_truth_targets": [
+    "The calculation of totalAssets() could be wrong if operatorFeeAmount > 0, this can cause potential loss for the new depositors"
+  ],
+  "found_targets": []
+}

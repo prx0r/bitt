@@ -1,0 +1,17 @@
+{
+  "project": "cork",
+  "project_id": "sherlock_cork-protocol_2025_01",
+  "timestamp": "2026-09-06T08:38:04",
+  "duration_seconds": 18.1,
+  "expected": 5,
+  "found": 0,
+  "detection_rate": 0.0,
+  "ground_truth_targets": [
+    "Lack of slippage protection",
+    "Flash Swap Router empty Reserve",
+    "LV token holders receive proportional",
+    "Incorrect redeem Amount",
+    "Incoming Redemption Assets"
+  ],
+  "found_targets": []
+}

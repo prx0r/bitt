@@ -1,0 +1,22 @@
+{
+  "project": "iq-ai",
+  "project_id": "code4rena_iq-ai_2025_03",
+  "timestamp": "2026-09-06T09:00:20",
+  "duration_seconds": 2.3,
+  "expected": 1,
+  "found": 1,
+  "detection_rate": 1.0,
+  "ground_truth_targets": [
+    "Adversary can win proposals with voting power as low as 4%"
+  ],
+  "found_targets": [
+    {
+      "found": true,
+      "title": "Adversary can win proposals with voting power as low as 4%",
+      "file": "src/TokenGovernor.sol",
+      "line": "55",
+      "evidence": "GovernorVotesQuorumFraction(4) // quorum is 25% (1/4th) of supply",
+      "severity": "critical"
+    }
+  ]
+}

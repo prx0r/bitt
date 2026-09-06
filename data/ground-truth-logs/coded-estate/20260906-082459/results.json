@@ -1,0 +1,21 @@
+{
+  "project": "coded-estate",
+  "project_id": "code4rena_coded-estate-invitational_2024_12",
+  "timestamp": "2026-09-06T08:24:59",
+  "duration_seconds": 54.1,
+  "expected": 9,
+  "found": 0,
+  "detection_rate": 0.0,
+  "ground_truth_targets": [
+    "Attakers can steal the funds from long-term reservation",
+    "setbidtobuy allows token purchase even when sale is no longer listed",
+    "Insufficient price validation in transfer_nft enables theft",
+    "Lack of differentiation between rental types leads to loss of funds",
+    "Cancelling bid doesn't clear token approval of bidder",
+    "Lack of validation in setlistforsell allows changing denom",
+    "Logic flaw in check_can_edit_short",
+    "Adversary can use send_nft to bypass payment",
+    "Token owner can burn token with active rental"
+  ],
+  "found_targets": []
+}

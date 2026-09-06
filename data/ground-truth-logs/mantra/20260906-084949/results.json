@@ -1,0 +1,17 @@
+{
+  "project": "mantra",
+  "project_id": "code4rena_mantra-dex_2025_03",
+  "timestamp": "2026-09-06T08:49:49",
+  "duration_seconds": 35.3,
+  "expected": 5,
+  "found": 0,
+  "detection_rate": 0.0,
+  "ground_truth_targets": [
+    "Protocol allows creating broken tri-crypto CPMM pools",
+    "Logical error in validate_fees_are_paid",
+    "Multi-token stableswap pools allow 0 liquidity",
+    "Block gas limit can be hit due to loop depth",
+    "Farms can be created to start in past epochs"
+  ],
+  "found_targets": []
+}

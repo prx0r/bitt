@@ -1,0 +1,22 @@
+{
+  "project": "liquid-ron",
+  "project_id": "code4rena_liquid-ron_2025_03",
+  "timestamp": "2026-09-06T08:59:27",
+  "duration_seconds": 3.4,
+  "expected": 1,
+  "found": 1,
+  "detection_rate": 1.0,
+  "ground_truth_targets": [
+    "The calculation of totalAssets() could be wrong if operatorFeeAmount > 0, this can cause potential loss for the new depositors"
+  ],
+  "found_targets": [
+    {
+      "found": true,
+      "title": "Calculation of totalAssets() could be wrong if operatorFeeAmount > 0, causing potential loss for new depositors",
+      "file": "src/LiquidRon.sol",
+      "line": 267,
+      "evidence": "function totalAssets() public view override returns (uint256) {\n        return super.totalAssets() + getTotalStaked() + getTotalRewards();\n    }",
+      "severity": "critical"
+    }
+  ]
+}

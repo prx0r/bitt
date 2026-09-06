@@ -1,0 +1,62 @@
+{
+  "project": "coded-estate",
+  "project_id": "code4rena_coded-estate-invitational_2024_12",
+  "timestamp": "2026-09-06T08:34:10",
+  "duration_seconds": 65.1,
+  "expected": 9,
+  "found": 5,
+  "detection_rate": 0.5555555555555556,
+  "ground_truth_targets": [
+    "Attakers can steal the funds from long-term reservation",
+    "setbidtobuy allows token purchase even when sale is no longer listed",
+    "Insufficient price validation in transfer_nft enables theft",
+    "Lack of differentiation between rental types leads to loss of funds",
+    "Cancelling bid doesn't clear token approval of bidder",
+    "Lack of validation in setlistforsell allows changing denom",
+    "Logic flaw in check_can_edit_short",
+    "Adversary can use send_nft to bypass payment",
+    "Token owner can burn token with active rental"
+  ],
+  "found_targets": [
+    {
+      "found": true,
+      "title": "setbidtobuy allows token purchase even when sale is no longer listed",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 102,
+      "evidence": "The SetBidToBuy function is called, but there is no check in the execute.rs to ensure the token's sell.islisted is true. The setbidtobuy method (not shown in the provided snippet) likely allows a bid to be placed without verifying the sale is active, leading to a state inconsistency where a bid can be processed even if the sale was unlisted.",
+      "severity": "critical"
+    },
+    {
+      "found": true,
+      "title": "Insufficient price validation in transfer_nft enables theft",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 283,
+      "evidence": "fn transfer_nft(...) {\n        let mut token = self.tokens.load(deps.storage, &token_id)?;\n        self.check_can_send(deps.as_ref(), &env, &info, &token)?;\n        let prev_owner = token.owner;\n        token.owner = deps.api.addr_validate(&recipient)?;\n        token.approvals = vec![];\n        let fee_percentage = self.get_fee(deps.storage)?;\n\n        let mut position: i32 = -1;\n        let mut amount = Uint128::from(0u64);\n        for (i, item) in token.bids.iter().enumerate() {\n            if item.address == recipient.to_string()\n            {\n                position = i as i32;\n                amount = item.offer.into();\n                break;  \n            }\n        }\n\n        if position != -1 && amount > Uint128::new(0) {\n            self.increase_balance(deps.storage, token.sell.denom.clone(), Uint128::new((u128::from(amount) * u128::from(fee_percentage)) / 10000))?\n        }\n        let amount_after_fee = amount.checked_sub(Uint128::new((u128::from(amount) * u128::from(fee_percentage)) / 10000)).unwrap_or_default();\n        token.bids.retain(|bid| bid.address != recipient);\n        self.tokens.save(deps.storage, &token_id, &token)?;\n        if amount > Uint128::new(0) {\n            Ok(Response::new()\n            .add_attribute(\"action\", \"transfer_nft\")\n            .add_attribute(\"sender\", info.sender.clone())\n            .add_attribute(\"token_id\", token_id)\n            .add_message(BankMsg::Send {\n                to_address: prev_owner.to_string(),\n                amount: vec![Coin {\n                    denom: token.sell.denom,\n                    amount: amount_after_fee,\n                }],\n            }))\n        } else {",
+      "severity": "critical"
+    },
+    {
+      "found": true,
+      "title": "Lack of validation in setlistforsell allows changing denom",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": "207",
+      "evidence": "ExecuteMsg::SetListForSell {islisted, token_id, denom, price, auto_approve } => \n            self.setlistforsell(deps, env, info, islisted,token_id, denom, price, auto_approve)",
+      "severity": "critical"
+    },
+    {
+      "found": true,
+      "title": "Adversary can use send_nft to bypass payment",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 302,
+      "evidence": "fn send_nft(\n        &self,\n        deps: DepsMut,\n        env: Env,\n        info: MessageInfo,\n        contract: String,\n        token_id: String,\n        msg: Binary,\n    ) -> Result<Response<C>, ContractError> {\n        // Transfer token\n        self._transfer_nft(deps, &env, &info, &contract, &token_id)?;",
+      "severity": "critical"
+    },
+    {
+      "found": true,
+      "title": "Token owner can burn token with active rental",
+      "file": "contracts/codedestate/src/execute.rs",
+      "line": 243,
+      "evidence": "ExecuteMsg::Burn { token_id } => self.burn(deps, env, info, token_id)",
+      "severity": "critical"
+    }
+  ]
+}
