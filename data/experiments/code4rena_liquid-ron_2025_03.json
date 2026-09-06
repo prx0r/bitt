@@ -1,0 +1,18 @@
+{
+  "project": "code4rena_liquid-ron_2025_03",
+  "timestamp": "2026-09-06T05:49:33",
+  "total_vulnerabilities": 0,
+  "vulnerabilities": [],
+  "duration_seconds": 479.6,
+  "score": {
+    "dr": 0.0,
+    "expected": 1,
+    "matched": 0,
+    "missed": [
+      {
+        "title": "The calculation oftotalAssets()could be wrong ifoperatorFeeAmount > 0, this can cause potential loss for the new depositors",
+        "best_score": 0
+      }
+    ]
+  }
+}

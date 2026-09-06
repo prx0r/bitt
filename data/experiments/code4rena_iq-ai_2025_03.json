@@ -1,0 +1,37 @@
+{
+  "project": "code4rena_iq-ai_2025_03",
+  "timestamp": "2026-09-06T05:56:20",
+  "total_vulnerabilities": 2,
+  "vulnerabilities": [
+    {
+      "title": "Potential for Implementation Reset to Zero Bypassing Governance",
+      "description": "If the default implementation is compromised or not properly vetted, the Agent contract could behave maliciously.",
+      "vulnerability_type": "other",
+      "severity": "Medium",
+      "confidence": 0.7,
+      "location": "src/Agent.sol",
+      "file": "src/Agent.sol"
+    },
+    {
+      "title": "Missing Validation for Zero Address in Allowed Implementations",
+      "description": "Confusion in the intended behavior; if the zero address is allowed, the function does not revert, but the effect is the same as the reset. This could be a logic error in the factory's configuration.",
+      "vulnerability_type": "other",
+      "severity": "Low",
+      "confidence": 0.7,
+      "location": "src/Agent.sol",
+      "file": "src/Agent.sol"
+    }
+  ],
+  "duration_seconds": 307.4,
+  "score": {
+    "dr": 0.0,
+    "expected": 1,
+    "matched": 0,
+    "missed": [
+      {
+        "title": "Adversary can win proposals with voting power as low as 4%",
+        "best_score": 0
+      }
+    ]
+  }
+}

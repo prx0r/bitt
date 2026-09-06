@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-09-06T05:49:33",
+  "results": {
+    "code4rena_liquid-ron_2025_03": {
+      "dr": 0.0,
+      "expected": 1,
+      "matched": 0,
+      "missed": [
+        {
+          "title": "The calculation oftotalAssets()could be wrong ifoperatorFeeAmount > 0, this can cause potential loss for the new depositors",
+          "best_score": 0
+        }
+      ]
+    }
+  },
+  "total_expected": 1,
+  "total_matched": 0,
+  "overall_dr": 0.0
+}

@@ -1,0 +1,64 @@
+{
+  "project": "sherlock_crestal-network_2025_03",
+  "timestamp": "2026-09-06T06:03:30",
+  "total_vulnerabilities": 5,
+  "vulnerabilities": [
+    {
+      "title": "?",
+      "description": "",
+      "vulnerability_type": "other",
+      "severity": "critical",
+      "confidence": 0.7,
+      "location": "",
+      "file": ""
+    },
+    {
+      "title": "NFT Ownership Check Bypass - Static Address with No Contract Interaction",
+      "description": "Unlimited agent creation without payment/ownership; protocol economic model broken",
+      "vulnerability_type": "other",
+      "severity": "CRITICAL",
+      "confidence": 0.7,
+      "location": "src/BlueprintV5.sol",
+      "file": "src/BlueprintV5.sol"
+    },
+    {
+      "title": "Upgradeable Storage Collision - Version Initialization Gap",
+      "description": "If BlueprintV1 already set VERSION to different value, the string storage slot may have leftover bytes causing EIP712 domain separator mismatch",
+      "vulnerability_type": "other",
+      "severity": "HIGH",
+      "confidence": 0.7,
+      "location": "src/BlueprintV5.sol",
+      "file": "src/BlueprintV5.sol"
+    },
+    {
+      "title": "Missing Nonce/Replay Protection for createAgentWithToken",
+      "description": "Multiple agents per NFT; dilution of access control",
+      "vulnerability_type": "other",
+      "severity": "HIGH",
+      "confidence": 0.7,
+      "location": "src/Payment.sol",
+      "file": "src/Payment.sol"
+    },
+    {
+      "title": "?",
+      "description": "",
+      "vulnerability_type": "other",
+      "severity": "high",
+      "confidence": 0.7,
+      "location": "",
+      "file": ""
+    }
+  ],
+  "duration_seconds": 430.1,
+  "score": {
+    "dr": 0.0,
+    "expected": 1,
+    "matched": 0,
+    "missed": [
+      {
+        "title": "Anyone who is approving Blueprint V 5 con-",
+        "best_score": 0.006
+      }
+    ]
+  }
+}
