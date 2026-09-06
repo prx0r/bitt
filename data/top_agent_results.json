@@ -1,0 +1,135 @@
+{
+  "description": "Top BitSec agent results — 6 SCA-Bench projects used by BitSec validators",
+  "source": "User-provided from BitSec leaderboard/sandbox",
+  "date": "2026-09-06",
+  "note": "BitSec validator questions are drawn from a subset of SCA-Bench. Use SCA-Bench project_id and pinned commit, not latest main.",
+
+  "top_agent_results": [
+    {
+      "project": "code4rena_coded-estate-invitational_2024_12",
+      "runs": [
+        {"run": 1, "runtime": "12m 18s", "findings": "9/9", "status": "Pass"},
+        {"run": 2, "runtime": "13m 51s", "findings": "9/9", "status": "Pass"},
+        {"run": 3, "runtime": "13m 50s", "findings": "9/9", "status": "Pass"}
+      ],
+      "result": "PASS (3/3)",
+      "language": "CosmWasm/Rust"
+    },
+    {
+      "project": "code4rena_iq-ai_2025_03",
+      "runs": [
+        {"run": 1, "runtime": "12m 19s", "findings": "1/1", "status": "Pass"},
+        {"run": 2, "runtime": "13m 51s", "findings": "1/1", "status": "Pass"},
+        {"run": 3, "runtime": "13m 51s", "findings": "1/1", "status": "Pass"}
+      ],
+      "result": "PASS (3/3)",
+      "language": "Solidity/EVM"
+    },
+    {
+      "project": "code4rena_liquid-ron_2025_03",
+      "runs": [
+        {"run": 1, "runtime": "12m 19s", "findings": "1/1", "status": "Pass"},
+        {"run": 2, "runtime": "13m 51s", "findings": "1/1", "status": "Pass"},
+        {"run": 3, "runtime": "13m 50s", "findings": "1/1", "status": "Pass"}
+      ],
+      "result": "PASS (3/3)",
+      "language": "Solidity/EVM"
+    },
+    {
+      "project": "code4rena_mantra-dex_2025_03",
+      "runs": [
+        {"run": 1, "runtime": "12m 19s", "findings": "12/12", "status": "Pass"},
+        {"run": 2, "runtime": "13m 51s", "findings": "12/12", "status": "Pass"},
+        {"run": 3, "runtime": "13m 50s", "findings": "11/12", "status": "Fail"}
+      ],
+      "result": "PASS (2/3)",
+      "language": "CosmWasm/Rust"
+    },
+    {
+      "project": "sherlock_cork-protocol_2025_01",
+      "runs": [
+        {"run": 1, "runtime": "12m 19s", "findings": "5/11", "status": "Fail"},
+        {"run": 2, "runtime": "13m 52s", "findings": "3/11", "status": "Fail"},
+        {"run": 3, "runtime": "13m 51s", "findings": "2/11", "status": "Fail"}
+      ],
+      "result": "FAIL (0/3)",
+      "language": "Solidity/EVM"
+    },
+    {
+      "project": "sherlock_crestal-network_2025_03",
+      "runs": [
+        {"run": 1, "runtime": "12m 19s", "findings": "1/1", "status": "Pass"},
+        {"run": 2, "runtime": "13m 52s", "findings": "1/1", "status": "Pass"},
+        {"run": 3, "runtime": "13m 51s", "findings": "1/1", "status": "Pass"}
+      ],
+      "result": "PASS (3/3)",
+      "language": "Solidity/EVM"
+    }
+  ],
+
+  "summary": {
+    "total_projects": 6,
+    "projects_passed": 5,
+    "projects_failed": 1,
+    "score": "5/6 = 0.833",
+    "total_expected_findings": 25,
+    "total_matched_findings": 23,
+    "avg_runtime_per_project": "~13 minutes"
+  },
+
+  "sca_bench_projects": {
+    "code4rena_coded-estate-invitational_2024_12": {
+      "repo": "https://github.com/code-423n4/2024-10-coded-estate",
+      "commit": "97efb35fd3734676f33598e6dff70119e41c7032",
+      "language": "CosmWasm/Rust"
+    },
+    "code4rena_iq-ai_2025_03": {
+      "repo": "https://github.com/code-423n4/2025-01-iq-ai",
+      "commit": "b16b866d4c8d3e4a69b37a02c4e396d4b294537e",
+      "language": "Solidity/EVM"
+    },
+    "code4rena_liquid-ron_2025_03": {
+      "repo": "https://github.com/code-423n4/2025-01-liquid-ron",
+      "commit": "e4b0b7c256bb2fe73b4a9c945415c3dcc935b61d",
+      "language": "Solidity/EVM"
+    },
+    "code4rena_mantra-dex_2025_03": {
+      "repo": "https://github.com/code-423n4/2024-11-mantra-dex",
+      "commit": "5ef933edd569c201d830c96acc377b7fd285ca35",
+      "language": "CosmWasm/Rust"
+    },
+    "sherlock_cork-protocol_2025_01": {
+      "repo": "https://github.com/Cork-Technology/Depeg-swap",
+      "commit": "d4fcdd524deb5d07a7ccfd6eb49ba5157ed42642",
+      "original_contest": "https://github.com/sherlock-audit/2024-08-cork-protocol",
+      "language": "Solidity/EVM"
+    },
+    "sherlock_crestal-network_2025_03": {
+      "repo": "https://github.com/crestalnetwork/crestal-omni-contracts",
+      "commit": "dc45e98af5e247dce5bbe53b0bd5b1f256884f84",
+      "original_contest": "https://github.com/sherlock-audit/2025-03-crestal-network",
+      "language": "Solidity/EVM"
+    }
+  },
+
+  "testing_instructions": {
+    "sandbox_repo": "https://github.com/Bitsec-AI/sandbox",
+    "setup": "git clone https://github.com/Bitsec-AI/sandbox.git && cd sandbox && uv sync",
+    "env": "export INFERENCE_API_KEY='YOUR_KEY'",
+    "project_keys_config": "validator/platform_client.py → MockPlatformClient.get_job_run_agent()",
+    "levels": {
+      "1_fast": "uv run ./bitsec.py miner execute-agent",
+      "2_scoring": "uv run ./bitsec.py miner run-no-docker",
+      "3_production": "uv run ./bitsec.py miner run"
+    },
+    "results_location": "jobs/job_run_<JOB_ID>/reports/<PROJECT_KEY>/evaluation.json",
+    "scorer": "https://github.com/NethermindEth/auditagent-scoring-algo",
+    "scabench_checkout": "python dataset-generator/checkout_sources.py --dataset datasets/curated-2025-08-18/curated-2025-08-18.json --project PROJECT_ID --output sources/"
+  },
+
+  "language_coverage": {
+    "solidity": ["iq-ai", "liquid-ron", "cork-protocol", "crestal-network"],
+    "cosmWasm_rust": ["coded-estate", "mantra-dex"],
+    "note": "Mixed language coverage tests whether miner does repository reasoning vs. Solidity-pattern detection only"
+  }
+}
