@@ -406,6 +406,27 @@ def phase2_targeted_trace(source_dir, arch_map, static_results, project_name):
                 "risk_type": "general"
             })
 
+    # Prioritize implementation files over interfaces
+    def region_priority(r):
+        file_path = r.get("file", r.get("relevant_files", [""])[0] if r.get("relevant_files") else "")
+        if "interface" in file_path.lower() or file_path.startswith("I"):
+            return 2  # Interfaces last
+        if ".sol" in file_path or ".vy" in file_path or ".cairo" in file_path:
+            return 0  # Implementation first
+        return 1
+
+    regions.sort(key=region_priority)
+
+    # Deduplicate by file path
+    seen_files = set()
+    deduped = []
+    for r in regions:
+        f = r.get("file", "")
+        if f and f not in seen_files:
+            seen_files.add(f)
+            deduped.append(r)
+    regions = deduped
+
     print(f"    Analyzing {len(regions)} regions", flush=True)
 
     all_candidates = []
@@ -485,24 +506,29 @@ Trace this region now."""
 # PHASE 3: Deep-Dive Verification
 # ══════════════════════════════════════════════════════════════════
 
-PHASE3_SYSTEM = """You are verifying a single candidate vulnerability. Be the skeptic.
+PHASE3_SYSTEM = """You are verifying a single candidate vulnerability. Be fair, not overly skeptical.
 
-Given the candidate and full context:
+Your job:
+1. Read the candidate and the full code context.
+2. Determine if the vulnerability is PLAUSIBLE — could it theoretically be exploited?
+3. If yes, CONFIRM it. Assign severity based on potential impact.
+4. If no, REJECT with the specific guard/check that prevents it.
 
-1. CONFIRM with a step-by-step exploit scenario, or REJECT with the specific
-   reason and the exact code that refutes it.
+IMPORTANT RULES:
+- You are NOT writing a court brief. You do NOT need a complete exploit PoC to confirm.
+- A vulnerability is CONFIRMED if: the code has the pattern described, no obvious guard prevents it, and exploitation is theoretically possible.
+- Do NOT reject findings just because they seem "unlikely in practice" — if the code lacks the check, confirm it.
+- When uncertain between confirm/reject, lean toward CONFIRM. Phase 3 should have high recall, not high precision. False positives are cheap; false negatives are fatal.
+- Match severity to the concrete impact described. If unsure, default to the LOWER severity (don't inflate).
 
-2. If confirmed, assign severity:
-   - Critical: direct theft/loss, permanent DoS, full privilege escalation
-   - High: conditional loss, partial privilege escalation, real-value griefing
-   - Medium/Low: everything else
-
-3. If REJECT, name the exact code (file:line) that prevents the vulnerability.
-
-Match severity to concrete impact, not the scarier-sounding label.
+Severity guide:
+- Critical: direct theft/loss, arbitrary code execution
+- High: conditional loss, privilege escalation, permanent DoS
+- Medium: griefing, edge-case loss, informational with security implications
+- Low: best practice violations, gas optimization, minor issues
 
 Output ONLY valid JSON: status (confirmed/rejected), severity (if confirmed),
-exploit_scenario, refutation (if rejected), file, lines."""
+exploit_description (how it could be exploited, or why it can't), file, lines."""
 
 
 def phase3_verify_candidates(source_dir, candidates, arch_map):
