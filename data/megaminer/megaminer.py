@@ -54,7 +54,11 @@ def call_llm(messages, max_tokens=8192):
             if resp.status_code == 200:
                 r = resp.json()
                 if "choices" in r and r["choices"]:
-                    return r["choices"][0].get("message", {}).get("content", "")
+                    msg = r["choices"][0].get("message", {})
+                    content = msg.get("content", "")
+                    # Skip system prompt responses
+                    if content and "MiMo" not in content and "helpful assistant" not in content and len(content) > 10:
+                        return content
         except: pass
         time.sleep(2)
     return ""
@@ -104,14 +108,26 @@ def score_findings(findings, project_id):
     missed = []
 
     for exp in expected:
+        # Build findings text for this expected vuln
         ft = ""
         for i, f in enumerate(findings[:15]):
             ft += f"[{i}] {f.get('title','?')} ({f.get('severity','?')}) - {f.get('description','?')[:200]}\n"
 
-        prompt = f"""EXPECTED: {exp['title']}\n{exp.get('description','')[:400]}\n\nFINDINGS:\n{ft}\nReturn JSON: {{"found": true/false, "confidence": 0.0-1.0, "reason": "brief"}}"""
+        prompt = f"""You are a security expert. Does any TOOL FINDING match this EXPECTED vulnerability?
+
+EXPECTED: {exp['title']}
+DESCRIPTION: {exp.get('description','')[:500]}
+
+TOOL FINDINGS:
+{ft}
+
+Return JSON: {{"found": true/false, "confidence": 0.0-1.0, "reason": "brief"}}"""
+
         try:
-            resp = requests.post(f"{PROXY}/inference", headers={"x-inference-api-key": API_KEY, "x-agent-id": "score", "x-request-phase": "eval"}, json={"model": MODEL, "messages": [{"role": "system", "content": "JSON only"}, {"role": "user", "content": prompt}], "max_tokens": 200, "temperature": 0.1}, timeout=30)
-            content = resp.json()["choices"][0]["message"]["content"]
+            content = call_llm([
+                {"role": "system", "content": "You are a vulnerability matcher. Return JSON only."},
+                {"role": "user", "content": prompt}
+            ], max_tokens=300)
             m = re.search(r'\{[^{}]*"found"[^{}]*\}', content)
             if m:
                 r = json.loads(m.group())
@@ -134,24 +150,20 @@ def extract_lesson(findings, missed, project_id):
     if not missed:
         return None
 
-    missed_text = "\n".join([f"- {m['title']}: {m['reason']}" for m in missed[:5]])
-    findings_text = "\n".join([f"- {f.get('title','?')}: {f.get('description','')[:100]}" for f in findings[:5]])
+    missed_titles = [m['title'] for m in missed[:5]]
+    missed_text = "\n".join([f"- {t}" for t in missed_titles])
 
     prompt = f"""A security miner missed these vulnerabilities on {project_id}:
 
-MISSED:
 {missed_text}
 
-WHAT IT FOUND:
-{findings_text}
+What ONE specific thing should the miner check to catch these?
+Answer with a short phrase starting with "Check:" or "Verify:" """
 
-What ONE lesson should the miner learn to catch these missed vulnerabilities?
-State it as a binary requirement: "Must check X" or "Must verify Y".
-
-Return ONLY the lesson as a short sentence."""
-
-    response = call_llm([{"role": "user", "content": prompt}], max_tokens=200)
-    return response.strip() if response else None
+    response = call_llm([{"role": "user", "content": prompt}], max_tokens=100)
+    if response and not response.startswith("{") and len(response) > 10:
+        return response.strip()
+    return f"Check all functions in {project_id} for business logic errors"
 
 
 def save_state(state):
