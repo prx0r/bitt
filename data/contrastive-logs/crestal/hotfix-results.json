@@ -1,0 +1,29 @@
+{
+  "project": "crestal",
+  "timestamp": "2026-09-06T07:51:08",
+  "transfers_found": 2,
+  "unverified_transfers": 2,
+  "findings": [
+    {
+      "is_vulnerable": true,
+      "title": "Arbitrary Token Drain via Unverified fromAddress",
+      "invariant": "The fromAddress in safeTransferFrom must be verified as the rightful owner (msg.sender or approved address)",
+      "attack": "1. Attacker calls any public function that eventually calls payWithERC20 with arbitrary fromAddress, amount, and toAddress\n2. Attacker sets fromAddress to a victim who has approved the contract for the token amount\n3. Contract executes safeTransferFrom(victim, attacker, amount)\n4. Tokens are transferred from victim to attacker",
+      "impact": "Complete drain of any ERC20 tokens from any user who has approved the contract for any amount",
+      "severity": "critical",
+      "file": "src/Payment.sol",
+      "line": 24
+    },
+    {
+      "is_vulnerable": true,
+      "title": "Uncontrolled Parameter in ERC20 Transfer",
+      "invariant": "The fromAddress parameter in safeTransferFrom should be verified as msg.sender or via an allowance/signature",
+      "attack": "1. Attacker calls createAgent with victim's address as userAddress parameter.\n2. The function calls payWithERC20 with attacker-controlled userAddress as fromAddress.\n3. If victim has approved the contract for ERC20 token spending, the contract transfers tokens from victim to the contract/fee collection wallet.\n4. Attacker receives the NFT or service without paying.",
+      "impact": "Drains ERC20 tokens from any user who has approved the BlueprintCore contract, enabling theft of user funds.",
+      "severity": "critical",
+      "file": "src/BlueprintCore.sol",
+      "line": "368"
+    }
+  ],
+  "found_ground_truth": true
+}

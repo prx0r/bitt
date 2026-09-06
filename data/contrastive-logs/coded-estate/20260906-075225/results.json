@@ -1,0 +1,12 @@
+{
+  "project": "coded-estate",
+  "project_id": "code4rena_coded-estate-invitational_2024_12",
+  "timestamp": "2026-09-06T07:52:25",
+  "duration_seconds": 22.8,
+  "transfers_analyzed": 2,
+  "total_findings": 0,
+  "high_critical": 0,
+  "expected_hc": 9,
+  "detection_rate": 0.0,
+  "findings": []
+}

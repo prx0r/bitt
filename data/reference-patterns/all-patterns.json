@@ -1,0 +1,282 @@
+{
+  "version": "2.0.0",
+  "description": "Complete reference patterns for all BitSec project types",
+  "patterns": {
+    "payment": [
+      {
+        "id": "payment-erc20-msgsender",
+        "category": "payment",
+        "name": "ERC20 Payment via msg.sender",
+        "invariants": ["fromAddress is always msg.sender", "No parameter can override who pays"],
+        "code": "function pay(address token, uint256 amount) external { IERC20(token).safeTransferFrom(msg.sender, wallet, amount); }",
+        "vulnerability_if_missing": "If fromAddress is a parameter, attacker can drain any user who approved the contract"
+      }
+    ],
+    "rental": [
+      {
+        "id": "rental-payment-authorization",
+        "category": "rental",
+        "name": "Rental Payment Authorization",
+        "invariants": [
+          "Only token owner can list for sale/rent",
+          "Payment must go to the correct recipient",
+          "Rental duration must be validated",
+          "Deposit must be returned on valid cancellation"
+        ],
+        "vulnerability_if_missing": "If payment authorization is missing, attacker can steal rental payments"
+      },
+      {
+        "id": "rental-state-consistency",
+        "category": "rental",
+        "name": "Rental State Consistency",
+        "invariants": [
+          "Rental status must be updated atomically",
+          "Cannot rent an already rented token",
+          "Cannot cancel an already completed rental",
+          "Rental dates must not overlap"
+        ],
+        "vulnerability_if_missing": "If state is not consistent, double-rental or fund loss can occur"
+      },
+      {
+        "id": "rental-approval-cleanup",
+        "category": "rental",
+        "name": "Rental Approval Cleanup",
+        "invariants": [
+          "When rental ends, approvals must be revoked",
+          "When bid is cancelled, approvals must be revoked",
+          "When listing is removed, approvals must be revoked"
+        ],
+        "vulnerability_if_missing": "If approvals are not cleaned up, attacker can use stale approvals to steal tokens"
+      },
+      {
+        "id": "rental-price-validation",
+        "category": "rental",
+        "name": "Rental Price Validation",
+        "invariants": [
+          "Price must be > 0",
+          "Price denomination must match expected token",
+          "Price cannot be changed during active listing",
+          "Deposit must cover potential damages"
+        ],
+        "vulnerability_if_missing": "If price is not validated, attacker can manipulate prices or use wrong denomination"
+      },
+      {
+        "id": "rental-duration-validation",
+        "category": "rental",
+        "name": "Rental Duration Validation",
+        "invariants": [
+          "Start date must be in the future",
+          "End date must be after start date",
+          "Duration must be within allowed limits",
+          "Extension must not exceed maximum"
+        ],
+        "vulnerability_if_missing": "If duration is not validated, attacker can create invalid rentals"
+      }
+    ],
+    "staking": [
+      {
+        "id": "staking-delegation-invariant",
+        "category": "staking",
+        "name": "Staking Delegation Invariant",
+        "invariants": [
+          "Total delegated must equal sum of individual delegations",
+          "Undelegation must reduce delegation atomically",
+          "Rewards must be proportional to stake",
+          "Operator fee must be calculated correctly"
+        ],
+        "vulnerability_if_missing": "If delegation invariant is broken, protocol can become insolvent"
+      },
+      {
+        "id": "staking-reward-calculation",
+        "category": "staking",
+        "name": "Staking Reward Calculation",
+        "invariants": [
+          "Rewards must be calculated on correct base amount",
+          "Fee must be deducted before distribution",
+          "Reward rate must be consistent across operators",
+          "No double-claiming of rewards"
+        ],
+        "vulnerability_if_missing": "If reward calculation is wrong, users can earn incorrect rewards"
+      },
+      {
+        "id": "staking-operator-fee",
+        "category": "staking",
+        "name": "Staking Operator Fee",
+        "invariants": [
+          "Operator fee must be within allowed bounds",
+          "Fee must be calculated on correct amount",
+          "Fee must be transferred to correct address",
+          "Fee cannot be changed without notice"
+        ],
+        "vulnerability_if_missing": "If operator fee is wrong, operators can extract excess value"
+      },
+      {
+        "id": "staking-undelegation-process",
+        "category": "staking",
+        "name": "Staking Undelegation Process",
+        "invariants": [
+          "Undelegation must have a cooldown period",
+          "Undelegated tokens must be returned after cooldown",
+          "Partial undelegation must maintain minimum stake",
+          "Emergency undelegation must have penalty"
+        ],
+        "vulnerability_if_missing": "If undelegation is not proper, users can rug pull or bypass cooldowns"
+      }
+    ],
+    "defi": [
+      {
+        "id": "defi-flash-loan-reentrancy",
+        "category": "defi",
+        "name": "Flash Loan Reentrancy Protection",
+        "invariants": [
+          "Flash loan must be repaid in same transaction",
+          "State must not be manipulable during flash loan",
+          "Oracle prices must be resilient to flash loans"
+        ],
+        "vulnerability_if_missing": "If flash loan is not guarded, attacker can manipulate state in single transaction"
+      },
+      {
+        "id": "defi-slippage-protection",
+        "category": "defi",
+        "name": "Slippage Protection",
+        "invariants": [
+          "User must specify minimum output amount",
+          "Actual output must meet minimum",
+          "Deadline must be enforced"
+        ],
+        "vulnerability_if_missing": "If slippage protection is missing, MEV bots can front-run and steal value"
+      },
+      {
+        "id": "defi-oracle-price-feed",
+        "category": "defi",
+        "name": "Oracle Price Feed Integration",
+        "invariants": [
+          "Price must be fresh (not stale)",
+          "Price must be from trusted oracle",
+          "Price manipulation must be mitigated"
+        ],
+        "vulnerability_if_missing": "If price is stale or manipulable, attacker can exploit pricing errors"
+      },
+      {
+        "id": "defi-liquidity-invariant",
+        "category": "defi",
+        "name": "Liquidity Invariant",
+        "invariants": [
+          "Total liquidity must equal sum of all deposits",
+          "Withdrawals cannot exceed available liquidity",
+          "Pool ratios must be maintained"
+        ],
+        "vulnerability_if_missing": "If liquidity invariant is broken, protocol can be drained"
+      }
+    ],
+    "governance": [
+      {
+        "id": "governance-voting-power",
+        "category": "governance",
+        "name": "Voting Power Calculation",
+        "invariants": [
+          "Voting power must be based on actual stake",
+          "Voting power cannot be double-counted",
+          "Delegation must not increase total voting power",
+          "Snapshots must be taken at correct block"
+        ],
+        "vulnerability_if_missing": "If voting power is wrong, attacker can manipulate governance"
+      },
+      {
+        "id": "governance-proposal-validation",
+        "category": "governance",
+        "name": "Proposal Validation",
+        "invariants": [
+          "Proposal threshold must be met",
+          "Voting period must be valid",
+          "Quorum must be reached for execution",
+          "Proposal cannot be modified after creation"
+        ],
+        "vulnerability_if_missing": "If proposal is not validated, attacker can create malicious proposals"
+      },
+      {
+        "id": "governance-execution-safety",
+        "category": "governance",
+        "name": "Execution Safety",
+        "invariants": [
+          "Execution must only happen after voting ends",
+          "Execution must only happen if proposal passed",
+          "Execution must be atomic",
+          "Timelock must be enforced"
+        ],
+        "vulnerability_if_missing": "If execution is not safe, attacker can execute malicious proposals"
+      }
+    ],
+    "dex": [
+      {
+        "id": "dex-constant-product",
+        "category": "dex",
+        "name": "Constant Product Invariant",
+        "invariants": [
+          "x * y = k must hold after each swap",
+          "Swap must not violate constant product",
+          "Fees must be correctly deducted"
+        ],
+        "vulnerability_if_missing": "If constant product is violated, attacker can extract value from pool"
+      },
+      {
+        "id": "dex-liquidity-add-remove",
+        "category": "dex",
+        "name": "Liquidity Add/Remove",
+        "invariants": [
+          "LP tokens must be proportional to liquidity added",
+          "Removal must return correct token amounts",
+          "First liquidity provider must set initial price"
+        ],
+        "vulnerability_if_missing": "If liquidity operations are wrong, LPs can lose funds"
+      },
+      {
+        "id": "dex-price-oracle",
+        "category": "dex",
+        "name": "Price Oracle",
+        "invariants": [
+          "TWAP must be calculated correctly",
+          "Price must not be manipulable in single block",
+          "Oracle updates must be permissionless"
+        ],
+        "vulnerability_if_missing": "If price oracle is wrong, dependent protocols can be exploited"
+      },
+      {
+        "id": "dex-cross-contract-swap",
+        "category": "dex",
+        "name": "Cross-Contract Swap",
+        "invariants": [
+          "Multi-hop swaps must maintain slippage protection",
+          "Intermediate tokens must not be stuck",
+          "Failed swaps must revert all changes"
+        ],
+        "vulnerability_if_missing": "If cross-contract swap is not atomic, attacker can extract intermediate tokens"
+      }
+    ],
+    "access-control": [
+      {
+        "id": "ac-ownable",
+        "category": "access-control",
+        "name": "Ownable Access Control",
+        "invariants": ["Only owner can call critical functions", "Owner can be transferred (two-step preferred)"],
+        "vulnerability_if_missing": "If onlyOwner is missing, anyone can call critical functions"
+      },
+      {
+        "id": "ac-admin-role",
+        "category": "access-control",
+        "name": "Admin Role Separation",
+        "invariants": ["Admin role is separate from operational roles", "No role escalation"],
+        "vulnerability_if_missing": "If roles are not enforced, unauthorized users can execute privileged actions"
+      }
+    ],
+    "nft": [
+      {
+        "id": "nft-approval-restrict",
+        "category": "nft",
+        "name": "NFT Approval Restriction",
+        "invariants": ["Only authorized contracts can transfer NFTs", "Approval is per-token, not global"],
+        "vulnerability_if_missing": "If approval is not restricted, unauthorized users can transfer NFTs"
+      }
+    ]
+  }
+}

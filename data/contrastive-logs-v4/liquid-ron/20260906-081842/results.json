@@ -1,0 +1,24 @@
+{
+  "project": "liquid-ron",
+  "project_id": "code4rena_liquid-ron_2025_03",
+  "timestamp": "2026-09-06T08:18:42",
+  "duration_seconds": 33.9,
+  "files_analyzed": 6,
+  "code_size": 0,
+  "total_findings": 1,
+  "high_critical": 0,
+  "expected_hc": 5,
+  "detection_rate": 0.0,
+  "findings": [
+    {
+      "status": "confirmed",
+      "title": "Missing validation for zero address in constructor",
+      "file": "contracts/Staking.sol",
+      "line": 12,
+      "severity": "low",
+      "invariant": "The constructor should validate that the staking token address is not zero to prevent accidental deployment with invalid parameters.",
+      "attack": "1. Deploy contract with zero address as staking token.\n2. Contract becomes unusable as it cannot interact with a valid token.\n3. Users may stake tokens to a contract that does not function properly.",
+      "impact": "Deployment of a non-functional contract, leading to potential user loss."
+    }
+  ]
+}

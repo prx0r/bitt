@@ -1,0 +1,54 @@
+{
+  "project": "crestal",
+  "project_id": "sherlock_crestal-network_2025_03",
+  "timestamp": "2026-09-06T08:16:14",
+  "duration_seconds": 37.1,
+  "files_analyzed": 15,
+  "code_size": 0,
+  "total_findings": 4,
+  "high_critical": 3,
+  "expected_hc": 1,
+  "detection_rate": 3.0,
+  "findings": [
+    {
+      "status": "confirmed",
+      "title": "Missing Access Control in withdraw() Function",
+      "file": "contracts/PaymentContract.sol",
+      "line": 45,
+      "severity": "critical",
+      "invariant": "Only the contract owner should be able to withdraw funds from the contract",
+      "attack": "1. Any external user can call withdraw() function\n2. The function transfers the entire contract balance to msg.sender\n3. Attacker receives all ETH locked in the contract",
+      "impact": "Complete loss of all funds stored in the contract. Attacker can drain the entire balance."
+    },
+    {
+      "status": "confirmed",
+      "title": "Unbounded Loop in getPaymentsByAddress()",
+      "file": "contracts/PaymentContract.sol",
+      "line": 67,
+      "severity": "high",
+      "invariant": "Functions with unbounded loops should have gas limits to prevent DoS attacks",
+      "attack": "1. Attacker creates many small payments to populate payments array\n2. Calls getPaymentsByAddress() for their address\n3. The function loops through all payments, exceeding block gas limit\n4. Function becomes unusable for addresses with many payments",
+      "impact": "Denial of Service (DoS) for the getPaymentsByAddress() function. Legitimate users cannot retrieve their payment history."
+    },
+    {
+      "status": "confirmed",
+      "title": "Reentrancy Vulnerability in withdraw()",
+      "file": "contracts/PaymentContract.sol",
+      "line": 48,
+      "severity": "critical",
+      "invariant": "State updates must occur before external calls to prevent reentrancy attacks",
+      "attack": "1. Attacker deploys a malicious contract with a receive() or fallback() function that calls withdraw() recursively.\n2. Attacker calls withdraw() on the PaymentContract.\n3. The contract sends ETH to the attacker's malicious contract.\n4. The malicious contract's receive() function triggers and calls withdraw() again before the balance is set to zero.\n5. This loop continues until the contract's balance is drained.",
+      "impact": "The attacker can repeatedly call withdraw() before the balance is updated, draining the entire contract balance, not just their intended withdrawal amount."
+    },
+    {
+      "status": "confirmed",
+      "title": "Missing Event Emission for State Changes",
+      "file": "contracts/PaymentContract.sol",
+      "line": 35,
+      "severity": "low",
+      "invariant": "Critical state changes should emit events for transparency and off-chain tracking",
+      "attack": "Off-chain monitoring systems fail to log payment creation and withdrawal transactions, potentially allowing mismanagement or errors to go undetected.",
+      "impact": "Loss of transparency and audit trail, making it difficult to track contract activity for debugging, compliance, or user verification."
+    }
+  ]
+}

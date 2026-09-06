@@ -1,0 +1,223 @@
+{
+  "timestamp": "2026-09-06T08:20:46",
+  "results": [
+    {
+      "project": "crestal",
+      "project_id": "sherlock_crestal-network_2025_03",
+      "timestamp": "2026-09-06T08:16:14",
+      "duration_seconds": 37.1,
+      "files_analyzed": 15,
+      "code_size": 0,
+      "total_findings": 4,
+      "high_critical": 3,
+      "expected_hc": 1,
+      "detection_rate": 3.0,
+      "findings": [
+        {
+          "status": "confirmed",
+          "title": "Missing Access Control in withdraw() Function",
+          "file": "contracts/PaymentContract.sol",
+          "line": 45,
+          "severity": "critical",
+          "invariant": "Only the contract owner should be able to withdraw funds from the contract",
+          "attack": "1. Any external user can call withdraw() function\n2. The function transfers the entire contract balance to msg.sender\n3. Attacker receives all ETH locked in the contract",
+          "impact": "Complete loss of all funds stored in the contract. Attacker can drain the entire balance."
+        },
+        {
+          "status": "confirmed",
+          "title": "Unbounded Loop in getPaymentsByAddress()",
+          "file": "contracts/PaymentContract.sol",
+          "line": 67,
+          "severity": "high",
+          "invariant": "Functions with unbounded loops should have gas limits to prevent DoS attacks",
+          "attack": "1. Attacker creates many small payments to populate payments array\n2. Calls getPaymentsByAddress() for their address\n3. The function loops through all payments, exceeding block gas limit\n4. Function becomes unusable for addresses with many payments",
+          "impact": "Denial of Service (DoS) for the getPaymentsByAddress() function. Legitimate users cannot retrieve their payment history."
+        },
+        {
+          "status": "confirmed",
+          "title": "Reentrancy Vulnerability in withdraw()",
+          "file": "contracts/PaymentContract.sol",
+          "line": 48,
+          "severity": "critical",
+          "invariant": "State updates must occur before external calls to prevent reentrancy attacks",
+          "attack": "1. Attacker deploys a malicious contract with a receive() or fallback() function that calls withdraw() recursively.\n2. Attacker calls withdraw() on the PaymentContract.\n3. The contract sends ETH to the attacker's malicious contract.\n4. The malicious contract's receive() function triggers and calls withdraw() again before the balance is set to zero.\n5. This loop continues until the contract's balance is drained.",
+          "impact": "The attacker can repeatedly call withdraw() before the balance is updated, draining the entire contract balance, not just their intended withdrawal amount."
+        },
+        {
+          "status": "confirmed",
+          "title": "Missing Event Emission for State Changes",
+          "file": "contracts/PaymentContract.sol",
+          "line": 35,
+          "severity": "low",
+          "invariant": "Critical state changes should emit events for transparency and off-chain tracking",
+          "attack": "Off-chain monitoring systems fail to log payment creation and withdrawal transactions, potentially allowing mismanagement or errors to go undetected.",
+          "impact": "Loss of transparency and audit trail, making it difficult to track contract activity for debugging, compliance, or user verification."
+        }
+      ]
+    },
+    {
+      "project": "coded-estate",
+      "project_id": "code4rena_coded-estate-invitational_2024_12",
+      "timestamp": "2026-09-06T08:18:08",
+      "duration_seconds": 114.0,
+      "files_analyzed": 9,
+      "code_size": 0,
+      "total_findings": 4,
+      "high_critical": 1,
+      "expected_hc": 9,
+      "detection_rate": 0.1111111111111111,
+      "findings": [
+        {
+          "status": "confirmed",
+          "title": "Unrestricted Token Transfer in updatePaymentToken",
+          "file": "contracts/ReserveApeContract.sol",
+          "line": 131,
+          "severity": "high",
+          "invariant": "When changing payment tokens, any existing token balances should be transferred out or accounted for to prevent loss of funds.",
+          "attack": "1. Contract holds 1000 USDC as rental payments.\n2. Owner calls updatePaymentToken(newTokenAddress) to switch to a different token (e.g., DAI).\n3. The function does not transfer existing USDC balances out of the contract.\n4. The USDC becomes permanently locked in the contract since no function allows withdrawal of old tokens.\n5. Those funds are irrecoverable.",
+          "impact": "Permanent loss of any token balances held by the contract when the payment token is updated. Existing funds become stuck and unusable."
+        },
+        {
+          "status": "confirmed",
+          "title": "Missing Validation in startRental",
+          "file": "contracts/ReserveApeContract.sol",
+          "line": 85,
+          "severity": "medium",
+          "invariant": "The rental duration should be validated to prevent unreasonable or malicious values (e.g., extremely long durations that could lock the NFT indefinitely).",
+          "attack": "Attacker calls startRental() with duration = 2^256 - 1 (maximum uint256), setting rentalEndTimes[nftAddress] to an astronomically high number. Since stopRental checks if rentalEndTimes[nftAddress] < block.timestamp, the condition never becomes true, effectively locking the NFT permanently in the contract.",
+          "impact": "Permanent lock-up of an NFT in the contract. The original owner loses control and ability to use or sell their NFT, resulting in total loss of the asset."
+        },
+        {
+          "status": "confirmed",
+          "title": "Unbounded Gas Consumption in getAllRentals",
+          "file": "contracts/ReserveApeContract.sol",
+          "line": 155,
+          "severity": "low",
+          "invariant": "Functions that return arrays should handle unbounded growth to prevent excessive gas consumption and potential DoS.",
+          "attack": "1. Attacker (or simply normal usage over time) creates many rentals by calling startRental() repeatedly for different NFTs.\n2. The totalRentalsCount variable grows large (e.g., 1000+).\n3. A user calls getAllRentals() to fetch all rental records.\n4. The function loops through all rental IDs, fetching data for each.\n5. Gas cost exceeds block gas limit, causing the transaction to revert.\n6. The function becomes unusable for large datasets.",
+          "impact": "Denial of service for the getAllRentals function. External contracts or interfaces relying on this function may break. This could disrupt frontend applications or other contracts that need to query rental data."
+        },
+        {
+          "status": "confirmed",
+          "title": "Timestamp Dependency in Rental Duration Check",
+          "file": "contracts/ReserveApeContract.sol",
+          "line": 100,
+          "severity": "medium",
+          "invariant": "Rental end time should be calculated relative to the current block timestamp to ensure accuracy, but block.timestamp can be manipulated by miners within a small range.",
+          "attack": "1. Miner sees a pending transaction calling startRental() with duration = 1 day.\n2. Miner includes the transaction in a block with a timestamp set to the maximum allowed (current_time + 900 seconds).\n3. This artificially inflates the rental end time by up to 15 minutes.\n4. For short-duration rentals (e.g., hourly), this manipulation could represent a significant percentage increase.\n5. Renters may get more rental time than they paid for, or owners may lose rental time.",
+          "impact": "Minor economic distortion. Renters could receive up to 15 minutes of additional rental time without payment, or owners could lose rental time. This primarily affects fairness but could accumulate with repeated exploitation."
+        }
+      ]
+    },
+    {
+      "project": "liquid-ron",
+      "project_id": "code4rena_liquid-ron_2025_03",
+      "timestamp": "2026-09-06T08:18:42",
+      "duration_seconds": 33.9,
+      "files_analyzed": 6,
+      "code_size": 0,
+      "total_findings": 1,
+      "high_critical": 0,
+      "expected_hc": 5,
+      "detection_rate": 0.0,
+      "findings": [
+        {
+          "status": "confirmed",
+          "title": "Missing validation for zero address in constructor",
+          "file": "contracts/Staking.sol",
+          "line": 12,
+          "severity": "low",
+          "invariant": "The constructor should validate that the staking token address is not zero to prevent accidental deployment with invalid parameters.",
+          "attack": "1. Deploy contract with zero address as staking token.\n2. Contract becomes unusable as it cannot interact with a valid token.\n3. Users may stake tokens to a contract that does not function properly.",
+          "impact": "Deployment of a non-functional contract, leading to potential user loss."
+        }
+      ]
+    },
+    {
+      "project": "cork",
+      "project_id": "sherlock_cork-protocol_2025_01",
+      "timestamp": "2026-09-06T08:19:26",
+      "duration_seconds": 44.1,
+      "files_analyzed": 15,
+      "code_size": 0,
+      "total_findings": 2,
+      "high_critical": 1,
+      "expected_hc": 18,
+      "detection_rate": 0.05555555555555555,
+      "findings": [
+        {
+          "status": "confirmed",
+          "title": "Unbounded Loop in withdrawAll",
+          "file": "contracts/Vault.sol",
+          "line": 25,
+          "severity": "high",
+          "invariant": "The withdrawAll function should handle an arbitrary number of tokens without hitting gas limits.",
+          "attack": "1. Attacker creates a token contract with thousands of mintable tokens.\n2. Attacker repeatedly calls depositToken with this token.\n3. When withdrawAll is called, the loop over tokens[ids.length] exceeds block gas limit.\n4. Function becomes unusable, locking all funds in the vault.",
+          "impact": "Permanent loss of access to all deposited funds (denial of service)."
+        },
+        {
+          "status": "confirmed",
+          "title": "Missing Validation in depositToken",
+          "file": "contracts/Vault.sol",
+          "line": 20,
+          "severity": "medium",
+          "invariant": "The deposited token address should be a validated ERC20 contract with proper transfer functionality.",
+          "attack": "1. Attacker deploys a malicious ERC20-like contract that returns true for all calls but doesn't actually transfer tokens.\n2. Attacker calls depositToken(maliciousContract, 1000).\n3. Vault's depositToken function accepts the call without verifying the token is a legitimate ERC20.\n4. Vault's internal balances are updated but no actual tokens are transferred.",
+          "impact": "Corrupted internal accounting allows the attacker to inflate their balance without providing real assets, potentially enabling withdrawal of other users' legitimate tokens."
+        }
+      ]
+    },
+    {
+      "project": "iq-ai",
+      "findings": [],
+      "dr": 0
+    },
+    {
+      "project": "mantra",
+      "project_id": "code4rena_mantra-dex_2025_03",
+      "timestamp": "2026-09-06T08:20:46",
+      "duration_seconds": 78.1,
+      "files_analyzed": 15,
+      "code_size": 0,
+      "total_findings": 3,
+      "high_critical": 2,
+      "expected_hc": 55,
+      "detection_rate": 0.03636363636363636,
+      "findings": [
+        {
+          "status": "confirmed",
+          "title": "Missing Access Control in updateTreasuryFee",
+          "file": "contracts/UniswapV2Pair.sol",
+          "line": 185,
+          "severity": "critical",
+          "invariant": "Only owner should be able to update treasury fee percentage",
+          "attack": "1. Deploy malicious contract calling updateTreasuryFee with high fee (e.g., 50%). 2. All swap fees would go to attacker's address. 3. Drain all trading fees from pool.",
+          "impact": "Complete theft of all accumulated trading fees, financial loss for liquidity providers"
+        },
+        {
+          "status": "confirmed",
+          "title": "Reentrancy in removeLiquidity",
+          "file": "contracts/UniswapV2Pair.sol",
+          "line": 278,
+          "severity": "high",
+          "invariant": "State updates should occur before external calls",
+          "attack": "1. Create malicious token contract. 2. Call removeLiquidity which sends tokens before updating balances. 3. Malicious token callback reenters removeLiquidity. 4. Withdraw more than entitled share.",
+          "impact": "Draining of pool reserves, theft of LP funds"
+        },
+        {
+          "status": "confirmed",
+          "title": "Uninitialized Protocol Fee",
+          "file": "contracts/UniswapV2Pair.sol",
+          "line": 52,
+          "severity": "low",
+          "invariant": "Protocol fee recipient should be initialized at deployment",
+          "attack": "1. Deploy pair contract without setting feeTo. 2. Protocol fees accumulate but cannot be withdrawn. 3. Permanent loss of protocol revenue.",
+          "impact": "Loss of protocol revenue, inefficiency in fee distribution"
+        }
+      ]
+    }
+  ],
+  "total_expected": 88,
+  "total_found": 7,
+  "overall_dr": 0.07954545454545454
+}

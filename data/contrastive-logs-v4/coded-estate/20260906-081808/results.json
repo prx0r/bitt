@@ -1,0 +1,54 @@
+{
+  "project": "coded-estate",
+  "project_id": "code4rena_coded-estate-invitational_2024_12",
+  "timestamp": "2026-09-06T08:18:08",
+  "duration_seconds": 114.0,
+  "files_analyzed": 9,
+  "code_size": 0,
+  "total_findings": 4,
+  "high_critical": 1,
+  "expected_hc": 9,
+  "detection_rate": 0.1111111111111111,
+  "findings": [
+    {
+      "status": "confirmed",
+      "title": "Unrestricted Token Transfer in updatePaymentToken",
+      "file": "contracts/ReserveApeContract.sol",
+      "line": 131,
+      "severity": "high",
+      "invariant": "When changing payment tokens, any existing token balances should be transferred out or accounted for to prevent loss of funds.",
+      "attack": "1. Contract holds 1000 USDC as rental payments.\n2. Owner calls updatePaymentToken(newTokenAddress) to switch to a different token (e.g., DAI).\n3. The function does not transfer existing USDC balances out of the contract.\n4. The USDC becomes permanently locked in the contract since no function allows withdrawal of old tokens.\n5. Those funds are irrecoverable.",
+      "impact": "Permanent loss of any token balances held by the contract when the payment token is updated. Existing funds become stuck and unusable."
+    },
+    {
+      "status": "confirmed",
+      "title": "Missing Validation in startRental",
+      "file": "contracts/ReserveApeContract.sol",
+      "line": 85,
+      "severity": "medium",
+      "invariant": "The rental duration should be validated to prevent unreasonable or malicious values (e.g., extremely long durations that could lock the NFT indefinitely).",
+      "attack": "Attacker calls startRental() with duration = 2^256 - 1 (maximum uint256), setting rentalEndTimes[nftAddress] to an astronomically high number. Since stopRental checks if rentalEndTimes[nftAddress] < block.timestamp, the condition never becomes true, effectively locking the NFT permanently in the contract.",
+      "impact": "Permanent lock-up of an NFT in the contract. The original owner loses control and ability to use or sell their NFT, resulting in total loss of the asset."
+    },
+    {
+      "status": "confirmed",
+      "title": "Unbounded Gas Consumption in getAllRentals",
+      "file": "contracts/ReserveApeContract.sol",
+      "line": 155,
+      "severity": "low",
+      "invariant": "Functions that return arrays should handle unbounded growth to prevent excessive gas consumption and potential DoS.",
+      "attack": "1. Attacker (or simply normal usage over time) creates many rentals by calling startRental() repeatedly for different NFTs.\n2. The totalRentalsCount variable grows large (e.g., 1000+).\n3. A user calls getAllRentals() to fetch all rental records.\n4. The function loops through all rental IDs, fetching data for each.\n5. Gas cost exceeds block gas limit, causing the transaction to revert.\n6. The function becomes unusable for large datasets.",
+      "impact": "Denial of service for the getAllRentals function. External contracts or interfaces relying on this function may break. This could disrupt frontend applications or other contracts that need to query rental data."
+    },
+    {
+      "status": "confirmed",
+      "title": "Timestamp Dependency in Rental Duration Check",
+      "file": "contracts/ReserveApeContract.sol",
+      "line": 100,
+      "severity": "medium",
+      "invariant": "Rental end time should be calculated relative to the current block timestamp to ensure accuracy, but block.timestamp can be manipulated by miners within a small range.",
+      "attack": "1. Miner sees a pending transaction calling startRental() with duration = 1 day.\n2. Miner includes the transaction in a block with a timestamp set to the maximum allowed (current_time + 900 seconds).\n3. This artificially inflates the rental end time by up to 15 minutes.\n4. For short-duration rentals (e.g., hourly), this manipulation could represent a significant percentage increase.\n5. Renters may get more rental time than they paid for, or owners may lose rental time.",
+      "impact": "Minor economic distortion. Renters could receive up to 15 minutes of additional rental time without payment, or owners could lose rental time. This primarily affects fairness but could accumulate with repeated exploitation."
+    }
+  ]
+}

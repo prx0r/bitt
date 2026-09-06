@@ -1,0 +1,177 @@
+{
+  "version": "1.0.0",
+  "description": "Secure reference implementations for common DeFi patterns. Used by contrastive auditor to detect missing invariants.",
+  "patterns": [
+    {
+      "id": "payment-erc20-msgsender",
+      "category": "payment",
+      "name": "ERC20 Payment via msg.sender",
+      "description": "Secure pattern: only transfer tokens from msg.sender, no parameter injection",
+      "invariants": [
+        "fromAddress is always msg.sender",
+        "No parameter can override who pays",
+        "Transfer amount must be > 0",
+        "Token address must be valid"
+      ],
+      "code": "function payWithERC20(address token, uint256 amount) external {\n    require(amount > 0, \"Amount must be > 0\");\n    IERC20(token).safeTransferFrom(msg.sender, feeWallet, amount);\n}",
+      "vulnerability_if_missing": "If fromAddress is a parameter, attacker can drain any user who approved the contract"
+    },
+    {
+      "id": "payment-erc20-signature",
+      "category": "payment",
+      "name": "ERC20 Payment with Signature Verification",
+      "description": "Secure pattern: verify signature proves user authorized the transfer",
+      "invariants": [
+        "Signature must be valid (recover(signer) == user)",
+        "Nonce must be checked to prevent replay",
+        "Chain ID must be included for cross-chain protection",
+        "Token and amount must match the signed data"
+      ],
+      "code": "function payWithERC20WithSig(\n    address token, uint256 amount, address user, bytes memory sig\n) external {\n    bytes32 digest = keccak256(abi.encodePacked(\n        token, amount, user, nonce[user]++, block.chainid\n    ));\n    address signer = ECDSA.recover(digest, sig);\n    require(signer == user, \"Invalid signature\");\n    IERC20(token).safeTransferFrom(user, feeWallet, amount);\n}",
+      "vulnerability_if_missing": "If signature is not verified, attacker can forge authorization and steal tokens"
+    },
+    {
+      "id": "access-control-ownable",
+      "category": "access-control",
+      "name": "Ownable Access Control",
+      "description": "Secure pattern: critical functions restricted to owner",
+      "invariants": [
+        "Only owner can call critical functions",
+        "Owner can be transferred (two-step preferred)",
+        "No backdoor or bypass"
+      ],
+      "code": "modifier onlyOwner() {\n    require(msg.sender == owner(), \"Not owner\");\n    _;\n}\n\nfunction criticalFunction() external onlyOwner {\n    // Only owner can execute\n}",
+      "vulnerability_if_missing": "If onlyOwner is missing, anyone can call critical functions"
+    },
+    {
+      "id": "access-control-role",
+      "category": "access-control",
+      "name": "Role-Based Access Control",
+      "description": "Secure pattern: specific roles for specific actions",
+      "invariants": [
+        "Each role has clear responsibilities",
+        "No role escalation",
+        "Admin role is separate from operational roles"
+      ],
+      "code": "mapping(bytes32 => mapping(address => bool)) private roles;\n\nbytes32 public constant ADMIN_ROLE = keccak256(\"ADMIN\");\nbytes32 public constant OPERATOR_ROLE = keccak256(\"OPERATOR\");\n\nmodifier onlyRole(bytes32 role) {\n    require(roles[role][msg.sender], \"Not authorized\");\n    _;\n}\n\nfunction adminFunction() external onlyRole(ADMIN_ROLE) { }\nfunction operatorFunction() external onlyRole(OPERATOR_ROLE) { }",
+      "vulnerability_if_missing": "If roles are not enforced, unauthorized users can execute privileged actions"
+    },
+    {
+      "id": "reentrancy-guard",
+      "category": "reentrancy",
+      "name": "Reentrancy Guard",
+      "description": "Secure pattern: prevent reentrant calls to state-changing functions",
+      "invariants": [
+        "State changes before external calls (CEI pattern)",
+        "ReentrancyGuard on all state-changing functions",
+        "No nested calls to same function"
+      ],
+      "code": "bool private locked;\n\nmodifier nonReentrant() {\n    require(!locked, \"Reentrant call\");\n    locked = true;\n    _;\n    locked = false;\n}\n\nfunction withdraw(uint256 amount) external nonReentrant {\n    require(balances[msg.sender] >= amount, \"Insufficient balance\");\n    balances[msg.sender] -= amount;  // State change BEFORE external call\n    (bool success,) = msg.sender.call{value: amount}(\"\");\n    require(success, \"Transfer failed\");\n}",
+      "vulnerability_if_missing": "If reentrancy guard is missing, attacker can re-enter and drain funds"
+    },
+    {
+      "id": "slippage-protection",
+      "category": "dex",
+      "name": "Slippage Protection",
+      "description": "Secure pattern: minimum output amount check",
+      "invariants": [
+        "User must specify minimum output amount",
+        "Actual output must meet minimum",
+        "Deadline must be enforced"
+      ],
+      "code": "function swap(\n    address tokenIn,\n    address tokenOut,\n    uint256 amountIn,\n    uint256 minAmountOut,\n    uint256 deadline\n) external {\n    require(block.timestamp <= deadline, \"Swap expired\");\n    uint256 amountOut = getAmountOut(tokenIn, tokenOut, amountIn);\n    require(amountOut >= minAmountOut, \"Slippage exceeded\");\n    // Execute swap\n}",
+      "vulnerability_if_missing": "If slippage protection is missing, MEV bots can front-run and steal value"
+    },
+    {
+      "id": "lending-health-factor",
+      "category": "lending",
+      "name": "Lending Health Factor Check",
+      "description": "Secure pattern: check health factor before any collateral reduction",
+      "invariants": [
+        "Health factor must remain above threshold after any action",
+        "Any action that reduces collateral must check health factor",
+        "Liquidation must be possible when health factor < 1"
+      ],
+      "code": "function withdraw(uint256 amount) external {\n    uint256 collateral = getCollateral(msg.sender);\n    uint256 debt = getDebt(msg.sender);\n    require(collateral - amount > 0, \"Cannot withdraw all collateral\");\n    \n    uint256 newHealthFactor = calculateHealthFactor(collateral - amount, debt);\n    require(newHealthFactor >= HEALTH_FACTOR_THRESHOLD, \"Health factor too low\");\n    \n    // Execute withdrawal\n}",
+      "vulnerability_if_missing": "If health factor is not checked, user can withdraw collateral and become undercollateralized"
+    },
+    {
+      "id": "lending-liquidation",
+      "category": "lending",
+      "name": "Liquidation Mechanism",
+      "description": "Secure pattern: proper liquidation with incentives",
+      "invariants": [
+        "Liquidation can only happen when health factor < 1",
+        "Liquidator receives incentive",
+        "Borrower pays penalty"
+      ],
+      "code": "function liquidate(address user, address debtToken, uint256 debtAmount) external {\n    uint256 healthFactor = getHealthFactor(user);\n    require(healthFactor < 1e18, \"Not liquidatable\");\n    \n    uint256 penalty = debtAmount * LIQUIDATION_PENALTY / 10000;\n    uint256 liquidatorReward = debtAmount * LIQUIDATION_REWARD / 10000;\n    \n    // Transfer debt from borrower to liquidator\n    // Transfer collateral from borrower to liquidator (debt + penalty + reward)\n}",
+      "vulnerability_if_missing": "If liquidation is not properly implemented, protocol can become insolvent"
+    },
+    {
+      "id": "nft-approval-restrict",
+      "category": "nft",
+      "name": "NFT Approval Restriction",
+      "description": "Secure pattern: restrict who can be approved for NFT operations",
+      "invariants": [
+        "Only authorized contracts can transfer NFTs",
+        "Approval is per-token, not global",
+        "Approval can be revoked"
+      ],
+      "code": "function approve(address to, uint256 tokenId) public virtual override {\n    require(to != msg.sender, \"Cannot approve yourself\");\n    require(_isApprovedOrOwner(msg.sender, tokenId), \"Not owner or approved\");\n    _approve(to, tokenId);\n}\n\nfunction transferFrom(address from, address to, uint256 tokenId) public virtual override {\n    require(_isApprovedOrOwner(msg.sender, tokenId), \"Not owner or approved\");\n    _transfer(from, to, tokenId);\n}",
+      "vulnerability_if_missing": "If approval is not restricted, unauthorized users can transfer NFTs"
+    },
+    {
+      "id": "cross-contract-state-sync",
+      "category": "cross-contract",
+      "name": "Cross-Contract State Synchronization",
+      "description": "Secure pattern: ensure state is consistent across contracts",
+      "invariants": [
+        "State must be updated atomically",
+        "No race conditions between contracts",
+        "Reverts must roll back all state"
+      ],
+      "code": "function crossContractAction() external {\n    // 1. Update state in contract A\n    stateA = newValue;\n    \n    // 2. Call contract B (must succeed)\n    (bool success,) = contractB.call(abi.encodeWithSignature(\"updateState(uint256)\", newValue));\n    require(success, \"Contract B call failed\");\n    \n    // 3. If contract B fails, stateA is reverted automatically\n}",
+      "vulnerability_if_missing": "If state is not synchronized, contracts can be in inconsistent states"
+    },
+    {
+      "id": "flash-loan-reentrancy",
+      "category": "flash-loan",
+      "name": "Flash Loan Reentrancy Protection",
+      "description": "Secure pattern: prevent flash loan attacks on state",
+      "invariants": [
+        "Flash loan must be repaid in same transaction",
+        "State must not be manipulable during flash loan",
+        "Oracle prices must be resilient"
+      ],
+      "code": "function flashLoan(address token, uint256 amount, bytes memory data) external {\n    uint256 balanceBefore = IERC20(token).balanceOf(address(this));\n    require(balanceBefore >= amount, \"Insufficient liquidity\");\n    \n    // Transfer tokens to borrower\n    IERC20(token).transfer(msg.sender, amount);\n    \n    // Execute callback\n    require(IFlashLoanReceiver(msg.sender).onFlashLoan(token, amount, data) == 0, \"Flash loan failed\");\n    \n    // Verify repayment\n    uint256 balanceAfter = IERC20(token).balanceOf(address(this));\n    require(balanceAfter >= balanceBefore, \"Flash loan not repaid\");\n}",
+      "vulnerability_if_missing": "If flash loan is not properly guarded, attacker can manipulate state in single transaction"
+    },
+    {
+      "id": "upgradeable-proxy",
+      "category": "upgradeable",
+      "name": "Upgradeable Proxy Pattern",
+      "description": "Secure pattern: safe upgrade mechanism",
+      "invariants": [
+        "Only owner can upgrade",
+        "Implementation can be changed",
+        "Storage layout must be preserved"
+      ],
+      "code": "contract Proxy is Ownable {\n    address public implementation;\n    \n    function upgrade(address newImplementation) external onlyOwner {\n        require(newImplementation != address(0), \"Invalid implementation\");\n        implementation = newImplementation;\n    }\n    \n    fallback() external payable {\n        _delegate(implementation);\n    }\n}",
+      "vulnerability_if_missing": "If upgrade is not protected, attacker can take over the contract"
+    },
+    {
+      "id": "oracle-price-feed",
+      "category": "oracle",
+      "name": "Oracle Price Feed Integration",
+      "description": "Secure pattern: reliable price oracle usage",
+      "invariants": [
+        "Price must be fresh (not stale)",
+        "Price must be from trusted oracle",
+        "Price manipulation must be mitigated"
+      ],
+      "code": "function getPrice() public view returns (uint256) {\n    (uint80 roundId, int256 price,, uint256 updatedAt,) = priceOracle.latestRoundData();\n    require(roundId > 0, \"Invalid round\");\n    require(price > 0, \"Invalid price\");\n    require(block.timestamp - updatedAt <= MAX_STALENESS, \"Price stale\");\n    return uint256(price);\n}",
+      "vulnerability_if_missing": "If price is stale or manipulable, attacker can exploit pricing errors"
+    }
+  ]
+}

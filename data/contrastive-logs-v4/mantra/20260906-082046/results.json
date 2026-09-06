@@ -1,0 +1,44 @@
+{
+  "project": "mantra",
+  "project_id": "code4rena_mantra-dex_2025_03",
+  "timestamp": "2026-09-06T08:20:46",
+  "duration_seconds": 78.1,
+  "files_analyzed": 15,
+  "code_size": 0,
+  "total_findings": 3,
+  "high_critical": 2,
+  "expected_hc": 55,
+  "detection_rate": 0.03636363636363636,
+  "findings": [
+    {
+      "status": "confirmed",
+      "title": "Missing Access Control in updateTreasuryFee",
+      "file": "contracts/UniswapV2Pair.sol",
+      "line": 185,
+      "severity": "critical",
+      "invariant": "Only owner should be able to update treasury fee percentage",
+      "attack": "1. Deploy malicious contract calling updateTreasuryFee with high fee (e.g., 50%). 2. All swap fees would go to attacker's address. 3. Drain all trading fees from pool.",
+      "impact": "Complete theft of all accumulated trading fees, financial loss for liquidity providers"
+    },
+    {
+      "status": "confirmed",
+      "title": "Reentrancy in removeLiquidity",
+      "file": "contracts/UniswapV2Pair.sol",
+      "line": 278,
+      "severity": "high",
+      "invariant": "State updates should occur before external calls",
+      "attack": "1. Create malicious token contract. 2. Call removeLiquidity which sends tokens before updating balances. 3. Malicious token callback reenters removeLiquidity. 4. Withdraw more than entitled share.",
+      "impact": "Draining of pool reserves, theft of LP funds"
+    },
+    {
+      "status": "confirmed",
+      "title": "Uninitialized Protocol Fee",
+      "file": "contracts/UniswapV2Pair.sol",
+      "line": 52,
+      "severity": "low",
+      "invariant": "Protocol fee recipient should be initialized at deployment",
+      "attack": "1. Deploy pair contract without setting feeTo. 2. Protocol fees accumulate but cannot be withdrawn. 3. Permanent loss of protocol revenue.",
+      "impact": "Loss of protocol revenue, inefficiency in fee distribution"
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "project": "crestal",
+  "project_id": "sherlock_crestal-network_2025_03",
+  "timestamp": "2026-09-06T07:40:40",
+  "duration_seconds": 128.5,
+  "total_findings": 6,
+  "high_critical_findings": 4,
+  "expected_high_critical": 1,
+  "detection_rate": 4.0,
+  "findings": [
+    {
+      "status": "confirmed",
+      "title": "Lack of Nonce Validation in Upgrade Path",
+      "file": "src/BlueprintV2.sol",
+      "line": 14,
+      "severity": "high",
+      "invariant": "Each upgrade should have a unique reinitializer version number to prevent upgrade replay attacks",
+      "attack": "1. Attacker observes a legitimate upgrade transaction calling initialize()\n2. Attacker captures and replays the same transaction\n3. Contract may be re-initialized with version 2.0.0 again, potentially resetting state or causing unexpected behavior",
+      "impact": "State corruption or unexpected contract behavior due to re-initialization. Could reset important state variables or cause initialization conflicts."
+    },
+    {
+      "status": "confirmed",
+      "title": "Lack of Upgrade Safety Checks",
+      "file": "src/BlueprintV2.sol",
+      "line": 14,
+      "severity": "critical",
+      "invariant": "Upgrade process should include storage layout compatibility checks to prevent storage collisions",
+      "attack": "1. Developer creates BlueprintV3 with different storage layout\n2. _authorizeUpgrade allows upgrade without compatibility verification\n3. Storage variables get corrupted or overwritten\n4. Contract state becomes inconsistent",
+      "impact": "Complete corruption of contract state, potential loss of funds or data. Storage collisions can lead to catastrophic failures."
+    },
+    {
+      "status": "confirmed",
+      "title": "Missing implementation address validation in upgrade authorization",
+      "file": "src/BlueprintV2.sol",
+      "line": 34,
+      "severity": "high",
+      "invariant": "Implementation address must be validated (non-zero, correct contract type)",
+      "attack": "1. Owner calls upgrade to a zero address or non-contract address\n2. Proxy delegates to invalid implementation\n3. All subsequent calls fail or execute unintended code",
+      "impact": "Permanent denial of service or complete contract compromise if proxy delegates to malicious contract"
+    },
+    {
+      "status": "confirmed",
+      "title": "Missing implementation contract existence check",
+      "file": "src/BlueprintV2.sol",
+      "line": "34",
+      "severity": "high",
+      "invariant": "New implementation must be a deployed contract",
+      "attack": "1. Owner upgrades to address that has no code\n2. Proxy delegates to empty address\n3. All calls to proxy will succeed with empty data\n4. Critical functions become inaccessible",
+      "impact": "Permanent loss of contract functionality and potential fund lock"
+    },
+    {
+      "status": "confirmed",
+      "title": "Missing Payment Token Validation",
+      "file": "script/UpdatePayment.s.sol",
+      "line": 30,
+      "severity": "medium",
+      "invariant": "Token address must be valid (ERC20 compliant) and actually exist as a payment token.",
+      "attack": "1. Deploy a malicious contract that does not implement the ERC20 interface (or implements it incorrectly).\n2. Call `setCreateAgentTokenCost` with this invalid token address.\n3. Any subsequent payment attempt with this token will revert or behave unpredictably, potentially causing DoS or loss of funds if users are tricked into interacting with it.",
+      "impact": "Potential DoS of the payment system or loss of funds if users are deceived into paying with an invalid token address."
+    },
+    {
+      "status": "confirmed",
+      "title": "Missing Cost Validation",
+      "file": "script/UpdatePayment.s.sol",
+      "line": 30,
+      "severity": "low",
+      "invariant": "Transfer amount must be > 0",
+      "attack": "1. Call setCreateAgentTokenCost with cost = 0\n2. Users can create agents for free\n3. Attacker can spam agent creation, consuming resources without payment",
+      "impact": "Protocol revenue loss and potential resource exhaustion"
+    }
+  ]
+}

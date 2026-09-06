@@ -1,0 +1,12 @@
+{
+  "project": "liquid-ron",
+  "project_id": "code4rena_liquid-ron_2025_03",
+  "timestamp": "2026-09-06T07:53:11",
+  "duration_seconds": 45.3,
+  "transfers_analyzed": 3,
+  "total_findings": 0,
+  "high_critical": 0,
+  "expected_hc": 5,
+  "detection_rate": 0.0,
+  "findings": []
+}

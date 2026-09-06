@@ -1,0 +1,34 @@
+{
+  "project": "cork",
+  "project_id": "sherlock_cork-protocol_2025_01",
+  "timestamp": "2026-09-06T08:19:26",
+  "duration_seconds": 44.1,
+  "files_analyzed": 15,
+  "code_size": 0,
+  "total_findings": 2,
+  "high_critical": 1,
+  "expected_hc": 18,
+  "detection_rate": 0.05555555555555555,
+  "findings": [
+    {
+      "status": "confirmed",
+      "title": "Unbounded Loop in withdrawAll",
+      "file": "contracts/Vault.sol",
+      "line": 25,
+      "severity": "high",
+      "invariant": "The withdrawAll function should handle an arbitrary number of tokens without hitting gas limits.",
+      "attack": "1. Attacker creates a token contract with thousands of mintable tokens.\n2. Attacker repeatedly calls depositToken with this token.\n3. When withdrawAll is called, the loop over tokens[ids.length] exceeds block gas limit.\n4. Function becomes unusable, locking all funds in the vault.",
+      "impact": "Permanent loss of access to all deposited funds (denial of service)."
+    },
+    {
+      "status": "confirmed",
+      "title": "Missing Validation in depositToken",
+      "file": "contracts/Vault.sol",
+      "line": 20,
+      "severity": "medium",
+      "invariant": "The deposited token address should be a validated ERC20 contract with proper transfer functionality.",
+      "attack": "1. Attacker deploys a malicious ERC20-like contract that returns true for all calls but doesn't actually transfer tokens.\n2. Attacker calls depositToken(maliciousContract, 1000).\n3. Vault's depositToken function accepts the call without verifying the token is a legitimate ERC20.\n4. Vault's internal balances are updated but no actual tokens are transferred.",
+      "impact": "Corrupted internal accounting allows the attacker to inflate their balance without providing real assets, potentially enabling withdrawal of other users' legitimate tokens."
+    }
+  ]
+}
