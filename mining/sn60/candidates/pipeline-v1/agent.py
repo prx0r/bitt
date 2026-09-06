@@ -626,14 +626,27 @@ Do any two findings combine into a more severe exploit? Report only concrete com
     for v in confirmed:
         if not isinstance(v, dict):
             continue
+        # Extract from various possible field names
+        title = (v.get("title") or v.get("area") or
+                 v.get("candidate_original", {}).get("title") or
+                 v.get("candidate_original", {}).get("area") or "Unknown vulnerability")
+        description = (v.get("exploit_description") or v.get("exploit_scenario") or
+                      v.get("description") or v.get("verification") or
+                      v.get("reasoning") or "")
+        category = (v.get("category") or v.get("risk_type") or
+                   v.get("vulnerability_type") or "other")
+        file_path = (v.get("file") or
+                    v.get("candidate_original", {}).get("file") or "")
+        location = (v.get("location") or file_path or "")
+
         vuln = {
-            "title": v.get("title", v.get("area", "Unknown vulnerability")),
-            "description": v.get("exploit_scenario", v.get("description", v.get("reasoning", ""))),
-            "vulnerability_type": v.get("category", v.get("risk_type", "other")),
+            "title": title,
+            "description": description,
+            "vulnerability_type": category,
             "severity": v.get("severity", "medium"),
             "confidence": v.get("confidence", 0.7),
-            "location": v.get("location", v.get("file", "")),
-            "file": v.get("file", ""),
+            "location": location,
+            "file": file_path,
             "reported_by_model": MODEL,
         }
         vulnerabilities.append(vuln)
