@@ -1,65 +1,9 @@
 {
-  "rubric": [
-    {
-      "lesson": "{\"role\": \"system\", \"content\": \"You are MiMo, a helpful assistant developed by Xiaomi LLM Core Team.\"}",
-      "miner": "jax",
-      "project": "code4rena_coded-estate-invitational_2024_12",
-      "type": "miss",
-      "timestamp": "2026-09-06 03:25:49"
-    }
-  ],
+  "rubric_schema_version": 2,
+  "rubric": [],
   "promoted_miners": [],
-  "probes": [
-    {
-      "codename": "jax",
-      "project": "code4rena_coded-estate-invitational_2024_12",
-      "findings_count": 3,
-      "dr": 0.0,
-      "matched": 0,
-      "expected": 9,
-      "missed": [
-        {
-          "title": "Attakers can steal the funds from long-term reservation",
-          "reason": "error"
-        },
-        {
-          "title": "setbidtobuyallows token purchase even when sale is no longer listed",
-          "reason": "error"
-        },
-        {
-          "title": "Insufficient price validation intransfer_nftfunction enables theft of listed tokens",
-          "reason": "error"
-        },
-        {
-          "title": "Lack of differentiation between rental types leads to loss of funds",
-          "reason": "error"
-        },
-        {
-          "title": "Cancelling bid doesn\u2019t clear token approval of bidder allows malicious bidder to steal any tokens listing for sale with auto-approve enabled",
-          "reason": "error"
-        },
-        {
-          "title": "Lack of validation insetlistforsellallows changing denom while there is active bid, leading to stealing of other users\u2019 funds",
-          "reason": "error"
-        },
-        {
-          "title": "Logic flaw incheck_can_edit_shortallows editing short-term rental before finalization enabling theft of users\u2019 deposited funds",
-          "reason": "error"
-        },
-        {
-          "title": "Adversary can usesend_nftto bypass the payment and steal seller\u2019s token in auto-approve scenario",
-          "reason": "error"
-        },
-        {
-          "title": "Token owner can burn their token with active rental leading to renters\u2019 funds being stuck",
-          "reason": "error"
-        }
-      ],
-      "duration": 278.7,
-      "timestamp": "2026-09-06 03:25:46"
-    }
-  ],
-  "current_miner": "jax",
-  "current_project_idx": 1,
+  "probes": [],
+  "current_miner": null,
+  "current_project_idx": 0,
   "projects_tested": []
 }

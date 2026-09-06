@@ -290,22 +290,95 @@ Return JSON: {{"found": true/false, "confidence": 0.0-1.0}}"""
 # ── Strategy Mutations ─────────────────────────────────────────────
 
 def get_base_strategies():
-    """Create initial strategy variants."""
-    base_analysis = """You are a security auditor. Analyze code for vulnerabilities. Focus on:
-1. Access control issues
-2. Reentrancy
-3. Integer overflow/underflow
-4. Business logic errors
-5. Cross-contract interactions
-Return JSON array of findings with title, description, category, file, severity."""
+    """Create initial strategy variants. Each strategy provides actual
+    phase1/phase2 prompts that the agent will use."""
+    base_analysis_v3 = """You are a security auditor performing protocol state-machine analysis.
+Your job: UNDERSTAND THE PROTOCOL and find where the code violates its own rules.
 
-    base_verify = """Verify if this is a real vulnerability. Lean toward confirm when uncertain."""
+STEP 1: Read the code and understand WHAT THIS PROTOCOL DOES.
+- What assets/tokens does it handle?
+- What are the core business rules?
+- What invariants must always hold?
+
+STEP 2: For each entry point, trace the STATE TRANSITION:
+- What is state_before?
+- What does the function do?
+- What should state_after be?
+- What happens under attacker-controlled inputs?
+
+STEP 3: Find where the IMPLEMENTATION DEVIATES from the INTENT:
+- Missing checks that should be there
+- State transitions that can go wrong
+- Edge cases that break invariants
+- Cross-function inconsistencies
+
+For each finding, produce a CONCRETE finding with:
+- title: specific, descriptive (NOT "Unknown vulnerability")
+- invariant: what should hold
+- attack_sequence: step-by-step attack
+- state_before/state_after: the state transition
+- violated_property: which invariant is broken
+- impact: concrete loss
+- severity: critical/high/medium/low
+- file, function, related_files
+
+Be a PROTOCOL DESIGNER, not a pattern matcher."""
+
+    base_verify_v3 = """You are verifying a candidate vulnerability. Be STRICT, not permissive.
+
+ALL of these must be met to confirm:
+1. CONCRETE INVARIANT VIOLATION: What specific invariant is broken?
+2. EXACT AFFECTED CODE: Which function/line has the bug?
+3. REALISTIC PRECONDITIONS: Under what conditions is this exploitable?
+4. COHERENT STATE TRANSITION: state_before → state_after?
+5. CONCRETE IMPACT: What does the attacker gain?
+
+If ANY is missing or speculative, REJECT.
+False negatives are acceptable. Speculative findings are NOT."""
 
     strategies = [
-        {"id": "base", "analysis_prompt": base_analysis, "verify_prompt": base_verify},
-        {"id": "defi-focus", "analysis_prompt": base_analysis + "\n\nFocus especially on: slippage protection, oracle manipulation, flash loans, economic invariants, fee calculations.", "verify_prompt": base_verify},
-        {"id": "cross-file", "analysis_prompt": base_analysis + "\n\nFocus on: cross-contract state synchronization, trust boundary violations, function signature mismatches.", "verify_prompt": base_verify},
-        {"id": "business-logic", "analysis_prompt": base_analysis + "\n\nThis is critical: do NOT just look for common patterns. Read the code carefully and understand what the protocol is SUPPOSED to do. Find where the code violates its own business rules.", "verify_prompt": base_verify},
+        {"id": "base", "analysis_prompt": base_analysis_v3, "verify_prompt": base_verify_v3},
+        {"id": "defi-focus", "analysis_prompt": base_analysis_v3 + """
+
+ADDITIONAL FOCUS for DeFi protocols:
+- Slippage protection: does every swap/pool enforce min/max?
+- Oracle manipulation: can price feeds be attacked?
+- Flash loans: can atomic transactions break invariants?
+- Fee calculations: rounding errors, precision loss, fee-on-transfer?
+- Liquidity invariants: can pools be drained or bricked?
+- MEV/front-running: can transactions be sandwiched?
+""", "verify_prompt": base_verify_v3},
+        {"id": "cross-file", "analysis_prompt": base_analysis_v3 + """
+
+ADDITIONAL FOCUS for cross-file analysis:
+- State synchronization: does function A undo state set by function B?
+- Approval lifetimes: do approvals survive unrelated state transitions?
+- Access control inheritance: do child contracts inherit parent checks?
+- Event consistency: do events match actual state changes?
+- Reentrancy across contracts: can Contract A call back into Contract B mid-flow?
+""", "verify_prompt": base_verify_v3},
+        {"id": "state-machine", "analysis_prompt": """You are a PROTOCOL STATE-MACHINE ANALYST.
+
+For each entry point, you MUST produce:
+1. The valid states this function can be in
+2. The transition it performs
+3. Preconditions that must be true
+4. Postconditions that must be true
+5. What happens if preconditions are FALSE
+6. What happens if an attacker provides MALICIOUS inputs
+
+Think in terms of STATE DIAGRAMS, not vulnerability patterns.
+Every bug is a state the implementation permits but the protocol forbids.
+
+For each finding:
+- title: describes the forbidden state transition
+- invariant: "IF [precondition] THEN [forbidden state] must not occur"
+- attack_sequence: how to reach the forbidden state
+- state_before: normal state
+- state_after: forbidden state achieved
+- violated_property: the protocol rule broken
+- impact: concrete damage
+""", "verify_prompt": base_verify_v3},
     ]
     return strategies
 
@@ -332,22 +405,42 @@ def mutate_strategy(strategy, rng):
 
 # ── Main Loop ──────────────────────────────────────────────────────
 
+STRATEGY_CONFIG_PATH = Path("/root/bitt/data/active_strategy.json")
+
+
 def run_agent_on_project(strategy, project_id):
-    """Run one strategy on one project using full pipeline-v1."""
+    """Run one strategy on one project. Strategy prompts are WRITTEN to disk
+    so the agent process reads them via get_prompt()."""
     import subprocess
-    import importlib.util
 
     source_dir = REPOS_DIR / project_id
     if not source_dir.exists():
         return None
 
-    # Use the full pipeline-v1 agent
-    agent_path = Path("/root/bitt/mining/sn60/candidates/pipeline-v1/agent.py")
+    # Write strategy config so the agent can read it
+    strategy_config = {
+        "strategy_id": strategy.get("id", "unknown"),
+        "prompts": {
+            "phase1": strategy.get("analysis_prompt", ""),
+            "phase2": strategy.get("analysis_prompt", ""),
+            "phase3": strategy.get("verify_prompt", ""),
+            "phase4": strategy.get("verify_prompt", ""),
+        },
+        "timestamp": time.time(),
+    }
+    STRATEGY_CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
+    STRATEGY_CONFIG_PATH.write_text(json.dumps(strategy_config))
+
+    # Use pipeline-v3 (per-entry-point analysis)
+    agent_path = Path("/root/bitt/mining/sn60/candidates/pipeline-v3/agent.py")
     if not agent_path.exists():
-        print("    ERROR: pipeline-v1/agent.py not found", flush=True)
+        # Fallback to v1
+        agent_path = Path("/root/bitt/mining/sn60/candidates/pipeline-v1/agent.py")
+    if not agent_path.exists():
+        print("    ERROR: no agent.py found", flush=True)
         return []
 
-    # Set env
+    # Set env — all config via env vars, no hardcoded creds
     env = os.environ.copy()
     env["INFERENCE_API"] = PROXY
     env["INFERENCE_API_KEY"] = API_KEY
@@ -358,9 +451,11 @@ def run_agent_on_project(strategy, project_id):
     try:
         result = subprocess.run(
             [sys.executable, str(agent_path), str(source_dir)],
-            capture_output=True, text=True, timeout=600,
+            capture_output=True, text=True, timeout=900,
             env=env
         )
+        if result.returncode != 0 and result.stderr:
+            print(f"    stderr: {result.stderr[:200]}", flush=True)
     except subprocess.TimeoutExpired:
         print("    TIMEOUT", flush=True)
         return []
@@ -368,8 +463,11 @@ def run_agent_on_project(strategy, project_id):
     # Read report
     report_path = source_dir / "agent_report.json"
     if report_path.exists():
-        report = json.load(open(report_path))
-        return report.get("vulnerabilities", [])
+        try:
+            report = json.load(open(report_path))
+            return report.get("vulnerabilities", [])
+        except:
+            pass
 
     return []
 
